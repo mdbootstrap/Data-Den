@@ -1,0 +1,19 @@
+{
+  "name": "data-den-core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.mdbootstrap.com/mdb/data-den/data-den-core.git"
+  },
+  "author": "Pan Seba",
+  "license": "SEE LICENSE IN LICENSE.pdf",
+  "devDependencies": {
+    "typescript": "^5.1.6"
+  }
+}
