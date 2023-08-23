@@ -4,14 +4,15 @@
     "module": "commonjs",
     "lib": ["es6", "dom"],
     "allowJs": true,
-    "outDir": "dist",
+    "outDir": "dist/js",
     "rootDir": "src",
     "strict": true,
     "noImplicitAny": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "types": ["@types/jest"],
   },
   "include": [
     "./src"

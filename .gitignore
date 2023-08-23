@@ -1,3 +1,20 @@
-dist
+# dependencies
 node_modules
 .idea
+
+# production
+/dist
+
+# misc
+.DS_Store
+
+npm-debug.log
+yarn-error.log
+.yarnclean
+.vscode
+
+# test
+/test/coverage
+
+# docs
+index.html

@@ -1,6 +1,3 @@
-import {DataDenRenderingModuleConfig, DataDenRenderingService} from "./data-den-rendering-service";
+import { DataDenRenderingModuleConfig, DataDenRenderingService } from './data-den-rendering-service';
 
-export {
-    DataDenRenderingModuleConfig,
-    DataDenRenderingService
-}
+export { DataDenRenderingModuleConfig, DataDenRenderingService };

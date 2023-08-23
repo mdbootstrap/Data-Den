@@ -1,5 +1,3 @@
-import {DataDenPaginationService} from "./data-den-pagination-service";
+import { DataDenPaginationService } from './data-den-pagination-service';
 
-export {
-    DataDenPaginationService
-}
+export { DataDenPaginationService };

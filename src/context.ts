@@ -1,7 +1,3 @@
 export class Context {
-    constructor (
-        public action: string
-    ) {
-
-    }
+  constructor(public action: string) {}
 }
