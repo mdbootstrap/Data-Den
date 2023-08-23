@@ -1,5 +1,3 @@
-import {DataDenFetchService} from "./data-den-fetch-service";
+import { DataDenFetchService } from './data-den-fetch-service';
 
-export {
-    DataDenFetchService
-}
+export { DataDenFetchService };

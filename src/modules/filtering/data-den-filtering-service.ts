@@ -1,3 +1,3 @@
 export class DataDenFilteringService {
-    constructor() {}
+  constructor() {}
 }

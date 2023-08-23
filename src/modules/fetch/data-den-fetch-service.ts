@@ -1,3 +1,3 @@
 export class DataDenFetchService {
-    constructor() {}
+  constructor() {}
 }

@@ -1,5 +1,3 @@
-import {DataDenFilteringService} from './data-den-filtering-service';
+import { DataDenFilteringService } from './data-den-filtering-service';
 
-export {
-    DataDenFilteringService
-}
+export { DataDenFilteringService };

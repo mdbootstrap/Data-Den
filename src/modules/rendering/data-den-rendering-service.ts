@@ -1,7 +1,7 @@
 export type DataDenRenderingModuleConfig = {
-    rows: any[][];
+  rows: any[][];
 };
 
 export class DataDenRenderingService {
-    constructor() {}
+  constructor() {}
 }

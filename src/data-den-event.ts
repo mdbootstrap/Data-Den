@@ -1,13 +1,13 @@
-import {Context} from "./context";
+import { Context } from './context';
 
 export class DataDenEvent {
-    public key: string;
+  public key: string;
 
-    constructor(
-        public name: string,
-        public data: any,
-        public context: Context
-    ) {
-        this.key = '' + Math.random();
-    }
+  constructor(
+    public name: string,
+    public data: any,
+    public context: Context
+  ) {
+    this.key = '' + Math.random();
+  }
 }

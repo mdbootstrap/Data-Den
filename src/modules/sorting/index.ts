@@ -1,5 +1,3 @@
-import {DataDenSortingService} from './data-den-sorting-service';
+import { DataDenSortingService } from './data-den-sorting-service';
 
-export {
-    DataDenSortingService
-}
+export { DataDenSortingService };
