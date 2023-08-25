@@ -1,3 +1,4 @@
+import './scss/index.scss';
 import { DataDenRenderingModuleConfig, DataDenRenderingService } from './modules/rendering';
 import { DataDenPaginationService } from './modules/pagination';
 import { DataDenFilteringService } from './modules/filtering';
