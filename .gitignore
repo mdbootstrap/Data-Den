@@ -15,6 +15,3 @@ yarn-error.log
 
 # test
 /test/coverage
-
-# docs
-index.html
