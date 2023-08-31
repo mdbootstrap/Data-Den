@@ -14,4 +14,8 @@ export class DataDenDefaultCellEditor implements DataDenCellEditor {
   getGui(): HTMLElement {
     return this.element;
   }
+
+  setValue(): any {}
+
+  parseValue(): any {}
 }
