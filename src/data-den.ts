@@ -7,12 +7,13 @@ import { DataDenOptions } from './data-den-options.interface';
 
 export class DataDen {
   #rendering: DataDenRenderingService;
+  #sorting: DataDenSortingService;
   private pagination: DataDenPaginationService = new DataDenPaginationService();
   private filtering: DataDenFilteringService = new DataDenFilteringService();
-  private sorting: DataDenSortingService = new DataDenSortingService();
   private fetch: DataDenFetchService = new DataDenFetchService();
 
   constructor(container: HTMLElement, options: DataDenOptions) {
-    this.#rendering = new DataDenRenderingService(options);
+    this.#rendering = new DataDenRenderingService(container, options);
+    this.#sorting = new DataDenSortingService();
   }
 }

@@ -1,8 +1,13 @@
 import { DataDenPublishedEvent } from './data-den-published-event';
 import { DataDenEvent } from './data-den-event';
 
+type DataDenEventCallback = (event: DataDenEvent) => void;
+
 export class DataDenPubSub {
-  static #listeners: { [key: string]: Function[] } = {};
+  static #listeners: { [key: string]: DataDenEventCallback[] } = {
+    'command:sorting:start': [],
+    'notification:sorting:done': [],
+  };
 
   static publish(name: string, data: DataDenPublishedEvent) {
     if (!this.#listeners[name]) {
@@ -15,7 +20,7 @@ export class DataDenPubSub {
     });
   }
 
-  static subscribe(name: string, callback: Function) {
+  static subscribe(name: string, callback: DataDenEventCallback) {
     if (!this.#listeners[name]) {
       throw new Error(`Could not subscribe: Unsupported event: ${name}`);
     }
@@ -26,7 +31,7 @@ export class DataDenPubSub {
     };
   }
 
-  static #unsubscribe(name: string, callback: Function) {
+  static #unsubscribe(name: string, callback: DataDenEventCallback) {
     if (!this.#listeners[name]) {
       return;
     }
