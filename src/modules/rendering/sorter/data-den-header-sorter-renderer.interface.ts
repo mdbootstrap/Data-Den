@@ -1,5 +1,7 @@
-export interface DataDenHeaderSorterRenderer {
-  getGui(): HTMLElement;
-  destroy?(): void;
-  sort(params: any): void;
+export abstract class DataDenHeaderSorterRenderer {
+  abstract getGui(): HTMLElement;
+  abstract destroy?(): void;
+  protected sort(params: any): void {
+    console.log(params);
+  }
 }

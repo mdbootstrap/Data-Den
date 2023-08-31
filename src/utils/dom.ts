@@ -1,5 +1,5 @@
-export function createHtmlElement(template: string): HTMLElement {
-  const placeholder = document.createElement('div');
+export function createHtmlElement(template: string, elementName = 'div'): HTMLElement {
+  const placeholder = document.createElement(elementName);
   placeholder.innerHTML = template;
 
   return placeholder.firstElementChild as HTMLElement;
