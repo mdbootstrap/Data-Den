@@ -11,7 +11,7 @@
     "start": "vite --open",
     "build": "vite build",
     "test": "jest test/ --coverage",
-    "test:watch": "jest test/--coverage --watchAll",
+    "test:watch": "jest test/ --coverage --watchAll",
     "preview": "vite preview"
   },
   "husky": {
