@@ -10,24 +10,31 @@ import { DataDenHeaderTextFilterRenderer, DataDenQuickFilterRenderer } from './f
 import { DataDenPaginationRenderer } from './pagination';
 import { DataDenHeaderRow, DataDenRow } from './row';
 import { DataDenHeaderDefaultSorterRenderer } from './sorter';
+import { DataDenPubSub } from '../../data-den-pub-sub';
+import { DataDenEvent } from '../../data-den-event';
 
 export class DataDenRenderingService {
+  #container: HTMLElement;
   #headerRow: DataDenHeaderRow;
   #rows: DataDenRow[] = [];
   #quickFilterRenderer: DataDenQuickFilterRenderer | null = null;
   #paginationRenderer: DataDenPaginationRenderer | null = null;
 
-  constructor(options: DataDenOptions) {
+  constructor(container: HTMLElement, options: DataDenOptions) {
+    this.#container = container;
     this.#headerRow = this.#createHeaderRow(options);
-    this.#rows = this.#createDataRows(options);
+    this.#rows = this.#createDataRows(options.rows);
 
     if (options.quickFilter) {
       this.#quickFilterRenderer = new DataDenQuickFilterRenderer();
     }
 
     if (options.pagination) {
-      this.#paginationRenderer = new DataDenPaginationRenderer();
+      this.#paginationRenderer = new DataDenPaginationRenderer(options.paginationOptions);
     }
+
+    this.renderTable();
+    this.#subscribeToEvents();
   }
 
   #createHeaderRow(options: DataDenOptions): DataDenHeaderRow {
@@ -45,8 +52,8 @@ export class DataDenRenderingService {
     return new DataDenHeaderRow(rowIndex, headerCells);
   }
 
-  #createDataRows(options: DataDenOptions): DataDenRow[] {
-    const rows = options.rows.map((row, rowIndex) => {
+  #createDataRows(dataRows: DataDenRow[]): DataDenRow[] {
+    const rows = dataRows.map((row, rowIndex) => {
       const cells = Object.entries(row).map(([, value], columnIndex) => {
         const rendererParams: DataDenCellRendererParams = { value: value };
         const renderer = new DataDenDefaultCellRenderer(rendererParams);
@@ -59,7 +66,7 @@ export class DataDenRenderingService {
     return rows;
   }
 
-  renderTable(container: HTMLElement): void {
+  renderTable(): void {
     const grid = this.#renderGrid();
 
     if (this.#quickFilterRenderer) {
@@ -73,7 +80,23 @@ export class DataDenRenderingService {
       grid.appendChild(this.#paginationRenderer.getGui());
     }
 
-    container.appendChild(grid);
+    this.#container.appendChild(grid);
+  }
+
+  #updateRows(dataRows: DataDenRow[]): void {
+    const rows = document.createDocumentFragment();
+    this.#rows = this.#createDataRows(dataRows);
+    this.#rows.forEach((row) => rows.appendChild(row.render()));
+
+    const rowContainer = this.#container.querySelector('.data-den-grid-rows') as HTMLElement;
+    rowContainer.innerHTML = '';
+    rowContainer.appendChild(rows);
+  }
+
+  #subscribeToEvents(): void {
+    DataDenPubSub.subscribe('command:pagination:data-changed', (event: DataDenEvent) => {
+      this.#updateRows(event.data.rows);
+    });
   }
 
   #renderGrid(): HTMLElement {
