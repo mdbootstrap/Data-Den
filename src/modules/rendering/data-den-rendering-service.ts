@@ -6,6 +6,7 @@ import {
   DataDenDefaultHeaderCellRenderer,
   DataDenHeaderCell,
 } from './cell';
+import { DataDenCellEditorParams, DataDenDefaultCellEditor } from './editor';
 import { DataDenHeaderTextFilterRenderer, DataDenQuickFilterRenderer } from './filter';
 import { DataDenPaginationRenderer } from './pagination';
 import { DataDenHeaderRow, DataDenRow } from './row';
@@ -43,10 +44,12 @@ export class DataDenRenderingService {
       const value = column.headerName;
       const rendererParams: DataDenCellRendererParams = { value: value };
       const cellRenderer = new DataDenDefaultHeaderCellRenderer(rendererParams);
+      const editorParams: DataDenCellEditorParams = { value: value };
+      const cellEditor = new DataDenDefaultCellEditor(editorParams);
       const filterRenderer = new DataDenHeaderTextFilterRenderer();
       const sorterRenderer = new DataDenHeaderDefaultSorterRenderer();
 
-      return new DataDenHeaderCell(rowIndex, colIndex, cellRenderer, filterRenderer, sorterRenderer);
+      return new DataDenHeaderCell(rowIndex, colIndex, cellRenderer, cellEditor, filterRenderer, sorterRenderer);
     });
 
     return new DataDenHeaderRow(rowIndex, headerCells);
@@ -57,7 +60,9 @@ export class DataDenRenderingService {
       const cells = Object.entries(row).map(([, value], columnIndex) => {
         const rendererParams: DataDenCellRendererParams = { value: value };
         const renderer = new DataDenDefaultCellRenderer(rendererParams);
-        return new DataDenCell(rowIndex, columnIndex, renderer);
+        const editorParams: DataDenCellEditorParams = { value: value };
+        const editor = new DataDenDefaultCellEditor(editorParams);
+        return new DataDenCell(rowIndex, columnIndex, renderer, editor);
       });
 
       return new DataDenRow(rowIndex, cells);
