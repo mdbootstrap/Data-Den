@@ -1,15 +1,17 @@
 import { DataDenPublishedEvent } from './data-den-published-event';
 import { DataDenEvent } from './data-den-event';
 
+type DataDenEventCallback = (event: DataDenEvent) => void;
+
 export class DataDenPubSub {
   static #listeners: { [key: string]: any[] } = {
-    'command:pagination:info-changed': [],
-    'command:pagination:data-changed': [],
-    'command:pagination:load-first-page': [],
-    'command:pagination:load-prev-page': [],
-    'command:pagination:load-next-page': [],
-    'command:pagination:load-last-page': [],
-    'command:pagination:page-size-changed': [],
+    'command:pagination:load-first-page:start': [],
+    'command:pagination:load-prev-page:start': [],
+    'command:pagination:load-next-page:start': [],
+    'command:pagination:load-last-page:start': [],
+    'notification:pagination:info-change:done': [],
+    'notification:pagination:data-change:done': [],
+    'notification:pagination:page-size-change:done': [],
   };
 
   static publish(name: string, data: DataDenPublishedEvent) {
@@ -23,7 +25,7 @@ export class DataDenPubSub {
     });
   }
 
-  static subscribe(name: string, callback: any) {
+  static subscribe(name: string, callback: DataDenEventCallback) {
     if (!this.#listeners[name]) {
       throw new Error(`Could not subscribe: Unsupported event: ${name}`);
     }
@@ -34,7 +36,7 @@ export class DataDenPubSub {
     };
   }
 
-  static #unsubscribe(name: string, callback: any) {
+  static #unsubscribe(name: string, callback: DataDenEventCallback) {
     if (!this.#listeners[name]) {
       return;
     }

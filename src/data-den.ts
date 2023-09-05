@@ -7,17 +7,17 @@ import { DataDenOptions } from './data-den-options.interface';
 
 export class DataDen {
   #rendering: DataDenRenderingService;
-  private pagination: DataDenPaginationService;
-  private filtering: DataDenFilteringService = new DataDenFilteringService();
-  private sorting: DataDenSortingService = new DataDenSortingService();
-  private fetch: DataDenFetchService = new DataDenFetchService();
+  #pagination: DataDenPaginationService;
+  #filtering: DataDenFilteringService = new DataDenFilteringService();
+  #sorting: DataDenSortingService = new DataDenSortingService();
+  #fetch: DataDenFetchService = new DataDenFetchService();
 
   constructor(container: HTMLElement, options: DataDenOptions) {
     this.#rendering = new DataDenRenderingService(container, options);
-    this.pagination = new DataDenPaginationService(options.paginationOptions);
+    this.#pagination = new DataDenPaginationService(options.paginationOptions);
 
     // await this.fetch.fetchData(options.fetchOptions);
 
-    this.pagination.init(options.rows);
+    this.#pagination.init(options.rows);
   }
 }

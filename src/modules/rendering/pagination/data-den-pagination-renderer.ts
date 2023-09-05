@@ -1,6 +1,7 @@
 import { createHtmlElement } from '../../../utils';
 import { DataDenPubSub } from '../../../data-den-pub-sub';
 import { DataDenPaginationOptions } from '../../../data-den-options.interface';
+import { Context } from '../../../context';
 
 export class DataDenPaginationRenderer {
   element: HTMLElement;
@@ -42,40 +43,36 @@ export class DataDenPaginationRenderer {
     const pageSizeSelect = this.element.querySelector('.data-den-pagination-page-size') as HTMLSelectElement;
 
     firstButton.addEventListener('click', () => {
-      DataDenPubSub.publish('command:pagination:load-first-page', {
+      DataDenPubSub.publish('command:pagination:load-first-page:start', {
         context: {
-          action: 'load-first-page',
+          action: 'load-first-page:start',
         },
       });
     });
     prevButton.addEventListener('click', () => {
-      DataDenPubSub.publish('command:pagination:load-prev-page', {
+      DataDenPubSub.publish('command:pagination:load-prev-page:start', {
         context: {
-          action: 'load-prev-page',
+          action: 'load-prev-page:start',
         },
       });
     });
     nextButton.addEventListener('click', () => {
-      DataDenPubSub.publish('command:pagination:load-next-page', {
+      DataDenPubSub.publish('command:pagination:load-next-page:start', {
         context: {
-          action: 'load-next-page',
+          action: 'load-next-page:start',
         },
       });
     });
     lastButton.addEventListener('click', () => {
-      DataDenPubSub.publish('command:pagination:load-last-page', {
-        context: {
-          action: 'load-last-page',
-        },
+      DataDenPubSub.publish('command:pagination:load-last-page:start', {
+        context: new Context('command:pagination:load-last-page:start'),
       });
     });
     pageSizeSelect.addEventListener('change', (event: Event) => {
       const target = event.target as HTMLSelectElement;
-      DataDenPubSub.publish('command:pagination:page-size-changed', {
+      DataDenPubSub.publish('notification:pagination:page-size-change:done', {
         pageSize: +target.value,
-        context: {
-          action: 'page-size-changed',
-        },
+        context: new Context('notification:pagination:page-size-change:done'),
       });
     });
   }
@@ -87,7 +84,7 @@ export class DataDenPaginationRenderer {
 
   private subscribeToEvents(): void {
     DataDenPubSub.subscribe(
-      'command:pagination:info-changed',
+      'notification:pagination:info-change:done',
       (event: { data: { firstRow: number; lastRow: number; allTotalRows: number; pageSize: number } }) => {
         this.updateInfo(event.data.firstRow, event.data.lastRow, event.data.allTotalRows);
         this.updatePageSize(event.data.pageSize);
