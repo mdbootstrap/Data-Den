@@ -8,6 +8,7 @@ import {
 } from './cell';
 import { DataDenCellEditorParams, DataDenDefaultCellEditor } from './editor';
 import { DataDenHeaderTextFilterRenderer, DataDenQuickFilterRenderer } from './filter';
+import { DataDenHeaderFilterRendererParams } from './filter/data-den-header-filter-renderer-params.interface';
 import { DataDenPaginationRenderer } from './pagination';
 import { DataDenHeaderRow, DataDenRow } from './row';
 import { DataDenHeaderDefaultSorterRenderer } from './sorter';
@@ -43,11 +44,14 @@ export class DataDenRenderingService {
     const rowIndex = 0;
     const headerCells = options.columns.map((column, colIndex) => {
       const value = column.headerName;
+      const field = column.field;
+      const { method, debounceTime, caseSensitive } = column.filterOptions;
       const rendererParams: DataDenCellRendererParams = { value: value };
       const cellRenderer = new DataDenDefaultHeaderCellRenderer(rendererParams);
       const editorParams: DataDenCellEditorParams = { value: value };
       const cellEditor = new DataDenDefaultCellEditor(editorParams);
-      const filterRenderer = new DataDenHeaderTextFilterRenderer();
+      const filterRendererParams: DataDenHeaderFilterRendererParams = { field, method, debounceTime, caseSensitive };
+      const filterRenderer = new DataDenHeaderTextFilterRenderer(filterRendererParams);
       const sorterRenderer = new DataDenHeaderDefaultSorterRenderer(column.field, order, options.rows);
 
       return new DataDenHeaderCell(rowIndex, colIndex, cellRenderer, cellEditor, filterRenderer, sorterRenderer);

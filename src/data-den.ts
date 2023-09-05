@@ -8,12 +8,13 @@ import { DataDenOptions } from './data-den-options.interface';
 export class DataDen {
   #rendering: DataDenRenderingService;
   #sorting: DataDenSortingService;
+  #filtering: DataDenFilteringService;
   private pagination: DataDenPaginationService = new DataDenPaginationService();
-  private filtering: DataDenFilteringService = new DataDenFilteringService();
   private fetch: DataDenFetchService = new DataDenFetchService();
 
   constructor(container: HTMLElement, options: DataDenOptions) {
     this.#rendering = new DataDenRenderingService(container, options);
     this.#sorting = new DataDenSortingService();
+    this.#filtering = new DataDenFilteringService();
   }
 }

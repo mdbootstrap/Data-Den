@@ -9,6 +9,11 @@ const options: DataDenOptions = {
       headerName: 'Car',
       sort: true,
       filter: false,
+      filterOptions: {
+        method: 'includes',
+        debounceTime: 500,
+        caseSensitive: false,
+      },
       resize: true,
       width: 100,
       cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }),
@@ -18,6 +23,11 @@ const options: DataDenOptions = {
       headerName: 'Model',
       sort: true,
       filter: false,
+      filterOptions: {
+        method: 'includes',
+        debounceTime: 500,
+        caseSensitive: false,
+      },
       resize: true,
       width: 120,
       cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }),
@@ -27,6 +37,11 @@ const options: DataDenOptions = {
       headerName: 'Year',
       sort: true,
       filter: false,
+      filterOptions: {
+        method: 'includes',
+        debounceTime: 500,
+        caseSensitive: false,
+      },
       resize: true,
       width: 80,
       cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }),
@@ -36,6 +51,11 @@ const options: DataDenOptions = {
       headerName: 'Price',
       sort: true,
       filter: false,
+      filterOptions: {
+        method: 'includes',
+        debounceTime: 500,
+        caseSensitive: false,
+      },
       resize: false,
       width: 60,
       cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }),
@@ -83,4 +103,4 @@ const options: DataDenOptions = {
   },
 };
 const ddEl = document.getElementById('dd');
-const dataDen = new DataDen(ddEl as HTMLElement, options);
+new DataDen(ddEl as HTMLElement, options);

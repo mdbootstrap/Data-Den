@@ -2,11 +2,18 @@ import { DataDenCellRenderer } from './modules/rendering';
 
 export type DataDenMode = 'client' | 'server';
 
+export interface DataDenFilterOptions {
+  method: string;
+  debounceTime: number;
+  caseSensitive: boolean;
+}
+
 export interface DataDenColDef {
   field: string;
   headerName: string;
   sort: boolean;
   filter: boolean;
+  filterOptions: DataDenFilterOptions;
   resize: boolean;
   width: number;
   cellRenderer: DataDenCellRenderer;
