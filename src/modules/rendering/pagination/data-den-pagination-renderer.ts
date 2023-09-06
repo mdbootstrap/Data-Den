@@ -70,9 +70,9 @@ export class DataDenPaginationRenderer {
     });
     pageSizeSelect.addEventListener('change', (event: Event) => {
       const target = event.target as HTMLSelectElement;
-      DataDenPubSub.publish('notification:pagination:page-size-change:done', {
+      DataDenPubSub.publish('info:pagination:page-size-change:done', {
         pageSize: +target.value,
-        context: new Context('notification:pagination:page-size-change:done'),
+        context: new Context('info:pagination:page-size-change:done'),
       });
     });
   }
@@ -84,7 +84,7 @@ export class DataDenPaginationRenderer {
 
   private subscribeToEvents(): void {
     DataDenPubSub.subscribe(
-      'notification:pagination:info-change:done',
+      'info:pagination:info-change:done',
       (event: { data: { firstRow: number; lastRow: number; allTotalRows: number; pageSize: number } }) => {
         this.updateInfo(event.data.firstRow, event.data.lastRow, event.data.allTotalRows);
         this.updatePageSize(event.data.pageSize);

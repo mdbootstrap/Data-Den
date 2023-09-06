@@ -99,7 +99,7 @@ export class DataDenRenderingService {
   }
 
   #subscribeToEvents(): void {
-    DataDenPubSub.subscribe('notification:pagination:data-change:done', (event: DataDenEvent) => {
+    DataDenPubSub.subscribe('info:pagination:data-change:done', (event: DataDenEvent) => {
       this.#updateRows(event.data.rows);
     });
   }

@@ -36,14 +36,11 @@ export class DataDenPaginationService {
     DataDenPubSub.subscribe('command:pagination:load-last-page:start', () => {
       this.#loadLastPage();
     });
-    DataDenPubSub.subscribe(
-      'notification:pagination:page-size-change:done',
-      (event: { data: { pageSize: number } }) => {
-        this.#pageSize = event.data.pageSize;
-        this.#currentPage = 0;
-        this.#updateState();
-      }
-    );
+    DataDenPubSub.subscribe('info:pagination:page-size-change:done', (event: { data: { pageSize: number } }) => {
+      this.#pageSize = event.data.pageSize;
+      this.#currentPage = 0;
+      this.#updateState();
+    });
   }
 
   #updateState(): void {
@@ -55,16 +52,16 @@ export class DataDenPaginationService {
   }
 
   #publishEvents(firstRow: number, lastRow: number, allTotalRows: number) {
-    DataDenPubSub.publish('notification:pagination:info-change:done', {
+    DataDenPubSub.publish('info:pagination:info-change:done', {
       firstRow,
       lastRow,
       allTotalRows,
       pageSize: this.#pageSize,
-      context: new Context('notification:pagination:info-change:done'),
+      context: new Context('info:pagination:info-change:done'),
     });
-    DataDenPubSub.publish('notification:pagination:data-change:done', {
+    DataDenPubSub.publish('info:pagination:data-change:done', {
       rows: this.#data.slice(firstRow - 1, lastRow),
-      context: new Context('notification:pagination:data-change:done'),
+      context: new Context('info:pagination:data-change:done'),
     });
   }
 

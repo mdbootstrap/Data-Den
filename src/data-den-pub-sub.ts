@@ -9,9 +9,9 @@ export class DataDenPubSub {
     'command:pagination:load-prev-page:start': [],
     'command:pagination:load-next-page:start': [],
     'command:pagination:load-last-page:start': [],
-    'notification:pagination:info-change:done': [],
-    'notification:pagination:data-change:done': [],
-    'notification:pagination:page-size-change:done': [],
+    'info:pagination:info-change:done': [],
+    'info:pagination:data-change:done': [],
+    'info:pagination:page-size-change:done': [],
   };
 
   static publish(name: string, data: DataDenPublishedEvent) {
