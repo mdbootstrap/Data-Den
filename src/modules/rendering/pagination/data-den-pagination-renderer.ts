@@ -44,23 +44,17 @@ export class DataDenPaginationRenderer {
 
     firstButton.addEventListener('click', () => {
       DataDenPubSub.publish('command:pagination:load-first-page:start', {
-        context: {
-          action: 'load-first-page:start',
-        },
+        context: new Context('command:pagination:load-first-page:start'),
       });
     });
     prevButton.addEventListener('click', () => {
       DataDenPubSub.publish('command:pagination:load-prev-page:start', {
-        context: {
-          action: 'load-prev-page:start',
-        },
+        context: new Context('command:pagination:load-prev-page:start'),
       });
     });
     nextButton.addEventListener('click', () => {
       DataDenPubSub.publish('command:pagination:load-next-page:start', {
-        context: {
-          action: 'load-next-page:start',
-        },
+        context: new Context('command:pagination:load-next-page:start'),
       });
     });
     lastButton.addEventListener('click', () => {
