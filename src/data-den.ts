@@ -15,6 +15,6 @@ export class DataDen {
   constructor(container: HTMLElement, options: DataDenOptions) {
     this.#rendering = new DataDenRenderingService(container, options);
     this.#sorting = new DataDenSortingService();
-    this.#filtering = new DataDenFilteringService();
+    this.#filtering = new DataDenFilteringService(options.quickFilterOptions);
   }
 }

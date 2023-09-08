@@ -97,9 +97,9 @@ const options: DataDenOptions = {
   paginationOptions: {
     pageSize: 10,
   },
-  quickFilter: false,
+  quickFilter: true,
   quickFilterOptions: {
-    debounceTime: 2,
+    debounceTime: 500,
   },
 };
 const ddEl = document.getElementById('dd');
