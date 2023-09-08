@@ -7,8 +7,8 @@ export class DataDenPubSub {
   static #listeners: { [key: string]: DataDenEventCallback[] } = {
     'command:sorting:start': [],
     'info:sorting:done': [],
-    'notification:filtering:header-filter-changed': [],
-    'notification:filtering:active-filters-changed': [],
+    'info:filtering:header-filter-changed': [],
+    'info:filtering:active-filters-changed': [],
   };
 
   static publish(name: string, data: DataDenPublishedEvent) {
