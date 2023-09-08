@@ -1,6 +1,6 @@
 import { DataDen } from './src/data-den';
 import { DataDenOptions } from './src/data-den-options.interface';
-import { DataDenDefaultCellRenderer } from './src/modules/rendering/cell/data-den-default-cell-renderer';
+// import { DataDenDefaultCellRenderer } from './src/modules/rendering/cell/data-den-default-cell-renderer';
 const options: DataDenOptions = {
   mode: 'client',
   columns: [
@@ -10,8 +10,8 @@ const options: DataDenOptions = {
       sort: true,
       filter: false,
       resize: true,
-      width: 100,
-      cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }),
+      width: 160,
+      // cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }, 0),
     },
     {
       field: 'model',
@@ -20,7 +20,7 @@ const options: DataDenOptions = {
       filter: false,
       resize: true,
       width: 120,
-      cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }),
+      // cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }, 1),
     },
     {
       field: 'year',
@@ -29,7 +29,7 @@ const options: DataDenOptions = {
       filter: false,
       resize: true,
       width: 80,
-      cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }),
+      // cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }, 2),
     },
     {
       field: 'price',
@@ -38,7 +38,7 @@ const options: DataDenOptions = {
       filter: false,
       resize: false,
       width: 60,
-      cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }),
+      // cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }, 3),
     },
   ],
   rows: [
@@ -73,6 +73,7 @@ const options: DataDenOptions = {
     { car: 'Toyota', model: 'Celica', year: 2020, price: 12000 },
     { car: 'Mitsubishi', model: 'Lancer', year: 2020, price: 34000 },
   ],
+  draggable: true,
   pagination: true,
   paginationOptions: {
     pageSize: 10,

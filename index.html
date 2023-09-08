@@ -2,6 +2,23 @@
   <head>
     <title>Home</title>
     <style>
+      .data-den-grid {
+        position: relative;
+      }
+      .data-den-header {
+        display: flex;
+        flex-flow: row wrap;
+        flex-direction: row;
+        position: relative;
+        height: 30px;
+        user-select: none;
+      }
+      .data-den-grid-rows {
+        display: flex;
+        flex-flow: row wrap;
+        flex-direction: column;
+        position: relative;
+      }
       .data-den-grid .data-den-header-row,
       .data-den-grid .data-den-row,
       .data-den-grid .data-den-header-cell {
@@ -10,16 +27,32 @@
       .data-den-header-filter {
         display: none;
       }
-      .data-den-cell {
-        width: 180px;
-        border: solid 1px #ccc;
-        padding: 3px;
+      .data-den-row {
+        display: flex;
+        position: absolute;
+        height: 24px;
       }
       .data-den-header-cell {
-        width: 180px;
+        position: absolute;
         border: solid 1px #ccc;
         background-color: #eceaea;
-        padding: 3px;
+        padding: 6px 4px;
+      }
+      .data-den-cell {
+        position: absolute;
+        border: solid 1px #ccc;
+        padding: 4px;
+      }
+      .data-den-header-cell-draggable.dragging,
+      .data-den-cell-draggable.dragging {
+        transition: left 0.2s;
+      }
+      .data-den-header-cell.active,
+      .data-den-cell.active {
+        background-color: #eeeeee;
+      }
+      .data-den-header-cell-draggable {
+        cursor: pointer;
       }
       .data-den-header-sorter {
         margin-left: 5px;
@@ -47,7 +80,10 @@
         color: unset;
         transform: rotate(0deg);
       }
-
+      .data-den-pagination {
+        position: absolute;
+        top: 550px;
+      }
       .data-den-pagination-content {
         display: flex;
         align-items: center;
