@@ -9,6 +9,8 @@ export class DataDenPubSub {
     'info:sorting:done': [],
     'info:filtering:header-filter-changed': [],
     'info:filtering:active-filters-changed': [],
+    'info:filtering:quick-filter-changed': [],
+    'info:filtering:active-quick-filter-changed': [],
   };
 
   static publish(name: string, data: DataDenPublishedEvent) {

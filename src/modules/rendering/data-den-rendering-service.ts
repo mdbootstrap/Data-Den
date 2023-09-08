@@ -7,7 +7,7 @@ import {
   DataDenHeaderCell,
 } from './cell';
 import { DataDenCellEditorParams, DataDenDefaultCellEditor } from './editor';
-import { DataDenHeaderTextFilterRenderer, DataDenQuickFilterRenderer } from './filter';
+import { DataDenHeaderTextFilterRenderer, DataDenQuickFilterParams, DataDenQuickFilterRenderer } from './filter';
 import { DataDenHeaderFilterRendererParams } from './filter/data-den-header-filter-renderer-params.interface';
 import { DataDenPaginationRenderer } from './pagination';
 import { DataDenHeaderRow, DataDenRow } from './row';
@@ -29,7 +29,9 @@ export class DataDenRenderingService {
     this.#container = container;
 
     if (options.quickFilter) {
-      this.#quickFilterRenderer = new DataDenQuickFilterRenderer();
+      const { debounceTime } = options.quickFilterOptions;
+      const params: DataDenQuickFilterParams = { debounceTime };
+      this.#quickFilterRenderer = new DataDenQuickFilterRenderer(params);
     }
 
     if (options.pagination) {

@@ -1,14 +1,34 @@
 import { Context } from '../../context';
 import { DataDenEvent } from '../../data-den-event';
+import { DataDenQuickFilterOptions } from '../../data-den-options.interface';
 import { DataDenPubSub } from '../../data-den-pub-sub';
 import { DataDenActiveFiltersChangeEvent } from './data-den-active-filter-change-event.interface';
 import { DataDenActiveHeaderFilter } from './data-den-active-header-filter.interface';
+import { DataDenActiveQuickFilterChangeEvent } from './data-den-active-quick-filter-change-event.interface';
+import { DataDenActiveQuickFilter } from './data-den-active-quick-filter.interface';
 
 export class DataDenFilteringService {
   activeHeaderFilters: { [key: string]: DataDenActiveHeaderFilter } = {};
+  activeQuickFilter: DataDenActiveQuickFilter;
 
-  constructor() {
+  constructor(options: DataDenQuickFilterOptions) {
+    this.activeQuickFilter = { searchTerm: '', filterFn: this.#getQuickFilterFn(options) };
+
     DataDenPubSub.subscribe('info:filtering:header-filter-changed', this.#handleHeaderFilterChange.bind(this));
+    DataDenPubSub.subscribe('info:filtering:quick-filter-changed', this.#handleQuickFilterChange.bind(this));
+  }
+
+  #getQuickFilterFn(options: DataDenQuickFilterOptions): (searchTerm: any, value: any) => boolean {
+    if (options.filterFn) {
+      return options.filterFn;
+    } else {
+      return (searchTerm: any, value: any) => {
+        searchTerm = searchTerm.toLowerCase();
+        value = value.toLowerCase();
+
+        return value.includes(searchTerm);
+      };
+    }
   }
 
   #handleHeaderFilterChange(event: DataDenEvent) {
@@ -55,5 +75,18 @@ export class DataDenFilteringService {
     } else {
       delete this.activeHeaderFilters[field];
     }
+  }
+
+  #handleQuickFilterChange(event: DataDenEvent) {
+    const { searchTerm } = event.data;
+
+    this.activeQuickFilter.searchTerm = searchTerm;
+
+    const activeQuickFilterChangeEvent: DataDenActiveQuickFilterChangeEvent = {
+      context: new Context('info:filtering:active-quick-filter-changed'),
+      filter: this.activeQuickFilter,
+    };
+
+    DataDenPubSub.publish('info:filtering:active-quick-filter-changed', activeQuickFilterChangeEvent);
   }
 }

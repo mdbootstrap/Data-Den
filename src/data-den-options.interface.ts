@@ -25,6 +25,7 @@ export interface DataDenPaginationOptions {
 
 export interface DataDenQuickFilterOptions {
   debounceTime: number;
+  filterFn?: (searchTerm: any, value: any) => boolean;
 }
 
 export interface DataDenOptions<TData = any> {
