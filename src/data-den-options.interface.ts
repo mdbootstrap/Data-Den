@@ -1,3 +1,4 @@
+import { DataDenDataLoaderStrategy } from './modules/fetch';
 import { DataDenCellRenderer } from './modules/rendering';
 
 export type DataDenMode = 'client' | 'server';
@@ -20,10 +21,8 @@ export interface DataDenQuickFilterOptions {
   debounceTime: number;
 }
 
-export interface DataDenOptions<TData = any> {
-  mode: DataDenMode;
-  columns: DataDenColDef[];
-  rows: TData[];
+export interface DataDenOptions {
+  dataLoader: DataDenDataLoaderStrategy;
   pagination: boolean;
   paginationOptions: DataDenPaginationOptions;
   quickFilter: boolean;

@@ -6,7 +6,10 @@ type DataDenEventCallback = (event: DataDenEvent) => void;
 export class DataDenPubSub {
   static #listeners: { [key: string]: DataDenEventCallback[] } = {
     'command:sorting:start': [],
-    'notification:sorting:done': [],
+    'info:sorting:done': [],
+    'command:fetch:start': [],
+    'command:fetch:getSortedData': [],
+    'info:fetch:done': [],
   };
 
   static publish(name: string, data: DataDenPublishedEvent) {

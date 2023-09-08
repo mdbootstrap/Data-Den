@@ -1,3 +1,2 @@
-import { DataDenFetchService } from './data-den-fetch-service';
-
-export { DataDenFetchService };
+export * from './data-den-fetch-service';
+export * from './strategy';

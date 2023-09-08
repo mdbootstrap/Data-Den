@@ -32,9 +32,10 @@ export class DataDenSortingService {
       this.#field = event.data.field;
       const rows = this.sort(event.data.rows, this.#field, this.#order);
 
-      DataDenPubSub.publish('notification:sorting:done', {
+      DataDenPubSub.publish('info:sorting:done', {
         caller: this,
         context: ctx,
+        field: this.#field,
         order: this.#order,
         rows,
       });

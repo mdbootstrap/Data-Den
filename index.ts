@@ -1,8 +1,14 @@
 import { DataDen } from './src/data-den';
 import { DataDenOptions } from './src/data-den-options.interface';
 import { DataDenDefaultCellRenderer } from './src/modules/rendering/cell/data-den-default-cell-renderer';
-const options: DataDenOptions = {
-  mode: 'client',
+import {
+  DataDenClientDataLoaderStrategy,
+  DataDenServerDataLoaderStrategy,
+  DataDenDataLoaderStrategy,
+  DataDenData,
+} from './src/modules/fetch';
+
+const data: DataDenData = {
   columns: [
     {
       field: 'car',
@@ -73,6 +79,21 @@ const options: DataDenOptions = {
     { car: 'Toyota', model: 'Celica', year: 2020, price: 12000 },
     { car: 'Mitsubishi', model: 'Lancer', year: 2020, price: 34000 },
   ],
+};
+
+const createStrategy = (mode: 'client' | 'server'): DataDenDataLoaderStrategy => {
+  if (mode === 'client') {
+    return new DataDenClientDataLoaderStrategy(data);
+  } else {
+    return new DataDenServerDataLoaderStrategy();
+  }
+};
+
+const mode = 'client';
+const dataLoader = createStrategy(mode);
+
+const options: DataDenOptions = {
+  dataLoader,
   pagination: false,
   paginationOptions: {
     pageSize: 10,
@@ -82,5 +103,6 @@ const options: DataDenOptions = {
     debounceTime: 2,
   },
 };
+
 const ddEl = document.getElementById('dd');
 const dataDen = new DataDen(ddEl as HTMLElement, options);
