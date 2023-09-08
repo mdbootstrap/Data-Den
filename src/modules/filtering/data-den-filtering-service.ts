@@ -8,7 +8,7 @@ export class DataDenFilteringService {
   activeHeaderFilters: { [key: string]: DataDenActiveHeaderFilter } = {};
 
   constructor() {
-    DataDenPubSub.subscribe('notification:filtering:header-filter-changed', this.#handleHeaderFilterChange.bind(this));
+    DataDenPubSub.subscribe('info:filtering:header-filter-changed', this.#handleHeaderFilterChange.bind(this));
   }
 
   #handleHeaderFilterChange(event: DataDenEvent) {
@@ -19,11 +19,11 @@ export class DataDenFilteringService {
     this.#updateActiveHeaderFilters(field, filter);
 
     const activeFiltersChangeEvent: DataDenActiveFiltersChangeEvent = {
-      context: new Context('notification:filtering:active-filters-changed'),
+      context: new Context('info:filtering:active-filters-changed'),
       filters: this.activeHeaderFilters,
     };
 
-    DataDenPubSub.publish('notification:filtering:active-filters-changed', activeFiltersChangeEvent);
+    DataDenPubSub.publish('info:filtering:active-filters-changed', activeFiltersChangeEvent);
   }
 
   #getFilterFunction(type: string, method: string, caseSensitive: boolean) {

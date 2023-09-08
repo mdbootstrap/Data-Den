@@ -40,7 +40,7 @@ export class DataDenHeaderTextFilterRenderer extends DataDenHeaderFilterRenderer
   }
 
   filter(searchTerm: any, params: DataDenHeaderFilterRendererParams): void {
-    const context = new Context('notification:filtering:header-filter-changed');
+    const context = new Context('info:filtering:header-filter-changed');
     const type = this.getType();
     const { field, method, caseSensitive } = params;
     const filterChangeEvent: DataDenHeaderFilterChangeEvent = {
@@ -52,7 +52,7 @@ export class DataDenHeaderTextFilterRenderer extends DataDenHeaderFilterRenderer
       caseSensitive,
     };
 
-    DataDenPubSub.publish('notification:filtering:header-filter-changed', filterChangeEvent);
+    DataDenPubSub.publish('info:filtering:header-filter-changed', filterChangeEvent);
   }
 
   destroy() {}
