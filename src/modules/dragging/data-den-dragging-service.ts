@@ -1,5 +1,6 @@
 import { DataDenOptions } from '../../data-den-options.interface';
 import { DataDenPubSub } from '../../data-den-pub-sub';
+import { Context } from '../../context';
 
 export class DataDenDraggingService {
   #container: HTMLElement;
@@ -22,7 +23,7 @@ export class DataDenDraggingService {
     this.#container = container;
     this.#options = options;
     this.#isDragging = false;
-    this.#headers = Array.from(this.#container.querySelectorAll('.data-den-header-cell') as NodeListOf<HTMLDivElement>);
+    this.#headers = Array.from(this.#container.querySelectorAll('[ref="headerCell"]') as NodeListOf<HTMLDivElement>);
     this.#currentIndex = -1;
     this.#targetIndex = -1;
     this.#prevTargetIndex = -1;
@@ -48,7 +49,12 @@ export class DataDenDraggingService {
     }
 
     DataDenPubSub.subscribe('info:pagination:data-change:done', () => {
-      this.#columns = [...(this.#getAllColumnElements() as HTMLElement[][])];
+      const tempColumns = [...(this.#getAllColumnElements() as HTMLElement[][])];
+      this.#columns = [];
+
+      this.#columnsOrder.forEach((columnIndex, index) => {
+        this.#columns[index] = tempColumns[columnIndex];
+      });
     });
   }
 
@@ -67,9 +73,9 @@ export class DataDenDraggingService {
 
   #getColumnElements(index: number) {
     const colHeader = this.#headers[index];
-    const rows = this.#container.querySelectorAll('.data-den-row') as NodeListOf<HTMLDivElement>;
+    const rows = this.#container.querySelectorAll('[ref="row"]') as NodeListOf<HTMLDivElement>;
     const cells = Array.from(rows).map(
-      (row: HTMLDivElement) => row.querySelectorAll('.data-den-cell')[index]
+      (row: HTMLDivElement) => row.querySelectorAll('[ref="cell"]')[index]
     ) as HTMLDivElement[];
 
     return [colHeader, ...cells];
@@ -245,8 +251,7 @@ export class DataDenDraggingService {
     this.#disableTransition();
     this.#unsetActiveStyle();
     this.#resetIndexes();
-
-    console.log(this.#columnsOrder);
+    this.#publishColumnsOrder();
   }
 
   #resetIndexes() {
@@ -265,10 +270,17 @@ export class DataDenDraggingService {
     this.#container.removeEventListener('mousemove', this.#bindedGridMouseMove);
     document.removeEventListener('mouseup', this.#bindedDocumentMouseUp);
 
-    const headers = this.#container.querySelectorAll('.data-den-header-cell') as NodeListOf<HTMLDivElement>;
+    const headers = this.#container.querySelectorAll('[ref="headerCell"]') as NodeListOf<HTMLDivElement>;
 
     headers.forEach((header: HTMLDivElement, index: number) => {
       header.removeEventListener('mousedown', this.#bindedHeaderMouseDownEvents[index]);
+    });
+  }
+
+  #publishColumnsOrder() {
+    DataDenPubSub.publish('info:dragging:columns-reorder:done', {
+      columnsOrder: this.#columnsOrder,
+      context: new Context('info:dragging:columns-reorder:done'),
     });
   }
 

@@ -12,6 +12,7 @@ export class DataDenPubSub {
     'info:pagination:info-change:done': [],
     'info:pagination:data-change:done': [],
     'info:pagination:page-size-change:done': [],
+    'info:dragging:columns-reorder:done': [],
   };
 
   static publish(name: string, data: DataDenPublishedEvent) {

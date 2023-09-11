@@ -1,6 +1,6 @@
 import { DataDen } from './src/data-den';
 import { DataDenOptions } from './src/data-den-options.interface';
-// import { DataDenDefaultCellRenderer } from './src/modules/rendering/cell/data-den-default-cell-renderer';
+import { DataDenDefaultCellRenderer } from './src/modules/rendering/cell/data-den-default-cell-renderer';
 const options: DataDenOptions = {
   mode: 'client',
   columns: [
@@ -11,7 +11,7 @@ const options: DataDenOptions = {
       filter: false,
       resize: true,
       width: 160,
-      // cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }, 0),
+      cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }),
     },
     {
       field: 'model',
@@ -20,7 +20,7 @@ const options: DataDenOptions = {
       filter: false,
       resize: true,
       width: 120,
-      // cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }, 1),
+      cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }),
     },
     {
       field: 'year',
@@ -29,7 +29,7 @@ const options: DataDenOptions = {
       filter: false,
       resize: true,
       width: 80,
-      // cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }, 2),
+      cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }),
     },
     {
       field: 'price',
@@ -38,7 +38,7 @@ const options: DataDenOptions = {
       filter: false,
       resize: false,
       width: 60,
-      // cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }, 3),
+      cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }),
     },
   ],
   rows: [

@@ -11,9 +11,9 @@ export class DataDenDefaultHeaderCellRenderer implements DataDenCellRenderer {
   constructor(params: DataDenCellRendererParams, colIndex: number, options: DataDenOptions) {
     const template = `<div class="data-den-header-cell ${
       options.draggable ? 'data-den-header-cell-draggable' : ''
-    }" role="columnheader" style="left: ${params.left}px; width: ${options.columns[colIndex].width || 120}px">${
-      params.value
-    }</div>`;
+    }" role="columnheader" ref="headerCell" style="left: ${params.left}px; width: ${
+      options.columns[colIndex].width || 120
+    }px">${params.value}</div>`;
 
     this.element = createHtmlElement(template);
 

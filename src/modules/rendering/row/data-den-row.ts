@@ -8,7 +8,7 @@ export class DataDenRow {
     this.index = index;
     this.cells = cells;
 
-    const template = `<div class="data-den-row" role="row" style="top: ${index * 26}px"></div>`;
+    const template = `<div class="data-den-row" role="row" ref="row" style="top: ${index * 26}px"></div>`;
 
     this.element = createHtmlElement(template);
   }
