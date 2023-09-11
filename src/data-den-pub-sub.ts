@@ -4,7 +4,7 @@ import { DataDenEvent } from './data-den-event';
 type DataDenEventCallback = (event: DataDenEvent) => void;
 
 export class DataDenPubSub {
-  static #listeners: { [key: string]: any[] } = {
+  static #listeners: { [key: string]: DataDenEventCallback[] } = {
     'command:pagination:load-first-page:start': [],
     'command:pagination:load-prev-page:start': [],
     'command:pagination:load-next-page:start': [],
@@ -12,6 +12,12 @@ export class DataDenPubSub {
     'info:pagination:info-change:done': [],
     'info:pagination:data-change:done': [],
     'info:pagination:page-size-change:done': [],
+    'command:sorting:start': [],
+    'info:sorting:done': [],
+    'info:filtering:header-filter-changed': [],
+    'info:filtering:active-filters-changed': [],
+    'info:filtering:quick-filter-changed': [],
+    'info:filtering:active-quick-filter-changed': [],
   };
 
   static publish(name: string, data: DataDenPublishedEvent) {
