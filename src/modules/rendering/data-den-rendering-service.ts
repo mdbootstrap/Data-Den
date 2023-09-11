@@ -24,9 +24,9 @@ export class DataDenRenderingService {
   #paginationRenderer: DataDenPaginationRenderer | null = null;
 
   constructor(container: HTMLElement, options: DataDenOptions) {
-    this.#headerRow = this.#createHeaderRow(options, '');
-    this.#rows = this.#createDataRows(options);
     this.#container = container;
+    this.#headerRow = this.#createHeaderRow(options, '');
+    this.#rows = this.#createDataRows(options.rows);
 
     if (options.quickFilter) {
       const { debounceTime } = options.quickFilterOptions;
@@ -35,10 +35,11 @@ export class DataDenRenderingService {
     }
 
     if (options.pagination) {
-      this.#paginationRenderer = new DataDenPaginationRenderer();
+      this.#paginationRenderer = new DataDenPaginationRenderer(options.paginationOptions);
     }
 
     this.renderTable();
+    this.#subscribeToEvents();
     this.#subscribeSortingDone(options);
   }
 
@@ -62,8 +63,8 @@ export class DataDenRenderingService {
     return new DataDenHeaderRow(rowIndex, headerCells);
   }
 
-  #createDataRows(options: DataDenOptions): DataDenRow[] {
-    return options.rows.map((row, rowIndex) => {
+  #createDataRows(dataRows: DataDenRow[]): DataDenRow[] {
+    return dataRows.map((row, rowIndex) => {
       const cells = Object.entries(row).map(([, value], columnIndex) => {
         const rendererParams: DataDenCellRendererParams = { value: value };
         const renderer = new DataDenDefaultCellRenderer(rendererParams);
@@ -91,6 +92,22 @@ export class DataDenRenderingService {
     }
 
     this.#container.appendChild(grid);
+  }
+
+  #updateRows(dataRows: DataDenRow[]): void {
+    const rows = document.createDocumentFragment();
+    this.#rows = this.#createDataRows(dataRows);
+    this.#rows.forEach((row) => rows.appendChild(row.render()));
+
+    const rowContainer = this.#container.querySelector('.data-den-grid-rows') as HTMLElement;
+    rowContainer.innerHTML = '';
+    rowContainer.appendChild(rows);
+  }
+
+  #subscribeToEvents(): void {
+    DataDenPubSub.subscribe('info:pagination:data-change:done', (event: DataDenEvent) => {
+      this.#updateRows(event.data.rows);
+    });
   }
 
   #renderGrid(): HTMLElement {
@@ -126,7 +143,7 @@ export class DataDenRenderingService {
   #subscribeSortingDone(options: DataDenOptions): void {
     DataDenPubSub.subscribe('info:sorting:done', (event: DataDenEvent) => {
       this.#headerRow = this.#createHeaderRow(options, event.data.order);
-      this.#rows = this.#createDataRows(event.data);
+      this.#rows = this.#createDataRows(event.data.rows);
 
       this.#container.innerHTML = '';
       this.renderTable();

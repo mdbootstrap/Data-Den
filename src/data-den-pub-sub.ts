@@ -5,6 +5,13 @@ type DataDenEventCallback = (event: DataDenEvent) => void;
 
 export class DataDenPubSub {
   static #listeners: { [key: string]: DataDenEventCallback[] } = {
+    'command:pagination:load-first-page:start': [],
+    'command:pagination:load-prev-page:start': [],
+    'command:pagination:load-next-page:start': [],
+    'command:pagination:load-last-page:start': [],
+    'info:pagination:info-change:done': [],
+    'info:pagination:data-change:done': [],
+    'info:pagination:page-size-change:done': [],
     'command:sorting:start': [],
     'info:sorting:done': [],
     'info:filtering:header-filter-changed': [],

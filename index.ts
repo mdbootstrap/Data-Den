@@ -93,9 +93,11 @@ const options: DataDenOptions = {
     { car: 'Toyota', model: 'Celica', year: 2020, price: 12000 },
     { car: 'Mitsubishi', model: 'Lancer', year: 2020, price: 34000 },
   ],
-  pagination: false,
+  pagination: true,
   paginationOptions: {
     pageSize: 10,
+    pageSizeOptions: [5, 10, 12, 20],
+    ofText: 'z',
   },
   quickFilter: true,
   quickFilterOptions: {

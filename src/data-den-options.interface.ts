@@ -20,7 +20,9 @@ export interface DataDenColDef {
 }
 
 export interface DataDenPaginationOptions {
-  pageSize: number;
+  pageSize?: number;
+  pageSizeOptions?: number[];
+  ofText?: string;
 }
 
 export interface DataDenQuickFilterOptions {
