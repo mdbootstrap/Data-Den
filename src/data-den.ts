@@ -10,16 +10,13 @@ export class DataDen {
   #sorting: DataDenSortingService;
   #filtering: DataDenFilteringService;
   #pagination: DataDenPaginationService;
-  #fetch: DataDenFetchService = new DataDenFetchService();
+  #fetch: DataDenFetchService;
 
   constructor(container: HTMLElement, options: DataDenOptions) {
+    this.#fetch = new DataDenFetchService(options);
     this.#rendering = new DataDenRenderingService(container, options);
     this.#sorting = new DataDenSortingService();
     this.#filtering = new DataDenFilteringService(options.quickFilterOptions);
     this.#pagination = new DataDenPaginationService(options.paginationOptions);
-
-    // await fetch
-
-    this.#pagination.init(options.rows);
   }
 }

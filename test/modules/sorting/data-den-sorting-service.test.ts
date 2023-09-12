@@ -1,11 +1,17 @@
+import { DataDenData } from '../../../src/modules/fetch/index';
+
 /* eslint-disable @typescript-eslint/no-var-requires */
 describe('data-den-sorting-service', () => {
   let DataDenSortingService: any;
-  const exampleData = [
-    { car: 'Mitsubishi', model: 'Lancer' },
-    { car: 'Porsche', model: 'Boxster' },
-    { car: 'Honda', model: 'Civic' },
-  ];
+  let exampleData: DataDenData['rows'] = [];
+
+  beforeEach(() => {
+    exampleData = [
+      { car: 'Mitsubishi', model: 'Lancer' },
+      { car: 'Porsche', model: 'Boxster' },
+      { car: 'Honda', model: 'Civic' },
+    ];
+  });
 
   describe('PubSub communications', () => {
     let Context: any;

@@ -15,6 +15,8 @@ import { DataDenHeaderDefaultSorterRenderer } from './sorter';
 import { DataDenPubSub } from '../../data-den-pub-sub';
 import { DataDenEvent } from '../../data-den-event';
 import { Order } from '../sorting/data-den-sorting.interface';
+import { DataDenData } from '../fetch';
+import { Context } from '../../context';
 
 export class DataDenRenderingService {
   #container: HTMLElement;
@@ -24,9 +26,9 @@ export class DataDenRenderingService {
   #paginationRenderer: DataDenPaginationRenderer | null = null;
 
   constructor(container: HTMLElement, options: DataDenOptions) {
+    this.#headerRow = this.#createHeaderRow([], '');
+    this.#rows = this.#createDataRows([]);
     this.#container = container;
-    this.#headerRow = this.#createHeaderRow(options, '');
-    this.#rows = this.#createDataRows(options.rows);
 
     if (options.quickFilter) {
       const { debounceTime } = options.quickFilterOptions;
@@ -39,13 +41,13 @@ export class DataDenRenderingService {
     }
 
     this.renderTable();
-    this.#subscribeToEvents();
-    this.#subscribeSortingDone(options);
+    this.#subscribeFetchDone();
+    this.#publishFetchStart();
   }
 
-  #createHeaderRow(options: DataDenOptions, order: Order): DataDenHeaderRow {
+  #createHeaderRow(columns: DataDenData['columns'], order: Order): DataDenHeaderRow {
     const rowIndex = 0;
-    const headerCells = options.columns.map((column, colIndex) => {
+    const headerCells = columns.map((column, colIndex) => {
       const value = column.headerName;
       const field = column.field;
       const { method, debounceTime, caseSensitive } = column.filterOptions;
@@ -54,8 +56,8 @@ export class DataDenRenderingService {
       const editorParams: DataDenCellEditorParams = { value: value };
       const cellEditor = new DataDenDefaultCellEditor(editorParams);
       const filterRendererParams: DataDenHeaderFilterRendererParams = { field, method, debounceTime, caseSensitive };
+      const sorterRenderer = new DataDenHeaderDefaultSorterRenderer(column.field, order);
       const filterRenderer = new DataDenHeaderTextFilterRenderer(filterRendererParams);
-      const sorterRenderer = new DataDenHeaderDefaultSorterRenderer(column.field, order, options.rows);
 
       return new DataDenHeaderCell(rowIndex, colIndex, cellRenderer, cellEditor, filterRenderer, sorterRenderer);
     });
@@ -63,8 +65,8 @@ export class DataDenRenderingService {
     return new DataDenHeaderRow(rowIndex, headerCells);
   }
 
-  #createDataRows(dataRows: DataDenRow[]): DataDenRow[] {
-    return dataRows.map((row, rowIndex) => {
+  #createDataRows(rows: DataDenData['rows']): DataDenRow[] {
+    return rows.map((row, rowIndex) => {
       const cells = Object.entries(row).map(([, value], columnIndex) => {
         const rendererParams: DataDenCellRendererParams = { value: value };
         const renderer = new DataDenDefaultCellRenderer(rendererParams);
@@ -74,6 +76,13 @@ export class DataDenRenderingService {
       });
 
       return new DataDenRow(rowIndex, cells);
+    });
+  }
+
+  #publishFetchStart() {
+    DataDenPubSub.publish('command:fetch:start', {
+      caller: this,
+      context: new Context('command:fetch:start'),
     });
   }
 
@@ -92,22 +101,6 @@ export class DataDenRenderingService {
     }
 
     this.#container.appendChild(grid);
-  }
-
-  #updateRows(dataRows: DataDenRow[]): void {
-    const rows = document.createDocumentFragment();
-    this.#rows = this.#createDataRows(dataRows);
-    this.#rows.forEach((row) => rows.appendChild(row.render()));
-
-    const rowContainer = this.#container.querySelector('.data-den-grid-rows') as HTMLElement;
-    rowContainer.innerHTML = '';
-    rowContainer.appendChild(rows);
-  }
-
-  #subscribeToEvents(): void {
-    DataDenPubSub.subscribe('info:pagination:data-change:done', (event: DataDenEvent) => {
-      this.#updateRows(event.data.rows);
-    });
   }
 
   #renderGrid(): HTMLElement {
@@ -140,13 +133,38 @@ export class DataDenRenderingService {
     return rowContainer;
   }
 
-  #subscribeSortingDone(options: DataDenOptions): void {
-    DataDenPubSub.subscribe('info:sorting:done', (event: DataDenEvent) => {
-      this.#headerRow = this.#createHeaderRow(options, event.data.order);
-      this.#rows = this.#createDataRows(event.data.rows);
-
-      this.#container.innerHTML = '';
-      this.renderTable();
+  #subscribeFetchDone(): void {
+    DataDenPubSub.subscribe('info:fetch:done', (event: DataDenEvent) => {
+      switch (event.context.action) {
+        case 'command:fetch:start':
+          this.#updateTable(event);
+          break;
+        default:
+          this.#updateRows(event);
+          break;
+      }
     });
+  }
+
+  #updateTable(event: DataDenEvent) {
+    const { data, order } = event.data;
+
+    this.#headerRow = this.#createHeaderRow(data.columns, order);
+    this.#rows = this.#createDataRows(data.rows);
+
+    this.#container.innerHTML = '';
+    this.renderTable();
+  }
+
+  #updateRows(event: DataDenEvent): void {
+    const { data } = event.data;
+
+    const rows = document.createDocumentFragment();
+    this.#rows = this.#createDataRows(data.rows);
+    this.#rows.forEach((row) => rows.appendChild(row.render()));
+
+    const rowContainer = this.#container.querySelector('.data-den-grid-rows') as HTMLElement;
+    rowContainer.innerHTML = '';
+    rowContainer.appendChild(rows);
   }
 }

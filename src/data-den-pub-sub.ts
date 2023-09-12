@@ -5,19 +5,25 @@ type DataDenEventCallback = (event: DataDenEvent) => void;
 
 export class DataDenPubSub {
   static #listeners: { [key: string]: DataDenEventCallback[] } = {
+    //pagination
     'command:pagination:load-first-page:start': [],
     'command:pagination:load-prev-page:start': [],
     'command:pagination:load-next-page:start': [],
     'command:pagination:load-last-page:start': [],
     'info:pagination:info-change:done': [],
-    'info:pagination:data-change:done': [],
     'info:pagination:page-size-change:done': [],
+    //sorting
     'command:sorting:start': [],
     'info:sorting:done': [],
+    //filtering
+    'info:filtering:get-active-quick-filter:done': [],
     'info:filtering:header-filter-changed': [],
     'info:filtering:active-filters-changed': [],
     'info:filtering:quick-filter-changed': [],
     'info:filtering:active-quick-filter-changed': [],
+    //fetch
+    'command:fetch:start': [],
+    'info:fetch:done': [],
   };
 
   static publish(name: string, data: DataDenPublishedEvent) {

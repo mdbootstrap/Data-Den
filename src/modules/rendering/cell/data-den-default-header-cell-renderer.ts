@@ -6,7 +6,10 @@ export class DataDenDefaultHeaderCellRenderer implements DataDenCellRenderer {
   element: HTMLElement;
 
   constructor(params: DataDenCellRendererParams) {
-    const template = `<div class="data-den-header-cell" role="columnheader">${params.value}</div>`;
+    const template = `
+      <div class="data-den-header-cell" role="columnheader">
+        <div class="data-den-header-cell-value">${params.value}</div>
+      </div>`;
 
     this.element = createHtmlElement(template);
   }
