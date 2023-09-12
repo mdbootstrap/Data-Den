@@ -11,8 +11,6 @@ export class DataDenSortingService {
     this.#order = 'asc';
 
     DataDenPubSub.subscribe('command:sorting:start', (event: DataDenEvent) => {
-      const ctx = event.context;
-
       if (this.#field === event.data.field) {
         switch (this.#order) {
           case 'asc':
@@ -30,13 +28,13 @@ export class DataDenSortingService {
       }
 
       this.#field = event.data.field;
-      const rows = this.sort(event.data.rows, this.#field, this.#order);
 
       DataDenPubSub.publish('info:sorting:done', {
         caller: this,
-        context: ctx,
+        context: event.context,
+        field: this.#field,
         order: this.#order,
-        rows,
+        sortFn: this.sort,
       });
     });
   }
@@ -44,27 +42,25 @@ export class DataDenSortingService {
   sort(rows: any, field: string, order: string): void {
     if (!order) return rows;
 
-    const sortedData = rows
-      .map((row: any[]) => ({ ...row }))
-      .sort((a: any, b: any) => {
-        let fieldA = a[field];
-        let fieldB = b[field];
+    const sortedData = rows.sort((a: any, b: any) => {
+      let fieldA = a[field];
+      let fieldB = b[field];
 
-        if (typeof fieldA === 'string') {
-          fieldA = fieldA.toLowerCase();
-        }
-        if (typeof fieldB === 'string') {
-          fieldB = fieldB.toLowerCase();
-        }
+      if (typeof fieldA === 'string') {
+        fieldA = fieldA.toLowerCase();
+      }
+      if (typeof fieldB === 'string') {
+        fieldB = fieldB.toLowerCase();
+      }
 
-        if (fieldA < fieldB) {
-          return order === 'desc' ? 1 : -1;
-        }
-        if (fieldA > fieldB) {
-          return order === 'desc' ? -1 : 1;
-        }
-        return 0;
-      });
+      if (fieldA < fieldB) {
+        return order === 'desc' ? 1 : -1;
+      }
+      if (fieldA > fieldB) {
+        return order === 'desc' ? -1 : 1;
+      }
+      return 0;
+    });
 
     return sortedData;
   }
