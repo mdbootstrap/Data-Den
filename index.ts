@@ -9,8 +9,13 @@ const options: DataDenOptions = {
       headerName: 'Car',
       sort: true,
       filter: false,
+      filterOptions: {
+        method: 'includes',
+        debounceTime: 500,
+        caseSensitive: false,
+      },
       resize: true,
-      width: 160,
+      width: 260,
       cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }),
     },
     {
@@ -18,8 +23,13 @@ const options: DataDenOptions = {
       headerName: 'Model',
       sort: true,
       filter: false,
+      filterOptions: {
+        method: 'includes',
+        debounceTime: 500,
+        caseSensitive: false,
+      },
       resize: true,
-      width: 120,
+      width: 200,
       cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }),
     },
     {
@@ -27,8 +37,13 @@ const options: DataDenOptions = {
       headerName: 'Year',
       sort: true,
       filter: false,
+      filterOptions: {
+        method: 'includes',
+        debounceTime: 500,
+        caseSensitive: false,
+      },
       resize: true,
-      width: 80,
+      width: 200,
       cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }),
     },
     {
@@ -36,8 +51,13 @@ const options: DataDenOptions = {
       headerName: 'Price',
       sort: true,
       filter: false,
+      filterOptions: {
+        method: 'includes',
+        debounceTime: 500,
+        caseSensitive: false,
+      },
       resize: false,
-      width: 60,
+      width: 180,
       cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }),
     },
   ],
@@ -80,10 +100,10 @@ const options: DataDenOptions = {
     pageSizeOptions: [5, 10, 12, 20],
     ofText: 'z',
   },
-  quickFilter: false,
+  quickFilter: true,
   quickFilterOptions: {
-    debounceTime: 2,
+    debounceTime: 500,
   },
 };
 const ddEl = document.getElementById('dd');
-const dataDen = new DataDen(ddEl as HTMLElement, options);
+new DataDen(ddEl as HTMLElement, options);

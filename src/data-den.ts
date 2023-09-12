@@ -8,18 +8,20 @@ import { DataDenOptions } from './data-den-options.interface';
 
 export class DataDen {
   #rendering: DataDenRenderingService;
+  #sorting: DataDenSortingService;
+  #filtering: DataDenFilteringService;
   #pagination: DataDenPaginationService;
   #dragging: DataDenDraggingService;
-  #filtering: DataDenFilteringService = new DataDenFilteringService();
-  #sorting: DataDenSortingService = new DataDenSortingService();
   #fetch: DataDenFetchService = new DataDenFetchService();
 
   constructor(container: HTMLElement, options: DataDenOptions) {
     this.#rendering = new DataDenRenderingService(container, options);
+    this.#sorting = new DataDenSortingService();
+    this.#filtering = new DataDenFilteringService(options.quickFilterOptions);
     this.#pagination = new DataDenPaginationService(options.paginationOptions);
     this.#dragging = new DataDenDraggingService(container, options);
 
-    // await this.fetch.fetchData(options.fetchOptions);
+    // await fetch
 
     this.#pagination.init(options.rows);
   }
