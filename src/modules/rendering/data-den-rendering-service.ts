@@ -21,11 +21,11 @@ export class DataDenRenderingService {
   #quickFilterRenderer: DataDenQuickFilterRenderer | null = null;
   #paginationRenderer: DataDenPaginationRenderer | null = null;
   #columnsOrder: number[];
-  #columns: DataDenOptions['columns'];
+  #orderedColumns: DataDenOptions['columns'];
 
   constructor(container: HTMLElement, options: DataDenOptions) {
     this.#container = container;
-    this.#columns = options.columns;
+    this.#orderedColumns = options.columns;
     this.#columnsOrder = [];
     this.#headerRow = this.#createHeaderRow(options);
     this.#rows = this.#createDataRows(options, options.rows);
@@ -48,6 +48,7 @@ export class DataDenRenderingService {
       const value = column.headerName;
       const left =
         options.columns.slice(0, colIndex).reduce((acc, curr) => acc + (curr.width || 120), 0) + colIndex * 8;
+
       const rendererParams: DataDenCellRendererParams = { value, left };
       const cellRenderer = new DataDenDefaultHeaderCellRenderer(rendererParams, colIndex, options);
       const editorParams: DataDenCellEditorParams = { value: value };
@@ -58,25 +59,29 @@ export class DataDenRenderingService {
       return new DataDenHeaderCell(rowIndex, colIndex, cellRenderer, cellEditor, filterRenderer, sorterRenderer);
     });
 
-    return new DataDenHeaderRow(rowIndex, headerCells);
+    return new DataDenHeaderRow(rowIndex, headerCells, options.draggable);
   }
 
   #createDataRows(options: DataDenOptions, dataRows: DataDenRow[]): DataDenRow[] {
     const rows = dataRows.map((row, rowIndex) => {
       const cells = Object.entries(row).map(([, value], colIndex) => {
-        let orderedColIndex = colIndex;
-        if (this.#columnsOrder.length) {
-          orderedColIndex = this.#columnsOrder.indexOf(colIndex);
-        }
+        const orderedColIndex = this.#columnsOrder.length ? this.#columnsOrder.indexOf(colIndex) : colIndex;
         const left =
-          this.#columns.slice(0, orderedColIndex).reduce((acc, curr) => acc + (curr.width || 120), 0) +
+          this.#orderedColumns.slice(0, orderedColIndex).reduce((acc, curr) => acc + (curr.width || 120), 0) +
           orderedColIndex * 8;
 
         const rendererParams: DataDenCellRendererParams = { value, left };
         const renderer = new DataDenDefaultCellRenderer(rendererParams);
         const editorParams: DataDenCellEditorParams = { value: value };
         const editor = new DataDenDefaultCellEditor(editorParams);
-        return new DataDenCell(rendererParams, orderedColIndex, options.draggable, this.#columns, renderer, editor);
+        return new DataDenCell(
+          rendererParams,
+          orderedColIndex,
+          options.draggable,
+          this.#orderedColumns,
+          renderer,
+          editor
+        );
       });
 
       return new DataDenRow(rowIndex, cells);
@@ -119,10 +124,10 @@ export class DataDenRenderingService {
     DataDenPubSub.subscribe('info:dragging:columns-reorder:done', (event: DataDenEvent) => {
       this.#columnsOrder = event.data.columnsOrder;
       const defaultColumns = [...options.columns];
-      this.#columns = [];
+      this.#orderedColumns = [];
 
       this.#columnsOrder.forEach((columnIndex, index) => {
-        this.#columns[index] = defaultColumns[columnIndex];
+        this.#orderedColumns[index] = defaultColumns[columnIndex];
       });
     });
   }

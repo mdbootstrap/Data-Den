@@ -2,8 +2,12 @@
   <head>
     <title>Home</title>
     <style>
+      body {
+        margin: 0;
+      }
       .data-den-grid {
         position: relative;
+        margin: 10px;
       }
       .data-den-header {
         display: flex;
@@ -11,7 +15,12 @@
         flex-direction: row;
         position: relative;
         height: 30px;
-        user-select: none;
+      }
+      .data-den-header-row {
+        width: 100%;
+      }
+      .data-den-header-row-draggable {
+        cursor: pointer;
       }
       .data-den-grid-rows {
         display: flex;
@@ -37,6 +46,8 @@
         border: solid 1px #ccc;
         background-color: #eceaea;
         padding: 6px 4px;
+        user-select: none;
+        pointer-events: none;
       }
       .data-den-cell {
         position: absolute;
@@ -50,9 +61,6 @@
       .data-den-header-cell.active,
       .data-den-cell.active {
         background-color: #eeeeee;
-      }
-      .data-den-header-cell-draggable {
-        cursor: pointer;
       }
       .data-den-header-sorter {
         margin-left: 5px;

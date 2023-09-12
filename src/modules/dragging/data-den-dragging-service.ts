@@ -6,23 +6,26 @@ export class DataDenDraggingService {
   #container: HTMLElement;
   #options: DataDenOptions;
   #isDragging: boolean;
+  #headerRow: HTMLDivElement;
   #headers: HTMLDivElement[];
   #currentIndex: number;
   #targetIndex: number;
   #prevTargetIndex: number;
   #columns: HTMLElement[][];
   #columnPositions: { left: number; width: number }[];
-  #columnsOrder: number[];
   #breakpoints: number[];
+  #columnsOrder: number[];
+  #defaultGridOffsetLeft: number;
 
   #handleGridMouseMove: (e: MouseEvent) => void;
   #handleDocumentMouseUp: (e: MouseEvent) => void;
-  #handleHeaderMouseDownEvents: any[];
+  #handleHeaderMouseDown: (e: MouseEvent) => void;
 
   constructor(container: HTMLElement, options: DataDenOptions) {
     this.#container = container;
     this.#options = options;
     this.#isDragging = false;
+    this.#headerRow = this.#container.querySelector('[ref="headerRow"]') as HTMLDivElement;
     this.#headers = Array.from(this.#container.querySelectorAll('[ref="headerCell"]') as NodeListOf<HTMLDivElement>);
     this.#currentIndex = -1;
     this.#targetIndex = -1;
@@ -31,10 +34,11 @@ export class DataDenDraggingService {
     this.#columnPositions = [...this.#getAllColumnPositions()];
     this.#breakpoints = this.#columnPositions.map((column) => column.left);
     this.#columnsOrder = [];
+    this.#defaultGridOffsetLeft = this.#headerRow.getBoundingClientRect().left;
 
     this.#handleGridMouseMove = () => {};
     this.#handleDocumentMouseUp = () => {};
-    this.#handleHeaderMouseDownEvents = [];
+    this.#handleHeaderMouseDown = () => {};
 
     if (this.#options.draggable) {
       this.init();
@@ -50,6 +54,10 @@ export class DataDenDraggingService {
   dispose() {
     this.#removeDraggableClass();
     this.#removeDocumentEventListeners();
+  }
+
+  #getOffsetX(pageX: number) {
+    return pageX - this.#defaultGridOffsetLeft;
   }
 
   #getAllColumnPositions() {
@@ -74,11 +82,11 @@ export class DataDenDraggingService {
   }
 
   #addColumnDragEventHandlers() {
-    this.#addDragHandleEventListeners();
-
+    this.#handleHeaderMouseDown = this.#onHeaderMouseDown.bind(this);
     this.#handleGridMouseMove = this.#onGridMouseMove.bind(this);
     this.#handleDocumentMouseUp = this.#onDocumentMouseUp.bind(this);
 
+    this.#headerRow.addEventListener('mousedown', this.#handleHeaderMouseDown);
     this.#container.addEventListener('mousemove', this.#handleGridMouseMove);
     document.addEventListener('mouseup', this.#handleDocumentMouseUp);
   }
@@ -102,25 +110,18 @@ export class DataDenDraggingService {
 
   #onHeaderMouseDown(event: MouseEvent) {
     event.stopPropagation();
-    this.#onMouseDown(event.pageX);
+    this.#onMouseDown(this.#getOffsetX(event.pageX));
   }
 
-  #addDragHandleEventListeners() {
-    this.#headers.forEach((header: HTMLDivElement, index: number) => {
-      this.#handleHeaderMouseDownEvents[index] = this.#onHeaderMouseDown.bind(this);
-      header.addEventListener('mousedown', this.#handleHeaderMouseDownEvents[index]);
-    });
-  }
-
-  #onMouseDown(pageX: number) {
-    this.#initializeDragging(pageX);
+  #onMouseDown(offsetX: number) {
+    this.#initializeDragging(offsetX);
     this.#enableTransition();
     this.#setActiveStyle();
   }
 
-  #initializeDragging(pageX: number) {
+  #initializeDragging(offsetX: number) {
     this.#isDragging = true;
-    this.#currentIndex = this.#getMinBreakpointIndex(this.#breakpoints, pageX);
+    this.#currentIndex = this.#getMinBreakpointIndex(this.#breakpoints, offsetX);
   }
 
   #onGridMouseMove(event: MouseEvent) {
@@ -128,15 +129,16 @@ export class DataDenDraggingService {
       return;
     }
 
-    this.#targetIndex = this.#getMinBreakpointIndex(this.#breakpoints, event.pageX);
+    const offsetX = this.#getOffsetX(event.pageX);
+    this.#targetIndex = this.#getMinBreakpointIndex(this.#breakpoints, offsetX);
 
     const currentColumnWidth = this.#columnPositions[this.#currentIndex].width;
     const gap = this.#getColumnsGap(this.#currentIndex);
 
     // prevent swapping if there is no space for it (current column width is bigger than target column width)
     if (
-      (this.#getDirection() === 'right' && this.#breakpoints[this.#targetIndex] + gap > event.pageX) ||
-      (this.#getDirection() === 'left' && this.#breakpoints[this.#targetIndex] + currentColumnWidth < event.pageX)
+      (this.#getDirection() === 'right' && this.#breakpoints[this.#targetIndex] + gap > offsetX) ||
+      (this.#getDirection() === 'left' && this.#breakpoints[this.#targetIndex] + currentColumnWidth < offsetX)
     ) {
       this.#targetIndex = this.#currentIndex;
       return;
@@ -201,8 +203,8 @@ export class DataDenDraggingService {
     }
 
     const direction = this.#getDirection();
-    const sourceIndex = direction === 'right' ? this.#targetIndex - 1 : this.#targetIndex + 1;
-    const gap = this.#getColumnsGap(sourceIndex);
+    const currentOrderedIndex = direction === 'right' ? this.#targetIndex - 1 : this.#targetIndex + 1;
+    const gap = this.#getColumnsGap(currentOrderedIndex);
 
     if (direction === 'right') {
       this.#breakpoints[this.#targetIndex] = this.#breakpoints[this.#targetIndex] + gap;
@@ -210,9 +212,9 @@ export class DataDenDraggingService {
       this.#breakpoints[this.#targetIndex + 1] = this.#breakpoints[this.#targetIndex + 1] - gap;
     }
 
-    this.#swapArrayElements(this.#columnPositions, sourceIndex, this.#targetIndex);
-    this.#swapArrayElements(this.#columns, sourceIndex, this.#targetIndex);
-    this.#swapArrayElements(this.#columnsOrder, sourceIndex, this.#targetIndex);
+    this.#swapArrayElements(this.#columnPositions, currentOrderedIndex, this.#targetIndex);
+    this.#swapArrayElements(this.#columns, currentOrderedIndex, this.#targetIndex);
+    this.#swapArrayElements(this.#columnsOrder, currentOrderedIndex, this.#targetIndex);
 
     this.#columns.forEach((column, index) => {
       column.forEach((cell) => {
@@ -262,14 +264,9 @@ export class DataDenDraggingService {
   }
 
   #removeDocumentEventListeners() {
+    this.#headerRow.removeEventListener('mousedown', this.#handleHeaderMouseDown);
     this.#container.removeEventListener('mousemove', this.#handleGridMouseMove);
     document.removeEventListener('mouseup', this.#handleDocumentMouseUp);
-
-    const headers = this.#container.querySelectorAll('[ref="headerCell"]') as NodeListOf<HTMLDivElement>;
-
-    headers.forEach((header: HTMLDivElement, index: number) => {
-      header.removeEventListener('mousedown', this.#handleHeaderMouseDownEvents[index]);
-    });
   }
 
   #publishColumnsOrder() {
