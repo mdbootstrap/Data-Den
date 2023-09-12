@@ -2,6 +2,9 @@
   <head>
     <title>Home</title>
     <style>
+      :root {
+        --col-padding-x: 4px;
+      }
       body {
         margin: 0;
       }
@@ -40,19 +43,20 @@
         display: flex;
         position: absolute;
         height: 24px;
+        width: 100%;
       }
       .data-den-header-cell {
         position: absolute;
         border: solid 1px #ccc;
         background-color: #eceaea;
-        padding: 6px 4px;
+        padding: 6px var(--col-padding-x);
         user-select: none;
         pointer-events: none;
       }
       .data-den-cell {
         position: absolute;
         border: solid 1px #ccc;
-        padding: 4px;
+        padding: 4px var(--col-padding-x);
       }
       .data-den-header-cell-draggable.dragging,
       .data-den-cell-draggable.dragging {

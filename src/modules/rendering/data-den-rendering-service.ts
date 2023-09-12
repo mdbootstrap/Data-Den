@@ -16,12 +16,13 @@ import { DataDenEvent } from '../../data-den-event';
 
 export class DataDenRenderingService {
   #container: HTMLElement;
+  #orderedColumns: DataDenOptions['columns'];
+  #columnsOrder: number[];
   #headerRow: DataDenHeaderRow;
   #rows: DataDenRow[] = [];
+  #paddingX: number;
   #quickFilterRenderer: DataDenQuickFilterRenderer | null = null;
   #paginationRenderer: DataDenPaginationRenderer | null = null;
-  #columnsOrder: number[];
-  #orderedColumns: DataDenOptions['columns'];
 
   constructor(container: HTMLElement, options: DataDenOptions) {
     this.#container = container;
@@ -29,6 +30,7 @@ export class DataDenRenderingService {
     this.#columnsOrder = [];
     this.#headerRow = this.#createHeaderRow(options);
     this.#rows = this.#createDataRows(options, options.rows);
+    this.#paddingX = parseInt(getComputedStyle(document.body).getPropertyValue('--col-padding-x'), 10) * 2;
 
     if (options.quickFilter) {
       this.#quickFilterRenderer = new DataDenQuickFilterRenderer();
@@ -46,10 +48,9 @@ export class DataDenRenderingService {
     const rowIndex = 0;
     const headerCells = options.columns.map((column, colIndex) => {
       const value = column.headerName;
-      const left =
-        options.columns.slice(0, colIndex).reduce((acc, curr) => acc + (curr.width || 120), 0) + colIndex * 8;
+      const left = options.columns.slice(0, colIndex).reduce((acc, curr) => acc + (curr.width || 120), 0);
 
-      const rendererParams: DataDenCellRendererParams = { value, left };
+      const rendererParams: DataDenCellRendererParams = { value, left, paddingX: this.#paddingX };
       const cellRenderer = new DataDenDefaultHeaderCellRenderer(rendererParams, colIndex, options);
       const editorParams: DataDenCellEditorParams = { value: value };
       const cellEditor = new DataDenDefaultCellEditor(editorParams);
@@ -66,11 +67,9 @@ export class DataDenRenderingService {
     const rows = dataRows.map((row, rowIndex) => {
       const cells = Object.entries(row).map(([, value], colIndex) => {
         const orderedColIndex = this.#columnsOrder.length ? this.#columnsOrder.indexOf(colIndex) : colIndex;
-        const left =
-          this.#orderedColumns.slice(0, orderedColIndex).reduce((acc, curr) => acc + (curr.width || 120), 0) +
-          orderedColIndex * 8;
+        const left = this.#orderedColumns.slice(0, orderedColIndex).reduce((acc, curr) => acc + (curr.width || 120), 0);
 
-        const rendererParams: DataDenCellRendererParams = { value, left };
+        const rendererParams: DataDenCellRendererParams = { value, left, paddingX: this.#paddingX };
         const renderer = new DataDenDefaultCellRenderer(rendererParams);
         const editorParams: DataDenCellEditorParams = { value: value };
         const editor = new DataDenDefaultCellEditor(editorParams);

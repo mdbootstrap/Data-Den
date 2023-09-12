@@ -10,7 +10,7 @@ export class DataDenDefaultHeaderCellRenderer implements DataDenCellRenderer {
     const template = `<div class="data-den-header-cell ${
       options.draggable ? 'data-den-header-cell-draggable' : ''
     }" role="columnheader" ref="headerCell" style="left: ${params.left}px; width: ${
-      options.columns[colIndex].width || 120
+      (options.columns[colIndex].width || 120) - (params.paddingX || 8)
     }px">${params.value}</div>`;
 
     this.element = createHtmlElement(template);
