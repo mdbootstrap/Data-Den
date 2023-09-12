@@ -32,7 +32,7 @@ export class DataDenCell {
     const template = `<div class="data-den-cell ${
       this.#draggable ? 'data-den-cell-draggable' : ''
     }" role="gridcell" ref="cell" style="left: ${this.#params.left}px; width: ${
-      (this.#columns[this.#columnIndex].width || 120) - (this.#params.paddingX || 8)
+      (this.#columns[this.#columnIndex].width || 120) - (this.#params.paddingX || 8) - (this.#params.borderWidth || 2)
     }px;"}></div>`;
 
     const cellElement = createHtmlElement(template);

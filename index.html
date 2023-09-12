@@ -4,6 +4,9 @@
     <style>
       :root {
         --col-padding-x: 4px;
+        --border-width: 1px;
+        --header-height: 30px;
+        --row-height: 26px;
       }
       body {
         margin: 0;
@@ -17,7 +20,8 @@
         flex-flow: row wrap;
         flex-direction: row;
         position: relative;
-        height: 30px;
+        height: var(--header-height);
+        border-right: var(--border-width) solid #ccc;
       }
       .data-den-header-row {
         width: 100%;
@@ -30,6 +34,7 @@
         flex-flow: row wrap;
         flex-direction: column;
         position: relative;
+        border-right: var(--border-width) solid #ccc;
       }
       .data-den-grid .data-den-header-row,
       .data-den-grid .data-den-row,
@@ -42,29 +47,32 @@
       .data-den-row {
         display: flex;
         position: absolute;
-        height: 24px;
+        height: var(--row-height);
         width: 100%;
       }
       .data-den-header-cell {
         position: absolute;
-        border: solid 1px #ccc;
+        border: var(--border-width) solid #ccc;
+        border-right: var(--border-width) solid transparent;
         background-color: #eceaea;
         padding: 6px var(--col-padding-x);
-        user-select: none;
         pointer-events: none;
       }
       .data-den-cell {
         position: absolute;
-        border: solid 1px #ccc;
+        border: var(--border-width) solid #ccc;
+        border-right: var(--border-width) solid transparent;
+        border-top: var(--border-width) solid transparent;
         padding: 4px var(--col-padding-x);
       }
       .data-den-header-cell-draggable.dragging,
       .data-den-cell-draggable.dragging {
         transition: left 0.2s;
+        user-select: none;
       }
       .data-den-header-cell.active,
       .data-den-cell.active {
-        background-color: #eeeeee;
+        background-color: #fafafa;
       }
       .data-den-header-sorter {
         margin-left: 5px;
@@ -91,10 +99,6 @@
       .data-den-header-sorter-arrow.data-den-header-sorter-arrow-desc:after {
         color: unset;
         transform: rotate(0deg);
-      }
-      .data-den-pagination {
-        position: absolute;
-        top: 550px;
       }
       .data-den-pagination-content {
         display: flex;

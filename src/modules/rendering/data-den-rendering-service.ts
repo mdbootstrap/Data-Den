@@ -21,6 +21,8 @@ export class DataDenRenderingService {
   #headerRow: DataDenHeaderRow;
   #rows: DataDenRow[] = [];
   #paddingX: number;
+  #borderWidth: number;
+  #rowHeight: number;
   #quickFilterRenderer: DataDenQuickFilterRenderer | null = null;
   #paginationRenderer: DataDenPaginationRenderer | null = null;
 
@@ -30,7 +32,10 @@ export class DataDenRenderingService {
     this.#columnsOrder = [];
     this.#headerRow = this.#createHeaderRow(options);
     this.#rows = this.#createDataRows(options, options.rows);
+
     this.#paddingX = parseInt(getComputedStyle(document.body).getPropertyValue('--col-padding-x'), 10) * 2;
+    this.#borderWidth = parseInt(getComputedStyle(document.body).getPropertyValue('--border-width'), 10) * 2;
+    this.#rowHeight = parseInt(getComputedStyle(document.body).getPropertyValue('--row-height'), 10);
 
     if (options.quickFilter) {
       this.#quickFilterRenderer = new DataDenQuickFilterRenderer();
@@ -50,7 +55,12 @@ export class DataDenRenderingService {
       const value = column.headerName;
       const left = options.columns.slice(0, colIndex).reduce((acc, curr) => acc + (curr.width || 120), 0);
 
-      const rendererParams: DataDenCellRendererParams = { value, left, paddingX: this.#paddingX };
+      const rendererParams: DataDenCellRendererParams = {
+        value,
+        left,
+        paddingX: this.#paddingX,
+        borderWidth: this.#borderWidth,
+      };
       const cellRenderer = new DataDenDefaultHeaderCellRenderer(rendererParams, colIndex, options);
       const editorParams: DataDenCellEditorParams = { value: value };
       const cellEditor = new DataDenDefaultCellEditor(editorParams);
@@ -69,7 +79,12 @@ export class DataDenRenderingService {
         const orderedColIndex = this.#columnsOrder.length ? this.#columnsOrder.indexOf(colIndex) : colIndex;
         const left = this.#orderedColumns.slice(0, orderedColIndex).reduce((acc, curr) => acc + (curr.width || 120), 0);
 
-        const rendererParams: DataDenCellRendererParams = { value, left, paddingX: this.#paddingX };
+        const rendererParams: DataDenCellRendererParams = {
+          value,
+          left,
+          paddingX: this.#paddingX,
+          borderWidth: this.#borderWidth,
+        };
         const renderer = new DataDenDefaultCellRenderer(rendererParams);
         const editorParams: DataDenCellEditorParams = { value: value };
         const editor = new DataDenDefaultCellEditor(editorParams);
@@ -83,7 +98,7 @@ export class DataDenRenderingService {
         );
       });
 
-      return new DataDenRow(rowIndex, cells);
+      return new DataDenRow(rowIndex, cells, this.#rowHeight);
     });
 
     return rows;
@@ -104,6 +119,21 @@ export class DataDenRenderingService {
     }
 
     this.#container.appendChild(grid);
+    this.#calculateGridSize();
+  }
+
+  #calculateGridSize(): void {
+    const grid = this.#container.querySelector('.data-den-grid') as HTMLElement;
+    const header = this.#container.querySelector('.data-den-header') as HTMLElement;
+    const body = this.#container.querySelector('.data-den-grid-rows') as HTMLElement;
+
+    const gridWidth = this.#orderedColumns.reduce((acc, curr) => acc + (curr.width || 120), 0);
+    const rowsHeight = this.#rowHeight * this.#rows.length;
+
+    grid.style.width = `${gridWidth}px`;
+    header.style.width = `${gridWidth}px`;
+    body.style.width = `${gridWidth}px`;
+    body.style.height = `${rowsHeight}px`;
   }
 
   #updateRows(options: DataDenOptions, dataRows: DataDenRow[]): void {
@@ -114,6 +144,7 @@ export class DataDenRenderingService {
     const rowContainer = this.#container.querySelector('.data-den-grid-rows') as HTMLElement;
     rowContainer.innerHTML = '';
     rowContainer.appendChild(rows);
+    this.#calculateGridSize();
   }
 
   #subscribeToEvents(options: DataDenOptions): void {
