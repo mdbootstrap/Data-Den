@@ -39,11 +39,11 @@ export class DataDenPubSub {
     this.#listeners[name].push(callback);
 
     return () => {
-      this.unsubscribe(name, callback);
+      this.#unsubscribe(name, callback);
     };
   }
 
-  static unsubscribe(name: string, callback: DataDenEventCallback) {
+  static #unsubscribe(name: string, callback: DataDenEventCallback) {
     if (!this.#listeners[name]) {
       return;
     }
