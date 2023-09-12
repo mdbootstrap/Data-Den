@@ -15,9 +15,9 @@ export class DataDenDraggingService {
   #columnsOrder: number[];
   #breakpoints: number[];
 
-  #bindedGridMouseMove: (e: MouseEvent) => void;
-  #bindedDocumentMouseUp: (e: MouseEvent) => void;
-  #bindedHeaderMouseDownEvents: any[];
+  #handleGridMouseMove: (e: MouseEvent) => void;
+  #handleDocumentMouseUp: (e: MouseEvent) => void;
+  #handleHeaderMouseDownEvents: any[];
 
   constructor(container: HTMLElement, options: DataDenOptions) {
     this.#container = container;
@@ -32,16 +32,16 @@ export class DataDenDraggingService {
     this.#breakpoints = this.#columnPositions.map((column) => column.left);
     this.#columnsOrder = [];
 
-    this.#bindedGridMouseMove = () => {};
-    this.#bindedDocumentMouseUp = () => {};
-    this.#bindedHeaderMouseDownEvents = [];
+    this.#handleGridMouseMove = () => {};
+    this.#handleDocumentMouseUp = () => {};
+    this.#handleHeaderMouseDownEvents = [];
 
     if (this.#options.draggable) {
-      this.#init();
+      this.init();
     }
   }
 
-  #init() {
+  init() {
     this.#addColumnDragEventHandlers();
 
     for (let i = 0; i < this.#options.columns.length; i++) {
@@ -58,13 +58,16 @@ export class DataDenDraggingService {
     });
   }
 
+  dispose() {
+    this.#removeDraggableClass();
+    this.#removeDocumentEventListeners();
+  }
+
   #getAllColumnPositions() {
-    return this.#headers.map((column: HTMLDivElement) => {
-      return {
-        left: parseFloat(column.style.left),
-        width: parseFloat(column.style.width),
-      };
-    });
+    return this.#headers.map((column: HTMLDivElement) => ({
+      left: parseFloat(column.style.left),
+      width: parseFloat(column.style.width),
+    }));
   }
 
   #getAllColumnElements() {
@@ -84,26 +87,26 @@ export class DataDenDraggingService {
   #addColumnDragEventHandlers() {
     this.#addDragHandleEventListeners();
 
-    this.#bindedGridMouseMove = this.#onGridMouseMove.bind(this);
-    this.#bindedDocumentMouseUp = this.#handleDocumentMouseUp.bind(this);
+    this.#handleGridMouseMove = this.#onGridMouseMove.bind(this);
+    this.#handleDocumentMouseUp = this.#onDocumentMouseUp.bind(this);
 
-    this.#container.addEventListener('mousemove', this.#bindedGridMouseMove);
-    document.addEventListener('mouseup', this.#bindedDocumentMouseUp);
+    this.#container.addEventListener('mousemove', this.#handleGridMouseMove);
+    document.addEventListener('mouseup', this.#handleDocumentMouseUp);
   }
 
-  #handleHeaderMouseDown(event: MouseEvent) {
+  #onHeaderMouseDown(event: MouseEvent) {
     event.stopPropagation();
-    this.#handleMouseDown(event.pageX);
+    this.#onMouseDown(event.pageX);
   }
 
   #addDragHandleEventListeners() {
     this.#headers.forEach((header: HTMLDivElement, index: number) => {
-      this.#bindedHeaderMouseDownEvents[index] = this.#handleHeaderMouseDown.bind(this);
-      header.addEventListener('mousedown', this.#bindedHeaderMouseDownEvents[index]);
+      this.#handleHeaderMouseDownEvents[index] = this.#onHeaderMouseDown.bind(this);
+      header.addEventListener('mousedown', this.#handleHeaderMouseDownEvents[index]);
     });
   }
 
-  #handleMouseDown(pageX: number) {
+  #onMouseDown(pageX: number) {
     this.#initializeDragging(pageX);
     this.#enableTransition();
     this.#setActiveStyle();
@@ -122,8 +125,7 @@ export class DataDenDraggingService {
     this.#targetIndex = this.#getMinBreakpointIndex(this.#breakpoints, event.pageX);
 
     const currentColumnWidth = this.#columnPositions[this.#currentIndex].width;
-    const targetColumnWidth = this.#columnPositions[this.#targetIndex].width;
-    const gap = targetColumnWidth - currentColumnWidth;
+    const gap = this.#getColumnsGap(this.#currentIndex);
 
     // prevent swapping if there is no space for it (current colmn width is bigger than target column width)
     if (
@@ -135,12 +137,12 @@ export class DataDenDraggingService {
     }
 
     if (this.#prevTargetIndex !== this.#targetIndex && this.#targetIndex !== -1) {
-      this.#temporarilyUpdateColumnPositions();
+      this.#updateColumnPositions();
       this.#prevTargetIndex = this.#targetIndex;
     }
   }
 
-  #handleDocumentMouseUp() {
+  #onDocumentMouseUp() {
     if (!this.#isDragging) {
       return;
     }
@@ -187,39 +189,24 @@ export class DataDenDraggingService {
     return array.length - 1;
   }
 
-  #temporarilyUpdateColumnPositions() {
-    if (this.#targetIndex === -1) {
-      return;
-    }
-
-    const direction = this.#getDirection();
-
+  #updateColumnPositions() {
     if (this.#currentIndex === this.#targetIndex && this.#prevTargetIndex === -1) {
       return;
     }
 
-    let currentTempIndex;
-
-    if (direction === 'right') {
-      currentTempIndex = this.#targetIndex - 1;
-    } else {
-      currentTempIndex = this.#targetIndex + 1;
-    }
-
-    const currentColumnWidth = this.#columnPositions[currentTempIndex].width;
-    const targetColumnWidth = this.#columnPositions[this.#targetIndex].width;
-    const gap = targetColumnWidth - currentColumnWidth;
+    const direction = this.#getDirection();
+    const sourceIndex = direction === 'right' ? this.#targetIndex - 1 : this.#targetIndex + 1;
+    const gap = this.#getColumnsGap(sourceIndex);
 
     if (direction === 'right') {
       this.#breakpoints[this.#targetIndex] = this.#breakpoints[this.#targetIndex] + gap;
-      this.#swapArrayElements(this.#columnPositions, currentTempIndex, this.#targetIndex);
     } else {
       this.#breakpoints[this.#targetIndex + 1] = this.#breakpoints[this.#targetIndex + 1] - gap;
-      this.#swapArrayElements(this.#columnPositions, currentTempIndex, this.#targetIndex);
     }
 
-    this.#swapArrayElements(this.#columns, currentTempIndex, this.#targetIndex);
-    this.#swapArrayElements(this.#columnsOrder, currentTempIndex, this.#targetIndex);
+    this.#swapArrayElements(this.#columnPositions, sourceIndex, this.#targetIndex);
+    this.#swapArrayElements(this.#columns, sourceIndex, this.#targetIndex);
+    this.#swapArrayElements(this.#columnsOrder, sourceIndex, this.#targetIndex);
 
     this.#columns.forEach((column, index) => {
       column.forEach((cell) => {
@@ -229,11 +216,13 @@ export class DataDenDraggingService {
   }
 
   #getDirection() {
-    if (this.#prevTargetIndex > this.#targetIndex) {
-      return 'left';
-    }
+    return this.#prevTargetIndex > this.#targetIndex ? 'left' : 'right';
+  }
 
-    return 'right';
+  #getColumnsGap(sourceIndex: number) {
+    const sourceColumnWidth = this.#columnPositions[sourceIndex].width;
+    const targetColumnWidth = this.#columnPositions[this.#targetIndex].width;
+    return targetColumnWidth - sourceColumnWidth;
   }
 
   #swapArrayElements(array: HTMLElement[][] | any[], sourceIndex: number, targetIndex: number) {
@@ -267,13 +256,13 @@ export class DataDenDraggingService {
   }
 
   #removeDocumentEventListeners() {
-    this.#container.removeEventListener('mousemove', this.#bindedGridMouseMove);
-    document.removeEventListener('mouseup', this.#bindedDocumentMouseUp);
+    this.#container.removeEventListener('mousemove', this.#handleGridMouseMove);
+    document.removeEventListener('mouseup', this.#handleDocumentMouseUp);
 
     const headers = this.#container.querySelectorAll('[ref="headerCell"]') as NodeListOf<HTMLDivElement>;
 
     headers.forEach((header: HTMLDivElement, index: number) => {
-      header.removeEventListener('mousedown', this.#bindedHeaderMouseDownEvents[index]);
+      header.removeEventListener('mousedown', this.#handleHeaderMouseDownEvents[index]);
     });
   }
 
@@ -282,10 +271,5 @@ export class DataDenDraggingService {
       columnsOrder: this.#columnsOrder,
       context: new Context('info:dragging:columns-reorder:done'),
     });
-  }
-
-  dispose() {
-    this.#removeDraggableClass();
-    this.#removeDocumentEventListeners();
   }
 }
