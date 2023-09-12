@@ -43,19 +43,8 @@ export class DataDenDraggingService {
 
   init() {
     this.#addColumnDragEventHandlers();
-
-    for (let i = 0; i < this.#options.columns.length; i++) {
-      this.#columnsOrder.push(i);
-    }
-
-    DataDenPubSub.subscribe('info:pagination:data-change:done', () => {
-      const tempColumns = [...(this.#getAllColumnElements() as HTMLElement[][])];
-      this.#columns = [];
-
-      this.#columnsOrder.forEach((columnIndex, index) => {
-        this.#columns[index] = tempColumns[columnIndex];
-      });
-    });
+    this.#setColumnsOrder();
+    this.#subscribeToDataChangeEvent();
   }
 
   dispose() {
@@ -94,6 +83,23 @@ export class DataDenDraggingService {
     document.addEventListener('mouseup', this.#handleDocumentMouseUp);
   }
 
+  #setColumnsOrder() {
+    for (let i = 0; i < this.#options.columns.length; i++) {
+      this.#columnsOrder.push(i);
+    }
+  }
+
+  #subscribeToDataChangeEvent() {
+    DataDenPubSub.subscribe('info:pagination:data-change:done', () => {
+      const tempColumns = [...(this.#getAllColumnElements() as HTMLElement[][])];
+      this.#columns = [];
+
+      this.#columnsOrder.forEach((columnIndex, index) => {
+        this.#columns[index] = tempColumns[columnIndex];
+      });
+    });
+  }
+
   #onHeaderMouseDown(event: MouseEvent) {
     event.stopPropagation();
     this.#onMouseDown(event.pageX);
@@ -127,7 +133,7 @@ export class DataDenDraggingService {
     const currentColumnWidth = this.#columnPositions[this.#currentIndex].width;
     const gap = this.#getColumnsGap(this.#currentIndex);
 
-    // prevent swapping if there is no space for it (current colmn width is bigger than target column width)
+    // prevent swapping if there is no space for it (current column width is bigger than target column width)
     if (
       (this.#getDirection() === 'right' && this.#breakpoints[this.#targetIndex] + gap > event.pageX) ||
       (this.#getDirection() === 'left' && this.#breakpoints[this.#targetIndex] + currentColumnWidth < event.pageX)
