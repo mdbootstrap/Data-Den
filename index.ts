@@ -94,6 +94,7 @@ const options: DataDenOptions = {
     { car: 'Mitsubishi', model: 'Lancer', year: 2020, price: 34000 },
   ],
   draggable: true,
+  resizable: true,
   pagination: true,
   paginationOptions: {
     pageSize: 10,

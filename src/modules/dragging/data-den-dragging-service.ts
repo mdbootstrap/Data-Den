@@ -49,6 +49,7 @@ export class DataDenDraggingService {
     this.#addColumnDragEventHandlers();
     this.#setColumnsOrder();
     this.#subscribeToDataChangeEvent();
+    this.#subscribeToResizingDone();
   }
 
   dispose() {
@@ -100,11 +101,15 @@ export class DataDenDraggingService {
   #subscribeToDataChangeEvent() {
     DataDenPubSub.subscribe('info:pagination:data-change:done', () => {
       const tempColumns = [...(this.#getAllColumnElements() as HTMLElement[][])];
-      this.#columns = [];
+      this.#columns = this.#columnsOrder.map((columnIndex) => tempColumns[columnIndex]);
+    });
+  }
 
-      this.#columnsOrder.forEach((columnIndex, index) => {
-        this.#columns[index] = tempColumns[columnIndex];
-      });
+  #subscribeToResizingDone() {
+    DataDenPubSub.subscribe('info:resizing:done', () => {
+      const orderedColumnPositions = [...this.#getAllColumnPositions()];
+      this.#columnPositions = this.#columnsOrder.map((columnIndex) => orderedColumnPositions[columnIndex]);
+      this.#breakpoints = this.#columnPositions.map((column) => column.left);
     });
   }
 

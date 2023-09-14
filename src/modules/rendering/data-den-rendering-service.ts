@@ -12,6 +12,7 @@ import { DataDenHeaderFilterRendererParams } from './filter/data-den-header-filt
 import { DataDenPaginationRenderer } from './pagination';
 import { DataDenHeaderRow, DataDenRow } from './row';
 import { DataDenHeaderDefaultSorterRenderer } from './sorter';
+import { DataDenHeaderDefaultResizerRenderer } from './resizer';
 import { DataDenPubSub } from '../../data-den-pub-sub';
 import { DataDenEvent } from '../../data-den-event';
 import { Order } from '../sorting/data-den-sorting.interface';
@@ -73,8 +74,17 @@ export class DataDenRenderingService {
       const filterRendererParams: DataDenHeaderFilterRendererParams = { field, method, debounceTime, caseSensitive };
       const filterRenderer = new DataDenHeaderTextFilterRenderer(filterRendererParams);
       const sorterRenderer = new DataDenHeaderDefaultSorterRenderer(column.field, order, options.rows);
+      const resizerRenderer = new DataDenHeaderDefaultResizerRenderer();
 
-      return new DataDenHeaderCell(rowIndex, colIndex, cellRenderer, cellEditor, filterRenderer, sorterRenderer);
+      return new DataDenHeaderCell(
+        rowIndex,
+        colIndex,
+        cellRenderer,
+        cellEditor,
+        filterRenderer,
+        sorterRenderer,
+        resizerRenderer
+      );
     });
 
     return new DataDenHeaderRow(rowIndex, headerCells, options.draggable);
@@ -164,6 +174,11 @@ export class DataDenRenderingService {
       this.#columnsOrder.forEach((columnIndex, index) => {
         this.#orderedColumns[index] = defaultColumns[columnIndex];
       });
+    });
+    DataDenPubSub.subscribe('info:resizing:start', (event: DataDenEvent) => {
+      this.#orderedColumns[event.data.currentColIndex].width =
+        event.data.newCurrentColWidth + this.#paddingX + this.#borderWidth;
+      this.#calculateGridSize();
     });
   }
 

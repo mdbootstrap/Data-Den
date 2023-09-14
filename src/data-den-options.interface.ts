@@ -34,6 +34,7 @@ export interface DataDenOptions<TData = any> {
   mode: DataDenMode;
   columns: DataDenColDef[];
   draggable?: boolean;
+  resizable?: boolean;
   rows: TData[];
   pagination: boolean;
   paginationOptions: DataDenPaginationOptions;
