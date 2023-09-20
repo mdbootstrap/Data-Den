@@ -38,10 +38,10 @@ export class DataDenPaginationService {
       this.#updateState();
     });
     DataDenPubSub.subscribe('info:fetch:done', (event: DataDenEvent) => {
-      if (this.#allTotalRows || this.#allTotalRows === event.data.data.rows.length) {
+      if (this.#allTotalRows || this.#allTotalRows === event.data.rows.length) {
         return;
       }
-      this.#allTotalRows = event.data.data.rows.length;
+      this.#allTotalRows = event.data.rows.length;
       this.#updateState();
     });
   }
