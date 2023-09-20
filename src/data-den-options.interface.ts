@@ -20,6 +20,10 @@ export interface DataDenColDef {
   cellRenderer: DataDenCellRenderer;
 }
 
+export interface DataDenRowDef<TData = any> {
+  [key: string]: TData;
+}
+
 export interface DataDenPaginationOptions {
   pageSize?: number;
   pageSizeOptions?: number[];

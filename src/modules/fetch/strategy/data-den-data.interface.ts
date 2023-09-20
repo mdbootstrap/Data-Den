@@ -1,6 +1,6 @@
-import { DataDenColDef } from '../../../data-den-options.interface';
+import { DataDenColDef, DataDenRowDef } from '../../../data-den-options.interface';
 
-export interface DataDenData<TData = any> {
-  rows: TData[];
+export interface DataDenData {
+  rows: DataDenRowDef[];
   columns: DataDenColDef[];
 }

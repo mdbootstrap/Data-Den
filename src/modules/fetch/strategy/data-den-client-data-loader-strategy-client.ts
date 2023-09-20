@@ -7,6 +7,8 @@ import {
   DataDenQuickFilterOptions,
   DataDenSortOptions,
 } from '../data-den-fetch-options.interface';
+import { deepCopy } from '../../../utils';
+import { DataDenRowDef } from '../../../data-den-options.interface';
 
 export class DataDenClientDataLoaderStrategy extends DataDenDataLoaderStrategy {
   #data: DataDenData;
@@ -18,43 +20,39 @@ export class DataDenClientDataLoaderStrategy extends DataDenDataLoaderStrategy {
   }
 
   getData(options: DataDenFetchOptions): Promise<DataDenData> {
-    const data = { columns: [...this.#data.columns], rows: [...this.#data.rows] };
-
-    return this.filterData(data.rows, options.filtersOptions)
+    return this.filterData(deepCopy(this.#data.rows), options.filtersOptions)
       .then((filtered) => this.quickFilterData(filtered, options.quickFilterOptions))
       .then((quickFiltered) => this.sortData(quickFiltered, options.sortingOptions))
       .then((sorted) => this.paginateData(sorted, options.paginationOptions))
-      .then((paginated) => (data.rows = paginated))
-      .then(() => Promise.resolve(data));
+      .then((paginated) => ({
+        columns: deepCopy(this.#data.columns),
+        rows: paginated,
+      }));
   }
 
-  filterData(
-    rows: DataDenData['rows'],
-    filtersOptions: DataDenFiltersOptions | undefined
-  ): Promise<DataDenData['rows']> {
+  filterData(rows: DataDenRowDef[], filtersOptions: DataDenFiltersOptions | undefined): Promise<DataDenRowDef[]> {
     if (!filtersOptions) {
       return Promise.resolve(rows);
     }
 
     const headers = Object.keys(filtersOptions.filters);
-    let filtered = rows;
-    headers.forEach((header) => {
-      filtered = filtered.filter((row) => {
+    const filtered = headers.reduce((res, header) => {
+      return res.filter((row: any) => {
         const filterFn = filtersOptions.filters[header].filterFn;
         const searchTerm = filtersOptions.filters[header].searchTerm;
         const value = row[header];
 
         return filterFn(searchTerm, value);
       });
-    });
+    }, rows);
 
     return Promise.resolve(filtered);
   }
 
   paginateData(
-    rows: DataDenData['rows'],
+    rows: DataDenRowDef[],
     paginationOptions: DataDenPaginationOptions | undefined
-  ): Promise<DataDenData['rows']> {
+  ): Promise<DataDenRowDef[]> {
     if (!paginationOptions) {
       return Promise.resolve(rows);
     }
@@ -66,7 +64,7 @@ export class DataDenClientDataLoaderStrategy extends DataDenDataLoaderStrategy {
     return Promise.resolve(paginated);
   }
 
-  sortData(rows: DataDenData['rows'], sortOptions: DataDenSortOptions | undefined): Promise<DataDenData['rows']> {
+  sortData(rows: DataDenRowDef[], sortOptions: DataDenSortOptions | undefined): Promise<DataDenRowDef[]> {
     if (!sortOptions) {
       return Promise.resolve(rows);
     }
@@ -79,9 +77,9 @@ export class DataDenClientDataLoaderStrategy extends DataDenDataLoaderStrategy {
   }
 
   quickFilterData(
-    rows: DataDenData['rows'],
+    rows: DataDenRowDef[],
     quickFilterOptions: DataDenQuickFilterOptions | undefined
-  ): Promise<DataDenData['rows']> {
+  ): Promise<DataDenRowDef[]> {
     if (!quickFilterOptions) {
       return Promise.resolve(rows);
     }
