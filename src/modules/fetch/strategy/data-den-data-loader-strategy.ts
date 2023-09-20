@@ -6,11 +6,12 @@ import {
   DataDenQuickFilterOptions,
   DataDenSortOptions,
 } from '../data-den-fetch-options.interface';
+import { DataDenRowDef } from '../../../data-den-options.interface';
 
 export abstract class DataDenDataLoaderStrategy {
   abstract getData(options: DataDenFetchOptions): Promise<DataDenData>;
-  abstract filterData(data: DataDenData['rows'], params: DataDenFiltersOptions): Promise<DataDenData['rows']>;
-  abstract sortData(data: DataDenData['rows'], params: DataDenSortOptions): Promise<DataDenData['rows']>;
-  abstract quickFilterData(data: DataDenData['rows'], params: DataDenQuickFilterOptions): Promise<DataDenData['rows']>;
-  abstract paginateData(data: DataDenData['rows'], params: DataDenPaginationOptions): Promise<DataDenData['rows']>;
+  abstract filterData(data: DataDenRowDef[], params: DataDenFiltersOptions): Promise<DataDenRowDef[]>;
+  abstract sortData(data: DataDenRowDef[], params: DataDenSortOptions): Promise<DataDenRowDef[]>;
+  abstract quickFilterData(data: DataDenRowDef[], params: DataDenQuickFilterOptions): Promise<DataDenRowDef[]>;
+  abstract paginateData(data: DataDenRowDef[], params: DataDenPaginationOptions): Promise<DataDenRowDef[]>;
 }

@@ -147,24 +147,24 @@ export class DataDenRenderingService {
   }
 
   #updateTable(event: DataDenEvent) {
-    const { data, order } = event.data;
+    const { columns, rows, order } = event.data;
 
-    this.#headerRow = this.#createHeaderRow(data.columns, order);
-    this.#rows = this.#createDataRows(data.rows);
+    this.#headerRow = this.#createHeaderRow(columns, order);
+    this.#rows = this.#createDataRows(rows);
 
     this.#container.innerHTML = '';
     this.renderTable();
   }
 
   #updateRows(event: DataDenEvent): void {
-    const { data } = event.data;
+    const { rows } = event.data;
 
-    const rows = document.createDocumentFragment();
-    this.#rows = this.#createDataRows(data.rows);
-    this.#rows.forEach((row) => rows.appendChild(row.render()));
+    const rowsEl = document.createDocumentFragment();
+    this.#rows = this.#createDataRows(rows);
+    this.#rows.forEach((row) => rowsEl.appendChild(row.render()));
 
-    const rowContainer = this.#container.querySelector('.data-den-grid-rows') as HTMLElement;
+    const rowContainer = this.#container.querySelector('.data-den-grid-rows')!;
     rowContainer.innerHTML = '';
-    rowContainer.appendChild(rows);
+    rowContainer.appendChild(rowsEl);
   }
 }

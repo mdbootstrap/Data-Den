@@ -32,10 +32,7 @@ export class DataDenHeaderDefaultSorterRenderer implements DataDenHeaderSorterRe
 
   #removeSorterArrowOrderClass(): void {
     const arrowEl = this.element.querySelector('.data-den-header-sorter-arrow');
-
-    ['data-den-header-sorter-arrow-asc', 'data-den-header-sorter-arrow-desc'].forEach((className) => {
-      arrowEl?.classList.remove(className);
-    });
+    arrowEl?.classList.remove('data-den-header-sorter-arrow-asc', 'data-den-header-sorter-arrow-desc');
   }
 
   sort(): void {

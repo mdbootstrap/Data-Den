@@ -29,7 +29,8 @@ export class DataDenFetchService {
     const EventData: DataDenFetchDoneEvent = {
       caller: this,
       context,
-      data,
+      rows: data.rows,
+      columns: data.columns,
     };
     DataDenPubSub.publish('info:fetch:done', EventData);
   }

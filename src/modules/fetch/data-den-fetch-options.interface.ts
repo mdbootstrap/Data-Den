@@ -1,10 +1,11 @@
+import { DataDenRowDef } from '../../data-den-options.interface';
 import { DataDenActiveHeaderFilter } from '../filtering';
 import { Order } from '../sorting';
 
-export interface DataDenSortOptions<TData = any> {
+export interface DataDenSortOptions {
   field: string;
   order: Order;
-  sortFn: (rows: TData[], field: string, order: Order) => TData[];
+  sortFn: (rows: DataDenRowDef[], field: string, order: Order) => DataDenRowDef[];
 }
 
 export interface DataDenQuickFilterOptions {
