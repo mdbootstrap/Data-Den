@@ -12,13 +12,13 @@ export class DataDenPubSub {
     'info:pagination:info-change:done': [],
     'info:pagination:page-size-change:done': [],
     'command:sorting:start': [],
-    'info:sorting:done': [],
     'info:filtering:get-active-quick-filter:done': [],
     'info:filtering:header-filter-changed': [],
     'info:filtering:active-filters-changed': [],
     'info:filtering:quick-filter-changed': [],
     'info:filtering:active-quick-filter-changed': [],
     'command:fetch:start': [],
+    'command:fetch:sort-start': [],
     'info:fetch:done': [],
   };
 

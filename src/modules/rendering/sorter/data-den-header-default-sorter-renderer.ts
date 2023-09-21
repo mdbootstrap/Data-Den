@@ -4,11 +4,13 @@ import { DataDenPubSub } from './../../../data-den-pub-sub';
 import { Context } from '../../../context';
 import { Order } from '../../sorting/data-den-sorting.interface';
 
-export class DataDenHeaderDefaultSorterRenderer implements DataDenHeaderSorterRenderer {
+export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRenderer {
+  arrowElement: HTMLElement;
   element: HTMLElement;
   #field: string;
 
   constructor(field: string, order: Order) {
+    super();
     const template = `
       <div class="data-den-header-sorter">
         <div ref="sorterArrow" class="data-den-header-sorter-arrow data-den-header-sorter-arrow-${order}">
@@ -18,10 +20,11 @@ export class DataDenHeaderDefaultSorterRenderer implements DataDenHeaderSorterRe
     this.#field = field;
 
     this.element = createHtmlElement(template);
+    this.arrowElement = this.element.querySelector('[ref="sorterArrow"]')!;
     this.element.addEventListener('click', () => this.sort());
-
-    this.#updateArrowDirectionAfterSort();
+    this.element.addEventListener('click', () => this.#updateArrowDirectionAfterSort());
   }
+
   destroy?(): void {
     throw new Error('Method not implemented.');
   }
@@ -30,12 +33,15 @@ export class DataDenHeaderDefaultSorterRenderer implements DataDenHeaderSorterRe
     return this.element;
   }
 
-  #removeSorterArrowOrderClass(): void {
-    const arrowEl = this.element.querySelector('.data-den-header-sorter-arrow');
-
-    ['data-den-header-sorter-arrow-asc', 'data-den-header-sorter-arrow-desc'].forEach((className) => {
-      arrowEl?.classList.remove(className);
-    });
+  #getUpdatedSortOrder(): Order {
+    const classList = this.arrowElement.classList;
+    if (classList.contains('data-den-header-sorter-arrow-asc')) {
+      return 'desc';
+    } else if (classList.contains('data-den-header-sorter-arrow-desc')) {
+      return '';
+    } else {
+      return 'asc';
+    }
   }
 
   sort(): void {
@@ -48,15 +54,13 @@ export class DataDenHeaderDefaultSorterRenderer implements DataDenHeaderSorterRe
   }
 
   #updateArrowDirectionAfterSort(): void {
-    DataDenPubSub.subscribe('info:sorting:done', (event: any) => {
-      const arrowEl = this.element.querySelector('[ref="sorterArrow"]') as HTMLElement;
+    const arrowElements = document.querySelectorAll('[ref="sorterArrow"]');
+    const order = this.#getUpdatedSortOrder();
 
-      if (event.data.field === this.#field && event.data.order) {
-        this.#removeSorterArrowOrderClass();
-        arrowEl.classList.add(`data-den-header-sorter-arrow-${event.data.order}`);
-      } else {
-        this.#removeSorterArrowOrderClass();
-      }
+    arrowElements.forEach((arrowElement) => {
+      arrowElement.classList.remove('data-den-header-sorter-arrow-asc', 'data-den-header-sorter-arrow-desc');
     });
+
+    this.arrowElement.classList.add(`data-den-header-sorter-arrow-${order}`);
   }
 }
