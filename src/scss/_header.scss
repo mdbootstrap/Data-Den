@@ -1,0 +1,70 @@
+.data-den-header-row {
+  display: flex;
+
+  .data-den-header-cell {
+    --#{$prefix}header-cell-bg: #{$header-cell-bg};
+    --#{$prefix}header-cell-border: #{$header-cell-border};
+    --#{$prefix}header-cell-padding: #{$header-cell-padding};
+    --#{$prefix}header-cell-width: #{$header-cell-width};
+
+    background-color: var(--#{$prefix}header-cell-bg);
+    border: var(--#{$prefix}header-cell-border);
+    padding: var(--#{$prefix}header-cell-padding);
+    width: var(--#{$prefix}header-cell-width);
+
+    .data-den-header-cell-value {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+}
+
+.data-den-header-sorter {
+  --#{$prefix}header-sorter-margin-left: #{$header-sorter-margin-left};
+
+  margin-left: var(--#{$prefix}header-sorter-margin-left);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .data-den-header-sorter-arrow {
+    --#{$prefix}header-sorter-arrow-sorted-color: #{$header-sorter-arrow-sorted-color};
+    --#{$prefix}header-sorter-arrow-unsorted-color: #{$header-sorter-arrow-unsorted-color};
+    --#{$prefix}header-sorter-asc-transform: #{$header-sorter-asc-transform};
+    --#{$prefix}header-sorter-desc-transform: #{$header-sorter-desc-transform};
+
+    &:after {
+      display: inline-block;
+      margin-left: 0.255em;
+      vertical-align: 0.255em;
+      content: '';
+      border-top: 0.3em solid;
+      border-right: 0.3em solid transparent;
+      border-bottom: 0;
+      border-left: 0.3em solid transparent;
+      color: var(--#{$prefix}header-sorter-arrow-unsorted-color);
+      transform: var(--#{$prefix}header-sorter-asc-transform);
+    }
+
+    &.data-den-header-sorter-arrow-asc:after {
+      color: var(--#{$prefix}header-sorter-arrow-sorted-color);
+    }
+
+    &.data-den-header-sorter-arrow-desc:after {
+      color: var(--#{$prefix}header-sorter-arrow-sorted-color);
+      transform: var(--#{$prefix}header-sorter-desc-transform);
+    }
+  }
+}
+
+.data-den-header-filter {
+  display: block;
+
+  .data-den-header-filter-input {
+    --#{$prefix}header-filter-input-margin: #{$header-filter-input-margin};
+    --#{$prefix}header-filter-input-width: #{$header-filter-input-width};
+
+    margin: var(--#{$prefix}header-filter-input-margin);
+    width: var(--#{$prefix}header-filter-input-width);
+  }
+}

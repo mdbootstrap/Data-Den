@@ -1,0 +1,28 @@
+$prefix: 'data-den-';
+
+$cell-border: solid 1px #ccc;
+$cell-padding: 3px;
+$cell-width: 180px;
+
+$header-filter-input-margin: 5px 0;
+$header-filter-input-width: 100%;
+
+$header-cell-border: $cell-border;
+$header-cell-padding: $cell-padding;
+$header-cell-width: $cell-width;
+$header-cell-bg: #eceaea;
+
+$header-sorter-margin-left: 5px;
+$header-sorter-asc-transform: rotate(180deg);
+$header-sorter-desc-transform: rotate(0deg);
+$header-sorter-arrow-sorted-color: unset;
+$header-sorter-arrow-unsorted-color: #a9a9a9;
+
+$pagination-info-margin: 0 5px;
+$pagination-content-marin: 10px 0;
+
+$row-cell-border: $cell-border;
+$row-cell-padding: $cell-padding;
+$row-cell-width: $cell-width;
+
+$quick-filter-margin-bottom: 8px;

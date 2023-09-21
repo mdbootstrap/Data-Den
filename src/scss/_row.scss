@@ -1,0 +1,13 @@
+.data-den-row {
+  display: flex;
+}
+
+.data-den-cell {
+  --#{$prefix}row-cell-border: #{$row-cell-border};
+  --#{$prefix}row-cell-padding: #{$row-cell-padding};
+  --#{$prefix}row-cell-width: #{$row-cell-width};
+
+  border: var(--#{$prefix}row-cell-border);
+  width: var(--#{$prefix}row-cell-width);
+  padding: var(--#{$prefix}row-cell-padding);
+}
