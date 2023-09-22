@@ -1,6 +1,8 @@
 import { DataDenDataLoaderStrategy } from './modules/fetch';
 import { DataDenCellRenderer } from './modules/rendering';
 
+export type ClassType<T> = new (...args: any[]) => T;
+
 export type DataDenMode = 'client' | 'server';
 
 export interface DataDenFilterOptions {
@@ -17,7 +19,7 @@ export interface DataDenColDef {
   filterOptions: DataDenFilterOptions;
   resize: boolean;
   width: number;
-  cellRenderer: DataDenCellRenderer;
+  cellRenderer: ClassType<DataDenCellRenderer>;
 }
 
 export interface DataDenRowDef<TData = any> {
