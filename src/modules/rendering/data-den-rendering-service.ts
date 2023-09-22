@@ -16,10 +16,14 @@ import { DataDenHeaderDefaultResizerRenderer } from './resizer';
 import { DataDenPubSub } from '../../data-den-pub-sub';
 import { DataDenEvent } from '../../data-den-event';
 import { Order } from '../sorting/data-den-sorting.interface';
+import { Context } from '../../context';
+import { DataDenColDef } from '../../data-den-options.interface';
 
 export class DataDenRenderingService {
   #container: HTMLElement;
-  #orderedColumns: DataDenOptions['columns'];
+  #options: DataDenOptions;
+  #defaultColumns: DataDenColDef[];
+  #orderedColumns: DataDenColDef[];
   #columnsOrder: number[];
   #headerRow: DataDenHeaderRow;
   #rows: DataDenRow[] = [];
@@ -31,13 +35,15 @@ export class DataDenRenderingService {
 
   constructor(container: HTMLElement, options: DataDenOptions) {
     this.#container = container;
-    this.#orderedColumns = options.columns;
+    this.#options = options;
+    this.#headerRow = this.#createHeaderRow([], '');
+    this.#rows = this.#createDataRows([]);
+    this.#defaultColumns = [];
+    this.#orderedColumns = [];
     this.#columnsOrder = [];
     this.#paddingX = parseInt(getComputedStyle(document.body).getPropertyValue('--col-padding-x'), 10) * 2;
     this.#borderWidth = parseInt(getComputedStyle(document.body).getPropertyValue('--border-width'), 10) * 2;
     this.#rowHeight = parseInt(getComputedStyle(document.body).getPropertyValue('--row-height'), 10);
-    this.#headerRow = this.#createHeaderRow(options, '');
-    this.#rows = this.#createDataRows(options, options.rows);
 
     if (options.quickFilter) {
       const { debounceTime } = options.quickFilterOptions;
@@ -50,30 +56,31 @@ export class DataDenRenderingService {
     }
 
     this.renderTable();
-    this.#subscribeToEvents(options);
-    this.#subscribeSortingDone(options);
+    this.#subscribeToEvents();
+    this.#subscribeFetchDone();
+    this.#publishFetchStart();
   }
 
-  #createHeaderRow(options: DataDenOptions, order: Order): DataDenHeaderRow {
+  #createHeaderRow(columns: DataDenColDef[], order: Order): DataDenHeaderRow {
     const rowIndex = 0;
-    const headerCells = options.columns.map((column, colIndex) => {
+    const headerCells = columns.map((column, colIndex) => {
       const value = column.headerName;
-      const left = options.columns.slice(0, colIndex).reduce((acc, curr) => acc + (curr.width || 120), 0);
+      const left = columns.slice(0, colIndex).reduce((acc, curr) => acc + (curr.width || 120), 0);
+      const width = (columns[colIndex].width || 120) - this.#paddingX - this.#borderWidth;
 
       const rendererParams: DataDenCellRendererParams = {
         value,
         left,
-        paddingX: this.#paddingX,
-        borderWidth: this.#borderWidth,
+        width,
       };
-      const cellRenderer = new DataDenDefaultHeaderCellRenderer(rendererParams, colIndex, options);
+      const cellRenderer = new DataDenDefaultHeaderCellRenderer(rendererParams, this.#options.draggable);
       const field = column.field;
       const { method, debounceTime, caseSensitive } = column.filterOptions;
       const editorParams: DataDenCellEditorParams = { value: value };
       const cellEditor = new DataDenDefaultCellEditor(editorParams);
       const filterRendererParams: DataDenHeaderFilterRendererParams = { field, method, debounceTime, caseSensitive };
+      const sorterRenderer = new DataDenHeaderDefaultSorterRenderer(column.field, order);
       const filterRenderer = new DataDenHeaderTextFilterRenderer(filterRendererParams);
-      const sorterRenderer = new DataDenHeaderDefaultSorterRenderer(column.field, order, options.rows);
       const resizerRenderer = new DataDenHeaderDefaultResizerRenderer();
 
       return new DataDenHeaderCell(
@@ -87,35 +94,35 @@ export class DataDenRenderingService {
       );
     });
 
-    return new DataDenHeaderRow(rowIndex, headerCells, options.draggable);
+    return new DataDenHeaderRow(rowIndex, headerCells, this.#options.draggable);
   }
 
-  #createDataRows(options: DataDenOptions, dataRows: DataDenRow[]): DataDenRow[] {
+  #createDataRows(dataRows: DataDenRow[]): DataDenRow[] {
     return dataRows.map((row, rowIndex) => {
       const cells = Object.entries(row).map(([, value], colIndex) => {
         const orderedColIndex = this.#columnsOrder.length ? this.#columnsOrder.indexOf(colIndex) : colIndex;
         const left = this.#orderedColumns.slice(0, orderedColIndex).reduce((acc, curr) => acc + (curr.width || 120), 0);
+        const width = (this.#orderedColumns[orderedColIndex].width || 120) - this.#paddingX - this.#borderWidth;
 
         const rendererParams: DataDenCellRendererParams = {
           value,
           left,
-          paddingX: this.#paddingX,
-          borderWidth: this.#borderWidth,
+          width,
         };
         const renderer = new DataDenDefaultCellRenderer(rendererParams);
         const editorParams: DataDenCellEditorParams = { value: value };
         const editor = new DataDenDefaultCellEditor(editorParams);
-        return new DataDenCell(
-          rendererParams,
-          orderedColIndex,
-          options.draggable,
-          this.#orderedColumns,
-          renderer,
-          editor
-        );
+        return new DataDenCell(rendererParams, this.#options.draggable, renderer, editor);
       });
 
       return new DataDenRow(rowIndex, cells, this.#rowHeight);
+    });
+  }
+
+  #publishFetchStart() {
+    DataDenPubSub.publish('command:fetch:start', {
+      caller: this,
+      context: new Context('command:fetch:start'),
     });
   }
 
@@ -151,37 +158,6 @@ export class DataDenRenderingService {
     body.style.height = `${rowsHeight}px`;
   }
 
-  #updateRows(options: DataDenOptions, dataRows: DataDenRow[]): void {
-    const rows = document.createDocumentFragment();
-    this.#rows = this.#createDataRows(options, dataRows);
-    this.#rows.forEach((row) => rows.appendChild(row.render()));
-
-    const rowContainer = this.#container.querySelector('.data-den-grid-rows') as HTMLElement;
-    rowContainer.innerHTML = '';
-    rowContainer.appendChild(rows);
-    this.#calculateGridSize();
-  }
-
-  #subscribeToEvents(options: DataDenOptions): void {
-    DataDenPubSub.subscribe('info:pagination:data-change:done', (event: DataDenEvent) => {
-      this.#updateRows(options, event.data.rows);
-    });
-    DataDenPubSub.subscribe('info:dragging:columns-reorder:done', (event: DataDenEvent) => {
-      this.#columnsOrder = event.data.columnsOrder;
-      const defaultColumns = [...options.columns];
-      this.#orderedColumns = [];
-
-      this.#columnsOrder.forEach((columnIndex, index) => {
-        this.#orderedColumns[index] = defaultColumns[columnIndex];
-      });
-    });
-    DataDenPubSub.subscribe('info:resizing:start', (event: DataDenEvent) => {
-      this.#orderedColumns[event.data.currentColIndex].width =
-        event.data.newCurrentColWidth + this.#paddingX + this.#borderWidth;
-      this.#calculateGridSize();
-    });
-  }
-
   #renderGrid(): HTMLElement {
     const grid = document.createElement('div');
     grid.classList.add('data-den-grid');
@@ -212,13 +188,53 @@ export class DataDenRenderingService {
     return rowContainer;
   }
 
-  #subscribeSortingDone(options: DataDenOptions): void {
-    DataDenPubSub.subscribe('info:sorting:done', (event: DataDenEvent) => {
-      this.#headerRow = this.#createHeaderRow(options, event.data.order);
-      this.#rows = this.#createDataRows(options, event.data.rows);
-
-      this.#container.innerHTML = '';
-      this.renderTable();
+  #subscribeToEvents(): void {
+    DataDenPubSub.subscribe('info:dragging:columns-reorder:done', (event: DataDenEvent) => {
+      this.#columnsOrder = event.data.columnsOrder;
+      this.#orderedColumns = this.#columnsOrder.map((columnIndex) => this.#defaultColumns[columnIndex]);
     });
+    DataDenPubSub.subscribe('info:resizing:start', (event: DataDenEvent) => {
+      this.#orderedColumns[event.data.currentColIndex].width =
+        event.data.newCurrentColWidth + this.#paddingX + this.#borderWidth;
+      this.#calculateGridSize();
+    });
+  }
+
+  #subscribeFetchDone(): void {
+    DataDenPubSub.subscribe('info:fetch:done', (event: DataDenEvent) => {
+      switch (event.context.action) {
+        case 'command:fetch:start':
+          this.#updateTable(event);
+          break;
+        default:
+          this.#updateRows(event);
+          break;
+      }
+    });
+  }
+
+  #updateTable(event: DataDenEvent) {
+    const { columns, rows, order } = event.data;
+
+    this.#defaultColumns = [...columns];
+    this.#orderedColumns = [...columns];
+    this.#headerRow = this.#createHeaderRow(columns, order);
+    this.#rows = this.#createDataRows(rows);
+
+    this.#container.innerHTML = '';
+    this.renderTable();
+  }
+
+  #updateRows(event: DataDenEvent): void {
+    const { rows } = event.data;
+
+    const rowsEl = document.createDocumentFragment();
+    this.#rows = this.#createDataRows(rows);
+    this.#rows.forEach((row) => rowsEl.appendChild(row.render()));
+
+    const rowContainer = this.#container.querySelector('.data-den-grid-rows')!;
+    rowContainer.innerHTML = '';
+    rowContainer.appendChild(rowsEl);
+    this.#calculateGridSize();
   }
 }

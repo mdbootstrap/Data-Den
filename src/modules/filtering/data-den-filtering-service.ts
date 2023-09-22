@@ -23,8 +23,8 @@ export class DataDenFilteringService {
       return options.filterFn;
     } else {
       return (searchTerm: any, value: any) => {
-        searchTerm = searchTerm.toLowerCase();
-        value = value.toLowerCase();
+        searchTerm = searchTerm.toString().toLowerCase();
+        value = value.toString().toLowerCase();
 
         return value.includes(searchTerm);
       };
@@ -57,8 +57,8 @@ export class DataDenFilteringService {
 
   #getTextFilterFunction(method: string, caseSensitive: boolean) {
     return (searchTerm: string, value: any) => {
-      value = caseSensitive ? value : value.toLowerCase();
-      searchTerm = caseSensitive ? searchTerm : searchTerm.toLowerCase();
+      value = caseSensitive ? value : value.toString().toLowerCase();
+      searchTerm = caseSensitive ? searchTerm : searchTerm.toString().toLowerCase();
 
       switch (method) {
         case 'includes':

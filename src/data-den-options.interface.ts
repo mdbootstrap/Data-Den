@@ -1,3 +1,4 @@
+import { DataDenDataLoaderStrategy } from './modules/fetch';
 import { DataDenCellRenderer } from './modules/rendering';
 
 export type DataDenMode = 'client' | 'server';
@@ -19,6 +20,10 @@ export interface DataDenColDef {
   cellRenderer?: DataDenCellRenderer;
 }
 
+export interface DataDenRowDef<TData = any> {
+  [key: string]: TData;
+}
+
 export interface DataDenPaginationOptions {
   pageSize?: number;
   pageSizeOptions?: number[];
@@ -30,14 +35,12 @@ export interface DataDenQuickFilterOptions {
   filterFn?: (searchTerm: any, value: any) => boolean;
 }
 
-export interface DataDenOptions<TData = any> {
-  mode: DataDenMode;
-  columns: DataDenColDef[];
+export interface DataDenOptions {
+  dataLoader: DataDenDataLoaderStrategy;
   draggable?: boolean;
-  resizable?: boolean;
-  rows: TData[];
   pagination: boolean;
   paginationOptions: DataDenPaginationOptions;
   quickFilter: boolean;
   quickFilterOptions: DataDenQuickFilterOptions;
+  resizable?: boolean;
 }

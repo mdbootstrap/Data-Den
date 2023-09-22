@@ -6,6 +6,7 @@ import { DataDenPubSub } from '../../data-den-pub-sub';
 export class DataDenResizingService {
   #container: HTMLElement;
   #options: DataDenOptions;
+  #isInitiated: boolean;
   #isResizing: boolean;
   #headers: HTMLElement[];
   #defaultHeaders: HTMLElement[];
@@ -19,10 +20,11 @@ export class DataDenResizingService {
   constructor(container: HTMLElement, options: DataDenOptions) {
     this.#container = container;
     this.#options = options;
+    this.#isInitiated = false;
     this.#isResizing = false;
-    this.#headers = Array.from(this.#container.querySelectorAll('[ref="headerCell"]') as NodeListOf<HTMLElement>);
-    this.#columnsOrder = this.#headers.map((_, index) => index);
-    this.#defaultHeaders = [...this.#headers];
+    this.#headers = [];
+    this.#columnsOrder = [];
+    this.#defaultHeaders = [];
     this.#rows = [];
     this.#currentHeader = null;
     this.#currentCol = null;
@@ -30,28 +32,40 @@ export class DataDenResizingService {
     this.#headersOnTheRight = [];
 
     if (this.#options.resizable) {
-      this.init();
+      this.#subscribeFetchDone();
     }
   }
 
   init() {
-    this.#subscribeToEvents();
-    this.#subscribeToDataChangeEvent();
+    this.#headers = Array.from(this.#container.querySelectorAll('[ref="headerCell"]'))!;
+    this.#defaultHeaders = [...this.#headers];
+    this.#columnsOrder = this.#headers.map((_, index) => index);
+
+    this.#subscribeResizingEvents();
+    this.#subscribeDraggingEvent();
+    this.#isInitiated = true;
   }
 
-  #subscribeToEvents() {
-    DataDenPubSub.subscribe('info:resizing:mousedown', (event) => this.#onMousedown(event));
-    DataDenPubSub.subscribe('info:resizing:mouseup', () => this.#onMouseup());
-    DataDenPubSub.subscribe('command:resizing:start', (event) => this.#onResizing(event));
-    DataDenPubSub.subscribe('info:dragging:columns-reorder:done', (event: DataDenEvent) => {
-      this.#columnsOrder = event.data.columnsOrder;
-      this.#headers = this.#columnsOrder.map((columnIndex) => this.#defaultHeaders[columnIndex]);
+  #subscribeFetchDone(): void {
+    DataDenPubSub.subscribe('info:fetch:done', () => {
+      if (!this.#isInitiated) {
+        this.init();
+      }
+
+      this.#rows = Array.from(this.#container.querySelectorAll('[ref="row"]'));
     });
   }
 
-  #subscribeToDataChangeEvent() {
-    DataDenPubSub.subscribe('info:pagination:data-change:done', () => {
-      this.#rows = Array.from(this.#container.querySelectorAll('[ref="row"]') as NodeListOf<HTMLElement>);
+  #subscribeResizingEvents() {
+    DataDenPubSub.subscribe('info:resizing:mousedown', (event) => this.#onMousedown(event));
+    DataDenPubSub.subscribe('info:resizing:mouseup', () => this.#onMouseup());
+    DataDenPubSub.subscribe('command:resizing:start', (event) => this.#onResizing(event));
+  }
+
+  #subscribeDraggingEvent() {
+    DataDenPubSub.subscribe('info:dragging:columns-reorder:done', (event: DataDenEvent) => {
+      this.#columnsOrder = event.data.columnsOrder;
+      this.#headers = this.#columnsOrder.map((columnIndex) => this.#defaultHeaders[columnIndex]);
     });
   }
 
@@ -115,21 +129,21 @@ export class DataDenResizingService {
       const currentLeft = header.style.left;
       const newLeft = parseInt(currentLeft || '0') + movementX;
       const col = this.#getColumnElements(header);
-      col.forEach((cell) => (cell.style.left = `${newLeft}px`));
+      col.forEach((cell: HTMLElement) => (cell.style.left = `${newLeft}px`));
     });
   }
 
   #getHeadersOnTheRight(): HTMLElement[] {
-    return this.#headers.slice(this.#currentColIndex + 1) as HTMLElement[];
+    return this.#headers.slice(this.#currentColIndex + 1);
   }
 
-  #getColumnElements(colHeader: HTMLElement | null) {
+  #getColumnElements(colHeader: HTMLElement | null): HTMLElement[] {
     if (!colHeader || !colHeader.parentElement) {
       return [];
     }
 
     const index = this.#columnsOrder[this.#headers.indexOf(colHeader)];
-    const colCells = this.#rows.map((row: HTMLElement) => row.querySelectorAll('[ref="cell"]')[index]) as HTMLElement[];
+    const colCells = this.#rows.map((row: HTMLElement) => row.querySelectorAll('[ref="cell"]')[index] as HTMLElement);
 
     return [colHeader, ...colCells];
   }

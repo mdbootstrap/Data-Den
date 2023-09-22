@@ -30,6 +30,7 @@ export class DataDenHeaderCell extends DataDenCell {
 
   render(): HTMLElement {
     const container = this.#renderer.getGui();
+    container.querySelector('.data-den-header-cell-value')!.appendChild(this.#sorterRenderer.getGui());
     container.appendChild(this.#filterRenderer.getGui());
     container.appendChild(this.#sorterRenderer.getGui());
     container.appendChild(this.#resizerRenderer.getGui());

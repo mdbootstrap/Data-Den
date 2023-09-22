@@ -79,16 +79,16 @@ export class DataDenPaginationRenderer {
   private subscribeToEvents(): void {
     DataDenPubSub.subscribe(
       'info:pagination:info-change:done',
-      (event: { data: { firstRow: number; lastRow: number; allTotalRows: number; pageSize: number } }) => {
-        this.updateInfo(event.data.firstRow, event.data.lastRow, event.data.allTotalRows);
+      (event: { data: { firstRowIndex: number; lastRowIndex: number; allTotalRows: number; pageSize: number } }) => {
+        this.updateInfo(event.data.firstRowIndex, event.data.lastRowIndex, event.data.allTotalRows);
         this.updatePageSize(event.data.pageSize);
       }
     );
   }
 
-  private updateInfo(firstRow: number, lastRow: number, allTotalRows: number): void {
+  private updateInfo(firstRowIndex: number, lastRowIndex: number, allTotalRows: number): void {
     const info = this.element.querySelector('.data-den-pagination-info');
-    info!.innerHTML = `${firstRow}-${lastRow} ${this.options.ofText || 'of'} ${allTotalRows}`;
+    info!.innerHTML = `${firstRowIndex}-${lastRowIndex} ${this.options.ofText || 'of'} ${allTotalRows}`;
   }
 
   private updatePageSize(pageSize: number): void {

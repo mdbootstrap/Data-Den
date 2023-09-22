@@ -9,12 +9,13 @@ export class DataDenPubSub {
     'command:pagination:load-prev-page:start': [],
     'command:pagination:load-next-page:start': [],
     'command:pagination:load-last-page:start': [],
-    'info:pagination:info-change:done': [],
     'info:pagination:data-change:done': [],
+    'info:pagination:info-change:done': [],
     'info:pagination:page-size-change:done': [],
     'info:dragging:columns-reorder:done': [],
     'command:sorting:start': [],
     'info:sorting:done': [],
+    'info:filtering:get-active-quick-filter:done': [],
     'info:filtering:header-filter-changed': [],
     'info:filtering:active-filters-changed': [],
     'info:filtering:quick-filter-changed': [],
@@ -24,6 +25,8 @@ export class DataDenPubSub {
     'command:resizing:start': [],
     'info:resizing:start': [],
     'info:resizing:done': [],
+    'command:fetch:start': [],
+    'info:fetch:done': [],
   };
 
   static publish(name: string, data: DataDenPublishedEvent) {

@@ -14,18 +14,15 @@ export class DataDen {
   #pagination: DataDenPaginationService;
   #dragging: DataDenDraggingService;
   #resizing: DataDenResizingService;
-  #fetch: DataDenFetchService = new DataDenFetchService();
+  #fetch: DataDenFetchService;
 
   constructor(container: HTMLElement, options: DataDenOptions) {
+    this.#fetch = new DataDenFetchService(options);
     this.#rendering = new DataDenRenderingService(container, options);
     this.#sorting = new DataDenSortingService();
     this.#filtering = new DataDenFilteringService(options.quickFilterOptions);
     this.#pagination = new DataDenPaginationService(options.paginationOptions);
     this.#dragging = new DataDenDraggingService(container, options);
     this.#resizing = new DataDenResizingService(container, options);
-
-    // await fetch
-
-    this.#pagination.init(options.rows);
   }
 }

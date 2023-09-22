@@ -5,7 +5,7 @@
       :root {
         --col-padding-x: 12px;
         --border-width: 1px;
-        --header-height: 36px;
+        --header-height: 67px;
         --row-height: 26px;
       }
       body {
@@ -122,6 +122,18 @@
       }
       .data-den-header-resizer:hover {
         background-color: #ccc;
+      }
+      .data-den-header-cell {
+        display: flex;
+        flex-direction: column;
+      }
+      .data-den-header-cell-value {
+        display: flex;
+        flex-direction: row;
+      }
+      .data-den-header-filter-input {
+        margin: 5px 0;
+        width: 100%;
       }
     </style>
   </head>

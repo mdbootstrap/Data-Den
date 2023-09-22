@@ -1,26 +1,22 @@
 import { DataDenPubSub } from '../../data-den-pub-sub';
 import { DataDenPaginationOptions } from '../../data-den-options.interface';
 import { Context } from '../../context';
+import { DataDenEvent } from '../../data-den-event';
 
 export class DataDenPaginationService {
-  #data: any[];
   #options: DataDenPaginationOptions;
   #currentPage: number;
   #pageSize: number;
+  #allTotalRows: number;
 
   constructor(options: DataDenPaginationOptions) {
-    this.#data = [];
     this.#options = options;
 
     this.#currentPage = 0;
+    this.#allTotalRows = 0;
     this.#pageSize = this.#options.pageSize || 10;
 
     this.#subscribeToEvents();
-  }
-
-  init(data: any[]) {
-    this.#data = data;
-    this.#updateState();
   }
 
   #subscribeToEvents() {
@@ -41,27 +37,29 @@ export class DataDenPaginationService {
       this.#currentPage = 0;
       this.#updateState();
     });
+    DataDenPubSub.subscribe('info:fetch:done', (event: DataDenEvent) => {
+      if (this.#allTotalRows || this.#allTotalRows === event.data.rows.length) {
+        return;
+      }
+      this.#allTotalRows = event.data.rows.length;
+      this.#updateState();
+    });
   }
 
   #updateState(): void {
-    const firstRow = this.#currentPage * this.#pageSize + 1;
-    const lastRow = Math.min(this.#data.length, this.#currentPage * this.#pageSize + this.#pageSize);
-    const allTotalRows = this.#data.length;
+    const firstRowIndex = this.#currentPage * this.#pageSize;
+    const lastRowIndex = Math.min(this.#allTotalRows, this.#currentPage * this.#pageSize + this.#pageSize);
 
-    this.#publishEvents(firstRow, lastRow, allTotalRows);
+    this.#publishEvents(firstRowIndex, lastRowIndex, this.#allTotalRows);
   }
 
-  #publishEvents(firstRow: number, lastRow: number, allTotalRows: number) {
+  #publishEvents(firstRowIndex: number, lastRowIndex: number, allTotalRows: number) {
     DataDenPubSub.publish('info:pagination:info-change:done', {
-      firstRow,
-      lastRow,
+      firstRowIndex,
+      lastRowIndex,
       allTotalRows,
       pageSize: this.#pageSize,
       context: new Context('info:pagination:info-change:done'),
-    });
-    DataDenPubSub.publish('info:pagination:data-change:done', {
-      rows: this.#data.slice(firstRow - 1, lastRow),
-      context: new Context('info:pagination:data-change:done'),
     });
   }
 
@@ -80,7 +78,7 @@ export class DataDenPaginationService {
   }
 
   #loadNextPage() {
-    if (this.#currentPage * this.#pageSize + this.#pageSize >= this.#data.length) {
+    if (this.#currentPage * this.#pageSize + this.#pageSize >= this.#allTotalRows) {
       return;
     }
 
@@ -89,11 +87,11 @@ export class DataDenPaginationService {
   }
 
   #loadLastPage() {
-    if (this.#data.length / this.#pageSize - 1 >= this.#data.length) {
+    if (this.#allTotalRows / this.#pageSize - 1 >= this.#allTotalRows) {
       return;
     }
 
-    this.#currentPage = Math.ceil(this.#data.length / this.#pageSize - 1);
+    this.#currentPage = Math.ceil(this.#allTotalRows / this.#pageSize - 1);
     this.#updateState();
   }
 }
