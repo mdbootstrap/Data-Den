@@ -1,5 +1,5 @@
 import { DataDenCellEditor } from '../editor';
-import { DataDenHeaderTextFilterRenderer } from '../filter';
+import { DataDenHeaderFilterRenderer } from '../filter';
 import { DataDenHeaderDefaultSorterRenderer } from '../sorter';
 import { DataDenHeaderDefaultResizerRenderer } from '../resizer';
 import { DataDenCell } from './data-den-cell';
@@ -16,7 +16,7 @@ export class DataDenHeaderCell extends DataDenCell {
     columnIndex: number,
     renderer: DataDenCellRenderer,
     editor: DataDenCellEditor,
-    filterRenderer: DataDenHeaderTextFilterRenderer,
+    filterRenderer: DataDenHeaderFilterRenderer,
     sorterRenderer: DataDenHeaderDefaultSorterRenderer,
     resizerRenderer: DataDenHeaderDefaultResizerRenderer
   ) {
