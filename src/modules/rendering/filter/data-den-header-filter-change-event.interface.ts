@@ -5,5 +5,4 @@ export interface DataDenHeaderFilterChangeEvent extends DataDenPublishedEvent {
   type: string;
   method: string;
   searchTerm: any;
-  caseSensitive: boolean;
 }

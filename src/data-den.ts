@@ -20,7 +20,7 @@ export class DataDen {
     this.#fetch = new DataDenFetchService(options);
     this.#rendering = new DataDenRenderingService(container, options);
     this.#sorting = new DataDenSortingService();
-    this.#filtering = new DataDenFilteringService(options.quickFilterOptions);
+    this.#filtering = new DataDenFilteringService(options);
     this.#pagination = new DataDenPaginationService(options.paginationOptions);
     this.#dragging = new DataDenDraggingService(container, options);
     this.#resizing = new DataDenResizingService(container, options);
