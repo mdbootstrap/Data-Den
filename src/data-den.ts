@@ -1,3 +1,5 @@
+import './scss/index.scss';
+
 import { DataDenRenderingService } from './modules/rendering';
 import { DataDenPaginationService } from './modules/pagination';
 import { DataDenDraggingService } from './modules/dragging';
@@ -6,6 +8,13 @@ import { DataDenFilteringService } from './modules/filtering';
 import { DataDenSortingService } from './modules/sorting';
 import { DataDenFetchService } from './modules/fetch';
 import { DataDenOptions } from './data-den-options.interface';
+
+import { DataDenDefaultCellRenderer } from './modules/rendering/cell/data-den-default-cell-renderer';
+import {
+  DataDenClientDataLoaderStrategy,
+  DataDenServerDataLoaderStrategy,
+  DataDenDataLoaderStrategy,
+} from './modules/fetch';
 
 export class DataDen {
   #rendering: DataDenRenderingService;
@@ -26,3 +35,10 @@ export class DataDen {
     this.#resizing = new DataDenResizingService(container, options);
   }
 }
+
+export {
+  DataDenDefaultCellRenderer,
+  DataDenClientDataLoaderStrategy,
+  DataDenServerDataLoaderStrategy,
+  DataDenDataLoaderStrategy,
+};
