@@ -12,7 +12,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         assetFileNames: (assetInfo) => {
-          if (assetInfo.name === 'style.css') return 'css/data-den.css';
+          if (assetInfo.name === 'style.css') return 'css/data-den.min.css';
           return assetInfo.name;
         },
       },

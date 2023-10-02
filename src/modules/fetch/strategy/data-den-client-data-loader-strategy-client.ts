@@ -1,4 +1,4 @@
-import { DataDenData } from './data-den-data.interface';
+import { DataDenData } from '../../../data-den-data.interface';
 import { DataDenDataLoaderStrategy } from './data-den-data-loader-strategy';
 import {
   DataDenFetchOptions,

@@ -2,12 +2,16 @@ import { Order } from './data-den-sorting.interface';
 import { DataDenPubSub } from '../../data-den-pub-sub';
 import { DataDenEvent } from '../../data-den-event';
 import { DataDenRowDef } from '../../data-den-options.interface';
+import { DataDenEventEmitter } from '../../data-den-event-emitter';
+import { Context } from '../../context';
 
 export class DataDenSortingService {
+  #container: HTMLElement;
   #field: string;
   #order: Order;
 
-  constructor() {
+  constructor(container: HTMLElement) {
+    this.#container = container;
     this.#field = '';
     this.#order = 'asc';
 
@@ -28,11 +32,23 @@ export class DataDenSortingService {
         this.#order = 'asc';
       }
 
+      if (event.data.order) {
+        this.#order = event.data.order;
+      }
+
       this.#field = event.data.field;
 
       DataDenPubSub.publish('info:sorting:done', {
         caller: this,
         context: event.context,
+        field: this.#field,
+        order: this.#order,
+        sortFn: this.sort,
+      });
+
+      DataDenEventEmitter.publish('info:sorting:done', {
+        element: this.#container,
+        context: new Context('info:sorting:done'),
         field: this.#field,
         order: this.#order,
         sortFn: this.sort,

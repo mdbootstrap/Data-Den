@@ -7,14 +7,16 @@ import { DataDenResizingService } from './modules/resizing';
 import { DataDenFilteringService } from './modules/filtering';
 import { DataDenSortingService } from './modules/sorting';
 import { DataDenFetchService } from './modules/fetch';
-import { DataDenOptions } from './data-den-options.interface';
-
 import { DataDenDefaultCellRenderer } from './modules/rendering/cell/data-den-default-cell-renderer';
 import {
   DataDenClientDataLoaderStrategy,
   DataDenServerDataLoaderStrategy,
   DataDenDataLoaderStrategy,
 } from './modules/fetch';
+import { DataDenPubSub } from './data-den-pub-sub';
+import { Context } from './context';
+import { DataDenData } from './data-den-data.interface';
+import { DataDenOptions } from './data-den-options.interface';
 
 export class DataDen {
   #rendering: DataDenRenderingService;
@@ -28,11 +30,20 @@ export class DataDen {
   constructor(container: HTMLElement, options: DataDenOptions) {
     this.#fetch = new DataDenFetchService(options);
     this.#rendering = new DataDenRenderingService(container, options);
-    this.#sorting = new DataDenSortingService();
+    this.#sorting = new DataDenSortingService(container);
     this.#filtering = new DataDenFilteringService(options.quickFilterOptions);
     this.#pagination = new DataDenPaginationService(options.paginationOptions);
     this.#dragging = new DataDenDraggingService(container, options);
     this.#resizing = new DataDenResizingService(container, options);
+  }
+
+  sort(field: string, order: string): void {
+    const command = 'command:sorting:start';
+    DataDenPubSub.publish(command, {
+      context: new Context(command),
+      field,
+      order,
+    });
   }
 }
 
@@ -42,3 +53,5 @@ export {
   DataDenServerDataLoaderStrategy,
   DataDenDataLoaderStrategy,
 };
+
+export type { DataDenData, DataDenOptions };

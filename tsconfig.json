@@ -4,7 +4,7 @@
     "module": "commonjs",
     "lib": ["es6", "dom"],
     "allowJs": true,
-    "outDir": "dist/js",
+    "outDir": "dist/types",
     "rootDir": "src",
     "strict": true,
     "noImplicitAny": true,
@@ -12,13 +12,8 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["@types/jest"],
+    "types": ["@types/jest"]
   },
-  "include": [
-    "./src"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": ["./src"],
+  "exclude": ["node_modules", "dist"]
 }
