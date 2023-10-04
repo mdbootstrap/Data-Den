@@ -6,9 +6,7 @@ export class DataDenDefaultCellRenderer implements DataDenCellRenderer {
   element: HTMLElement;
 
   constructor(params: DataDenCellRendererParams) {
-    const template = `<div class="data-den-cell" role="gridcell">${params.value}</div>`;
-
-    this.element = createHtmlElement(template);
+    this.element = createHtmlElement(`<span>${params.value}</span>`);
   }
 
   getGui(): HTMLElement {

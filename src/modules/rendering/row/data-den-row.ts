@@ -4,11 +4,11 @@ import { createHtmlElement } from '../../../utils/dom';
 export class DataDenRow {
   element: HTMLElement;
 
-  constructor(public index: number, public cells: DataDenCell[]) {
+  constructor(public index: number, public cells: DataDenCell[], rowHeight: number) {
     this.index = index;
     this.cells = cells;
 
-    const template = `<div class="data-den-row" role="row"></div>`;
+    const template = `<div class="data-den-row" role="row" ref="row" style="top: ${index * rowHeight}px"></div>`;
 
     this.element = createHtmlElement(template);
   }

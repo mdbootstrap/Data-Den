@@ -14,12 +14,12 @@ export interface DataDenFilterOptions {
 export interface DataDenColDef {
   field: string;
   headerName: string;
-  sort: boolean;
-  filter: boolean;
+  sort?: boolean;
+  filter?: boolean;
   filterOptions: DataDenFilterOptions;
-  resize: boolean;
-  width: number;
-  cellRenderer: ClassType<DataDenCellRenderer>;
+  resize?: boolean;
+  width?: number;
+  cellRenderer?: ClassType<DataDenCellRenderer>;
 }
 
 export interface DataDenRowDef<TData = any> {
@@ -39,8 +39,10 @@ export interface DataDenQuickFilterOptions {
 
 export interface DataDenOptions {
   dataLoader: DataDenDataLoaderStrategy;
+  draggable?: boolean;
   pagination: boolean;
   paginationOptions: DataDenPaginationOptions;
   quickFilter: boolean;
   quickFilterOptions: DataDenQuickFilterOptions;
+  resizable?: boolean;
 }

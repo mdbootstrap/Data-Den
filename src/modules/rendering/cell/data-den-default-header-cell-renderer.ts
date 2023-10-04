@@ -5,11 +5,12 @@ import { createHtmlElement } from '../../../utils/dom';
 export class DataDenDefaultHeaderCellRenderer implements DataDenCellRenderer {
   element: HTMLElement;
 
-  constructor(params: DataDenCellRendererParams) {
-    const template = `
-      <div class="data-den-header-cell" role="columnheader">
-        <div class="data-den-header-cell-value">${params.value}</div>
-      </div>`;
+  constructor(params: DataDenCellRendererParams, draggable: boolean | undefined) {
+    const template = `<div class="data-den-header-cell ${
+      draggable ? 'data-den-header-cell-draggable' : ''
+    }" role="columnheader" ref="headerCell" style="left: ${params.left}px; width: ${
+      params.width
+    }px"><div class="data-den-header-cell-value">${params.value}</div></div>`;
 
     this.element = createHtmlElement(template);
   }

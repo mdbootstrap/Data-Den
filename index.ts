@@ -21,7 +21,7 @@ const data: DataDenData = {
         caseSensitive: false,
       },
       resize: true,
-      width: 100,
+      width: 260,
       cellRenderer: DataDenDefaultCellRenderer,
     },
     {
@@ -35,7 +35,7 @@ const data: DataDenData = {
         caseSensitive: false,
       },
       resize: true,
-      width: 120,
+      width: 200,
       cellRenderer: DataDenDefaultCellRenderer,
     },
     {
@@ -49,7 +49,7 @@ const data: DataDenData = {
         caseSensitive: false,
       },
       resize: true,
-      width: 80,
+      width: 200,
       cellRenderer: DataDenDefaultCellRenderer,
     },
     {
@@ -63,8 +63,8 @@ const data: DataDenData = {
         caseSensitive: false,
       },
       resize: false,
-      width: 60,
-      cellRenderer: DataDenDefaultCellRenderer,
+      width: 180,
+      cellRenderer: DataDenDefaultCellRenderer
     },
   ],
   rows: [
@@ -114,6 +114,7 @@ const dataLoader = createStrategy(mode);
 
 const options: DataDenOptions = {
   dataLoader,
+  draggable: true,
   pagination: true,
   paginationOptions: {
     pageSize: 10,
@@ -124,6 +125,7 @@ const options: DataDenOptions = {
   quickFilterOptions: {
     debounceTime: 500,
   },
+  resizable: true,
 };
 
 const ddEl = document.getElementById('dd');
