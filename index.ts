@@ -22,7 +22,7 @@ const data: DataDenData = {
       },
       resize: true,
       width: 260,
-      cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }),
+      cellRenderer: DataDenDefaultCellRenderer,
     },
     {
       field: 'model',
@@ -36,7 +36,7 @@ const data: DataDenData = {
       },
       resize: true,
       width: 200,
-      cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }),
+      cellRenderer: DataDenDefaultCellRenderer,
     },
     {
       field: 'year',
@@ -50,7 +50,7 @@ const data: DataDenData = {
       },
       resize: true,
       width: 200,
-      cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }),
+      cellRenderer: DataDenDefaultCellRenderer,
     },
     {
       field: 'price',
@@ -64,7 +64,7 @@ const data: DataDenData = {
       },
       resize: false,
       width: 180,
-      cellRenderer: new DataDenDefaultCellRenderer({ value: 'test' }),
+      cellRenderer: DataDenDefaultCellRenderer
     },
   ],
   rows: [
