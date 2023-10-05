@@ -26,7 +26,7 @@ describe('data-den-sorting-service', () => {
     const ASC = 'asc';
     const DESC = 'desc';
     const COMMAND_SORTING_START = 'command:sorting:start';
-    const COMMAND_SORTING_DONE = 'info:sorting:done';
+    const COMMAND_FETCH_START = 'command:fetch:sort-start';
 
     const expectSortingObjectContaining = (order: string) => {
       return expect.objectContaining({
@@ -49,7 +49,7 @@ describe('data-den-sorting-service', () => {
       new DataDenSortingService();
       mockFn = jest.fn();
 
-      DataDenPubSub.subscribe(COMMAND_SORTING_DONE, (event: any) => {
+      DataDenPubSub.subscribe(COMMAND_FETCH_START, (event: any) => {
         mockFn(event);
       });
     });

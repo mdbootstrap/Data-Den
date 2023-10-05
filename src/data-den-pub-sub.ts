@@ -14,7 +14,6 @@ export class DataDenPubSub {
     'info:pagination:page-size-change:done': [],
     'info:dragging:columns-reorder:done': [],
     'command:sorting:start': [],
-    'info:sorting:done': [],
     'info:filtering:get-active-quick-filter:done': [],
     'info:filtering:header-filter-changed': [],
     'info:filtering:active-filters-changed': [],
@@ -26,6 +25,7 @@ export class DataDenPubSub {
     'info:resizing:start': [],
     'info:resizing:done': [],
     'command:fetch:start': [],
+    'command:fetch:sort-start': [],
     'info:fetch:done': [],
   };
 
