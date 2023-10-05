@@ -46,9 +46,10 @@ export class DataDenRenderingService {
     this.#defaultColumns = [];
     this.#orderedColumns = [];
     this.#columnsOrder = [];
-    this.#paddingX = parseInt(getComputedStyle(document.body).getPropertyValue('--col-padding-x'), 10) * 2;
-    this.#borderWidth = parseInt(getComputedStyle(document.body).getPropertyValue('--border-width'), 10) * 2;
-    this.#rowHeight = parseInt(getComputedStyle(document.body).getPropertyValue('--row-height'), 10);
+    this.#paddingX = parseInt(getComputedStyle(document.body).getPropertyValue('--data-den-cell-padding-x'), 10) * 2;
+    this.#borderWidth =
+      parseInt(getComputedStyle(document.body).getPropertyValue('--data-den-cell-border-width'), 10) * 2;
+    this.#rowHeight = parseInt(getComputedStyle(document.body).getPropertyValue('--data-den-row-height'), 10);
 
     if (options.quickFilter) {
       const { debounceTime } = options.quickFilterOptions;

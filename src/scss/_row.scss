@@ -1,13 +1,38 @@
+.data-den-grid-rows {
+  --#{$prefix}grid-row-cell-border: #{$row-cell-border};
+
+  display: flex;
+  flex-flow: row wrap;
+  flex-direction: column;
+  position: relative;
+  border-right: var(--#{$prefix}grid-row-cell-border);
+}
+
 .data-den-row {
   display: flex;
+  position: absolute;
+  height: var(--#{$prefix}row-height);
+  width: 100%;
 }
 
 .data-den-cell {
   --#{$prefix}row-cell-border: #{$row-cell-border};
-  --#{$prefix}row-cell-padding: #{$row-cell-padding};
-  --#{$prefix}row-cell-width: #{$row-cell-width};
+  --#{$prefix}row-cell-padding-x: #{$row-cell-padding-x};
 
   border: var(--#{$prefix}row-cell-border);
-  width: var(--#{$prefix}row-cell-width);
-  padding: var(--#{$prefix}row-cell-padding);
+  border-top: $cell-border-transparent;
+  border-right: $cell-border-transparent;
+  padding: 4px var(--#{$prefix}row-cell-padding-x);
+  position: absolute;
+
+  &.active {
+    background-color: #fafafa;
+  }
+}
+
+.data-den-cell-draggable {
+  &.dragging {
+    transition: left 0.2s;
+    user-select: none;
+  }
 }

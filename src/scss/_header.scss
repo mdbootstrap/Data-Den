@@ -1,21 +1,49 @@
+.data-den-header {
+  --#{$prefix}header-height: #{$header-height};
+  --#{$prefix}header-cell-border: #{$header-cell-border};
+
+  display: flex;
+  flex-flow: row wrap;
+  flex-direction: row;
+  position: relative;
+  height: var(--#{$prefix}header-height);
+  border-right: var(--#{$prefix}header-cell-border);
+}
+
 .data-den-header-row {
   display: flex;
+  width: 100%;
 
   .data-den-header-cell {
     --#{$prefix}header-cell-bg: #{$header-cell-bg};
     --#{$prefix}header-cell-border: #{$header-cell-border};
-    --#{$prefix}header-cell-padding: #{$header-cell-padding};
-    --#{$prefix}header-cell-width: #{$header-cell-width};
+    --#{$prefix}header-cell-padding-x: #{$header-cell-padding-x};
 
     background-color: var(--#{$prefix}header-cell-bg);
     border: var(--#{$prefix}header-cell-border);
-    padding: var(--#{$prefix}header-cell-padding);
-    width: var(--#{$prefix}header-cell-width);
+    border-right: $cell-border-transparent;
+    display: flex;
+    padding: 6px var(--#{$prefix}header-cell-padding-x);
+    position: absolute;
 
     .data-den-header-cell-value {
       display: flex;
       flex-direction: row;
     }
+    &.active {
+      background-color: #fafafa;
+    }
+  }
+}
+
+.data-den-header-row-draggable {
+  cursor: pointer;
+}
+
+.data-den-header-cell-draggable {
+  &.dragging {
+    transition: left 0.2s;
+    user-select: none;
   }
 }
 
@@ -66,5 +94,19 @@
 
     margin: var(--#{$prefix}header-filter-input-margin);
     width: var(--#{$prefix}header-filter-input-width);
+  }
+}
+
+.data-den-header-resizer {
+  position: absolute;
+  z-index: 100;
+  right: -5px;
+  top: 0;
+  height: 100%;
+  width: 10px;
+  cursor: col-resize;
+
+  &:hover {
+    background-color: #ccc;
   }
 }

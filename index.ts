@@ -73,7 +73,7 @@ const data: DataDenData = {
       },
       resize: false,
       width: 180,
-      cellRenderer: DataDenDefaultCellRenderer
+      cellRenderer: DataDenDefaultCellRenderer,
     },
   ],
   rows: [
