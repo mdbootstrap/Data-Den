@@ -92,7 +92,8 @@ export class DataDenRenderingService {
         cellEditor,
         filterRenderer,
         sorterRenderer,
-        resizerRenderer
+        resizerRenderer,
+        column
       );
     });
 
