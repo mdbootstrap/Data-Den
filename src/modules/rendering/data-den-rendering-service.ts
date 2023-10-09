@@ -1,4 +1,4 @@
-import { DataDenOptions } from '../../data-den-options.interface';
+import { DataDenColDef, DataDenOptions } from '../../data-den-options.interface';
 import {
   DataDenCell,
   DataDenCellRendererParams,
@@ -7,7 +7,13 @@ import {
   DataDenHeaderCell,
 } from './cell';
 import { DataDenCellEditorParams, DataDenDefaultCellEditor } from './editor';
-import { DataDenHeaderTextFilterRenderer, DataDenQuickFilterParams, DataDenQuickFilterRenderer } from './filter';
+import {
+  DataDenHeaderDateFilterRenderer,
+  DataDenHeaderNumberFilterRenderer,
+  DataDenHeaderTextFilterRenderer,
+  DataDenQuickFilterParams,
+  DataDenQuickFilterRenderer,
+} from './filter';
 import { DataDenHeaderFilterRendererParams } from './filter/data-den-header-filter-renderer-params.interface';
 import { DataDenPaginationRenderer } from './pagination';
 import { DataDenHeaderRow, DataDenRow } from './row';
@@ -17,7 +23,6 @@ import { DataDenPubSub } from '../../data-den-pub-sub';
 import { DataDenEvent } from '../../data-den-event';
 import { Order } from '../sorting/data-den-sorting.interface';
 import { Context } from '../../context';
-import { DataDenColDef } from '../../data-den-options.interface';
 
 export class DataDenRenderingService {
   #container: HTMLElement;
@@ -74,13 +79,10 @@ export class DataDenRenderingService {
         width,
       };
       const cellRenderer = new DataDenDefaultHeaderCellRenderer(rendererParams, this.#options.draggable);
-      const field = column.field;
-      const { method, debounceTime, caseSensitive } = column.filterOptions;
       const editorParams: DataDenCellEditorParams = { value: value };
       const cellEditor = new DataDenDefaultCellEditor(editorParams);
-      const filterRendererParams: DataDenHeaderFilterRendererParams = { field, method, debounceTime, caseSensitive };
       const sorterRenderer = new DataDenHeaderDefaultSorterRenderer(column.field, order);
-      const filterRenderer = new DataDenHeaderTextFilterRenderer(filterRendererParams);
+      const filterRenderer = this.#getHeaderFilterRenderer(column);
       const resizerRenderer = new DataDenHeaderDefaultResizerRenderer();
 
       return new DataDenHeaderCell(
@@ -95,6 +97,27 @@ export class DataDenRenderingService {
     });
 
     return new DataDenHeaderRow(rowIndex, headerCells, this.#options.draggable);
+  }
+
+  #getHeaderFilterRenderer(column: DataDenColDef) {
+    const field = column.field;
+    const { type, method, debounceTime } = column.filterOptions;
+    const params: DataDenHeaderFilterRendererParams = {
+      field,
+      method,
+      debounceTime,
+    };
+
+    switch (type) {
+      case 'text':
+        return new DataDenHeaderTextFilterRenderer(params);
+      case 'number':
+        return new DataDenHeaderNumberFilterRenderer(params);
+      case 'date':
+        return new DataDenHeaderDateFilterRenderer(params);
+      default:
+        return new DataDenHeaderTextFilterRenderer(params);
+    }
   }
 
   #createDataRows(dataRows: DataDenRow[]): DataDenRow[] {

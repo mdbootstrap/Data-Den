@@ -38,7 +38,7 @@ export class DataDenSortingService {
 
       this.#field = event.data.field;
 
-      DataDenPubSub.publish('info:sorting:done', {
+      DataDenPubSub.publish('command:fetch:sort-start', {
         caller: this,
         context: event.context,
         field: this.#field,

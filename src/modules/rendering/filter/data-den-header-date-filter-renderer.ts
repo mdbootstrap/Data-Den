@@ -5,13 +5,13 @@ import { DataDenHeaderFilterChangeEvent } from './data-den-header-filter-change-
 import { DataDenHeaderFilterRendererParams } from './data-den-header-filter-renderer-params.interface';
 import { DataDenHeaderFilterRenderer } from './data-den-header-filter-renderer.interface';
 
-export class DataDenHeaderTextFilterRenderer extends DataDenHeaderFilterRenderer {
+export class DataDenHeaderDateFilterRenderer extends DataDenHeaderFilterRenderer {
   element: HTMLElement;
 
   constructor(params: DataDenHeaderFilterRendererParams) {
     super();
 
-    const template = `<div class="data-den-header-filter"><input type="text" class="data-den-header-filter-input"></div>`;
+    const template = `<div class="data-den-header-filter"><input type="date" class="data-den-header-filter-input"></div>`;
 
     this.element = createHtmlElement(template);
 
@@ -23,7 +23,7 @@ export class DataDenHeaderTextFilterRenderer extends DataDenHeaderFilterRenderer
   }
 
   getType(): string {
-    return 'text';
+    return 'date';
   }
 
   attachUiEvents(params: DataDenHeaderFilterRendererParams) {
@@ -35,7 +35,7 @@ export class DataDenHeaderTextFilterRenderer extends DataDenHeaderFilterRenderer
         params.debounceTime
       );
 
-      input.addEventListener('keyup', () => debounceFilter(input.value, params));
+      input.addEventListener('change', () => debounceFilter(input.value, params));
     }
   }
 

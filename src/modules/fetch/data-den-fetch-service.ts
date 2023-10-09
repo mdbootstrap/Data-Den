@@ -44,7 +44,7 @@ export class DataDenFetchService {
   }
 
   #subscribeSortingDone(): void {
-    DataDenPubSub.subscribe('info:sorting:done', (event: DataDenEvent) => {
+    DataDenPubSub.subscribe('command:fetch:sort-start', (event: DataDenEvent) => {
       this.#fetchOptions.sortingOptions = {
         field: event.data.field,
         order: event.data.order,

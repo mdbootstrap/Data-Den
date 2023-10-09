@@ -5,13 +5,13 @@ import { DataDenHeaderFilterChangeEvent } from './data-den-header-filter-change-
 import { DataDenHeaderFilterRendererParams } from './data-den-header-filter-renderer-params.interface';
 import { DataDenHeaderFilterRenderer } from './data-den-header-filter-renderer.interface';
 
-export class DataDenHeaderTextFilterRenderer extends DataDenHeaderFilterRenderer {
+export class DataDenHeaderNumberFilterRenderer extends DataDenHeaderFilterRenderer {
   element: HTMLElement;
 
   constructor(params: DataDenHeaderFilterRendererParams) {
     super();
 
-    const template = `<div class="data-den-header-filter"><input type="text" class="data-den-header-filter-input"></div>`;
+    const template = `<div class="data-den-header-filter"><input type="number" class="data-den-header-filter-input"></div>`;
 
     this.element = createHtmlElement(template);
 
@@ -23,7 +23,7 @@ export class DataDenHeaderTextFilterRenderer extends DataDenHeaderFilterRenderer
   }
 
   getType(): string {
-    return 'text';
+    return 'number';
   }
 
   attachUiEvents(params: DataDenHeaderFilterRendererParams) {

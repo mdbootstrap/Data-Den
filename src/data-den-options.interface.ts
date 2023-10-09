@@ -1,12 +1,41 @@
 import { DataDenDataLoaderStrategy } from './modules/fetch';
 import { DataDenCellRenderer } from './modules/rendering';
 
+export type ClassType<T> = new (...args: any[]) => T;
+
 export type DataDenMode = 'client' | 'server';
 
-export interface DataDenFilterOptions {
-  method: string;
+export type DataDenHeaderFilterOptions =
+  | DataDenTextFilterOptions
+  | DataDenNumberFilterOptions
+  | DataDenDateFilterOptions;
+
+export type DataDenTextFilterMethod = 'includes';
+
+export type DataDenNumberFilterMethod = 'equals';
+
+export type DataDenDateFilterMethod = 'equals';
+
+export type DataDenDateFilterParserFn = (value: string) => Date;
+
+export interface DataDenTextFilterOptions {
+  type: 'text';
+  method: DataDenTextFilterMethod;
   debounceTime: number;
   caseSensitive: boolean;
+}
+
+export interface DataDenNumberFilterOptions {
+  type: 'number';
+  method: DataDenNumberFilterMethod;
+  debounceTime: number;
+}
+
+export interface DataDenDateFilterOptions {
+  type: 'date';
+  method: DataDenDateFilterMethod;
+  debounceTime: number;
+  dateParserFn: DataDenDateFilterParserFn;
 }
 
 export interface DataDenColDef {
@@ -14,10 +43,10 @@ export interface DataDenColDef {
   headerName: string;
   sort?: boolean;
   filter?: boolean;
-  filterOptions: DataDenFilterOptions;
+  filterOptions: DataDenHeaderFilterOptions;
   resize?: boolean;
   width?: number;
-  cellRenderer?: DataDenCellRenderer;
+  cellRenderer?: ClassType<DataDenCellRenderer>;
 }
 
 export interface DataDenRowDef<TData = any> {
@@ -36,6 +65,7 @@ export interface DataDenQuickFilterOptions {
 }
 
 export interface DataDenOptions {
+  columns: DataDenColDef[];
   dataLoader: DataDenDataLoaderStrategy;
   draggable?: boolean;
   pagination: boolean;
