@@ -1,5 +1,3 @@
-.data-den-quick-filter {
-  --#{prefix}quick-filter-margin-bottom: #{$quick-filter-margin-bottom};
-
+.#{$prefix}quick-filter {
   margin-bottom: var(--#{prefix}quick-filter-margin-bottom);
 }

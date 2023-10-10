@@ -5,9 +5,12 @@ import { Context } from '../../../context';
 
 export class DataDenHeaderDefaultResizerRenderer implements DataDenHeaderResizerRenderer {
   element: HTMLElement;
+  #cssPrefix: string;
 
-  constructor() {
-    const template = `<div class="data-den-header-resizer"></div>`;
+  constructor(cssPrefix: string | undefined) {
+    this.#cssPrefix = cssPrefix ? `${cssPrefix}-` : 'data-den-';
+
+    const template = `<div class="${this.#cssPrefix}header-resizer"></div>`;
 
     this.element = createHtmlElement(template);
     this.element.addEventListener('mousedown', this.#onMouseDown);

@@ -4,4 +4,27 @@
   --#{$prefix}cell-border: #{$cell-border};
   --#{$prefix}header-height: #{$header-height};
   --#{$prefix}row-height: #{$row-height};
+
+  --#{$prefix}grid-row-cell-border: #{$row-cell-border};
+
+  --#{$prefix}row-cell-border: #{$row-cell-border};
+  --#{$prefix}row-cell-padding-x: #{$row-cell-padding-x};
+
+  --#{prefix}quick-filter-margin-bottom: #{$quick-filter-margin-bottom};
+
+  --#{$prefix}pagination-content-marin: #{$pagination-content-marin};
+  --#{$prefix}pagination-info-margin: #{$pagination-info-margin};
+
+  --#{$prefix}header-height: #{$header-height};
+  --#{$prefix}header-cell-border: #{$header-cell-border};
+  --#{$prefix}header-cell-bg: #{$header-cell-bg};
+  --#{$prefix}header-cell-border: #{$header-cell-border};
+  --#{$prefix}header-cell-padding-x: #{$header-cell-padding-x};
+  --#{$prefix}header-sorter-margin-left: #{$header-sorter-margin-left};
+  --#{$prefix}header-sorter-arrow-sorted-color: #{$header-sorter-arrow-sorted-color};
+  --#{$prefix}header-sorter-arrow-unsorted-color: #{$header-sorter-arrow-unsorted-color};
+  --#{$prefix}header-sorter-asc-transform: #{$header-sorter-asc-transform};
+  --#{$prefix}header-sorter-desc-transform: #{$header-sorter-desc-transform};
+  --#{$prefix}header-filter-input-margin: #{$header-filter-input-margin};
+  --#{$prefix}header-filter-input-width: #{$header-filter-input-width};
 }

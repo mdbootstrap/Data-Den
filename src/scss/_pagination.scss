@@ -1,12 +1,8 @@
-.data-den-pagination-content {
-  --#{$prefix}pagination-content-marin: #{$pagination-content-marin};
-
+.#{$prefix}pagination-content {
   display: flex;
   align-items: center;
   margin: var(--#{$prefix}pagination-content-marin);
 }
-.data-den-pagination-info {
-  --#{$prefix}pagination-info-margin: #{$pagination-info-margin};
-
+.#{$prefix}pagination-info {
   margin: var(--#{$prefix}pagination-info-margin);
 }

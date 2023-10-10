@@ -6,9 +6,15 @@ import { DataDenQuickFilterParams } from './data-den-quick-filter-params.interfa
 
 export class DataDenQuickFilterRenderer {
   element: HTMLElement;
+  #cssPrefix: string;
 
   constructor(params: DataDenQuickFilterParams) {
-    const template = `<div class="data-den-quick-filter"><input type="text" class="data-den-quick-filter-input"></div>`;
+    this.#cssPrefix = params.cssPrefix;
+    const template = `
+      <div class="${this.#cssPrefix}quick-filter">
+        <input type="text" class="${this.#cssPrefix}quick-filter-input">
+      </div>
+    `;
 
     this.element = createHtmlElement(template);
 
@@ -20,7 +26,7 @@ export class DataDenQuickFilterRenderer {
   }
 
   attachUiEvents(params: DataDenQuickFilterParams): void {
-    const input: HTMLInputElement | null = this.element.querySelector('.data-den-quick-filter-input');
+    const input: HTMLInputElement | null = this.element.querySelector(`.${this.#cssPrefix}quick-filter-input`);
 
     if (input) {
       const debounceFilter: (searchTerm: any) => void = debounce(this.filter.bind(this), params.debounceTime);

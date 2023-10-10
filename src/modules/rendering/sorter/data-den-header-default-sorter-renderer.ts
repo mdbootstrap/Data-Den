@@ -8,12 +8,17 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
   arrowElement: HTMLElement;
   element: HTMLElement;
   #field: string;
+  #cssPrefix: string;
 
-  constructor(field: string, order: Order) {
+  constructor(field: string, order: Order, cssClassPrefix: string) {
     super();
+    this.#cssPrefix = cssClassPrefix;
     const template = `
-      <div class="data-den-header-sorter">
-        <div ref="sorterArrow" class="data-den-header-sorter-arrow data-den-header-sorter-arrow-${order}">
+      <div class="${this.#cssPrefix}header-sorter">
+        <div
+          ref="sorterArrow"
+          class="${this.#cssPrefix}header-sorter-arrow ${this.#cssPrefix}header-sorter-arrow-${order}"
+        >
         </div>
       </div>
     `;
@@ -35,9 +40,9 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
 
   #getUpdatedSortOrder(): Order {
     const classList = this.arrowElement.classList;
-    if (classList.contains('data-den-header-sorter-arrow-asc')) {
+    if (classList.contains(`${this.#cssPrefix}header-sorter-arrow-asc`)) {
       return 'desc';
-    } else if (classList.contains('data-den-header-sorter-arrow-desc')) {
+    } else if (classList.contains(`${this.#cssPrefix}header-sorter-arrow-desc`)) {
       return '';
     } else {
       return 'asc';
@@ -58,9 +63,12 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
     const order = this.#getUpdatedSortOrder();
 
     arrowElements.forEach((arrowElement) => {
-      arrowElement.classList.remove('data-den-header-sorter-arrow-asc', 'data-den-header-sorter-arrow-desc');
+      arrowElement.classList.remove(
+        `${this.#cssPrefix}header-sorter-arrow-asc`,
+        `${this.#cssPrefix}header-sorter-arrow-desc`
+      );
     });
 
-    this.arrowElement.classList.add(`data-den-header-sorter-arrow-${order}`);
+    this.arrowElement.classList.add(`${this.#cssPrefix}header-sorter-arrow-${order}`);
   }
 }

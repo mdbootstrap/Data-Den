@@ -7,11 +7,17 @@ import { DataDenHeaderFilterRenderer } from './data-den-header-filter-renderer.i
 
 export class DataDenHeaderTextFilterRenderer extends DataDenHeaderFilterRenderer {
   element: HTMLElement;
+  #cssPrefix: string;
 
   constructor(params: DataDenHeaderFilterRendererParams) {
     super();
+    this.#cssPrefix = params.cssPrefix;
 
-    const template = `<div class="data-den-header-filter"><input type="text" class="data-den-header-filter-input"></div>`;
+    const template = `
+      <div class="${this.#cssPrefix}header-filter">
+        <input type="text" class="${this.#cssPrefix}header-filter-input">
+      </div>
+    `;
 
     this.element = createHtmlElement(template);
 
@@ -27,7 +33,7 @@ export class DataDenHeaderTextFilterRenderer extends DataDenHeaderFilterRenderer
   }
 
   attachUiEvents(params: DataDenHeaderFilterRendererParams) {
-    const input: HTMLInputElement | null = this.element.querySelector('.data-den-header-filter-input');
+    const input: HTMLInputElement | null = this.element.querySelector(`.${this.#cssPrefix}header-filter-input`);
 
     if (input) {
       const debounceFilter: (searchTerm: any, params: DataDenHeaderFilterRendererParams) => void = debounce(

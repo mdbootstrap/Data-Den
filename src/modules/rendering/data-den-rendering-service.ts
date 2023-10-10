@@ -30,6 +30,7 @@ export class DataDenRenderingService {
   #defaultColumns: DataDenColDef[];
   #orderedColumns: DataDenColDef[];
   #columnsOrder: number[];
+  #cssPrefix: string;
   #headerRow: DataDenHeaderRow;
   #rows: DataDenRow[] = [];
   #paddingX: number;
@@ -46,14 +47,16 @@ export class DataDenRenderingService {
     this.#defaultColumns = [];
     this.#orderedColumns = [];
     this.#columnsOrder = [];
-    this.#paddingX = parseInt(getComputedStyle(document.body).getPropertyValue('--data-den-cell-padding-x'), 10) * 2;
+    this.#cssPrefix = options.cssPrefix ? `${options.cssPrefix}-` : 'data-den-';
+    this.#paddingX =
+      parseInt(getComputedStyle(document.body).getPropertyValue(`--${this.#cssPrefix}cell-padding-x`), 10) * 2;
     this.#borderWidth =
-      parseInt(getComputedStyle(document.body).getPropertyValue('--data-den-cell-border-width'), 10) * 2;
-    this.#rowHeight = parseInt(getComputedStyle(document.body).getPropertyValue('--data-den-row-height'), 10);
+      parseInt(getComputedStyle(document.body).getPropertyValue(`--${this.#cssPrefix}cell-border-width`), 10) * 2;
+    this.#rowHeight = parseInt(getComputedStyle(document.body).getPropertyValue(`--${this.#cssPrefix}row-height`), 10);
 
     if (options.quickFilter) {
       const { debounceTime } = options.quickFilterOptions;
-      const params: DataDenQuickFilterParams = { debounceTime };
+      const params: DataDenQuickFilterParams = { debounceTime, cssPrefix: this.#cssPrefix };
       this.#quickFilterRenderer = new DataDenQuickFilterRenderer(params);
     }
 
@@ -78,13 +81,14 @@ export class DataDenRenderingService {
         value,
         left,
         width,
+        cssPrefix: this.#cssPrefix,
       };
       const cellRenderer = new DataDenDefaultHeaderCellRenderer(rendererParams, this.#options.draggable);
-      const editorParams: DataDenCellEditorParams = { value: value };
+      const editorParams: DataDenCellEditorParams = { cssPrefix: this.#cssPrefix, value: value };
       const cellEditor = new DataDenDefaultCellEditor(editorParams);
-      const sorterRenderer = new DataDenHeaderDefaultSorterRenderer(column.field, order);
+      const sorterRenderer = new DataDenHeaderDefaultSorterRenderer(column.field, order, this.#cssPrefix);
       const filterRenderer = this.#getHeaderFilterRenderer(column);
-      const resizerRenderer = new DataDenHeaderDefaultResizerRenderer();
+      const resizerRenderer = new DataDenHeaderDefaultResizerRenderer(this.#cssPrefix);
 
       return new DataDenHeaderCell(
         rowIndex,
@@ -93,7 +97,8 @@ export class DataDenRenderingService {
         cellEditor,
         filterRenderer,
         sorterRenderer,
-        resizerRenderer
+        resizerRenderer,
+        this.#cssPrefix
       );
     });
 
@@ -107,6 +112,7 @@ export class DataDenRenderingService {
       field,
       method,
       debounceTime,
+      cssPrefix: this.#cssPrefix,
     };
 
     switch (type) {
@@ -132,11 +138,12 @@ export class DataDenRenderingService {
           value,
           left,
           width,
+          cssPrefix: this.#cssPrefix,
         };
         const renderer = new DataDenDefaultCellRenderer(rendererParams);
-        const editorParams: DataDenCellEditorParams = { value: value };
+        const editorParams: DataDenCellEditorParams = { value: value, cssPrefix: this.#cssPrefix };
         const editor = new DataDenDefaultCellEditor(editorParams);
-        return new DataDenCell(rendererParams, this.#options.draggable, renderer, editor);
+        return new DataDenCell(rendererParams, this.#options.draggable, renderer, editor, this.#cssPrefix);
       });
 
       return new DataDenRow(rowIndex, cells, this.#rowHeight);
@@ -169,9 +176,9 @@ export class DataDenRenderingService {
   }
 
   #calculateGridSize(): void {
-    const grid = this.#container.querySelector('.data-den-grid') as HTMLElement;
-    const header = this.#container.querySelector('.data-den-header') as HTMLElement;
-    const body = this.#container.querySelector('.data-den-grid-rows') as HTMLElement;
+    const grid = this.#container.querySelector(`.${this.#cssPrefix}grid`) as HTMLElement;
+    const header = this.#container.querySelector(`.${this.#cssPrefix}header`) as HTMLElement;
+    const body = this.#container.querySelector(`.${this.#cssPrefix}grid-rows`) as HTMLElement;
 
     const gridWidth = this.#orderedColumns.reduce((acc, curr) => acc + (curr.width || 120), 0);
     const rowsHeight = this.#rowHeight * this.#rows.length;
@@ -184,14 +191,14 @@ export class DataDenRenderingService {
 
   #renderGrid(): HTMLElement {
     const grid = document.createElement('div');
-    grid.classList.add('data-den-grid');
+    grid.classList.add(`${this.#cssPrefix}grid`);
 
     return grid;
   }
 
   #renderHeader(): HTMLElement {
     const headerContainer = document.createElement('div');
-    headerContainer.classList.add('data-den-header');
+    headerContainer.classList.add(`${this.#cssPrefix}header`);
     headerContainer.setAttribute('role', 'rowgroup');
 
     const headerRow = this.#headerRow.render();
@@ -202,7 +209,7 @@ export class DataDenRenderingService {
 
   #renderBody(): HTMLElement {
     const rowContainer = document.createElement('div');
-    rowContainer.classList.add('data-den-grid-rows');
+    rowContainer.classList.add(`${this.#cssPrefix}grid-rows`);
     rowContainer.setAttribute('role', 'rowgroup');
 
     const rows = document.createDocumentFragment();
@@ -256,7 +263,7 @@ export class DataDenRenderingService {
     this.#rows = this.#createDataRows(rows);
     this.#rows.forEach((row) => rowsEl.appendChild(row.render()));
 
-    const rowContainer = this.#container.querySelector('.data-den-grid-rows')!;
+    const rowContainer = this.#container.querySelector(`.${this.#cssPrefix}grid-rows`)!;
     rowContainer.innerHTML = '';
     rowContainer.appendChild(rowsEl);
     this.#calculateGridSize();
