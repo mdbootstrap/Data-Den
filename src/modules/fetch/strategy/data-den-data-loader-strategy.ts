@@ -1,4 +1,4 @@
-import { DataDenData } from './data-den-data.interface';
+import { DataDenData } from '../../../data-den-data.interface';
 import {
   DataDenFetchOptions,
   DataDenFiltersOptions,

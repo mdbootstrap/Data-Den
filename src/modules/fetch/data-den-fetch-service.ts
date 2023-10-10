@@ -4,7 +4,7 @@ import { DataDenOptions } from '../../data-den-options.interface';
 import { DataDenPubSub } from '../../data-den-pub-sub';
 import { DataDenFetchDoneEvent } from './data-den-fetch-done.event.interface';
 import { DataDenFetchOptions } from './data-den-fetch-options.interface';
-import { DataDenData } from './strategy';
+import { DataDenData } from '../../data-den-data.interface';
 import { DataDenDataLoaderStrategy } from './strategy/data-den-data-loader-strategy';
 
 export class DataDenFetchService {
