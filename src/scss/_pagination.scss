@@ -1,0 +1,8 @@
+.#{$prefix}pagination-content {
+  display: flex;
+  align-items: center;
+  margin: var(--#{$prefix}pagination-content-marin);
+}
+.#{$prefix}pagination-info {
+  margin: var(--#{$prefix}pagination-info-margin);
+}

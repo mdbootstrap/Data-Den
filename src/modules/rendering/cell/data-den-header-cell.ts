@@ -11,6 +11,7 @@ export class DataDenHeaderCell extends DataDenCell {
   #sorterRenderer: any;
   #resizerRenderer: any;
   #renderer: DataDenCellRenderer;
+  #cssPrefix: string | undefined;
   #columnOptions: DataDenColDef;
 
   constructor(
@@ -21,19 +22,22 @@ export class DataDenHeaderCell extends DataDenCell {
     filterRenderer: DataDenHeaderFilterRenderer,
     sorterRenderer: DataDenHeaderDefaultSorterRenderer,
     resizerRenderer: DataDenHeaderDefaultResizerRenderer,
+    cssPrefix: string,
     columnOptions: DataDenColDef
   ) {
-    super(rowIndex, columnIndex, renderer, editor);
+    super(rowIndex, columnIndex, renderer, editor, cssPrefix);
 
     this.#renderer = renderer;
     this.#filterRenderer = filterRenderer;
     this.#sorterRenderer = sorterRenderer;
     this.#resizerRenderer = resizerRenderer;
+    this.#cssPrefix = cssPrefix;
     this.#columnOptions = columnOptions;
   }
 
   render(): HTMLElement {
     const container = this.#renderer.getGui();
+    container.querySelector(`.${this.#cssPrefix}header-cell-value`)!.appendChild(this.#sorterRenderer.getGui());
 
     if (this.#columnOptions.filter) {
       container.appendChild(this.#filterRenderer.getGui());

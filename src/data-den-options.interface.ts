@@ -65,6 +65,7 @@ export interface DataDenQuickFilterOptions {
 }
 
 export interface DataDenOptions {
+  cssPrefix?: string;
   columns: DataDenColDef[];
   dataLoader: DataDenDataLoaderStrategy;
   draggable?: boolean;

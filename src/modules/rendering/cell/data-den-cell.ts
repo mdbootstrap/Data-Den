@@ -8,23 +8,32 @@ export class DataDenCell {
   #draggable: boolean | undefined;
   #renderer: DataDenCellRenderer;
   #editor: DataDenCellEditor;
+  #cssPrefix: string;
 
   constructor(
     params: DataDenCellRendererParams,
     draggable: boolean | undefined,
     renderer: DataDenCellRenderer,
-    editor: DataDenCellEditor
+    editor: DataDenCellEditor,
+    cssPrefix: string
   ) {
     this.#params = params;
     this.#draggable = draggable;
     this.#renderer = renderer;
     this.#editor = editor;
+    this.#cssPrefix = cssPrefix;
   }
 
   render(): HTMLElement {
-    const template = `<div class="data-den-cell ${
-      this.#draggable ? 'data-den-cell-draggable' : ''
-    }" role="gridcell" ref="cell" style="left: ${this.#params.left}px; width: ${this.#params.width}px;"></div>`;
+    const template = `
+      <div
+        class="${this.#cssPrefix}cell ${this.#draggable ? `${this.#cssPrefix}cell-draggable` : ''}"
+        role="gridcell"
+        ref="cell"
+        style="left: ${this.#params.left}px; width: ${this.#params.width}px;"
+      >
+      </div>
+    `;
 
     const cellElement = createHtmlElement(template);
     cellElement.appendChild(this.#renderer.getGui());

@@ -1,0 +1,95 @@
+.#{$prefix}header {
+  display: flex;
+  flex-flow: row wrap;
+  flex-direction: row;
+  position: relative;
+  height: var(--#{$prefix}header-height);
+  border-right: var(--#{$prefix}header-cell-border);
+}
+
+.#{$prefix}header-row {
+  display: flex;
+  width: 100%;
+
+  .#{$prefix}header-cell {
+    background-color: var(--#{$prefix}header-cell-bg);
+    border: var(--#{$prefix}header-cell-border);
+    border-right: $cell-border-transparent;
+    display: flex;
+    padding: 6px var(--#{$prefix}header-cell-padding-x);
+    position: absolute;
+
+    .#{$prefix}header-cell-value {
+      display: flex;
+      flex-direction: row;
+    }
+    &.active {
+      background-color: #fafafa;
+    }
+  }
+}
+
+.#{$prefix}header-row-draggable {
+  cursor: pointer;
+}
+
+.#{$prefix}header-cell-draggable {
+  &.dragging {
+    transition: left 0.2s;
+    user-select: none;
+  }
+}
+
+.#{$prefix}header-sorter {
+  margin-left: var(--#{$prefix}header-sorter-margin-left);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .#{$prefix}header-sorter-arrow {
+    &:after {
+      display: inline-block;
+      margin-left: 0.255em;
+      vertical-align: 0.255em;
+      content: '';
+      border-top: 0.3em solid;
+      border-right: 0.3em solid transparent;
+      border-bottom: 0;
+      border-left: 0.3em solid transparent;
+      color: var(--#{$prefix}header-sorter-arrow-unsorted-color);
+      transform: var(--#{$prefix}header-sorter-asc-transform);
+    }
+
+    &.#{$prefix}header-sorter-arrow-asc:after {
+      color: var(--#{$prefix}header-sorter-arrow-sorted-color);
+    }
+
+    &.#{$prefix}header-sorter-arrow-desc:after {
+      color: var(--#{$prefix}header-sorter-arrow-sorted-color);
+      transform: var(--#{$prefix}header-sorter-desc-transform);
+    }
+  }
+}
+
+.#{$prefix}header-filter {
+  display: block;
+
+  .#{$prefix}header-filter-input {
+    margin: var(--#{$prefix}header-filter-input-margin);
+    width: var(--#{$prefix}header-filter-input-width);
+  }
+}
+
+.#{$prefix}header-resizer {
+  position: absolute;
+  z-index: 100;
+  right: -5px;
+  top: 0;
+  height: 100%;
+  width: 10px;
+  cursor: col-resize;
+
+  &:hover {
+    background-color: #ccc;
+  }
+}

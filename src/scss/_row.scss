@@ -1,0 +1,33 @@
+.#{$prefix}grid-rows {
+  display: flex;
+  flex-flow: row wrap;
+  flex-direction: column;
+  position: relative;
+  border-right: var(--#{$prefix}grid-row-cell-border);
+}
+
+.#{$prefix}row {
+  display: flex;
+  position: absolute;
+  height: var(--#{$prefix}row-height);
+  width: 100%;
+}
+
+.#{$prefix}cell {
+  border: var(--#{$prefix}row-cell-border);
+  border-top: $cell-border-transparent;
+  border-right: $cell-border-transparent;
+  padding: 4px var(--#{$prefix}row-cell-padding-x);
+  position: absolute;
+
+  &.active {
+    background-color: #fafafa;
+  }
+}
+
+.#{$prefix}cell-draggable {
+  &.dragging {
+    transition: left 0.2s;
+    user-select: none;
+  }
+}
