@@ -6,7 +6,7 @@
   "author": "MDBootstrap <office@mdbootstrap.com>",
   "main": "./dist/js/data-den.umd.min.js",
   "module": "./dist/js/data-den.es.min.js",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/types/data-den.d.ts",
   "scripts": {
     "start": "vite --open",
     "build": "vite build",
@@ -14,6 +14,9 @@
     "test:watch": "jest test/ --coverage --watchAll",
     "preview": "vite preview"
   },
+  "files": [
+    "dist"
+  ],
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged && pretty-quick --staged && jest test/ --collectCoverageFrom=src/**/*.ts"

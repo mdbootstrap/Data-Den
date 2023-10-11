@@ -15,7 +15,7 @@ const data: DataDenData = {
       field: 'car',
       headerName: 'Car',
       sort: true,
-      filter: false,
+      filter: true,
       filterOptions: {
         type: 'text',
         method: 'includes',
@@ -30,7 +30,7 @@ const data: DataDenData = {
       field: 'model',
       headerName: 'Model',
       sort: true,
-      filter: false,
+      filter: true,
       filterOptions: {
         type: 'text',
         method: 'includes',
@@ -45,7 +45,7 @@ const data: DataDenData = {
       field: 'year',
       headerName: 'Year',
       sort: true,
-      filter: false,
+      filter: true,
       filterOptions: {
         type: 'date',
         method: 'equals',
@@ -58,14 +58,14 @@ const data: DataDenData = {
         },
       },
       resize: true,
-      width: 200,
+      width: 210,
       cellRenderer: DataDenDefaultCellRenderer,
     },
     {
       field: 'price',
       headerName: 'Price',
       sort: true,
-      filter: false,
+      filter: true,
       filterOptions: {
         type: 'number',
         method: 'equals',

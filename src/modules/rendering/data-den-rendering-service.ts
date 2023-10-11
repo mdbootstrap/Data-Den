@@ -98,7 +98,8 @@ export class DataDenRenderingService {
         filterRenderer,
         sorterRenderer,
         resizerRenderer,
-        this.#cssPrefix
+        this.#cssPrefix,
+        column
       );
     });
 
