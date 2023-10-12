@@ -1,0 +1,5 @@
+@import "../../core/dist/css/data-den.min.css";
+
+:root {
+  --header-height: 80px;
+}
