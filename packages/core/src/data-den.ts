@@ -13,6 +13,8 @@ import {
   DataDenServerDataLoaderStrategy,
   DataDenDataLoaderStrategy,
 } from './modules/fetch';
+import { DataDenPubSub } from './data-den-pub-sub';
+import { Context } from './context';
 import { DataDenData } from './data-den-data.interface';
 import { DataDenOptions } from './data-den-options.interface';
 
@@ -33,6 +35,15 @@ export class DataDen {
     this.#pagination = new DataDenPaginationService(options.paginationOptions);
     this.#dragging = new DataDenDraggingService(container, options);
     this.#resizing = new DataDenResizingService(container, options);
+  }
+
+  sort(field: string, order: 'asc' | 'desc'): void {
+    const command = 'command:sorting:start';
+    DataDenPubSub.publish(command, {
+      context: new Context(command),
+      field,
+      order,
+    });
   }
 }
 
