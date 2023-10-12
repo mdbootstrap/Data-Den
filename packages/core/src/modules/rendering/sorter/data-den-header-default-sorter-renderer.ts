@@ -27,7 +27,7 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
     this.element = createHtmlElement(template);
     this.arrowElement = this.element.querySelector('[ref="sorterArrow"]')!;
     this.element.addEventListener('click', () => this.sort());
-    this.element.addEventListener('click', () => this.#updateArrowDirectionAfterSort());
+    this.#subscribeSortingStartEvent();
   }
 
   destroy?(): void {
@@ -55,6 +55,14 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
       caller: this,
       context: new Context(command),
       field: this.#field,
+    });
+  }
+
+  #subscribeSortingStartEvent(): void {
+    DataDenPubSub.subscribe('command:sorting:start', (event) => {
+      if (this.#field === event.data.field) {
+        this.#updateArrowDirectionAfterSort();
+      }
     });
   }
 
