@@ -1,0 +1,48 @@
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{{ .Params.seo_title }}</title>
+<meta name="description" content="{{ .Params.description }}" />
+<meta name="image" content="{{ .Params.image }}" />
+<!-- Schema.org for Google -->
+<meta itemprop="name" content="{{ .Params.seo_title }}" />
+<meta itemprop="description" content="{{ .Params.description }}" />
+<meta itemprop="image" content="{{ .Params.image }}" />
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="{{ .Params.seo_title }}" />
+<meta property="twitter:description" content="{{ .Params.description }}" />
+<meta property="twitter:site" content="@MDBootstrap" />
+<meta property="twitter:creator" content="@MDBootstrap" />
+<meta property="twitter:image:src" content="{{ .Params.image }}" />
+<meta property="twitter:player" content="{{ .Params.video }}" />
+<!-- Open Graph general (Facebook, Pinterest & Google+) -->
+<meta property="og:title" content="{{ .Params.seo_title }}" />
+<meta property="og:description" content="{{ .Params.description }}" />
+<meta property="og:image" content="{{ .Params.image }}" />
+<meta property="og:url" content="{{ .Site.BaseURL }}{{ .Params.url }}" />
+<meta property="og:site_name" content="Data Den" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:video" content="{{ .Params.video }}" />
+<meta property="fb:admins" content="" />
+<meta property="og:type" content="website" />
+<meta name="msvalidate.01" content="A2863151C6FC9B7534BBF5F0AFD435AC" />
+
+<!-- Favicon -->
+<link
+  rel="shortcut icon"
+  href="https://tecdn.b-cdn.net/img/Marketing/general/logo/small/te.ico"
+  type="image/x-icon" />
+<link
+  rel="icon"
+  href="https://tecdn.b-cdn.net/img/Marketing/general/logo/small/te.ico"
+  type="image/x-icon" />
+
+<noscript
+  ><img
+    height="1"
+    width="1"
+    style="display:none"
+    src="https://www.facebook.com/tr?id=1771159443253993&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->

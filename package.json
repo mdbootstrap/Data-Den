@@ -7,10 +7,12 @@
     "start:core": "nx run data-den-core:start",
     "start:react": "nx run data-den-react:start",
     "start:vue": "nx run data-den-vue:start",
+    "start:docs": "nx run getdataden.com:start",
     "build": "nx run-many -t build",
     "build:core": "nx build data-den-core",
     "build:react": "nx build data-den-react",
     "build:vue": "nx build data-den-vue",
+    "build:docs": "nx build getdataden.com",
     "test": "nx run-many -t test"
   },
   "private": true,

@@ -1,0 +1,5 @@
+baseURL = "https://data-den.com/"
+languageCode = "en-us"
+title = "Data Den"
+theme = "ga-hugo-theme"
+enableInlineShortcodes = "true"
