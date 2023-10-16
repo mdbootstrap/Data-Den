@@ -10,7 +10,8 @@
     "build": "nx run-many -t build",
     "build:core": "nx build data-den-core",
     "build:react": "nx build data-den-react",
-    "build:vue": "nx build data-den-vue"
+    "build:vue": "nx build data-den-vue",
+    "test": "nx run-many -t test"
   },
   "private": true,
   "dependencies": {},
