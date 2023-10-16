@@ -7,8 +7,7 @@ import {
   DataDenDataLoaderStrategy,
   DataDenData,
   DataDenOptions,
-  // @ts-ignore
-} from "../../core/dist/js/data-den.es.min";
+} from "data-den-core";
 import DataDen from "./components/DataDen.vue";
 
 const data: DataDenData = {

@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {
-  DataDen,
-  DataDenOptions,
-  // @ts-ignore
-} from "../../../core/dist/js/data-den.es.min";
+import { DataDen, DataDenOptions } from "data-den-core";
 import { onMounted, ref } from "vue";
 
 let dataDen: DataDen | null = null;
@@ -28,7 +24,7 @@ onMounted(() => {
   }
 });
 
-const sort = (field: string, order: string) => {
+const sort = (field: string, order: "desc" | "asc") => {
   if (dataDen) {
     dataDen.sort(field, order);
   }

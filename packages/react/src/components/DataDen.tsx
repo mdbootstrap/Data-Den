@@ -1,9 +1,5 @@
 import { useRef, forwardRef, useEffect, useImperativeHandle } from "react";
-import {
-  DataDen as DataDenCore,
-  DataDenOptions,
-  // @ts-ignore
-} from "../../../core/dist/js/data-den.es.min";
+import { DataDen as DataDenCore, DataDenOptions } from "data-den-core";
 
 const DataDen = forwardRef(function DataDen(
   {
@@ -33,7 +29,7 @@ const DataDen = forwardRef(function DataDen(
   }, [dataDenWrapper]);
 
   useImperativeHandle(ref, () => ({
-    sort(field: string, order: string) {
+    sort(field: string, order: "desc" | "asc") {
       if (dataDen) {
         dataDen.sort(field, order);
       }

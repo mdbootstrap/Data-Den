@@ -2,6 +2,7 @@
   "name": "data-den-vue",
   "private": true,
   "version": "1.0.0",
+  "license": "AGPL",
   "type": "module",
   "main": "./dist/js/data-den.umd.min.js",
   "module": "./dist/js/data-den.es.min.js",
@@ -11,10 +12,12 @@
   ],
   "scripts": {
     "dev": "vite",
+    "start": "vite --open",
     "build": "vue-tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "data-den-core": "*",
     "vue": "^3.3.4"
   },
   "devDependencies": {

@@ -1,0 +1,25 @@
+{
+  "name": "data-den",
+  "version": "1.0.0",
+  "license": "AGPL",
+  "scripts": {
+    "start": "nx run-many -t start",
+    "start:core": "nx run data-den-core:start",
+    "start:react": "nx run data-den-react:start",
+    "start:vue": "nx run data-den-vue:start",
+    "build": "nx run-many -t build",
+    "build:core": "nx build data-den-core",
+    "build:react": "nx build data-den-react",
+    "build:vue": "nx build data-den-vue"
+  },
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "@nx/js": "16.10.0",
+    "nx": "16.10.0",
+    "nx-cloud": "latest"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}
