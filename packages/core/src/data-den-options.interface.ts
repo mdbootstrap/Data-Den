@@ -1,4 +1,3 @@
-import { DataDenDataLoaderStrategy } from './modules/fetch';
 import { DataDenCellRenderer } from './modules/rendering';
 
 export type ClassType<T> = new (...args: any[]) => T;
@@ -40,17 +39,22 @@ export interface DataDenDateFilterOptions {
 
 export interface DataDenColDef {
   field: string;
-  headerName: string;
+  headerName?: string;
   sort?: boolean;
   filter?: boolean;
-  filterOptions: DataDenHeaderFilterOptions;
+  filterOptions?: DataDenHeaderFilterOptions;
   resize?: boolean;
   width?: number;
   cellRenderer?: ClassType<DataDenCellRenderer>;
 }
 
-export interface DataDenRowDef<TData = any> {
-  [key: string]: TData;
+export interface DataDenDefaultColDef {
+  sort?: boolean;
+  filter?: boolean;
+  filterOptions?: DataDenHeaderFilterOptions;
+  resize?: boolean;
+  width?: number;
+  cellRenderer?: ClassType<DataDenCellRenderer>;
 }
 
 export interface DataDenPaginationOptions {
@@ -60,18 +64,34 @@ export interface DataDenPaginationOptions {
 }
 
 export interface DataDenQuickFilterOptions {
-  debounceTime: number;
+  debounceTime?: number;
   filterFn?: (searchTerm: any, value: any) => boolean;
 }
 
-export interface DataDenOptions {
+export interface DataDenOptions<TData = any> {
   cssPrefix?: string;
+  mode?: DataDenMode;
   columns: DataDenColDef[];
-  dataLoader: DataDenDataLoaderStrategy;
+  defaultColDef?: DataDenDefaultColDef;
+  rows?: TData;
   draggable?: boolean;
-  pagination: boolean;
-  paginationOptions: DataDenPaginationOptions;
-  quickFilter: boolean;
-  quickFilterOptions: DataDenQuickFilterOptions;
+  pagination?: boolean;
+  paginationOptions?: DataDenPaginationOptions;
+  quickFilter?: boolean;
+  quickFilterOptions?: DataDenQuickFilterOptions;
   resizable?: boolean;
+}
+
+export interface DataDenInternalOptions {
+  cssPrefix: string;
+  mode: DataDenMode;
+  columns: DataDenColDef[];
+  defaultColDef: Required<DataDenDefaultColDef>;
+  rows?: any;
+  draggable: boolean;
+  pagination: boolean;
+  paginationOptions: Required<DataDenPaginationOptions>;
+  quickFilter: boolean;
+  quickFilterOptions: Required<DataDenQuickFilterOptions>;
+  resizable: boolean;
 }

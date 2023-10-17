@@ -1,11 +1,11 @@
 import { Context } from '../../context';
 import { DataDenEvent } from '../../data-den-event';
-import { DataDenOptions } from '../../data-den-options.interface';
+import { DataDenInternalOptions } from '../../data-den-options.interface';
 import { DataDenPubSub } from '../../data-den-pub-sub';
 
 export class DataDenResizingService {
   #container: HTMLElement;
-  #options: DataDenOptions;
+  #options: DataDenInternalOptions;
   #isInitiated: boolean;
   #isResizing: boolean;
   #headers: HTMLElement[];
@@ -17,7 +17,7 @@ export class DataDenResizingService {
   #headersOnTheRight: HTMLElement[];
   #columnsOrder: number[];
 
-  constructor(container: HTMLElement, options: DataDenOptions) {
+  constructor(container: HTMLElement, options: DataDenInternalOptions) {
     this.#container = container;
     this.#options = options;
     this.#isInitiated = false;

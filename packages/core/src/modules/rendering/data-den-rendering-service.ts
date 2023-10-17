@@ -1,4 +1,4 @@
-import { DataDenColDef, DataDenOptions } from '../../data-den-options.interface';
+import { DataDenColDef, DataDenInternalOptions } from '../../data-den-options.interface';
 import {
   DataDenCell,
   DataDenCellRendererParams,
@@ -26,7 +26,7 @@ import { Context } from '../../context';
 
 export class DataDenRenderingService {
   #container: HTMLElement;
-  #options: DataDenOptions;
+  #options: DataDenInternalOptions;
   #defaultColumns: DataDenColDef[];
   #orderedColumns: DataDenColDef[];
   #columnsOrder: number[];
@@ -39,20 +39,19 @@ export class DataDenRenderingService {
   #quickFilterRenderer: DataDenQuickFilterRenderer | null = null;
   #paginationRenderer: DataDenPaginationRenderer | null = null;
 
-  constructor(container: HTMLElement, options: DataDenOptions) {
+  constructor(container: HTMLElement, options: DataDenInternalOptions) {
     this.#container = container;
     this.#options = options;
-    this.#headerRow = this.#createHeaderRow([], '');
-    this.#rows = this.#createDataRows([]);
-    this.#defaultColumns = [];
-    this.#orderedColumns = [];
+    this.#defaultColumns = [...this.#options.columns];
+    this.#orderedColumns = [...this.#options.columns];
     this.#columnsOrder = [];
-    this.#cssPrefix = options.cssPrefix ? `${options.cssPrefix}-` : 'data-den-';
+    this.#cssPrefix = options.cssPrefix;
     this.#paddingX =
       parseInt(getComputedStyle(document.body).getPropertyValue(`--${this.#cssPrefix}cell-padding-x`), 10) * 2;
     this.#borderWidth =
       parseInt(getComputedStyle(document.body).getPropertyValue(`--${this.#cssPrefix}cell-border-width`), 10) * 2;
     this.#rowHeight = parseInt(getComputedStyle(document.body).getPropertyValue(`--${this.#cssPrefix}row-height`), 10);
+    this.#headerRow = this.#createHeaderRow(options.columns, '');
 
     if (options.quickFilter) {
       const { debounceTime } = options.quickFilterOptions;
@@ -108,7 +107,7 @@ export class DataDenRenderingService {
 
   #getHeaderFilterRenderer(column: DataDenColDef) {
     const field = column.field;
-    const { type, method, debounceTime } = column.filterOptions;
+    const { type, method, debounceTime } = column.filterOptions!;
     const params: DataDenHeaderFilterRendererParams = {
       field,
       method,
@@ -128,9 +127,9 @@ export class DataDenRenderingService {
     }
   }
 
-  #createDataRows(dataRows: DataDenRow[]): DataDenRow[] {
-    return dataRows.map((row, rowIndex) => {
-      const cells = Object.entries(row).map(([, value], colIndex) => {
+  #createDataRows(rowsData: any): DataDenRow[] {
+    return rowsData.map((rowData: any, rowIndex: number) => {
+      const cells = Object.entries(rowData).map(([, value], colIndex) => {
         const orderedColIndex = this.#columnsOrder.length ? this.#columnsOrder.indexOf(colIndex) : colIndex;
         const left = this.#orderedColumns.slice(0, orderedColIndex).reduce((acc, curr) => acc + (curr.width || 120), 0);
         const width = (this.#orderedColumns[orderedColIndex].width || 120) - this.#paddingX - this.#borderWidth;
@@ -234,27 +233,8 @@ export class DataDenRenderingService {
 
   #subscribeFetchDone(): void {
     DataDenPubSub.subscribe('info:fetch:done', (event: DataDenEvent) => {
-      switch (event.context.action) {
-        case 'command:fetch:start':
-          this.#updateTable(event);
-          break;
-        default:
-          this.#updateRows(event);
-          break;
-      }
+      this.#updateRows(event);
     });
-  }
-
-  #updateTable(event: DataDenEvent) {
-    const { columns, rows, order } = event.data;
-
-    this.#defaultColumns = [...columns];
-    this.#orderedColumns = [...columns];
-    this.#headerRow = this.#createHeaderRow(columns, order);
-    this.#rows = this.#createDataRows(rows);
-
-    this.#container.innerHTML = '';
-    this.renderTable();
   }
 
   #updateRows(event: DataDenEvent): void {
@@ -264,7 +244,7 @@ export class DataDenRenderingService {
     this.#rows = this.#createDataRows(rows);
     this.#rows.forEach((row) => rowsEl.appendChild(row.render()));
 
-    const rowContainer = this.#container.querySelector(`.${this.#cssPrefix}grid-rows`)!;
+    const rowContainer = this.#container.querySelector('.data-den-grid-rows')!;
     rowContainer.innerHTML = '';
     rowContainer.appendChild(rowsEl);
     this.#calculateGridSize();

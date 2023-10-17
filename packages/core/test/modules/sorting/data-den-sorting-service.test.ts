@@ -1,9 +1,7 @@
-import { DataDenData } from '../../../src/modules/fetch/index';
-
 /* eslint-disable @typescript-eslint/no-var-requires */
 describe('data-den-sorting-service', () => {
   let DataDenSortingService: any;
-  let exampleData: DataDenData['rows'] = [];
+  let exampleData: any[] = [];
 
   beforeEach(() => {
     exampleData = [
