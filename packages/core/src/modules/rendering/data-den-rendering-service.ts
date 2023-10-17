@@ -33,8 +33,6 @@ export class DataDenRenderingService {
   #cssPrefix: string;
   #headerRow: DataDenHeaderRow;
   #rows: DataDenRow[] = [];
-  #paddingX: number;
-  #borderWidth: number;
   #rowHeight: number;
   #quickFilterRenderer: DataDenQuickFilterRenderer | null = null;
   #paginationRenderer: DataDenPaginationRenderer | null = null;
@@ -46,10 +44,6 @@ export class DataDenRenderingService {
     this.#orderedColumns = [...this.#options.columns];
     this.#columnsOrder = [];
     this.#cssPrefix = options.cssPrefix;
-    this.#paddingX =
-      parseInt(getComputedStyle(document.body).getPropertyValue(`--${this.#cssPrefix}cell-padding-x`), 10) * 2;
-    this.#borderWidth =
-      parseInt(getComputedStyle(document.body).getPropertyValue(`--${this.#cssPrefix}cell-border-width`), 10) * 2;
     this.#rowHeight = parseInt(getComputedStyle(document.body).getPropertyValue(`--${this.#cssPrefix}row-height`), 10);
     this.#headerRow = this.#createHeaderRow(options.columns, '');
 
@@ -74,7 +68,7 @@ export class DataDenRenderingService {
     const headerCells = columns.map((column, colIndex) => {
       const value = column.headerName;
       const left = columns.slice(0, colIndex).reduce((acc, curr) => acc + (curr.width || 120), 0);
-      const width = (columns[colIndex].width || 120) - this.#paddingX - this.#borderWidth;
+      const width = columns[colIndex].width || 120;
 
       const rendererParams: DataDenCellRendererParams = {
         value,
@@ -132,7 +126,7 @@ export class DataDenRenderingService {
       const cells = Object.entries(rowData).map(([, value], colIndex) => {
         const orderedColIndex = this.#columnsOrder.length ? this.#columnsOrder.indexOf(colIndex) : colIndex;
         const left = this.#orderedColumns.slice(0, orderedColIndex).reduce((acc, curr) => acc + (curr.width || 120), 0);
-        const width = (this.#orderedColumns[orderedColIndex].width || 120) - this.#paddingX - this.#borderWidth;
+        const width = this.#orderedColumns[orderedColIndex].width || 120;
 
         const rendererParams: DataDenCellRendererParams = {
           value,
@@ -225,8 +219,7 @@ export class DataDenRenderingService {
       this.#orderedColumns = this.#columnsOrder.map((columnIndex) => this.#defaultColumns[columnIndex]);
     });
     DataDenPubSub.subscribe('info:resizing:start', (event: DataDenEvent) => {
-      this.#orderedColumns[event.data.currentColIndex].width =
-        event.data.newCurrentColWidth + this.#paddingX + this.#borderWidth;
+      this.#orderedColumns[event.data.currentColIndex].width = event.data.newCurrentColWidth;
       this.#calculateGridSize();
     });
   }
