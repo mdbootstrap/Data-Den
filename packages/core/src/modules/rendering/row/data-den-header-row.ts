@@ -3,8 +3,13 @@ import { DataDenHeaderCell } from '../cell/data-den-header-cell';
 import { DataDenRow } from './data-den-row';
 
 export class DataDenHeaderRow extends DataDenRow {
-  constructor(public index: number, public cells: DataDenHeaderCell[], draggable: boolean | undefined) {
-    super(index, cells);
+  constructor(
+    public index: number,
+    public cells: DataDenHeaderCell[],
+    draggable: boolean | undefined,
+    rowHeight: number
+  ) {
+    super(index, cells, rowHeight);
 
     const template = `<div class="data-den-header-row ${
       draggable ? 'data-den-header-row-draggable' : ''

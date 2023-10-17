@@ -1,4 +1,4 @@
-@import "data-den-core/dist/css/data-den.min.css";
+@import 'data-den-core/dist/css/data-den.min.css';
 
 :root {
   --header-height: 80px;

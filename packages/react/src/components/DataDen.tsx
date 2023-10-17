@@ -1,5 +1,5 @@
-import { useRef, forwardRef, useEffect, useImperativeHandle } from "react";
-import { DataDen as DataDenCore, DataDenOptions } from "data-den-core";
+import { useRef, forwardRef, useEffect, useImperativeHandle } from 'react';
+import { DataDen as DataDenCore, DataDenOptions } from 'data-den-core';
 
 const DataDen = forwardRef(function DataDen(
   {
@@ -9,7 +9,7 @@ const DataDen = forwardRef(function DataDen(
     options: DataDenOptions;
     onSortingDone: (event: CustomEvent) => void;
   },
-  ref: any
+  ref
 ) {
   let dataDen: DataDenCore | null = null;
   const dataDenWrapper = useRef<HTMLDivElement>(null);
@@ -18,18 +18,14 @@ const DataDen = forwardRef(function DataDen(
     if (!dataDen && dataDenWrapper.current) {
       dataDen = new DataDenCore(dataDenWrapper.current, options);
 
-      // @ts-ignore
-      dataDenWrapper.current.addEventListener(
-        "info:sorting:done",
-        (event: CustomEvent) => {
-          onSortingDone(event);
-        }
-      );
+      dataDenWrapper.current.addEventListener('info:sorting:done', (event: CustomEvent) => {
+        onSortingDone(event);
+      });
     }
   }, [dataDenWrapper]);
 
   useImperativeHandle(ref, () => ({
-    sort(field: string, order: "desc" | "asc") {
+    sort(field: string, order: 'desc' | 'asc') {
       if (dataDen) {
         dataDen.sort(field, order);
       }

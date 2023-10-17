@@ -12,7 +12,7 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended"
   ],
-  "ignorePatterns": ["dist/", "site/"],
+  "ignorePatterns": ["**/dist/*", "**/node_modules/*"],
   "env": {
     "browser": true,
     "es2021": true

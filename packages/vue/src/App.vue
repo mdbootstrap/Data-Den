@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue';
 import {
   DataDenDefaultCellRenderer,
   DataDenClientDataLoaderStrategy,
@@ -7,19 +7,19 @@ import {
   DataDenDataLoaderStrategy,
   DataDenData,
   DataDenOptions,
-} from "data-den-core";
-import DataDen from "./components/DataDen.vue";
+} from 'data-den-core';
+import DataDen from './components/DataDen.vue';
 
 const data: DataDenData = {
   columns: [
     {
-      field: "car",
-      headerName: "Car",
+      field: 'car',
+      headerName: 'Car',
       sort: true,
       filter: true,
       filterOptions: {
-        type: "text",
-        method: "includes",
+        type: 'text',
+        method: 'includes',
         debounceTime: 500,
         caseSensitive: false,
       },
@@ -28,13 +28,13 @@ const data: DataDenData = {
       cellRenderer: DataDenDefaultCellRenderer,
     },
     {
-      field: "model",
-      headerName: "Model",
+      field: 'model',
+      headerName: 'Model',
       sort: true,
       filter: true,
       filterOptions: {
-        type: "text",
-        method: "includes",
+        type: 'text',
+        method: 'includes',
         debounceTime: 500,
         caseSensitive: false,
       },
@@ -43,16 +43,16 @@ const data: DataDenData = {
       cellRenderer: DataDenDefaultCellRenderer,
     },
     {
-      field: "year",
-      headerName: "Year",
+      field: 'year',
+      headerName: 'Year',
       sort: true,
       filter: true,
       filterOptions: {
-        type: "date",
-        method: "equals",
+        type: 'date',
+        method: 'equals',
         debounceTime: 500,
         dateParserFn: (dateString: string) => {
-          const dateParts = dateString.split("/").map((part) => Number(part));
+          const dateParts = dateString.split('/').map((part) => Number(part));
           const [day, month, year] = dateParts;
 
           return new Date(year, month - 1, day);
@@ -63,13 +63,13 @@ const data: DataDenData = {
       cellRenderer: DataDenDefaultCellRenderer,
     },
     {
-      field: "price",
-      headerName: "Price",
+      field: 'price',
+      headerName: 'Price',
       sort: true,
       filter: true,
       filterOptions: {
-        type: "number",
-        method: "equals",
+        type: 'number',
+        method: 'equals',
         debounceTime: 500,
       },
       resize: false,
@@ -78,72 +78,70 @@ const data: DataDenData = {
     },
   ],
   rows: [
-    { car: "Honda", model: "Civic", year: "01/05/2013", price: 28000 },
-    { car: "Mitsubishi", model: "Lancer", year: "01/05/2013", price: 56000 },
-    { car: "Porsche", model: "Boxster", year: "09/02/2020", price: 31000 },
-    { car: "Toyota", model: "Celica", year: "16/12/2010", price: 18000 },
-    { car: "Kia", model: "Sportage", year: "14/09/2006", price: 28000 },
-    { car: "Ford", model: "Focus", year: "04/07/2014", price: 24000 },
-    { car: "Ford", model: "Focus", year: "16/12/2010", price: 24000 },
-    { car: "Porsche", model: "Boxster", year: "24/01/2015", price: 31000 },
-    { car: "Mitsubishi", model: "Lancer", year: "14/09/2006", price: 18000 },
-    { car: "Kia", model: "Sportage", year: "01/05/2013", price: 24000 },
-    { car: "Porsche", model: "Boxster", year: "28/08/2004", price: 28000 },
-    { car: "Toyota", model: "Celica", year: "28/08/2004", price: 12000 },
-    { car: "Mitsubishi", model: "Lancer", year: "16/12/2010", price: 34000 },
-    { car: "Toyota", model: "Celica", year: "28/08/2004", price: 18000 },
+    { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+    { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+    { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+    { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+    { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+    { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+    { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+    { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+    { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+    { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+    { car: 'Porsche', model: 'Boxster', year: '28/08/2004', price: 28000 },
+    { car: 'Toyota', model: 'Celica', year: '28/08/2004', price: 12000 },
+    { car: 'Mitsubishi', model: 'Lancer', year: '16/12/2010', price: 34000 },
+    { car: 'Toyota', model: 'Celica', year: '28/08/2004', price: 18000 },
     {
-      car: "Lamborghini",
-      model: "Aventador",
-      year: "24/01/2015",
+      car: 'Lamborghini',
+      model: 'Aventador',
+      year: '24/01/2015',
       price: 56000,
     },
-    { car: "Nissan", model: "X-Trail", year: "01/05/2013", price: 56000 },
-    { car: "Honda", model: "Civic", year: "01/05/2013", price: 15000 },
-    { car: "Porsche", model: "Boxster", year: "24/01/2015", price: 24000 },
-    { car: "Ford", model: "Focus", year: "14/09/2006", price: 15000 },
+    { car: 'Nissan', model: 'X-Trail', year: '01/05/2013', price: 56000 },
+    { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 15000 },
+    { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 24000 },
+    { car: 'Ford', model: 'Focus', year: '14/09/2006', price: 15000 },
     {
-      car: "Lamborghini",
-      model: "Aventador",
-      year: "14/09/2006",
+      car: 'Lamborghini',
+      model: 'Aventador',
+      year: '14/09/2006',
       price: 15000,
     },
-    { car: "Ford", model: "Focus", year: "09/02/2020", price: 12000 },
-    { car: "Honda", model: "Civic", year: "24/01/2015", price: 34000 },
-    { car: "Mitsubishi", model: "Lancer", year: "09/02/2020", price: 34000 },
-    { car: "Honda", model: "Civic", year: "09/02/2020", price: 12000 },
-    { car: "Mitsubishi", model: "Lancer", year: "09/02/2020", price: 15000 },
-    { car: "Ford", model: "Focus", year: "28/08/2004", price: 24000 },
-    { car: "Nissan", model: "X-Trail", year: "16/12/2010", price: 15000 },
-    { car: "Toyota", model: "Celica", year: "13/11/2021", price: 15000 },
-    { car: "Toyota", model: "Celica", year: "09/02/2020", price: 12000 },
-    { car: "Mitsubishi", model: "Lancer", year: "09/02/2020", price: 34000 },
+    { car: 'Ford', model: 'Focus', year: '09/02/2020', price: 12000 },
+    { car: 'Honda', model: 'Civic', year: '24/01/2015', price: 34000 },
+    { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 34000 },
+    { car: 'Honda', model: 'Civic', year: '09/02/2020', price: 12000 },
+    { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 15000 },
+    { car: 'Ford', model: 'Focus', year: '28/08/2004', price: 24000 },
+    { car: 'Nissan', model: 'X-Trail', year: '16/12/2010', price: 15000 },
+    { car: 'Toyota', model: 'Celica', year: '13/11/2021', price: 15000 },
+    { car: 'Toyota', model: 'Celica', year: '09/02/2020', price: 12000 },
+    { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 34000 },
   ],
 };
 
-const createStrategy = (
-  mode: "client" | "server"
-): DataDenDataLoaderStrategy => {
-  if (mode === "client") {
+const createStrategy = (mode: 'client' | 'server'): DataDenDataLoaderStrategy => {
+  if (mode === 'client') {
     return new DataDenClientDataLoaderStrategy(data);
   } else {
     return new DataDenServerDataLoaderStrategy();
   }
 };
 
-const mode = "client";
+const mode = 'client';
 const dataLoader = createStrategy(mode);
 
 const options: DataDenOptions = {
   columns: [
     {
-      field: "car",
-      headerName: "Car",
+      field: 'car',
+      headerName: 'Car',
       sort: true,
       filter: false,
       filterOptions: {
-        type: "text",
-        method: "includes",
+        type: 'text',
+        method: 'includes',
         debounceTime: 500,
         caseSensitive: false,
       },
@@ -152,13 +150,13 @@ const options: DataDenOptions = {
       cellRenderer: DataDenDefaultCellRenderer,
     },
     {
-      field: "model",
-      headerName: "Model",
+      field: 'model',
+      headerName: 'Model',
       sort: true,
       filter: false,
       filterOptions: {
-        type: "text",
-        method: "includes",
+        type: 'text',
+        method: 'includes',
         debounceTime: 500,
         caseSensitive: false,
       },
@@ -167,16 +165,16 @@ const options: DataDenOptions = {
       cellRenderer: DataDenDefaultCellRenderer,
     },
     {
-      field: "year",
-      headerName: "Year",
+      field: 'year',
+      headerName: 'Year',
       sort: true,
       filter: false,
       filterOptions: {
-        type: "date",
-        method: "equals",
+        type: 'date',
+        method: 'equals',
         debounceTime: 500,
         dateParserFn: (dateString: string) => {
-          const dateParts = dateString.split("/").map((part) => Number(part));
+          const dateParts = dateString.split('/').map((part) => Number(part));
           const [day, month, year] = dateParts;
 
           return new Date(year, month - 1, day);
@@ -187,13 +185,13 @@ const options: DataDenOptions = {
       cellRenderer: DataDenDefaultCellRenderer,
     },
     {
-      field: "price",
-      headerName: "Price",
+      field: 'price',
+      headerName: 'Price',
       sort: true,
       filter: false,
       filterOptions: {
-        type: "number",
-        method: "equals",
+        type: 'number',
+        method: 'equals',
         debounceTime: 500,
       },
       resize: false,
@@ -207,7 +205,7 @@ const options: DataDenOptions = {
   paginationOptions: {
     pageSize: 10,
     pageSizeOptions: [5, 10, 12, 20],
-    ofText: "z",
+    ofText: 'z',
   },
   quickFilter: true,
   quickFilterOptions: {
@@ -220,11 +218,7 @@ const dataDen = ref<typeof DataDen | null>(null);
 </script>
 
 <template>
-  <DataDen
-    :options="options"
-    ref="dataDen"
-    @sorting-done="($event: CustomEvent) => console.log($event.detail)"
-  />
+  <DataDen :options="options" ref="dataDen" @sorting-done="($event: CustomEvent) => console.log($event.detail)" />
   <div style="margin: 10px; display: flex; gap: 5px">
     <button @click="dataDen?.sort('car', 'asc')">Sort asc by car</button>
     <button @click="dataDen?.sort('car', 'desc')">Sort desc by car</button>

@@ -177,8 +177,7 @@ var Prism = (function () {
     highlightAllUnder: function (container, async, callback) {
       var env = {
         callback: callback,
-        selector:
-          'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code',
+        selector: 'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code',
       };
 
       _.hooks.run('before-highlightall', env);
@@ -206,16 +205,14 @@ var Prism = (function () {
       }
 
       // Set language on the element, if not present
-      element.className =
-        element.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language;
+      element.className = element.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language;
 
       if (element.parentNode) {
         // Set language on the parent, for styling
         parent = element.parentNode;
 
         if (/pre/i.test(parent.nodeName)) {
-          parent.className =
-            parent.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language;
+          parent.className = parent.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language;
         }
       }
 
@@ -346,11 +343,7 @@ var Prism = (function () {
                 k = i,
                 p = pos;
 
-              for (
-                var len = strarr.length;
-                k < len && (p < to || (!strarr[k].type && !strarr[k - 1].greedy));
-                ++k
-              ) {
+              for (var len = strarr.length; k < len && (p < to || (!strarr[k].type && !strarr[k - 1].greedy)); ++k) {
                 p += strarr[k].length;
                 // Move the index i to the element in strarr that is closest to from
                 if (from >= p) {
@@ -401,13 +394,7 @@ var Prism = (function () {
               args.push(before);
             }
 
-            var wrapped = new Token(
-              token,
-              inside ? _.tokenize(match, inside) : match,
-              alias,
-              match,
-              greedy
-            );
+            var wrapped = new Token(token, inside ? _.tokenize(match, inside) : match, alias, match, greedy);
 
             args.push(wrapped);
 
@@ -557,8 +544,7 @@ var Prism = (function () {
   }
 
   //Get current script and highlight
-  var script =
-    document.currentScript || [].slice.call(document.getElementsByTagName('script')).pop();
+  var script = document.currentScript || [].slice.call(document.getElementsByTagName('script')).pop();
 
   if (script) {
     _.filename = script.src;
@@ -627,8 +613,7 @@ Prism.languages.markup = {
   entity: /&#?[\da-z]{1,8};/i,
 };
 
-Prism.languages.markup['tag'].inside['attr-value'].inside['entity'] =
-  Prism.languages.markup['entity'];
+Prism.languages.markup['tag'].inside['attr-value'].inside['entity'] = Prism.languages.markup['entity'];
 
 // Plugin to make entity title show the real entity, idea by Roman Komarov
 Prism.hooks.add('wrap', function (env) {
@@ -731,7 +716,8 @@ Prism.languages.clike = {
 };
 
 Prism.languages.javascript = Prism.languages.extend('clike', {
-  keyword: /\b(?:as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|var|void|while|with|yield)\b/,
+  keyword:
+    /\b(?:as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|var|void|while|with|yield)\b/,
   number: /\b(?:0[xX][\dA-Fa-f]+|0[bB][01]+|0[oO][0-7]+|NaN|Infinity)\b|(?:\b\d+\.?\d*|\B\.\d+)(?:[Ee][+-]?\d+)?/,
   // Allow for all non-ASCII characters (See http://stackoverflow.com/a/2008444)
   function: /[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*\()/i,
@@ -740,13 +726,15 @@ Prism.languages.javascript = Prism.languages.extend('clike', {
 
 Prism.languages.insertBefore('javascript', 'keyword', {
   regex: {
-    pattern: /((?:^|[^$\w\xA0-\uFFFF."'\])\s])\s*)\/(\[[^\]\r\n]+]|\\.|[^/\\\[\r\n])+\/[gimyu]{0,5}(?=\s*($|[\r\n,.;})\]]))/,
+    pattern:
+      /((?:^|[^$\w\xA0-\uFFFF."'\])\s])\s*)\/(\[[^\]\r\n]+]|\\.|[^/\\\[\r\n])+\/[gimyu]{0,5}(?=\s*($|[\r\n,.;})\]]))/,
     lookbehind: true,
     greedy: true,
   },
   // This must be declared before keyword because we use "function" inside the look-forward
   'function-variable': {
-    pattern: /[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*=\s*(?:function\b|(?:\([^()]*\)|[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*)\s*=>))/i,
+    pattern:
+      /[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*=\s*(?:function\b|(?:\([^()]*\)|[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*)\s*=>))/i,
     alias: 'function',
   },
   constant: /\b[A-Z][A-Z\d_]*\b/,
@@ -771,8 +759,7 @@ Prism.languages.insertBefore('javascript', 'string', {
     },
   },
 });
-Prism.languages.javascript['template-string'].inside['interpolation'].inside.rest =
-  Prism.languages.javascript;
+Prism.languages.javascript['template-string'].inside['interpolation'].inside.rest = Prism.languages.javascript;
 
 if (Prism.languages.markup) {
   Prism.languages.insertBefore('markup', 'tag', {
@@ -927,22 +914,21 @@ Prism.languages.jsonp = Prism.languages.json;
 
   spread = re(spread).source;
 
-  Prism.languages.jsx = Prism.languages.extend("markup", javascript);
+  Prism.languages.jsx = Prism.languages.extend('markup', javascript);
   Prism.languages.jsx.tag.pattern = re(
     /<\/?(?:[\w.:-]+(?:<S>+(?:[\w.:$-]+(?:=(?:"(?:\\[\s\S]|[^\\"])*"|'(?:\\[\s\S]|[^\\'])*'|[^\s{'"/>=]+|<BRACES>))?|<SPREAD>))*<S>*\/?)?>/
       .source
   );
 
-  Prism.languages.jsx.tag.inside["tag"].pattern = /^<\/?[^\s>\/]*/;
-  Prism.languages.jsx.tag.inside["attr-value"].pattern =
+  Prism.languages.jsx.tag.inside['tag'].pattern = /^<\/?[^\s>\/]*/;
+  Prism.languages.jsx.tag.inside['attr-value'].pattern =
     /=(?!\{)(?:"(?:\\[\s\S]|[^\\"])*"|'(?:\\[\s\S]|[^\\'])*'|[^\s'">]+)/;
-  Prism.languages.jsx.tag.inside["tag"].inside["class-name"] =
-    /^[A-Z]\w*(?:\.[A-Z]\w*)*$/;
-  Prism.languages.jsx.tag.inside["comment"] = javascript["comment"];
+  Prism.languages.jsx.tag.inside['tag'].inside['class-name'] = /^[A-Z]\w*(?:\.[A-Z]\w*)*$/;
+  Prism.languages.jsx.tag.inside['comment'] = javascript['comment'];
 
   Prism.languages.insertBefore(
-    "inside",
-    "attr-name",
+    'inside',
+    'attr-name',
     {
       spread: {
         pattern: re(/<SPREAD>/.source),
@@ -953,17 +939,17 @@ Prism.languages.jsonp = Prism.languages.json;
   );
 
   Prism.languages.insertBefore(
-    "inside",
-    "special-attr",
+    'inside',
+    'special-attr',
     {
       script: {
         // Allow for two levels of nesting
         pattern: re(/=<BRACES>/.source),
-        alias: "language-javascript",
+        alias: 'language-javascript',
         inside: {
-          "script-punctuation": {
+          'script-punctuation': {
             pattern: /^=(?=\{)/,
-            alias: "punctuation",
+            alias: 'punctuation',
           },
           rest: Prism.languages.jsx,
         },
@@ -975,15 +961,15 @@ Prism.languages.jsonp = Prism.languages.json;
   // The following will handle plain text inside tags
   var stringifyToken = function (token) {
     if (!token) {
-      return "";
+      return '';
     }
-    if (typeof token === "string") {
+    if (typeof token === 'string') {
       return token;
     }
-    if (typeof token.content === "string") {
+    if (typeof token.content === 'string') {
       return token.content;
     }
-    return token.content.map(stringifyToken).join("");
+    return token.content.map(stringifyToken).join('');
   };
 
   var walkTokens = function (tokens) {
@@ -992,26 +978,21 @@ Prism.languages.jsonp = Prism.languages.json;
       var token = tokens[i];
       var notTagNorBrace = false;
 
-      if (typeof token !== "string") {
-        if (
-          token.type === "tag" &&
-          token.content[0] &&
-          token.content[0].type === "tag"
-        ) {
+      if (typeof token !== 'string') {
+        if (token.type === 'tag' && token.content[0] && token.content[0].type === 'tag') {
           // We found a tag, now find its kind
 
-          if (token.content[0].content[0].content === "</") {
+          if (token.content[0].content[0].content === '</') {
             // Closing tag
             if (
               openedTags.length > 0 &&
-              openedTags[openedTags.length - 1].tagName ===
-                stringifyToken(token.content[0].content[1])
+              openedTags[openedTags.length - 1].tagName === stringifyToken(token.content[0].content[1])
             ) {
               // Pop matching opening tag
               openedTags.pop();
             }
           } else {
-            if (token.content[token.content.length - 1].content === "/>") {
+            if (token.content[token.content.length - 1].content === '/>') {
               // Autoclosed tag, ignore
             } else {
               // Opening tag
@@ -1021,18 +1002,14 @@ Prism.languages.jsonp = Prism.languages.json;
               });
             }
           }
-        } else if (
-          openedTags.length > 0 &&
-          token.type === "punctuation" &&
-          token.content === "{"
-        ) {
+        } else if (openedTags.length > 0 && token.type === 'punctuation' && token.content === '{') {
           // Here we might have entered a JSX context inside a tag
           openedTags[openedTags.length - 1].openedBraces++;
         } else if (
           openedTags.length > 0 &&
           openedTags[openedTags.length - 1].openedBraces > 0 &&
-          token.type === "punctuation" &&
-          token.content === "}"
+          token.type === 'punctuation' &&
+          token.content === '}'
         ) {
           // Here we might have left a JSX context inside a tag
           openedTags[openedTags.length - 1].openedBraces--;
@@ -1040,45 +1017,34 @@ Prism.languages.jsonp = Prism.languages.json;
           notTagNorBrace = true;
         }
       }
-      if (notTagNorBrace || typeof token === "string") {
-        if (
-          openedTags.length > 0 &&
-          openedTags[openedTags.length - 1].openedBraces === 0
-        ) {
+      if (notTagNorBrace || typeof token === 'string') {
+        if (openedTags.length > 0 && openedTags[openedTags.length - 1].openedBraces === 0) {
           // Here we are inside a tag, and not inside a JSX context.
           // That's plain text: drop any tokens matched.
           var plainText = stringifyToken(token);
 
           // And merge text with adjacent text
-          if (
-            i < tokens.length - 1 &&
-            (typeof tokens[i + 1] === "string" ||
-              tokens[i + 1].type === "plain-text")
-          ) {
+          if (i < tokens.length - 1 && (typeof tokens[i + 1] === 'string' || tokens[i + 1].type === 'plain-text')) {
             plainText += stringifyToken(tokens[i + 1]);
             tokens.splice(i + 1, 1);
           }
-          if (
-            i > 0 &&
-            (typeof tokens[i - 1] === "string" ||
-              tokens[i - 1].type === "plain-text")
-          ) {
+          if (i > 0 && (typeof tokens[i - 1] === 'string' || tokens[i - 1].type === 'plain-text')) {
             plainText = stringifyToken(tokens[i - 1]) + plainText;
             tokens.splice(i - 1, 1);
             i--;
           }
-          tokens[i] = new Prism.Token("plain-text", plainText, null, plainText);
+          tokens[i] = new Prism.Token('plain-text', plainText, null, plainText);
         }
       }
 
-      if (token.content && typeof token.content !== "string") {
+      if (token.content && typeof token.content !== 'string') {
         walkTokens(token.content);
       }
     }
   };
 
-  Prism.hooks.add("after-tokenize", function (env) {
-    if (env.language !== "jsx" && env.language !== "tsx") {
+  Prism.hooks.add('after-tokenize', function (env) {
+    if (env.language !== 'jsx' && env.language !== 'tsx') {
       return;
     }
     walkTokens(env.tokens);
@@ -1101,7 +1067,8 @@ Prism.languages.jsonp = Prism.languages.json;
  */
 (function (Prism) {
   Prism.languages.php = Prism.languages.extend('clike', {
-    keyword: /\b(?:and|or|xor|array|as|break|case|cfunction|class|const|continue|declare|default|die|do|else|elseif|enddeclare|endfor|endforeach|endif|endswitch|endwhile|extends|for|foreach|function|include|include_once|global|if|new|return|static|switch|use|require|require_once|var|while|abstract|interface|public|implements|private|protected|parent|throw|null|echo|print|trait|namespace|final|yield|goto|instanceof|finally|try|catch)\b/i,
+    keyword:
+      /\b(?:and|or|xor|array|as|break|case|cfunction|class|const|continue|declare|default|die|do|else|elseif|enddeclare|endfor|endforeach|endif|endswitch|endwhile|extends|for|foreach|function|include|include_once|global|if|new|return|static|switch|use|require|require_once|var|while|abstract|interface|public|implements|private|protected|parent|throw|null|echo|print|trait|namespace|final|yield|goto|instanceof|finally|try|catch)\b/i,
     constant: /\b[A-Z0-9_]{2,}\b/,
     comment: {
       pattern: /(^|[^\\])(?:\/\*[\s\S]*?\*\/|\/\/.*)/,
@@ -1212,7 +1179,8 @@ Prism.languages.jsonp = Prism.languages.json;
 })(Prism);
 Prism.languages.typescript = Prism.languages.extend('javascript', {
   // From JavaScript Prism keyword list and TypeScript language spec: https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#221-reserved-words
-  keyword: /\b(?:as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|var|void|while|with|yield|module|declare|constructor|namespace|abstract|require|type)\b/,
+  keyword:
+    /\b(?:as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|var|void|while|with|yield|module|declare|constructor|namespace|abstract|require|type)\b/,
   builtin: /\b(?:string|Function|any|number|boolean|Array|symbol|console)\b/,
 });
 
@@ -1676,10 +1644,7 @@ Prism.languages.scss['atrule'].inside.rest = Prism.languages.scss;
             if (/\bcircle|ellipse|closest|farthest|contain|cover\b/.test(values[0])) {
               // Found a shape and/or size
               var shapeSizeParts = values.shift().split(/\s+/);
-              if (
-                shapeSizeParts[0] &&
-                (shapeSizeParts[0] === 'circle' || shapeSizeParts[0] === 'ellipse')
-              ) {
+              if (shapeSizeParts[0] && (shapeSizeParts[0] === 'circle' || shapeSizeParts[0] === 'ellipse')) {
                 shape = shapeSizeParts.shift();
               }
               if (shapeSizeParts[0]) {
@@ -1694,9 +1659,7 @@ Prism.languages.scss['atrule'].inside.rest = Prism.languages.scss;
               }
             }
 
-            return (
-              func + '(' + shape + ' ' + size + ' at ' + position + ',' + values.join(',') + ')'
-            );
+            return func + '(' + shape + ' ' + size + ' at ' + position + ',' + values.join(',') + ')';
           }
           return func + '(' + values.join(',') + ')';
         };
@@ -1710,9 +1673,7 @@ Prism.languages.scss['atrule'].inside.rest = Prism.languages.scss;
           if (cache[gradient]) {
             return cache[gradient];
           }
-          var parts = gradient.match(
-            /^(\b|\B-[a-z]{1,10}-)((?:repeating-)?(?:linear|radial)-gradient)/
-          );
+          var parts = gradient.match(/^(\b|\B-[a-z]{1,10}-)((?:repeating-)?(?:linear|radial)-gradient)/);
           // "", "-moz-", etc.
           var prefix = parts && parts[1];
           // "linear-gradient", "radial-gradient", etc.
@@ -1747,7 +1708,8 @@ Prism.languages.scss['atrule'].inside.rest = Prism.languages.scss;
       })(),
       tokens: {
         gradient: {
-          pattern: /(?:\b|\B-[a-z]{1,10}-)(?:repeating-)?(?:linear|radial)-gradient\((?:(?:rgb|hsl)a?\(.+?\)|[^\)])+\)/gi,
+          pattern:
+            /(?:\b|\B-[a-z]{1,10}-)(?:repeating-)?(?:linear|radial)-gradient\((?:(?:rgb|hsl)a?\(.+?\)|[^\)])+\)/gi,
           inside: {
             function: /[\w-]+(?=\()/,
             punctuation: /[(),]/,
@@ -1824,8 +1786,7 @@ Prism.languages.scss['atrule'].inside.rest = Prism.languages.scss;
           },
           '*',
           function () {
-            this._elt.innerHTML =
-              '<svg viewBox="0 0 64 64">' + '<circle r="16" cy="32" cx="32"></circle>' + '</svg>';
+            this._elt.innerHTML = '<svg viewBox="0 0 64 64">' + '<circle r="16" cy="32" cx="32"></circle>' + '</svg>';
           }
         );
       },
@@ -1881,7 +1842,8 @@ Prism.languages.scss['atrule'].inside.rest = Prism.languages.scss;
       },
       tokens: {
         color: {
-          pattern: /\B#(?:[0-9a-f]{3}){1,2}\b|\b(?:rgb|hsl)\(\s*\d{1,3}\s*,\s*\d{1,3}%?\s*,\s*\d{1,3}%?\s*\)\B|\b(?:rgb|hsl)a\(\s*\d{1,3}\s*,\s*\d{1,3}%?\s*,\s*\d{1,3}%?\s*,\s*(?:0|0?\.\d+|1)\s*\)\B|\b(?:AliceBlue|AntiqueWhite|Aqua|Aquamarine|Azure|Beige|Bisque|Black|BlanchedAlmond|Blue|BlueViolet|Brown|BurlyWood|CadetBlue|Chartreuse|Chocolate|Coral|CornflowerBlue|Cornsilk|Crimson|Cyan|DarkBlue|DarkCyan|DarkGoldenRod|DarkGray|DarkGreen|DarkKhaki|DarkMagenta|DarkOliveGreen|DarkOrange|DarkOrchid|DarkRed|DarkSalmon|DarkSeaGreen|DarkSlateBlue|DarkSlateGray|DarkTurquoise|DarkViolet|DeepPink|DeepSkyBlue|DimGray|DodgerBlue|FireBrick|FloralWhite|ForestGreen|Fuchsia|Gainsboro|GhostWhite|Gold|GoldenRod|Gray|Green|GreenYellow|HoneyDew|HotPink|IndianRed|Indigo|Ivory|Khaki|Lavender|LavenderBlush|LawnGreen|LemonChiffon|LightBlue|LightCoral|LightCyan|LightGoldenRodYellow|LightGray|LightGreen|LightPink|LightSalmon|LightSeaGreen|LightSkyBlue|LightSlateGray|LightSteelBlue|LightYellow|Lime|LimeGreen|Linen|Magenta|Maroon|MediumAquaMarine|MediumBlue|MediumOrchid|MediumPurple|MediumSeaGreen|MediumSlateBlue|MediumSpringGreen|MediumTurquoise|MediumVioletRed|MidnightBlue|MintCream|MistyRose|Moccasin|NavajoWhite|Navy|OldLace|Olive|OliveDrab|Orange|OrangeRed|Orchid|PaleGoldenRod|PaleGreen|PaleTurquoise|PaleVioletRed|PapayaWhip|PeachPuff|Peru|Pink|Plum|PowderBlue|Purple|Red|RosyBrown|RoyalBlue|SaddleBrown|Salmon|SandyBrown|SeaGreen|SeaShell|Sienna|Silver|SkyBlue|SlateBlue|SlateGray|Snow|SpringGreen|SteelBlue|Tan|Teal|Thistle|Tomato|Turquoise|Violet|Wheat|White|WhiteSmoke|Yellow|YellowGreen)\b/i,
+          pattern:
+            /\B#(?:[0-9a-f]{3}){1,2}\b|\b(?:rgb|hsl)\(\s*\d{1,3}\s*,\s*\d{1,3}%?\s*,\s*\d{1,3}%?\s*\)\B|\b(?:rgb|hsl)a\(\s*\d{1,3}\s*,\s*\d{1,3}%?\s*,\s*\d{1,3}%?\s*,\s*(?:0|0?\.\d+|1)\s*\)\B|\b(?:AliceBlue|AntiqueWhite|Aqua|Aquamarine|Azure|Beige|Bisque|Black|BlanchedAlmond|Blue|BlueViolet|Brown|BurlyWood|CadetBlue|Chartreuse|Chocolate|Coral|CornflowerBlue|Cornsilk|Crimson|Cyan|DarkBlue|DarkCyan|DarkGoldenRod|DarkGray|DarkGreen|DarkKhaki|DarkMagenta|DarkOliveGreen|DarkOrange|DarkOrchid|DarkRed|DarkSalmon|DarkSeaGreen|DarkSlateBlue|DarkSlateGray|DarkTurquoise|DarkViolet|DeepPink|DeepSkyBlue|DimGray|DodgerBlue|FireBrick|FloralWhite|ForestGreen|Fuchsia|Gainsboro|GhostWhite|Gold|GoldenRod|Gray|Green|GreenYellow|HoneyDew|HotPink|IndianRed|Indigo|Ivory|Khaki|Lavender|LavenderBlush|LawnGreen|LemonChiffon|LightBlue|LightCoral|LightCyan|LightGoldenRodYellow|LightGray|LightGreen|LightPink|LightSalmon|LightSeaGreen|LightSkyBlue|LightSlateGray|LightSteelBlue|LightYellow|Lime|LimeGreen|Linen|Magenta|Maroon|MediumAquaMarine|MediumBlue|MediumOrchid|MediumPurple|MediumSeaGreen|MediumSlateBlue|MediumSpringGreen|MediumTurquoise|MediumVioletRed|MidnightBlue|MintCream|MistyRose|Moccasin|NavajoWhite|Navy|OldLace|Olive|OliveDrab|Orange|OrangeRed|Orchid|PaleGoldenRod|PaleGreen|PaleTurquoise|PaleVioletRed|PapayaWhip|PeachPuff|Peru|Pink|Plum|PowderBlue|Purple|Red|RosyBrown|RoyalBlue|SaddleBrown|Salmon|SandyBrown|SeaGreen|SeaShell|Sienna|Silver|SkyBlue|SlateBlue|SlateGray|Snow|SpringGreen|SteelBlue|Tan|Teal|Thistle|Tomato|Turquoise|Violet|Wheat|White|WhiteSmoke|Yellow|YellowGreen)\b/i,
           inside: {
             function: /[\w-]+(?=\()/,
             punctuation: /[(),]/,
@@ -1990,7 +1952,8 @@ Prism.languages.scss['atrule'].inside.rest = Prism.languages.scss;
       },
       tokens: {
         easing: {
-          pattern: /\bcubic-bezier\((?:-?\d*\.?\d+,\s*){3}-?\d*\.?\d+\)\B|\b(?:linear|ease(?:-in)?(?:-out)?)(?=\s|[;}]|$)/i,
+          pattern:
+            /\bcubic-bezier\((?:-?\d*\.?\d+,\s*){3}-?\d*\.?\d+\)\B|\b(?:linear|ease(?:-in)?(?:-out)?)(?=\s|[;}]|$)/i,
           inside: {
             function: /[\w-]+(?=\()/,
             punctuation: /[(),]/,
@@ -2047,8 +2010,7 @@ Prism.languages.scss['atrule'].inside.rest = Prism.languages.scss;
           },
           '*',
           function () {
-            this._elt.innerHTML =
-              '<svg viewBox="0 0 64 64">' + '<circle r="16" cy="32" cx="32"></circle>' + '</svg>';
+            this._elt.innerHTML = '<svg viewBox="0 0 64 64">' + '<circle r="16" cy="32" cx="32"></circle>' + '</svg>';
           }
         );
       },
@@ -2384,12 +2346,7 @@ Prism.languages.scss['atrule'].inside.rest = Prism.languages.scss;
 
       for (var name in settings) {
         var methodName = toCamelCase(name);
-        if (
-          name !== 'normalize' &&
-          methodName !== 'setDefaults' &&
-          settings[name] &&
-          this[methodName]
-        ) {
+        if (name !== 'normalize' && methodName !== 'setDefaults' && settings[name] && this[methodName]) {
           input = this[methodName].call(this, input, settings[name]);
         }
       }
@@ -2583,7 +2540,8 @@ Prism.languages.scss['atrule'].inside.rest = Prism.languages.scss;
   Prism.plugins.toolbar.registerButton('copy-to-clipboard', function (env) {
     var linkCopy = document.createElement('button');
     linkCopy.innerHTML = 'Copy';
-    linkCopy.classList = 'btn-copy-code text-gray-500 text-xs leading-[1.6] !top-[16px] bg-transparent font-bold uppercase text-sm px-4 py-2 outline-none focus:outline-none dark:text-gray-200';
+    linkCopy.classList =
+      'btn-copy-code text-gray-500 text-xs leading-[1.6] !top-[16px] bg-transparent font-bold uppercase text-sm px-4 py-2 outline-none focus:outline-none dark:text-gray-200';
 
     if (!ClipboardJS) {
       callbacks.push(registerClipboard);

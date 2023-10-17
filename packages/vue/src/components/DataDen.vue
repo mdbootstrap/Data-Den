@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { DataDen, DataDenOptions } from "data-den-core";
-import { onMounted, ref } from "vue";
+import { DataDen, DataDenOptions } from 'data-den-core';
+import { onMounted, ref } from 'vue';
 
 let dataDen: DataDen | null = null;
 const dataDenWrapper = ref<HTMLDivElement | null>(null);
@@ -9,22 +9,19 @@ const props = defineProps<{
   options: DataDenOptions;
 }>();
 
-const emit = defineEmits(["sorting-done"]);
+const emit = defineEmits(['sorting-done']);
 
 onMounted(() => {
   if (dataDenWrapper.value) {
     dataDen = new DataDen(dataDenWrapper.value, props.options);
     // @ts-ignore
-    dataDenWrapper.value.addEventListener(
-      "info:sorting:done",
-      (event: CustomEvent) => {
-        emit("sorting-done", event);
-      }
-    );
+    dataDenWrapper.value.addEventListener('info:sorting:done', (event: CustomEvent) => {
+      emit('sorting-done', event);
+    });
   }
 });
 
-const sort = (field: string, order: "desc" | "asc") => {
+const sort = (field: string, order: 'desc' | 'asc') => {
   if (dataDen) {
     dataDen.sort(field, order);
   }

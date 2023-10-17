@@ -103,7 +103,7 @@ export class DataDenRenderingService {
       );
     });
 
-    return new DataDenHeaderRow(rowIndex, headerCells, this.#options.draggable);
+    return new DataDenHeaderRow(rowIndex, headerCells, this.#options.draggable, this.#rowHeight);
   }
 
   #getHeaderFilterRenderer(column: DataDenColDef) {
