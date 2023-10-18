@@ -15,6 +15,7 @@ import {
 } from './modules/fetch';
 import { DataDenInternalOptions, DataDenOptions } from './data-den-options.interface';
 import { defaultOptions } from './default-options.interface';
+import { deepMerge } from './utils/deep-merge';
 
 export class DataDen {
   #rendering: DataDenRenderingService;
@@ -43,7 +44,7 @@ export class DataDen {
   }
 
   #createOptions(defaultOptions: DataDenInternalOptions, userOptions: DataDenOptions): DataDenInternalOptions {
-    return Object.assign(defaultOptions, userOptions);
+    return deepMerge(defaultOptions, userOptions);
   }
 
   #getLoader(options: DataDenOptions): DataDenDataLoaderStrategy | null {
