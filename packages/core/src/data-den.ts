@@ -24,15 +24,15 @@ export class DataDen {
   #pagination: DataDenPaginationService;
   #dragging: DataDenDraggingService;
   #resizing: DataDenResizingService;
-  #loader: DataDenDataLoaderStrategy | null = null;
+  #dataLoaderStrategy: DataDenDataLoaderStrategy | null = null;
   #fetch: DataDenFetchService | null = null;
 
   constructor(container: HTMLElement, options: DataDenOptions) {
     const gridOptions = this.#createOptions(defaultOptions, options);
-    this.#loader = this.#getLoader(gridOptions);
+    this.#dataLoaderStrategy = this.#getDataLoaderStrategy(gridOptions);
 
-    if (this.#loader) {
-      this.#fetch = new DataDenFetchService(this.#loader);
+    if (this.#dataLoaderStrategy) {
+      this.#fetch = new DataDenFetchService(this.#dataLoaderStrategy);
     }
 
     this.#rendering = new DataDenRenderingService(container, gridOptions);
@@ -47,7 +47,7 @@ export class DataDen {
     return deepMerge(defaultOptions, userOptions);
   }
 
-  #getLoader(options: DataDenOptions): DataDenDataLoaderStrategy | null {
+  #getDataLoaderStrategy(options: DataDenOptions): DataDenDataLoaderStrategy | null {
     const { mode, rows } = options;
 
     if (mode === 'client' && rows.length) {
