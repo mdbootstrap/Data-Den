@@ -237,7 +237,7 @@ export class DataDenRenderingService {
     this.#rows = this.#createDataRows(rows);
     this.#rows.forEach((row) => rowsEl.appendChild(row.render()));
 
-    const rowContainer = this.#container.querySelector('.data-den-grid-rows')!;
+    const rowContainer = this.#container.querySelector(`.${this.#cssPrefix}grid-rows`)!;
     rowContainer.innerHTML = '';
     rowContainer.appendChild(rowsEl);
     this.#calculateGridSize();
