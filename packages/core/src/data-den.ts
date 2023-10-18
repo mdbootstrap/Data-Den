@@ -13,8 +13,9 @@ import {
   DataDenServerDataLoaderStrategy,
   DataDenDataLoaderStrategy,
 } from './modules/fetch';
-import { DataDenData } from './data-den-data.interface';
-import { DataDenOptions } from './data-den-options.interface';
+import { DataDenInternalOptions, DataDenOptions } from './data-den-options.interface';
+import { defaultOptions } from './default-options.interface';
+import { deepMerge } from './utils/deep-merge';
 
 export class DataDen {
   #rendering: DataDenRenderingService;
@@ -23,16 +24,41 @@ export class DataDen {
   #pagination: DataDenPaginationService;
   #dragging: DataDenDraggingService;
   #resizing: DataDenResizingService;
-  #fetch: DataDenFetchService;
+  #dataLoaderStrategy: DataDenDataLoaderStrategy | null = null;
+  #fetch: DataDenFetchService | null = null;
 
   constructor(container: HTMLElement, options: DataDenOptions) {
-    this.#fetch = new DataDenFetchService(options);
-    this.#rendering = new DataDenRenderingService(container, options);
+    const gridOptions = this.#createOptions(defaultOptions, options);
+    this.#dataLoaderStrategy = this.#getDataLoaderStrategy(gridOptions);
+
+    if (this.#dataLoaderStrategy) {
+      this.#fetch = new DataDenFetchService(this.#dataLoaderStrategy);
+    }
+
+    this.#rendering = new DataDenRenderingService(container, gridOptions);
     this.#sorting = new DataDenSortingService(container);
-    this.#filtering = new DataDenFilteringService(options);
-    this.#pagination = new DataDenPaginationService(options.paginationOptions);
-    this.#dragging = new DataDenDraggingService(container, options);
-    this.#resizing = new DataDenResizingService(container, options);
+    this.#filtering = new DataDenFilteringService(gridOptions);
+    this.#pagination = new DataDenPaginationService(gridOptions);
+    this.#dragging = new DataDenDraggingService(container, gridOptions);
+    this.#resizing = new DataDenResizingService(container, gridOptions);
+  }
+
+  #createOptions(defaultOptions: DataDenInternalOptions, userOptions: DataDenOptions): DataDenInternalOptions {
+    return deepMerge(defaultOptions, userOptions);
+  }
+
+  #getDataLoaderStrategy(options: DataDenOptions): DataDenDataLoaderStrategy | null {
+    const { mode, rows } = options;
+
+    if (mode === 'client' && rows.length) {
+      return new DataDenClientDataLoaderStrategy(options.rows);
+    }
+
+    if (mode === 'server') {
+      return new DataDenServerDataLoaderStrategy();
+    }
+
+    return null;
   }
 }
 
@@ -43,4 +69,4 @@ export {
   DataDenDataLoaderStrategy,
 };
 
-export type { DataDenData, DataDenOptions };
+export type { DataDenOptions };

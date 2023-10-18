@@ -1,7 +1,6 @@
 import { Order } from './data-den-sorting.interface';
 import { DataDenPubSub } from '../../data-den-pub-sub';
 import { DataDenEvent } from '../../data-den-event';
-import { DataDenRowDef } from '../../data-den-options.interface';
 import { DataDenEventEmitter } from '../../data-den-event-emitter';
 import { Context } from '../../context';
 
@@ -56,7 +55,7 @@ export class DataDenSortingService {
     });
   }
 
-  sort(rows: DataDenRowDef[], field: string, order: string): DataDenRowDef[] {
+  sort(rows: any, field: string, order: string): any[] {
     if (!order) return rows;
 
     const sortedData = rows.sort((a: any, b: any) => {

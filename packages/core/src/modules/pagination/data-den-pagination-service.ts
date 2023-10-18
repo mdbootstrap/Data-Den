@@ -1,5 +1,5 @@
 import { DataDenPubSub } from '../../data-den-pub-sub';
-import { DataDenPaginationOptions } from '../../data-den-options.interface';
+import { DataDenInternalOptions, DataDenPaginationOptions } from '../../data-den-options.interface';
 import { Context } from '../../context';
 import { DataDenEvent } from '../../data-den-event';
 
@@ -9,8 +9,8 @@ export class DataDenPaginationService {
   #pageSize: number;
   #allTotalRows: number;
 
-  constructor(options: DataDenPaginationOptions) {
-    this.#options = options;
+  constructor(options: DataDenInternalOptions) {
+    this.#options = options.paginationOptions;
 
     this.#currentPage = 0;
     this.#allTotalRows = 0;

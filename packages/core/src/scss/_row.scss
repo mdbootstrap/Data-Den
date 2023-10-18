@@ -19,6 +19,7 @@
   border-right: $cell-border-transparent;
   padding: 4px var(--#{$prefix}row-cell-padding-x);
   position: absolute;
+  box-sizing: border-box;
 
   &.active {
     background-color: #fafafa;
