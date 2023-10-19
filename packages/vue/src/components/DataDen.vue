@@ -15,13 +15,13 @@ onMounted(() => {
   if (dataDenWrapper.value) {
     dataDen = new DataDen(dataDenWrapper.value, props.options);
     // @ts-ignore
-    dataDenWrapper.value.addEventListener('info:sorting:done', (event: CustomEvent) => {
+    dataDenWrapper.value.addEventListener('sorting.done', (event: CustomEvent) => {
       emit('sorting-done', event);
     });
   }
 });
 
-const sort = (field: string, order: 'desc' | 'asc') => {
+const sort = (field: string, order: string) => {
   if (dataDen) {
     dataDen.sort(field, order);
   }

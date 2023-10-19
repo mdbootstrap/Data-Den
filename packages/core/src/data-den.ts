@@ -35,11 +35,9 @@ export class DataDen {
     this.#pagination = new DataDenPaginationService(options.paginationOptions);
     this.#dragging = new DataDenDraggingService(container, options);
     this.#resizing = new DataDenResizingService(container, options);
-
-    console.log('test');
   }
 
-  sort(field: string, order: 'asc' | 'desc'): void {
+  sort(field: string, order: string): void {
     const command = 'command:sorting:start';
     DataDenPubSub.publish(command, {
       context: new Context(command),

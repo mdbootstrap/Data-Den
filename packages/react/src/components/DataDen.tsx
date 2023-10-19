@@ -18,14 +18,14 @@ const DataDen = forwardRef(function DataDen(
     if (!dataDen && dataDenWrapper.current) {
       dataDen = new DataDenCore(dataDenWrapper.current, options);
 
-      dataDenWrapper.current.addEventListener('info:sorting:done', (event: CustomEvent) => {
+      dataDenWrapper.current.addEventListener('sorting.done', (event: CustomEvent) => {
         onSortingDone(event);
       });
     }
   }, [dataDenWrapper]);
 
   useImperativeHandle(ref, () => ({
-    sort(field: string, order: 'desc' | 'asc') {
+    sort(field: string, order: string) {
       if (dataDen) {
         dataDen.sort(field, order);
       }

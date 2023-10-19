@@ -46,9 +46,9 @@ export class DataDenSortingService {
         sortFn: this.sort,
       });
 
-      DataDenEventEmitter.publish('info:sorting:done', {
+      DataDenEventEmitter.publish('sorting.done', {
         element: this.#container,
-        context: new Context('info:sorting:done'),
+        context: new Context('sorting.done'),
         field: this.#field,
         order: this.#order,
         sortFn: this.sort,

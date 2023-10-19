@@ -3,17 +3,23 @@
   "version": "1.0.0",
   "license": "AGPL",
   "scripts": {
-    "start": "nx run-many -t start",
+    "start": "npm run start:core",
     "start:core": "nx run data-den-core:start",
     "start:react": "nx run data-den-react:start",
     "start:vue": "nx run data-den-vue:start",
     "start:docs": "nx run getdataden.com:start",
-    "build": "nx run-many -t build",
+    "start:all": "nx run-many -t start",
+    "build": "npm run build:core",
     "build:core": "nx build data-den-core",
     "build:react": "nx build data-den-react",
     "build:vue": "nx build data-den-vue",
     "build:docs": "nx build getdataden.com",
-    "test": "nx run-many -t test"
+    "build:all": "nx run-many -t build",
+    "test": "npm run test:core",
+    "test:core": "nx run data-den-core:test",
+    "test:react": "nx run data-den-react:test",
+    "test:vue": "nx run data-den-vue:test",
+    "test:all": "nx run-many -t test"
   },
   "private": true,
   "devDependencies": {
