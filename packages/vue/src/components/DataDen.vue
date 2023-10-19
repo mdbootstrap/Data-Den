@@ -9,14 +9,14 @@ const props = defineProps<{
   options: DataDenOptions;
 }>();
 
-const emit = defineEmits(['sorting-done']);
+const emit = defineEmits(['sortingDone']);
 
 onMounted(() => {
   if (dataDenWrapper.value) {
     dataDen = new DataDen(dataDenWrapper.value, props.options);
     // @ts-ignore
-    dataDenWrapper.value.addEventListener('sorting.done', (event: CustomEvent) => {
-      emit('sorting-done', event);
+    dataDenWrapper.value.addEventListener('sortingDone', (event: CustomEvent) => {
+      emit('sortingDone', event);
     });
   }
 });

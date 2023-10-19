@@ -18,7 +18,7 @@ const DataDen = forwardRef(function DataDen(
     if (!dataDen && dataDenWrapper.current) {
       dataDen = new DataDenCore(dataDenWrapper.current, options);
 
-      dataDenWrapper.current.addEventListener('sorting.done', (event: CustomEvent) => {
+      dataDenWrapper.current.addEventListener('sortingDone', (event: CustomEvent) => {
         onSortingDone(event);
       });
     }
