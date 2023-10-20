@@ -1,14 +1,20 @@
+import { DataDenInternalOptions } from '../../../data-den-options.interface';
 import { createHtmlElement } from '../../../utils';
 import { DataDenHeaderCell } from '../cell/data-den-header-cell';
 import { DataDenRow } from './data-den-row';
 
 export class DataDenHeaderRow extends DataDenRow {
-  constructor(public index: number, public cells: DataDenHeaderCell[], draggable: boolean | undefined) {
-    super(index, cells);
+  constructor(public index: number, public cells: DataDenHeaderCell[], options: DataDenInternalOptions) {
+    super(index, cells, options);
 
-    const template = `<div class="data-den-header-row ${
-      draggable ? 'data-den-header-row-draggable' : ''
-    }" role="row" ref="headerRow"></div>`;
+    const template =
+      /* HTML */
+      `<div
+        class="${options.cssPrefix}header-row ${options.draggable ? `${options.cssPrefix}header-row-draggable` : ''}"
+        role="row"
+        ref="headerRow"
+        style="height: ${options.rowHeight}px"
+      ></div>`;
 
     this.element = createHtmlElement(template);
   }

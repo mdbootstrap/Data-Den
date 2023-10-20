@@ -10,9 +10,9 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
   #field: string;
   #cssPrefix: string;
 
-  constructor(field: string, order: Order, cssClassPrefix: string) {
+  constructor(field: string, order: Order, cssPrefix: string) {
     super();
-    this.#cssPrefix = cssClassPrefix;
+    this.#cssPrefix = cssPrefix;
     const template = `
       <div class="${this.#cssPrefix}header-sorter">
         <div
