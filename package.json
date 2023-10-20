@@ -32,7 +32,6 @@
     "husky": "^4.2.5",
     "lint-staged": "^14.0.0",
     "nx": "16.10.0",
-    "nx-cloud": "latest",
     "prettier": "^2.8.8",
     "pretty-quick": "^3.1.3"
   },
