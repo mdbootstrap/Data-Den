@@ -38,17 +38,6 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
     return this.element;
   }
 
-  #getUpdatedSortOrder(): Order {
-    const classList = this.arrowElement.classList;
-    if (classList.contains(`${this.#cssPrefix}header-sorter-arrow-asc`)) {
-      return 'desc';
-    } else if (classList.contains(`${this.#cssPrefix}header-sorter-arrow-desc`)) {
-      return '';
-    } else {
-      return 'asc';
-    }
-  }
-
   sort(): void {
     const command = 'command:sorting:start';
     DataDenPubSub.publish(command, {
@@ -59,16 +48,15 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
   }
 
   #subscribeSortingStartEvent(): void {
-    DataDenPubSub.subscribe('command:sorting:start', (event) => {
+    DataDenPubSub.subscribe('command:fetch:sort-start', (event) => {
       if (this.#field === event.data.field) {
-        this.#updateArrowDirectionAfterSort();
+        this.#updateArrowDirectionAfterSort(event.data.order);
       }
     });
   }
 
-  #updateArrowDirectionAfterSort(): void {
+  #updateArrowDirectionAfterSort(order: string): void {
     const arrowElements = document.querySelectorAll('[ref="sorterArrow"]');
-    const order = this.#getUpdatedSortOrder();
 
     arrowElements.forEach((arrowElement) => {
       arrowElement.classList.remove(
