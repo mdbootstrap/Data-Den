@@ -17,4 +17,9 @@
 
     npx nx graph // show project dependencies
 
+**Publishing**
+
+    npx nx release version [number] --projects=[name1,name2] --dry-run // just dry run for testing
+    npx nx release version [number] --projects=[name1,name2] // final publish
+
 Check more commands here: https://nx.dev/nx-api/nx/documents/run
