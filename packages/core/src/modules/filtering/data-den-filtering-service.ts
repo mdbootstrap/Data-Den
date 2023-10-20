@@ -3,8 +3,7 @@ import { DataDenEvent } from '../../data-den-event';
 import {
   DataDenDateFilterOptions,
   DataDenHeaderFilterOptions,
-  DataDenOptions,
-  DataDenQuickFilterOptions,
+  DataDenInternalOptions,
   DataDenTextFilterOptions,
 } from '../../data-den-options.interface';
 import { DataDenPubSub } from '../../data-den-pub-sub';
@@ -17,33 +16,20 @@ import { DataDenActiveQuickFilter } from './data-den-active-quick-filter.interfa
 export class DataDenFilteringService {
   activeHeaderFilters: { [key: string]: DataDenActiveHeaderFilter } = {};
   activeQuickFilter: DataDenActiveQuickFilter;
-  options: DataDenOptions;
+  options: DataDenInternalOptions;
 
-  constructor(options: DataDenOptions) {
+  constructor(options: DataDenInternalOptions) {
     this.options = options;
-    this.activeQuickFilter = { searchTerm: '', filterFn: this.#getQuickFilterFn(options.quickFilterOptions) };
+    this.activeQuickFilter = { searchTerm: '', filterFn: options.quickFilterOptions.filterFn };
 
     DataDenPubSub.subscribe('info:filtering:header-filter-changed', this.#handleHeaderFilterChange.bind(this));
     DataDenPubSub.subscribe('info:filtering:quick-filter-changed', this.#handleQuickFilterChange.bind(this));
   }
 
-  #getQuickFilterFn(options: DataDenQuickFilterOptions): (searchTerm: any, value: any) => boolean {
-    if (options.filterFn) {
-      return options.filterFn;
-    } else {
-      return (searchTerm: any, value: any) => {
-        searchTerm = searchTerm.toString().toLowerCase();
-        value = value.toString().toLowerCase();
-
-        return value.includes(searchTerm);
-      };
-    }
-  }
-
   #handleHeaderFilterChange(event: DataDenEvent) {
     const { field, method, searchTerm } = event.data;
     const column = this.options.columns.find((column) => column.field === field)!;
-    const options = column.filterOptions;
+    const options = column.filterOptions!;
     const type = options.type;
     const filterFn = this.#getFilterFunction(type, method, options);
     const filter: DataDenActiveHeaderFilter = { type, method, searchTerm, filterFn };

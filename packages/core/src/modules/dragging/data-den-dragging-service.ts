@@ -1,11 +1,10 @@
-import { DataDenOptions } from '../../data-den-options.interface';
+import { DataDenInternalOptions } from '../../data-den-options.interface';
 import { DataDenPubSub } from '../../data-den-pub-sub';
 import { Context } from '../../context';
-import { DataDenEvent } from '../../data-den-event';
 
 export class DataDenDraggingService {
   #container: HTMLElement;
-  #options: DataDenOptions;
+  #options: DataDenInternalOptions;
   #isInitiated: boolean;
   #isDragging: boolean;
   #headerRow: HTMLElement | null;
@@ -23,7 +22,7 @@ export class DataDenDraggingService {
   #handleDocumentMouseUp: (e: MouseEvent) => void;
   #handleHeaderMouseDown: (e: MouseEvent) => void;
 
-  constructor(container: HTMLElement, options: DataDenOptions) {
+  constructor(container: HTMLElement, options: DataDenInternalOptions) {
     this.#container = container;
     this.#options = options;
     this.#isInitiated = false;
@@ -48,8 +47,8 @@ export class DataDenDraggingService {
     }
   }
 
-  init(event: DataDenEvent) {
-    this.#setDefaultColumnsOrder(event);
+  init() {
+    this.#setDefaultColumnsOrder();
     this.#setHeaderElements();
     this.update();
     this.#setColumnParams();
@@ -70,11 +69,11 @@ export class DataDenDraggingService {
   }
 
   #subscribeFetchDone() {
-    DataDenPubSub.subscribe('info:fetch:done', (event: DataDenEvent) => {
+    DataDenPubSub.subscribe('info:fetch:done', () => {
       if (this.#isInitiated) {
         this.update();
       } else {
-        this.init(event);
+        this.init();
       }
     });
   }
@@ -123,8 +122,8 @@ export class DataDenDraggingService {
     document.addEventListener('mouseup', this.#handleDocumentMouseUp);
   }
 
-  #setDefaultColumnsOrder(event: DataDenEvent) {
-    this.#columnsOrder = event.data.columns.map((_: HTMLElement, index: number) => index);
+  #setDefaultColumnsOrder() {
+    this.#columnsOrder = this.#options.columns.map((_, index: number) => index);
   }
 
   #subscribeResizingDone() {

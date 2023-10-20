@@ -1,4 +1,3 @@
-import { DataDenData } from '../../../data-den-data.interface';
 import { DataDenDataLoaderStrategy } from './data-den-data-loader-strategy';
 import {
   DataDenFetchOptions,
@@ -8,29 +7,24 @@ import {
   DataDenSortOptions,
 } from '../data-den-fetch-options.interface';
 import { deepCopy } from '../../../utils';
-import { DataDenRowDef } from '../../../data-den-options.interface';
 
 export class DataDenClientDataLoaderStrategy extends DataDenDataLoaderStrategy {
-  #data: DataDenData;
+  #data: any[];
 
-  constructor(data: DataDenData) {
+  constructor(data: any[]) {
     super();
 
     this.#data = data;
   }
 
-  getData(options: DataDenFetchOptions): Promise<DataDenData> {
-    return this.filterData(deepCopy(this.#data.rows), options.filtersOptions)
+  getData(options: DataDenFetchOptions): Promise<any[]> {
+    return this.filterData(deepCopy(this.#data), options.filtersOptions)
       .then((filtered) => this.quickFilterData(filtered, options.quickFilterOptions))
       .then((quickFiltered) => this.sortData(quickFiltered, options.sortingOptions))
-      .then((sorted) => this.paginateData(sorted, options.paginationOptions))
-      .then((paginated) => ({
-        columns: deepCopy(this.#data.columns),
-        rows: paginated,
-      }));
+      .then((sorted) => this.paginateData(sorted, options.paginationOptions));
   }
 
-  filterData(rows: DataDenRowDef[], filtersOptions: DataDenFiltersOptions | undefined): Promise<DataDenRowDef[]> {
+  filterData(rows: any[], filtersOptions: DataDenFiltersOptions | undefined): Promise<any[]> {
     if (!filtersOptions) {
       return Promise.resolve(rows);
     }
@@ -49,10 +43,7 @@ export class DataDenClientDataLoaderStrategy extends DataDenDataLoaderStrategy {
     return Promise.resolve(filtered);
   }
 
-  paginateData(
-    rows: DataDenRowDef[],
-    paginationOptions: DataDenPaginationOptions | undefined
-  ): Promise<DataDenRowDef[]> {
+  paginateData(rows: any[], paginationOptions: DataDenPaginationOptions | undefined): Promise<any[]> {
     if (!paginationOptions) {
       return Promise.resolve(rows);
     }
@@ -64,7 +55,7 @@ export class DataDenClientDataLoaderStrategy extends DataDenDataLoaderStrategy {
     return Promise.resolve(paginated);
   }
 
-  sortData(rows: DataDenRowDef[], sortOptions: DataDenSortOptions | undefined): Promise<DataDenRowDef[]> {
+  sortData(rows: any[], sortOptions: DataDenSortOptions | undefined): Promise<any[]> {
     if (!sortOptions) {
       return Promise.resolve(rows);
     }
@@ -76,10 +67,7 @@ export class DataDenClientDataLoaderStrategy extends DataDenDataLoaderStrategy {
     return Promise.resolve(sorted);
   }
 
-  quickFilterData(
-    rows: DataDenRowDef[],
-    quickFilterOptions: DataDenQuickFilterOptions | undefined
-  ): Promise<DataDenRowDef[]> {
+  quickFilterData(rows: any[], quickFilterOptions: DataDenQuickFilterOptions | undefined): Promise<any[]> {
     if (!quickFilterOptions) {
       return Promise.resolve(rows);
     }
