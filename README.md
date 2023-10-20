@@ -19,7 +19,9 @@
 
 **Publishing**
 
-    npx nx release version [number] --projects=[name1,name2] --dry-run // just dry run for testing
-    npx nx release version [number] --projects=[name1,name2] // final publish
+    npx nx release version --projects=[name1,name2] --dry-run // version update dry run for testing
+    npx nx release version --projects=[name1,name2] // version update
+    npx nx release publish --projects=[name1,name2] --dry-run // publish dry run for testing
+    npx nx release publish --projects=[name1,name2]  // publish
 
 Check more commands here: https://nx.dev/nx-api/nx/documents/run
