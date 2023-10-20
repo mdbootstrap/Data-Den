@@ -6,10 +6,7 @@
   },
   "tasksRunnerOptions": {
     "default": {
-      "runner": "nx-cloud",
-      "options": {
-        "accessToken": "NWMyZGRjNzUtMjNmNi00ZWZjLWI3MTMtMTljZTIxNTI1MThmfHJlYWQtd3JpdGU="
-      }
+      "runner": "nx/tasks-runners/default"
     }
   },
   "targetDefaults": {
