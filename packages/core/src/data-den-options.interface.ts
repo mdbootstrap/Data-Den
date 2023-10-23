@@ -79,7 +79,6 @@ export interface DataDenOptions<TData = any> {
   paginationOptions?: DataDenPaginationOptions;
   quickFilter?: boolean;
   quickFilterOptions?: DataDenQuickFilterOptions;
-  resizable?: boolean;
 }
 
 export interface DataDenInternalOptions {
