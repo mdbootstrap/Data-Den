@@ -17,6 +17,7 @@ export class DataDenDraggingService {
   #breakpoints: number[];
   #columnsOrder: number[];
   #defaultGridOffsetLeft: number;
+  #cssPrefix: string;
 
   #handleGridMouseMove: (e: MouseEvent) => void;
   #handleDocumentMouseUp: (e: MouseEvent) => void;
@@ -37,6 +38,7 @@ export class DataDenDraggingService {
     this.#breakpoints = [];
     this.#columnsOrder = [];
     this.#defaultGridOffsetLeft = 0;
+    this.#cssPrefix = options.cssPrefix;
 
     this.#handleGridMouseMove = () => {};
     this.#handleDocumentMouseUp = () => {};
@@ -187,21 +189,21 @@ export class DataDenDraggingService {
   #enableTransition() {
     this.#columns.forEach((column) => {
       column.forEach((cell) => {
-        cell.classList.add('dragging');
+        cell.classList.add(`${this.#cssPrefix}dragging`);
       });
     });
   }
 
   #setActiveStyle() {
     this.#columns[this.#currentIndex].forEach((cell) => {
-      cell.classList.add('active');
+      cell.classList.add(`${this.#cssPrefix}active`);
     });
   }
 
   #unsetActiveStyle() {
     this.#columns.forEach((column) => {
       column.forEach((cell) => {
-        cell.classList.remove('active');
+        cell.classList.remove(`${this.#cssPrefix}active`);
       });
     });
   }
@@ -209,7 +211,7 @@ export class DataDenDraggingService {
   #disableTransition() {
     this.#columns.forEach((column) => {
       column.forEach((cell) => {
-        cell.classList.remove('dragging');
+        cell.classList.remove(`${this.#cssPrefix}dragging`);
       });
     });
   }
