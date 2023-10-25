@@ -9,7 +9,6 @@
 .#{$prefix}row {
   display: flex;
   position: absolute;
-  height: var(--#{$prefix}row-height);
   width: 100%;
 }
 

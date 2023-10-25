@@ -6,19 +6,10 @@ export class DataDenDefaultHeaderCellRenderer implements DataDenCellRenderer {
   element: HTMLElement;
   #cssPrefix: string;
 
-  constructor(params: DataDenCellRendererParams, draggable: boolean | undefined) {
+  constructor(params: DataDenCellRendererParams) {
     this.#cssPrefix = params.cssPrefix;
 
-    const template = `
-      <div
-        class="${this.#cssPrefix}header-cell ${draggable ? `${this.#cssPrefix}header-cell-draggable` : ''}"
-        role="columnheader"
-        ref="headerCell"
-        style="left: ${params.left}px; width: ${params.width}px"
-      >
-        <div class="${this.#cssPrefix}header-cell-value">${params.value}</div>
-      </div>
-    `;
+    const template = `<div class="${this.#cssPrefix}header-cell-value">${params.value}</div>`;
 
     this.element = createHtmlElement(template);
   }

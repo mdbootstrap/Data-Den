@@ -47,4 +47,5 @@ export const defaultOptions: DataDenInternalOptions = {
   quickFilter: false,
   quickFilterOptions: defaultQuickFilterOptions,
   resizable: false,
+  rowHeight: 26,
 };
