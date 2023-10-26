@@ -1,14 +1,19 @@
 import { DataDenCell } from '../cell/data-den-cell';
 import { createHtmlElement } from '../../../utils/dom';
+import { DataDenInternalOptions } from '../../../data-den-options.interface';
 
 export class DataDenRow {
   element: HTMLElement;
 
-  constructor(public index: number, public cells: DataDenCell[], rowHeight: number) {
-    this.index = index;
-    this.cells = cells;
-
-    const template = `<div class="data-den-row" role="row" ref="row" style="top: ${index * rowHeight}px"></div>`;
+  constructor(public index: number, public cells: DataDenCell[], options: DataDenInternalOptions) {
+    const template =
+      /* HTML */
+      `<div
+        class="${options.cssPrefix}-row"
+        role="row"
+        ref="row"
+        style="height: ${options.rowHeight}px; top: ${index * options.rowHeight}px"
+      ></div>`;
 
     this.element = createHtmlElement(template);
   }

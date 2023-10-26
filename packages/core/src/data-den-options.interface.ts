@@ -80,6 +80,7 @@ export interface DataDenOptions<TData = any> {
   quickFilter?: boolean;
   quickFilterOptions?: DataDenQuickFilterOptions;
   resizable?: boolean;
+  rowHeight?: number;
 }
 
 export interface DataDenInternalOptions {
@@ -94,4 +95,5 @@ export interface DataDenInternalOptions {
   quickFilter: boolean;
   quickFilterOptions: Required<DataDenQuickFilterOptions>;
   resizable: boolean;
+  rowHeight: number;
 }
