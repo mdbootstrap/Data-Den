@@ -23,7 +23,7 @@ export class DataDen {
   #filtering: DataDenFilteringService;
   #pagination: DataDenPaginationService;
   #dragging: DataDenDraggingService;
-  #resizing: DataDenResizingService;
+  #resizing: DataDenResizingService | null;
   #dataLoaderStrategy: DataDenDataLoaderStrategy | null = null;
   #fetch: DataDenFetchService | null = null;
 
@@ -40,7 +40,9 @@ export class DataDen {
     this.#filtering = new DataDenFilteringService(gridOptions);
     this.#pagination = new DataDenPaginationService(gridOptions);
     this.#dragging = new DataDenDraggingService(container, gridOptions);
-    this.#resizing = new DataDenResizingService(container, gridOptions);
+    this.#resizing = options.columns.some((column) => column.resize)
+      ? new DataDenResizingService(container, gridOptions)
+      : null;
   }
 
   #createOptions(defaultOptions: DataDenInternalOptions, userOptions: DataDenOptions): DataDenInternalOptions {

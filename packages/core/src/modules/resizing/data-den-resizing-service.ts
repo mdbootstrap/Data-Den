@@ -31,9 +31,7 @@ export class DataDenResizingService {
     this.#currentColIndex = -1;
     this.#headersOnTheRight = [];
 
-    if (this.#options.columns.some((column) => column.resize)) {
-      this.#subscribeFetchDone();
-    }
+    this.#subscribeFetchDone();
   }
 
   init() {
