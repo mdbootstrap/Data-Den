@@ -1,0 +1,213 @@
+---
+title: "Quick Start"
+date: 2023-02-09T10:00:00+02:00
+draft: false
+main_title: "Quick Start"
+subheading: ""
+seo_title: "Install a Data Den library"
+description: "Install Data Den via npm, via command line, via CDN or download a free .zip package. Use our open source Tailwind CSS components for free."
+image: ""
+video: ""
+url: "docs/standard/getting-started/quick-start/"
+menu:
+  gettingstarted:
+    name: "Quick start"
+    weight: 1
+---
+
+<div class="flex flex-row">
+  <!-- <div class="basis-7/12"> -->
+  <div class="w-full">
+    <p class="mb-2">
+      Data Den is a plugin that extends the functionality of the library with
+      table component.
+    </p>
+  </div>
+</div>
+
+<hr class="my-10" />
+
+<div class="w-full">
+  <h2
+    class="mb-5 mt-0 text-3xl font-semibold leading-normal"
+    id="formats"
+    data-te-spy-item
+  >
+    Data Den formats
+  </h2>
+</div>
+
+<hr class="my-10" />
+
+<div class="flex flex-row">
+  <!-- <div class="w-full basis-7/12"> -->
+  <div class="w-full">
+    <h2
+      class="mb-5 mt-0 text-3xl font-semibold leading-normal"
+      id="npm"
+      data-te-spy-item
+    >
+      NPM
+    </h2>
+    <p class="my-3 overflow-hidden">
+      NPM is a recommended way to work with <b>Data Den</b> and others
+      libraries.
+    </p>
+    <p class="my-3">
+      Make sure that you have <code>Node.js</code> installed. In order to verify
+      that, open a <code>command line</code> and type <code>node -v</code>. If
+      node is installed you should see it's version in a console.
+    </p>
+  </div>
+</div>
+
+<p class="mb-2" id="download-npm-step-1">
+  1. Before starting the project make sure to install
+  <a
+    href="https://nodejs.org/en/"
+    target="_blank"
+    class="text-primary-700 dark:text-primary-400"
+    >Node.js (LTS)</a
+  >.
+</p>
+
+<p class="mb-2">2. Run the following command to install the package via NPM:</p>
+<div class="pt-2" id="download-npm-step-2">
+  {{<twsnippet/wrapper "terminal" "" "mobile">}}{{<twsnippet/code active=true
+  lang="Plaintext" type="terminal">}} npm install data-den-core {{</twsnippet/code>}}{{</twsnippet/wrapper>}}
+</div>
+
+<p class="mb-2 mt-6">
+  3. Include the following JavaScript file before the end of the body element.
+  Keep in mind that the path to the file may be different depending on the file
+  structure of your project.
+</p>
+
+<div class="pt-2" id="download-npm-step-4">
+  {{<twsnippet/wrapper "index.html" "" "mobile">}}
+  <!-- prettier-ignore -->
+  {{<twsnippet/code active=true lang="HTML">}}
+  <script
+    type="text/javascript"
+    src="../node_modules/tw-elements/dist/js/data-den-core.umd.min.js"
+  ></script>
+  {{</twsnippet/code>}} {{</twsnippet/wrapper>}}
+</div>
+
+<p class="mb-2 mt-6">
+  Now, the library is ready to use and available via the global
+  <code>DataDen</code> variable.
+</p>
+
+<hr class="my-10" />
+
+<div class="flex flex-row">
+  <!-- <div class="w-full basis-7/12"> -->
+  <div class="w-full">
+    <h2
+      class="mb-5 mt-0 text-3xl font-semibold leading-normal"
+      id="go"
+      data-te-spy-item
+    >
+      MDB GO / CLI
+    </h2>
+    <p class="mb-2">
+      Create, deploy and host anything <u>with a single command.</u>
+    </p>
+  </div>
+</div>
+
+<p class="mb-2 mt-4">
+  1. To start using MDB GO / CLI install it with one command:
+</p>
+<div class="pt-2" id="download-mdbgo-step-1">
+  {{<twsnippet/wrapper "terminal" "!bg-[#BB2E3E] !text-white dark:!bg-rose-300 dark:!text-rose-900" "mobile">}}{{<twsnippet/code active=true
+  lang="Plaintext" type="terminal">}} npm install -g mdb-cli {{</twsnippet/code>}}{{</twsnippet/wrapper>}}
+</div>
+
+<p class="mb-2 mt-4">2. Log into the CLI using your MDB account:</p>
+<div class="pt-2" id="download-mdbgo-step-2">
+  {{<twsnippet/wrapper "terminal" "!bg-[#4A24AA] !text-white dark:!bg-violet-300 dark:!text-violet-900" "mobile">}}{{<twsnippet/code
+  active=true lang="Plaintext" type="terminal">}} mdb login {{</twsnippet/code>}}{{</twsnippet/wrapper>}}
+</div>
+
+<p class="mb-2 mt-4">
+  3. Initialize a project and choose <strong>Data Den</strong> from the list:
+</p>
+<div class="pt-2" id="download-mdbgo-step-3">
+  {{<twsnippet/wrapper "terminal" "!bg-[#4A24AA] !text-white dark:!bg-violet-300 dark:!text-violet-900" "mobile">}}{{<twsnippet/code
+  active=true lang="Plaintext" type="terminal">}} mdb init data-den-core {{</twsnippet/code>}}{{</twsnippet/wrapper>}}
+</div>
+
+<p class="mb-2 mt-4">
+  4. Install the dependencies (inside the project directory):
+</p>
+<div class="pt-2" id="download-mdbgo-step-4">
+  {{<twsnippet/wrapper "terminal" "!bg-[#BB2E3E] !text-white dark:!bg-rose-300 dark:!text-rose-900" "mobile">}}{{<twsnippet/code active=true
+  lang="Plaintext" type="terminal">}} npm install {{</twsnippet/code>}}{{</twsnippet/wrapper>}}
+</div>
+
+<p class="mb-2 mt-4">5. Run the app:</p>
+<div class="pt-2" id="download-mdbgo-step-5">
+  {{<twsnippet/wrapper "terminal" "!bg-[#BB2E3E] !text-white dark:!bg-rose-300 dark:!text-rose-900" "mobile">}}{{<twsnippet/code active=true
+  lang="Plaintext" type="terminal">}} npm start {{</twsnippet/code>}}{{</twsnippet/wrapper>}}
+</div>
+
+<p class="mb-2 mt-4">6. Publish when you're ready:</p>
+<div class="pt-2" id="download-mdbgo-step-6">
+  {{<twsnippet/wrapper "terminal" "!bg-[#4A24AA] !text-white dark:!bg-violet-300 dark:!text-violet-900" "mobile">}}{{<twsnippet/code active=true lang="Plaintext" type="terminal">}} mdb publish {{</twsnippet/code>}}{{</twsnippet/wrapper>}}
+</div>
+
+<hr class="my-10" />
+
+<div class="flex flex-row">
+  <!-- <div class="w-full basis-7/12"> -->
+  <div class="w-full">
+    <h2
+      class="mb-5 mt-0 text-3xl font-semibold leading-normal"
+      id="cdn"
+      data-te-spy-item
+    >
+      CDN
+    </h2>
+
+    <p class="mb-2">
+      You can easily test Data Den by adding CDN scripts to your classic HTML
+      template without the need for installing any packages.
+    </p>
+
+    <p class="mb-2 mt-4">
+      Add the stylesheet files below in the <code>head</code> section:
+    </p>
+  </div>
+</div>
+
+<hr class="my-10" />
+
+<div class="flex flex-row">
+  <!-- <div class="w-full basis-7/12"> -->
+  <div class="w-full">
+    <h2
+      class="mb-5 mt-0 text-3xl font-semibold leading-normal"
+      id="starter"
+      data-te-spy-item
+    >
+      Starter
+    </h2>
+    <p class="mb-2">
+      In order to quickly test Data Den simply download our starter. Keep in
+      mind that this is not an optimized for production version, but only a demo
+      for testing.
+    </p>
+    <div class="mb-10">
+      <a href="" id="download-zip-step-1">
+        <button
+          class="mb-3 mr-1 mt-3 rounded border border-solid border-purple-500 bg-transparent px-6 py-3 text-sm font-bold uppercase text-purple-500 outline-none transition-all duration-150 ease-linear hover:bg-purple-500 hover:text-white focus:outline-none active:bg-purple-600"
+          type="button"
+        >
+          Download ZIP starter
+        </button>
+      </a>
+    </div>
+  </div>
+</div>

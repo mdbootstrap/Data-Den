@@ -1,0 +1,46 @@
+{
+  "name": "data-den",
+  "version": "1.0.0",
+  "license": "AGPL",
+  "scripts": {
+    "start": "npm run start:core",
+    "start:core": "nx run data-den-core:start",
+    "start:react": "nx run data-den-react:start",
+    "start:vue": "nx run data-den-vue:start",
+    "start:docs": "nx run getdataden.com:start",
+    "start:all": "nx run-many -t start",
+    "build": "npm run build:core",
+    "build:core": "nx build data-den-core",
+    "build:react": "nx build data-den-react",
+    "build:vue": "nx build data-den-vue",
+    "build:docs": "nx build getdataden.com",
+    "build:all": "nx run-many -t build",
+    "test": "npm run test:core",
+    "test:core": "nx run data-den-core:test",
+    "test:react": "nx run data-den-react:test",
+    "test:vue": "nx run data-den-vue:test",
+    "test:all": "nx run-many -t test"
+  },
+  "private": true,
+  "devDependencies": {
+    "@nx/js": "16.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.0",
+    "eslint": "^8.47.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^14.0.0",
+    "nx": "16.10.0",
+    "prettier": "^2.8.8",
+    "pretty-quick": "^3.1.3"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && pretty-quick --staged && npm run test:all"
+    }
+  }
+}

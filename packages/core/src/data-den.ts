@@ -13,6 +13,8 @@ import {
   DataDenServerDataLoaderStrategy,
   DataDenDataLoaderStrategy,
 } from './modules/fetch';
+import { DataDenPubSub } from './data-den-pub-sub';
+import { Context } from './context';
 import { DataDenInternalOptions, DataDenOptions } from './data-den-options.interface';
 import { defaultOptions } from './default-options.interface';
 import { deepMerge } from './utils/deep-merge';
@@ -59,6 +61,15 @@ export class DataDen {
     }
 
     return null;
+  }
+
+  sort(field: string, order: string): void {
+    const command = 'command:sorting:start';
+    DataDenPubSub.publish(command, {
+      context: new Context(command),
+      field,
+      order,
+    });
   }
 }
 
