@@ -7,7 +7,7 @@ export class DataDenDefaultCellEditor implements DataDenCellEditor {
   #cssPrefix: string;
 
   constructor(params: DataDenCellEditorParams) {
-    this.#cssPrefix = params.cssPrefix ? `${params.cssPrefix}-` : 'data-den-';
+    this.#cssPrefix = params.cssPrefix;
     const template = `
       <div class="${this.#cssPrefix}cell-editor-container"><input type="text" value="${params.value}"></div>
     `;

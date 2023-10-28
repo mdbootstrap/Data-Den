@@ -116,7 +116,6 @@ const options: DataDenOptions = {
   quickFilterOptions: {
     debounceTime: 500,
   },
-  resizable: true,
 };
 
 const ddEl = document.getElementById('dd');

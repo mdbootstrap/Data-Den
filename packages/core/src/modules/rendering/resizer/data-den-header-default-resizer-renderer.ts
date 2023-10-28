@@ -7,8 +7,8 @@ export class DataDenHeaderDefaultResizerRenderer implements DataDenHeaderResizer
   element: HTMLElement;
   #cssPrefix: string;
 
-  constructor(cssPrefix: string | undefined) {
-    this.#cssPrefix = cssPrefix ? `${cssPrefix}` : 'data-den';
+  constructor(cssPrefix: string) {
+    this.#cssPrefix = cssPrefix;
 
     const template = `<div class="${this.#cssPrefix}header-resizer"></div>`;
 
