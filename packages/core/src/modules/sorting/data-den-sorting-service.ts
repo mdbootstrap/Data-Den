@@ -2,19 +2,19 @@ import { Order } from './data-den-sorting.interface';
 import { DataDenPubSub } from '../../data-den-pub-sub';
 import { DataDenEvent } from '../../data-den-event';
 import { DataDenEventEmitter } from '../../data-den-event-emitter';
-import { Context } from '../../context';
+import { DataDenStorage } from '../../modules/storage/DataDenStorage';
 
 export class DataDenSortingService {
-  #container: HTMLElement;
   #field: string;
   #order: Order;
 
-  constructor(container: HTMLElement) {
-    this.#container = container;
+  constructor() {
     this.#field = '';
     this.#order = 'asc';
 
     DataDenPubSub.subscribe('command:sorting:start', (event: DataDenEvent) => {
+      const sortingStorage = new DataDenStorage({ field: this.#field, order: this.#order });
+
       if (this.#field === event.data.field) {
         switch (this.#order) {
           case 'asc':
@@ -37,17 +37,21 @@ export class DataDenSortingService {
 
       this.#field = event.data.field;
 
-      DataDenPubSub.publish('command:fetch:sort-start', {
-        caller: this,
-        context: event.context,
+      const sortingStartEvent = DataDenEventEmitter.triggerEvent('sortingStart', {
         field: this.#field,
         order: this.#order,
         sortFn: this.sort,
       });
 
-      DataDenEventEmitter.publish('sortingDone', {
-        element: this.#container,
-        context: new Context('sortingDone'),
+      if (sortingStartEvent.defaultPrevented) {
+        this.#field = sortingStorage.getValue('field');
+        this.#order = sortingStorage.getValue('order');
+        return;
+      }
+
+      DataDenPubSub.publish('command:fetch:sort-start', {
+        caller: this,
+        context: event.context,
         field: this.#field,
         order: this.#order,
         sortFn: this.sort,

@@ -5,7 +5,7 @@ import { DataDenPaginationService } from './modules/pagination';
 import { DataDenDraggingService } from './modules/dragging';
 import { DataDenResizingService } from './modules/resizing';
 import { DataDenFilteringService } from './modules/filtering';
-import { DataDenSortingService } from './modules/sorting';
+import { DataDenSortingService, DataDenSortingEvent } from './modules/sorting';
 import { DataDenFetchService } from './modules/fetch';
 import { DataDenDefaultCellRenderer } from './modules/rendering/cell/data-den-default-cell-renderer';
 import {
@@ -14,6 +14,7 @@ import {
   DataDenDataLoaderStrategy,
 } from './modules/fetch';
 import { DataDenPubSub } from './data-den-pub-sub';
+import { DataDenEventEmitter } from './data-den-event-emitter';
 import { Context } from './context';
 import { DataDenInternalOptions, DataDenOptions } from './data-den-options.interface';
 import { defaultOptions } from './default-options.interface';
@@ -38,11 +39,15 @@ export class DataDen {
     }
 
     this.#rendering = new DataDenRenderingService(container, gridOptions);
-    this.#sorting = new DataDenSortingService(container);
+    this.#sorting = new DataDenSortingService();
     this.#filtering = new DataDenFilteringService(gridOptions);
     this.#pagination = new DataDenPaginationService(gridOptions);
     this.#dragging = new DataDenDraggingService(container, gridOptions);
     this.#resizing = new DataDenResizingService(container, gridOptions);
+  }
+
+  on(name: string, callback: any) {
+    DataDenEventEmitter.on(name, callback);
   }
 
   #createOptions(defaultOptions: DataDenInternalOptions, userOptions: DataDenOptions): DataDenInternalOptions {
@@ -80,4 +85,4 @@ export {
   DataDenDataLoaderStrategy,
 };
 
-export type { DataDenOptions };
+export type { DataDenOptions, DataDenSortingEvent };

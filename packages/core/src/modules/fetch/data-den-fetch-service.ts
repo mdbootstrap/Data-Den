@@ -4,6 +4,7 @@ import { DataDenPubSub } from '../../data-den-pub-sub';
 import { DataDenFetchDoneEvent } from './data-den-fetch-done.event.interface';
 import { DataDenFetchOptions } from './data-den-fetch-options.interface';
 import { DataDenDataLoaderStrategy } from './strategy/data-den-data-loader-strategy';
+import { DataDenEventEmitter } from '../../data-den-event-emitter';
 
 export class DataDenFetchService {
   #loader: DataDenDataLoaderStrategy;
@@ -49,6 +50,7 @@ export class DataDenFetchService {
       };
       this.#getData(this.#fetchOptions).then((data: any[]) => {
         this.#publishFetchDone(event.context, data);
+        DataDenEventEmitter.triggerEvent('sortingDone', this.#fetchOptions.sortingOptions);
       });
     });
   }
