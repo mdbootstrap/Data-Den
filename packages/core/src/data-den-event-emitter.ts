@@ -10,6 +10,7 @@ export class DataDenEventEmitter {
 
   static triggerEvent(name: string, args: any): any {
     const event = {
+      name,
       preventDefault: () => {
         event.defaultPrevented = true;
       },

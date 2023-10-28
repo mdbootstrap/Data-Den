@@ -1,13 +1,15 @@
 import { useRef, forwardRef, useEffect, useImperativeHandle } from 'react';
-import { DataDen as DataDenCore, DataDenOptions } from 'data-den-core';
+import { DataDen as DataDenCore, DataDenOptions, DataDenSortingEvent } from 'data-den-core';
 
 const DataDen = forwardRef(function DataDen(
   {
     options,
+    onSortingStart,
     onSortingDone,
   }: {
     options: DataDenOptions;
-    onSortingDone: (event: CustomEvent) => void;
+    onSortingStart?: (event: DataDenSortingEvent) => void;
+    onSortingDone?: (event: DataDenSortingEvent) => void;
   },
   ref
 ) {
@@ -16,9 +18,13 @@ const DataDen = forwardRef(function DataDen(
 
   useEffect(() => {
     if (!dataDen && dataDenWrapper.current) {
+      // @eslint-ignore
       dataDen = new DataDenCore(dataDenWrapper.current, options);
 
-      dataDenWrapper.current.addEventListener('sortingDone', (event: CustomEvent) => {
+      dataDen.on('sortingStart', (event: DataDenSortingEvent) => {
+        onSortingStart(event);
+      });
+      dataDen.on('sortingDone', (event: DataDenSortingEvent) => {
         onSortingDone(event);
       });
     }
