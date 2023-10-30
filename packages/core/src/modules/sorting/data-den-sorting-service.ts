@@ -2,7 +2,7 @@ import { Order } from './data-den-sorting.interface';
 import { DataDenPubSub } from '../../data-den-pub-sub';
 import { DataDenEvent } from '../../data-den-event';
 import { DataDenEventEmitter } from '../../data-den-event-emitter';
-import { DataDenStorage } from '../../modules/storage/DataDenStorage';
+import { DataDenSortingPreviousState } from './data-den-sorting-previous-state';
 
 export class DataDenSortingService {
   #field: string;
@@ -13,7 +13,7 @@ export class DataDenSortingService {
     this.#order = 'asc';
 
     DataDenPubSub.subscribe('command:sorting:start', (event: DataDenEvent) => {
-      const sortingStorage = new DataDenStorage({ field: this.#field, order: this.#order });
+      const sortingPreviousState = new DataDenSortingPreviousState({ field: this.#field, order: this.#order });
 
       if (this.#field === event.data.field) {
         switch (this.#order) {
@@ -44,8 +44,8 @@ export class DataDenSortingService {
       });
 
       if (sortingStartEvent.defaultPrevented) {
-        this.#field = sortingStorage.getValue('field');
-        this.#order = sortingStorage.getValue('order');
+        this.#field = sortingPreviousState.getValue('field');
+        this.#order = sortingPreviousState.getValue('order');
         return;
       }
 

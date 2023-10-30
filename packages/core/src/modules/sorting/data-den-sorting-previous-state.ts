@@ -1,4 +1,4 @@
-export class DataDenStorage {
+export class DataDenSortingPreviousState {
   private data: { [key: string]: any } = {};
 
   constructor(values: { [key: string]: any }) {
