@@ -2,6 +2,7 @@ import './src/scss/index.scss';
 import { DataDen } from './src/data-den';
 import { DataDenOptions } from './src/data-den-options.interface';
 import { DataDenDefaultCellRenderer } from './src/modules/rendering/cell/data-den-default-cell-renderer';
+import { DataDenSortingEvent } from './src/modules/sorting';
 
 const rows = [
   { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
@@ -118,4 +119,16 @@ const options: DataDenOptions = {
 };
 
 const ddEl = document.getElementById('dd');
-new DataDen(ddEl as HTMLElement, options);
+const dataDen = new DataDen(ddEl as HTMLElement, options);
+
+dataDen.on('sortingStart', (event: DataDenSortingEvent) => {
+  if (event.field === 'model') {
+    event.preventDefault();
+  }
+
+  console.log(event);
+});
+
+dataDen.on('sortingDone', (event: DataDenSortingEvent) => {
+  console.log(event);
+});

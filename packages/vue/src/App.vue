@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { DataDenDefaultCellRenderer, DataDenOptions } from 'data-den-core';
+import { DataDenDefaultCellRenderer, DataDenOptions, DataDenSortingEvent } from 'data-den-core';
 import DataDen from './components/DataDen.vue';
 
 const rows = [
@@ -115,14 +115,23 @@ const options: DataDenOptions = {
   quickFilterOptions: {
     debounceTime: 500,
   },
-  resizable: true,
 };
 
 const dataDen = ref<typeof DataDen | null>(null);
 </script>
 
 <template>
-  <DataDen :options="options" ref="dataDen" @sorting-done="($event: CustomEvent) => console.log($event.detail)" />
+  <DataDen
+    :options="options"
+    ref="dataDen"
+    @sorting-start="(event: DataDenSortingEvent) => {
+      if (event.field === 'model') {
+        event.preventDefault();
+      }
+      console.log(event);
+    }"
+    @sorting-done="(event: DataDenSortingEvent) =>console.log(event)"
+  />
   <div style="margin: 10px; display: flex; gap: 5px">
     <button @click="dataDen?.sort('car', 'asc')">Sort asc by car</button>
     <button @click="dataDen?.sort('car', 'desc')">Sort desc by car</button>

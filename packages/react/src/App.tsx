@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import './App.css';
 import DataDen from './components/DataDen';
-import { DataDenDefaultCellRenderer, DataDenOptions } from 'data-den-core';
+import { DataDenDefaultCellRenderer, DataDenOptions, DataDenSortingEvent } from 'data-den-core';
 
 function App() {
   const rows = [
@@ -116,7 +116,6 @@ function App() {
     quickFilterOptions: {
       debounceTime: 500,
     },
-    resizable: true,
   };
 
   const dataDen = useRef(null);
@@ -126,8 +125,14 @@ function App() {
       <DataDen
         options={options}
         ref={dataDen}
-        onSortingDone={(event) => {
-          console.log(event.detail);
+        onSortingStart={(event: DataDenSortingEvent) => {
+          if (event.field === 'model') {
+            event.preventDefault();
+          }
+          console.log(event);
+        }}
+        onSortingDone={(event: DataDenSortingEvent) => {
+          console.log(event);
         }}
       />
       <div style={{ margin: '10px', display: 'flex', gap: '5px' }}>

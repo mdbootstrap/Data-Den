@@ -1,19 +1,27 @@
-import { DataDenPubSub } from './data-den-pub-sub';
-import { DataDenPublishedHtmlEvent } from './data-den-published-event';
+export class DataDenEventEmitter {
+  static #callbacks: { [key: string]: any[] } = {};
 
-export class DataDenEventEmitter extends DataDenPubSub {
-  static publish(name: string, data: DataDenPublishedHtmlEvent) {
-    const { element } = data;
-
-    if (!element) {
-      return;
+  static on(name: string, callback: any): void {
+    if (!this.#callbacks[name]) {
+      this.#callbacks[name] = [];
     }
+    this.#callbacks[name].push(callback);
+  }
 
-    const event = new CustomEvent(name, {
-      detail: data,
-      bubbles: true,
-      cancelable: true,
+  static triggerEvent(name: string, args: any): any {
+    const event = {
+      name,
+      preventDefault: () => {
+        event.defaultPrevented = true;
+      },
+      defaultPrevented: false,
+      ...args,
+    };
+
+    this.#callbacks[name]?.forEach((callback) => {
+      callback(event);
     });
-    element.dispatchEvent(event);
+
+    return event;
   }
 }
