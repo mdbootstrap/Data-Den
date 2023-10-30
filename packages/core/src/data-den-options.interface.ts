@@ -7,13 +7,16 @@ export type DataDenMode = 'client' | 'server';
 export type DataDenHeaderFilterOptions =
   | DataDenTextFilterOptions
   | DataDenNumberFilterOptions
-  | DataDenDateFilterOptions;
+  | DataDenDateFilterOptions
+  | DataDenSelectFilterOptions;
 
 export type DataDenTextFilterMethod = 'includes';
 
 export type DataDenNumberFilterMethod = 'equals';
 
 export type DataDenDateFilterMethod = 'equals';
+
+export type DataDenSelectFilterMethod = 'includes';
 
 export type DataDenDateFilterParserFn = (value: string) => Date;
 
@@ -35,6 +38,18 @@ export interface DataDenDateFilterOptions {
   method: DataDenDateFilterMethod;
   debounceTime: number;
   dateParserFn: DataDenDateFilterParserFn;
+}
+
+export interface DataDenSelectFilterOptions {
+  type: 'select';
+  method: DataDenSelectFilterMethod;
+  debounceTime: number;
+  listOptions: DataDenListOption[];
+}
+
+export interface DataDenListOption {
+  label: string;
+  value: any;
 }
 
 export interface DataDenColDef {

@@ -8,12 +8,18 @@ import { DataDenHeaderDefaultSorterRenderer, DataDenHeaderSorterRenderer } from 
 import { DataDenHeaderDefaultResizerRenderer, DataDenHeaderResizerRenderer } from '../resizer';
 import { DataDenCell } from './data-den-cell';
 import { DataDenCellRenderer } from './data-den-cell-renderer.interface';
-import { DataDenColDef, DataDenInternalOptions } from '../../../data-den-options.interface';
+import {
+  DataDenColDef,
+  DataDenInternalOptions,
+  DataDenListOption,
+  DataDenSelectFilterOptions,
+} from '../../../data-den-options.interface';
 import { DataDenHeaderFilterRendererParams } from '../filter/data-den-header-filter-renderer-params.interface';
 import { Order } from '../../sorting';
 import { DataDenCellRendererParams } from './data-den-cell-renderer-params.interface';
 import { createHtmlElement } from '../../../utils';
 import { DataDenDefaultHeaderCellRenderer } from './data-den-default-header-cell-renderer';
+import { DataDenHeaderSelectFilterRenderer } from '../filter/data-den-header-select-filter-renderer';
 
 export class DataDenHeaderCell extends DataDenCell {
   rowIndex: number;
@@ -81,11 +87,19 @@ export class DataDenHeaderCell extends DataDenCell {
   #getHeaderFilterRenderer(colDef: DataDenColDef) {
     const field = colDef.field;
     const { type, method, debounceTime } = colDef.filterOptions!;
+    let listOptions: DataDenListOption[] = [];
+
+    if (type === 'select') {
+      const filterOptions = colDef.filterOptions as DataDenSelectFilterOptions;
+      listOptions = filterOptions.listOptions;
+    }
+
     const params: DataDenHeaderFilterRendererParams = {
       field,
       method,
       debounceTime,
       cssPrefix: this.#options.cssPrefix,
+      listOptions,
     };
 
     switch (type) {
@@ -95,6 +109,8 @@ export class DataDenHeaderCell extends DataDenCell {
         return new DataDenHeaderNumberFilterRenderer(params);
       case 'date':
         return new DataDenHeaderDateFilterRenderer(params);
+      case 'select':
+        return new DataDenHeaderSelectFilterRenderer(params);
       default:
         return new DataDenHeaderTextFilterRenderer(params);
     }
