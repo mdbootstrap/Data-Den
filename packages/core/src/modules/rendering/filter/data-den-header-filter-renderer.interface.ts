@@ -5,6 +5,6 @@ export abstract class DataDenHeaderFilterRenderer {
   abstract destroy?(): void;
   abstract getType(): string;
   protected filter(searchTerm: any, params: DataDenHeaderFilterRendererParams): void {
-    console.log(params);
+    console.log(searchTerm, params);
   }
 }

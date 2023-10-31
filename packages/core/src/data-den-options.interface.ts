@@ -16,7 +16,7 @@ export type DataDenNumberFilterMethod = 'equals';
 
 export type DataDenDateFilterMethod = 'equals';
 
-export type DataDenSelectFilterMethod = 'includes';
+export type DataDenSelectFilterMethod = 'includes' | 'equals';
 
 export type DataDenDateFilterParserFn = (value: string) => Date;
 

@@ -105,11 +105,13 @@ export class DataDenFilteringService {
 
   #getSelectFilterFunction(method: string) {
     return (searchTerm: string, value: any) => {
-      value = value.toLowerCase();
+      value = value.toString().toLowerCase();
 
       switch (method) {
         case 'includes':
           return value.includes(searchTerm);
+        case 'equals':
+          return value === searchTerm;
         default:
           return false;
       }
