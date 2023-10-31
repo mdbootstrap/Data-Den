@@ -52,6 +52,8 @@ export class DataDenFilteringService {
         return this.#getNumberFilterFunction(method);
       case 'date':
         return this.#getDateFilterFunction(method, options as DataDenDateFilterOptions);
+      case 'select':
+        return this.#getSelectFilterFunction(method);
       default:
         return () => false;
     }
@@ -95,6 +97,19 @@ export class DataDenFilteringService {
       switch (method) {
         case 'equals':
           return isSameDate(searchTermAsDate, valueAsDate);
+        default:
+          return false;
+      }
+    };
+  }
+
+  #getSelectFilterFunction(method: string) {
+    return (searchTerm: string, value: any) => {
+      value = value.toLowerCase();
+
+      switch (method) {
+        case 'includes':
+          return value.includes(searchTerm);
         default:
           return false;
       }
