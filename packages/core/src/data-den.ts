@@ -25,7 +25,7 @@ export class DataDen {
   #sorting: DataDenSortingService;
   #filtering: DataDenFilteringService;
   #pagination: DataDenPaginationService;
-  #dragging: DataDenDraggingService;
+  #dragging: DataDenDraggingService | null;
   #resizing: DataDenResizingService | null;
   #dataLoaderStrategy: DataDenDataLoaderStrategy | null = null;
   #fetch: DataDenFetchService | null = null;
