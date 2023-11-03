@@ -19,6 +19,7 @@ import { Context } from './context';
 import { DataDenInternalOptions, DataDenOptions } from './data-den-options.interface';
 import { defaultOptions } from './default-options.interface';
 import { deepMerge } from './utils/deep-merge';
+import { deepCopy } from './utils';
 
 export class DataDen {
   #rendering: DataDenRenderingService;
@@ -53,7 +54,7 @@ export class DataDen {
   }
 
   #createOptions(defaultOptions: DataDenInternalOptions, userOptions: DataDenOptions): DataDenInternalOptions {
-    return deepMerge(defaultOptions, userOptions);
+    return deepMerge(deepCopy(defaultOptions), userOptions);
   }
 
   #getDataLoaderStrategy(options: DataDenOptions): DataDenDataLoaderStrategy | null {

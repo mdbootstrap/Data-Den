@@ -3,24 +3,28 @@ import { DataDenHeaderResizerRenderer } from './data-den-header-resizer-renderer
 import { DataDenPubSub } from '../../../data-den-pub-sub';
 import { Context } from '../../../context';
 
-export class DataDenHeaderDefaultResizerRenderer implements DataDenHeaderResizerRenderer {
+export class DataDenHeaderDefaultResizerRenderer extends DataDenHeaderResizerRenderer {
   element: HTMLElement;
   #cssPrefix: string;
 
   constructor(cssPrefix: string) {
+    super();
+
     this.#cssPrefix = cssPrefix;
 
     const template = `<div class="${this.#cssPrefix}header-resizer"></div>`;
 
     this.element = createHtmlElement(template);
-    this.element.addEventListener('mousedown', this.#onMouseDown);
-    document.addEventListener('mousemove', this.#resize);
-    document.addEventListener('mouseup', this.#onMouseUp);
+    this.element.addEventListener('mousedown', this.#onMouseDown.bind(this));
+    document.addEventListener('mousemove', this.#resize.bind(this));
+    document.addEventListener('mouseup', this.#onMouseUp.bind(this));
   }
 
   getGui(): HTMLElement {
     return this.element;
   }
+
+  destroy() {}
 
   #onMouseDown(event: MouseEvent): void {
     event.stopPropagation();
