@@ -26,7 +26,7 @@ export class DataDen {
   #sorting: DataDenSortingService;
   #filtering: DataDenFilteringService;
   #pagination: DataDenPaginationService;
-  #dragging: DataDenDraggingService;
+  #dragging: DataDenDraggingService | null;
   #resizing: DataDenResizingService | null;
   #dataLoaderStrategy: DataDenDataLoaderStrategy | null = null;
   #fetch: DataDenFetchService | null = null;
@@ -43,7 +43,7 @@ export class DataDen {
     this.#sorting = new DataDenSortingService();
     this.#filtering = new DataDenFilteringService(gridOptions);
     this.#pagination = new DataDenPaginationService(gridOptions);
-    this.#dragging = new DataDenDraggingService(container, gridOptions);
+    this.#dragging = options.draggable ? new DataDenDraggingService(container, gridOptions) : null;
     this.#resizing = options.columns.some((column) => column.resize)
       ? new DataDenResizingService(container, gridOptions)
       : null;
