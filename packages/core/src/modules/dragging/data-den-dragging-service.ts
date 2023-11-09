@@ -1,9 +1,11 @@
 import { DataDenInternalOptions } from '../../data-den-options.interface';
 import { DataDenPubSub } from '../../data-den-pub-sub';
 import { Context } from '../../context';
+import { getColumnsOrder } from '../../utils/columns-order';
 
 export class DataDenDraggingService {
   #container: HTMLElement;
+  #gridMain: HTMLElement;
   #options: DataDenInternalOptions;
   #isInitiated: boolean;
   #isDragging: boolean;
@@ -13,7 +15,7 @@ export class DataDenDraggingService {
   #targetIndex: number;
   #prevTargetIndex: number;
   #columns: HTMLElement[][];
-  #columnPositions: { left: number; width: number }[];
+  #columnPositions: { left: number; right: string; width: number }[];
   #breakpoints: number[];
   #columnsOrder: number[];
   #defaultGridOffsetLeft: number;
@@ -25,6 +27,7 @@ export class DataDenDraggingService {
 
   constructor(container: HTMLElement, options: DataDenInternalOptions) {
     this.#container = container;
+    this.#gridMain = container.querySelector('[ref="gridMain"]')!;
     this.#options = options;
     this.#isInitiated = false;
     this.#isDragging = false;
@@ -86,18 +89,33 @@ export class DataDenDraggingService {
   }
 
   #setColumnParams() {
-    this.#columnPositions = [...this.#getAllColumnPositions()];
-    this.#breakpoints = this.#columnPositions.map((column) => column.left);
+    const orderedColumnPositions = [...this.#getAllColumnPositions()];
+    this.#columnPositions = this.#columnsOrder.map((columnIndex) => orderedColumnPositions[columnIndex]);
+    this.#setBreakpoints();
     this.#defaultGridOffsetLeft = this.#headerRow!.getBoundingClientRect().left;
   }
 
+  #setBreakpoints() {
+    this.#breakpoints = this.#columnPositions.map((column, index) => {
+      let breakpoint = column.left;
+
+      // right pinned column case
+      if (column.right !== 'auto') {
+        breakpoint = this.#columnPositions.slice(0, index).reduce((acc, curr) => acc + curr.width, 0);
+      }
+
+      return breakpoint;
+    });
+  }
+
   #getOffsetX(pageX: number) {
-    return pageX - this.#defaultGridOffsetLeft;
+    return pageX - this.#defaultGridOffsetLeft + this.#gridMain.scrollLeft;
   }
 
   #getAllColumnPositions() {
     return this.#headers.map((column: HTMLElement) => ({
       left: parseFloat(column.style.left),
+      right: column.style.right,
       width: parseFloat(column.style.width),
     }));
   }
@@ -125,14 +143,14 @@ export class DataDenDraggingService {
   }
 
   #setDefaultColumnsOrder() {
-    this.#columnsOrder = this.#options.columns.map((_, index: number) => index);
+    this.#columnsOrder = getColumnsOrder(this.#options.columns);
   }
 
   #subscribeResizingDone() {
     DataDenPubSub.subscribe('info:resizing:done', () => {
       const orderedColumnPositions = [...this.#getAllColumnPositions()];
       this.#columnPositions = this.#columnsOrder.map((columnIndex) => orderedColumnPositions[columnIndex]);
-      this.#breakpoints = this.#columnPositions.map((column) => column.left);
+      this.#setBreakpoints();
     });
   }
 
@@ -142,13 +160,19 @@ export class DataDenDraggingService {
   }
 
   #onMouseDown(offsetX: number) {
-    this.#initializeDragging(offsetX);
+    this.#getCurrentIndex(offsetX);
+    // prevent dragging if the column is fixed
+    if (this.#options.columns[this.#columnsOrder[this.#currentIndex]].fixed) {
+      this.#isDragging = false;
+      return;
+    } else {
+      this.#isDragging = true;
+    }
     this.#enableTransition();
     this.#setActiveStyle();
   }
 
-  #initializeDragging(offsetX: number) {
-    this.#isDragging = true;
+  #getCurrentIndex(offsetX: number) {
     this.#currentIndex = this.#getMinBreakpointIndex(this.#breakpoints, offsetX);
   }
 
@@ -168,6 +192,12 @@ export class DataDenDraggingService {
       (this.#getDirection() === 'right' && this.#breakpoints[this.#targetIndex] + gap > offsetX) ||
       (this.#getDirection() === 'left' && this.#breakpoints[this.#targetIndex] + currentColumnWidth < offsetX)
     ) {
+      this.#targetIndex = this.#currentIndex;
+      return;
+    }
+
+    // prevent swapping if the column is fixed
+    if (this.#options.columns[this.#columnsOrder[this.#targetIndex]].fixed) {
       this.#targetIndex = this.#currentIndex;
       return;
     }
@@ -245,10 +275,15 @@ export class DataDenDraggingService {
     this.#swapArrayElements(this.#columnsOrder, currentOrderedIndex, this.#targetIndex);
 
     this.#columns.forEach((column, index) => {
+      if (this.#options.columns[this.#columnsOrder[index]].fixed) {
+        return;
+      }
       column.forEach((cell) => {
         cell.style.left = `${this.#breakpoints[index]}px`;
       });
     });
+
+    this.#publishColumnsOrder();
   }
 
   #getDirection() {
@@ -276,7 +311,6 @@ export class DataDenDraggingService {
     this.#disableTransition();
     this.#unsetActiveStyle();
     this.#resetIndexes();
-    this.#publishColumnsOrder();
   }
 
   #resetIndexes() {

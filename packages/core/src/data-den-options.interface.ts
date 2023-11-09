@@ -59,6 +59,7 @@ export interface DataDenColDef {
   filter?: boolean;
   filterOptions?: DataDenHeaderFilterOptions;
   resize?: boolean;
+  fixed?: 'left' | 'right';
   width?: number;
   cellRenderer?: ClassType<DataDenCellRenderer>;
 }

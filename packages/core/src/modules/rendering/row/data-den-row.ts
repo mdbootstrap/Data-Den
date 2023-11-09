@@ -8,12 +8,7 @@ export class DataDenRow {
   constructor(public index: number, public cells: DataDenCell[], options: DataDenInternalOptions) {
     const template =
       /* HTML */
-      `<div
-        class="${options.cssPrefix}-row"
-        role="row"
-        ref="row"
-        style="height: ${options.rowHeight}px; top: ${index * options.rowHeight}px"
-      ></div>`;
+      `<div class="${options.cssPrefix}row" role="row" ref="row" style="height: ${options.rowHeight}px;"></div>`;
 
     this.element = createHtmlElement(template);
   }

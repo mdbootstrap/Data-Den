@@ -2,6 +2,7 @@ import { Context } from '../../context';
 import { DataDenEvent } from '../../data-den-event';
 import { DataDenInternalOptions } from '../../data-den-options.interface';
 import { DataDenPubSub } from '../../data-den-pub-sub';
+import { getColumnsOrder } from '../../utils/columns-order';
 
 export class DataDenResizingService {
   #container: HTMLElement;
@@ -9,7 +10,6 @@ export class DataDenResizingService {
   #isInitiated: boolean;
   #isResizing: boolean;
   #headers: HTMLElement[];
-  #defaultHeaders: HTMLElement[];
   #rows: HTMLElement[];
   #currentHeader: HTMLElement | null;
   #currentCol: HTMLElement[] | null;
@@ -24,7 +24,6 @@ export class DataDenResizingService {
     this.#isResizing = false;
     this.#headers = [];
     this.#columnsOrder = [];
-    this.#defaultHeaders = [];
     this.#rows = [];
     this.#currentHeader = null;
     this.#currentCol = null;
@@ -36,8 +35,7 @@ export class DataDenResizingService {
 
   init() {
     this.#headers = Array.from(this.#container.querySelectorAll('[ref="headerCell"]'))!;
-    this.#defaultHeaders = [...this.#headers];
-    this.#columnsOrder = this.#headers.map((_, index) => index);
+    this.#columnsOrder = getColumnsOrder(this.#options.columns);
 
     this.#subscribeResizingEvents();
     this.#subscribeDraggingEvent();
@@ -63,7 +61,6 @@ export class DataDenResizingService {
   #subscribeDraggingEvent() {
     DataDenPubSub.subscribe('info:dragging:columns-reorder:done', (event: DataDenEvent) => {
       this.#columnsOrder = event.data.columnsOrder;
-      this.#headers = this.#columnsOrder.map((columnIndex) => this.#defaultHeaders[columnIndex]);
     });
   }
 
@@ -125,6 +122,10 @@ export class DataDenResizingService {
 
     this.#headersOnTheRight.forEach((header) => {
       const currentLeft = header.style.left;
+      // prevent right pinned columns from moving
+      if (currentLeft === '0px') {
+        return;
+      }
       const newLeft = parseInt(currentLeft || '0') + movementX;
       const col = this.#getColumnElements(header);
       col.forEach((cell: HTMLElement) => (cell.style.left = `${newLeft}px`));
@@ -132,7 +133,8 @@ export class DataDenResizingService {
   }
 
   #getHeadersOnTheRight(): HTMLElement[] {
-    return this.#headers.slice(this.#currentColIndex + 1);
+    const sortedHeaders = this.#columnsOrder.map((index) => this.#headers[index]);
+    return sortedHeaders.slice(this.#columnsOrder.indexOf(this.#currentColIndex) + 1);
   }
 
   #getColumnElements(colHeader: HTMLElement | null): HTMLElement[] {
@@ -140,7 +142,8 @@ export class DataDenResizingService {
       return [];
     }
 
-    const index = this.#columnsOrder[this.#headers.indexOf(colHeader)];
+    const sortedHeaders = this.#columnsOrder.map((index) => this.#headers[index]);
+    const index = this.#columnsOrder[sortedHeaders.indexOf(colHeader)];
     const colCells = this.#rows.map((row: HTMLElement) => row.querySelectorAll('[ref="cell"]')[index] as HTMLElement);
 
     return [colHeader, ...colCells];
