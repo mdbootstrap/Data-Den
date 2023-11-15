@@ -62,6 +62,8 @@ export class DataDenHeaderCell extends DataDenCell {
     const { field, filter, sort, resize } = colDef;
     const order = this.#order;
 
+    console.log('Data-DEN-HEADER-CELL col def: ', colDef);
+
     this.#renderer = new DataDenDefaultHeaderCellRenderer(this.#getCellRendererParams());
 
     if (filter) {
@@ -69,6 +71,7 @@ export class DataDenHeaderCell extends DataDenCell {
     }
 
     if (sort) {
+      console.log('Data-DEN-HEADER-CELL col def: ', field, order, cssPrefix);
       this.#sorterRenderer = new DataDenHeaderDefaultSorterRenderer(field, order, cssPrefix);
     }
 

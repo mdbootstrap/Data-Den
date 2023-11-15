@@ -15,7 +15,13 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
     this.#cssPrefix = cssPrefix;
     const template = `
       <div class="${this.#cssPrefix}header-sorter">
-        <div
+      <div>
+        <select id=${field} name="sorting" class="sortingSelect">
+          <option value="asc-desc">asc -> desc -> null </option>
+          <option value="desc-asc">desc -> asc -> null</option>
+        </select>
+      </div>
+      <div
           ref="sorterArrow"
           class="${this.#cssPrefix}header-sorter-arrow ${this.#cssPrefix}header-sorter-arrow-${order}"
         >
@@ -26,7 +32,7 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
 
     this.element = createHtmlElement(template);
     this.arrowElement = this.element.querySelector('[ref="sorterArrow"]')!;
-    this.element.addEventListener('click', () => this.sort());
+    this.arrowElement.addEventListener('click', () => this.sort());
     this.#subscribeSortingStartEvent();
   }
 

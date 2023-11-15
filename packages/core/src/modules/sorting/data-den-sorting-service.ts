@@ -7,28 +7,66 @@ import { DataDenSortingPreviousState } from './data-den-sorting-previous-state';
 export class DataDenSortingService {
   #field: string;
   #order: Order;
+  #sortingMethods: { id: string; method: string }[];
 
   constructor() {
     this.#field = '';
     this.#order = 'asc';
+    this.#sortingMethods = [];
+
+    const sortingSelect = document.querySelectorAll('.sortingSelect');
+    sortingSelect.forEach((select: HTMLSelectElement) => {
+      select.addEventListener('change', () => {
+        const isMethod = this.#sortingMethods.some((sortingMethod) => sortingMethod.id === select.getAttribute('id'));
+        if (!isMethod) {
+          this.#sortingMethods.push({ id: select.getAttribute('id'), method: select.value });
+        } else {
+          const methodIndex = this.#sortingMethods.findIndex(
+            (sortingMethod) => sortingMethod.id === select.getAttribute('id')
+          );
+          this.#sortingMethods[methodIndex].method = select.value;
+        }
+      });
+    });
 
     DataDenPubSub.subscribe('command:sorting:start', (event: DataDenEvent) => {
       const sortingPreviousState = new DataDenSortingPreviousState({ field: this.#field, order: this.#order });
+      const isMethod = this.#sortingMethods.some((sortingMethod) => sortingMethod.id === event.data.field);
+      if (isMethod === false) this.#sortingMethods.push({ id: event.data.field, method: 'asc-desc' });
+      const methodIndex = this.#sortingMethods.findIndex((sortingMethod) => sortingMethod.id === event.data.field);
 
-      if (this.#field === event.data.field) {
-        switch (this.#order) {
-          case 'asc':
-            this.#order = 'desc';
-            break;
-          case 'desc':
-            this.#order = '';
-            break;
-          default:
-            this.#order = 'asc';
-            break;
+      if (methodIndex !== -1 && this.#sortingMethods[methodIndex].method === 'asc-desc') {
+        if (this.#field === event.data.field) {
+          switch (this.#order) {
+            case 'asc':
+              this.#order = 'desc';
+              break;
+            case 'desc':
+              this.#order = '';
+              break;
+            default:
+              this.#order = 'asc';
+              break;
+          }
+        } else {
+          this.#order = 'asc';
         }
-      } else {
-        this.#order = 'asc';
+      } else if (methodIndex !== -1 && this.#sortingMethods[methodIndex].method === 'desc-asc') {
+        if (this.#field === event.data.field) {
+          switch (this.#order) {
+            case 'desc':
+              this.#order = 'asc';
+              break;
+            case 'asc':
+              this.#order = '';
+              break;
+            default:
+              this.#order = 'desc';
+              break;
+          }
+        } else {
+          this.#order = 'desc';
+        }
       }
 
       if (event.data.order) {
