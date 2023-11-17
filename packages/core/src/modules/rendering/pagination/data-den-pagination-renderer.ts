@@ -21,10 +21,6 @@ export class DataDenPaginationRenderer {
           <button class="data-den-pagination-next-button">></button>
           <button class="data-den-pagination-last-button">>></button>
         </div>
-        <select class="data-den-pagination-page-size">
-          ${this.options.pageSizeOptions?.map((pageSize) => `<option value="${pageSize}">${pageSize}</option>`) ||
-          '<option value="10">10</option><option value="20">20</option><option value="50">50</option>'}
-        </select>
       </div>`;
 
     this.element = createHtmlElement(template);
@@ -43,8 +39,6 @@ export class DataDenPaginationRenderer {
   }
 
   attachUiEvents(): void {
-    const pageSizeSelect = this.element.querySelector('.data-den-pagination-page-size') as HTMLSelectElement;
-
     this.buttons[0].addEventListener('click', () => {
       DataDenPubSub.publish('command:pagination:load-first-page:start', {
         context: new Context('command:pagination:load-first-page:start'),
@@ -65,13 +59,6 @@ export class DataDenPaginationRenderer {
         context: new Context('command:pagination:load-last-page:start'),
       });
     });
-    pageSizeSelect.addEventListener('change', (event: Event) => {
-      const target = event.target as HTMLSelectElement;
-      DataDenPubSub.publish('info:pagination:page-size-change:done', {
-        pageSize: +target.value,
-        context: new Context('info:pagination:page-size-change:done'),
-      });
-    });
   }
 
   destroy(): void {
@@ -84,7 +71,6 @@ export class DataDenPaginationRenderer {
       'info:pagination:info-change:done',
       (event: { data: { firstRowIndex: number; lastRowIndex: number; allTotalRows: number; pageSize: number } }) => {
         this.updateInfo(event.data.firstRowIndex, event.data.lastRowIndex, event.data.allTotalRows);
-        this.updatePageSize(event.data.pageSize);
         this.updateButtonsState(event.data.firstRowIndex, event.data.lastRowIndex, event.data.allTotalRows);
       }
     );
@@ -109,8 +95,10 @@ export class DataDenPaginationRenderer {
     info!.innerHTML = `${firstRowIndex + 1}-${lastRowIndex} ${this.options.ofText || 'of'} ${allTotalRows}`;
   }
 
-  private updatePageSize(pageSize: number): void {
-    const pageSizeSelect = this.element.querySelector('.data-den-pagination-page-size') as HTMLSelectElement;
-    pageSizeSelect.value = pageSize.toString();
+  public updatePageSize(pageSize: number): void {
+    DataDenPubSub.publish('info:pagination:page-size-change:done', {
+      pageSize: pageSize,
+      context: new Context('info:pagination:page-size-change:done'),
+    });
   }
 }
