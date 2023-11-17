@@ -1,8 +1,10 @@
 import {
+  DataDenDateFilterParserFn,
   DataDenInternalOptions,
   DataDenPaginationOptions,
   DataDenQuickFilterOptions,
 } from './data-den-options.interface';
+import { DataDenHeaderTextFilterRenderer } from './modules/rendering';
 import { DataDenDefaultCellRenderer } from './modules/rendering/cell';
 
 const defaultPaginationOptions: Required<DataDenPaginationOptions> = {
@@ -23,6 +25,13 @@ const defaultQuickFilterOptions: Required<DataDenQuickFilterOptions> = {
   filterFn: defaultQuickFilterFn,
 };
 
+const defaultDateParserFn: DataDenDateFilterParserFn = (dateString: string) => {
+  const dateParts = dateString.split('/').map((part) => Number(part));
+  const [day, month, year] = dateParts;
+
+  return new Date(year, month - 1, day);
+};
+
 export const defaultOptions: DataDenInternalOptions = {
   cssPrefix: 'data-den-',
   mode: 'client',
@@ -30,11 +39,13 @@ export const defaultOptions: DataDenInternalOptions = {
   defaultColDef: {
     sort: false,
     filter: false,
+    filterRenderer: DataDenHeaderTextFilterRenderer,
     filterOptions: {
-      type: 'text',
       method: 'includes',
       debounceTime: 500,
       caseSensitive: false,
+      dateParserFn: defaultDateParserFn,
+      listOptions: [],
     },
     resize: false,
     width: 200,
