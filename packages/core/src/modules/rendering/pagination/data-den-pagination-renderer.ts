@@ -6,6 +6,7 @@ import { Context } from '../../../context';
 export class DataDenPaginationRenderer {
   element: HTMLElement;
   options: DataDenPaginationOptions;
+  buttons: HTMLButtonElement[];
 
   constructor(options: DataDenPaginationOptions) {
     this.options = options;
@@ -27,6 +28,12 @@ export class DataDenPaginationRenderer {
       </div>`;
 
     this.element = createHtmlElement(template);
+    this.buttons = [
+      this.element.querySelector('.data-den-pagination-first-button') as HTMLButtonElement,
+      this.element.querySelector('.data-den-pagination-prev-button') as HTMLButtonElement,
+      this.element.querySelector('.data-den-pagination-next-button') as HTMLButtonElement,
+      this.element.querySelector('.data-den-pagination-last-button') as HTMLButtonElement,
+    ];
     this.attachUiEvents();
     this.subscribeToEvents();
   }
@@ -36,28 +43,24 @@ export class DataDenPaginationRenderer {
   }
 
   attachUiEvents(): void {
-    const firstButton = this.element.querySelector('.data-den-pagination-first-button') as HTMLButtonElement;
-    const prevButton = this.element.querySelector('.data-den-pagination-prev-button') as HTMLButtonElement;
-    const nextButton = this.element.querySelector('.data-den-pagination-next-button') as HTMLButtonElement;
-    const lastButton = this.element.querySelector('.data-den-pagination-last-button') as HTMLButtonElement;
     const pageSizeSelect = this.element.querySelector('.data-den-pagination-page-size') as HTMLSelectElement;
 
-    firstButton.addEventListener('click', () => {
+    this.buttons[0].addEventListener('click', () => {
       DataDenPubSub.publish('command:pagination:load-first-page:start', {
         context: new Context('command:pagination:load-first-page:start'),
       });
     });
-    prevButton.addEventListener('click', () => {
+    this.buttons[1].addEventListener('click', () => {
       DataDenPubSub.publish('command:pagination:load-prev-page:start', {
         context: new Context('command:pagination:load-prev-page:start'),
       });
     });
-    nextButton.addEventListener('click', () => {
+    this.buttons[2].addEventListener('click', () => {
       DataDenPubSub.publish('command:pagination:load-next-page:start', {
         context: new Context('command:pagination:load-next-page:start'),
       });
     });
-    lastButton.addEventListener('click', () => {
+    this.buttons[3].addEventListener('click', () => {
       DataDenPubSub.publish('command:pagination:load-last-page:start', {
         context: new Context('command:pagination:load-last-page:start'),
       });
@@ -82,13 +85,28 @@ export class DataDenPaginationRenderer {
       (event: { data: { firstRowIndex: number; lastRowIndex: number; allTotalRows: number; pageSize: number } }) => {
         this.updateInfo(event.data.firstRowIndex, event.data.lastRowIndex, event.data.allTotalRows);
         this.updatePageSize(event.data.pageSize);
+        this.updateButtonsState(event.data.firstRowIndex, event.data.lastRowIndex, event.data.allTotalRows);
       }
     );
   }
 
+  private updateButtonsState(firstRowIndex: number, lastRowIndex: number, allTotalRows: number): void {
+    this.buttons.forEach((button) => (button.disabled = false));
+
+    if (firstRowIndex === 0) {
+      this.buttons[0].disabled = true;
+      this.buttons[1].disabled = true;
+    }
+
+    if (lastRowIndex === allTotalRows) {
+      this.buttons[2].disabled = true;
+      this.buttons[3].disabled = true;
+    }
+  }
+
   private updateInfo(firstRowIndex: number, lastRowIndex: number, allTotalRows: number): void {
     const info = this.element.querySelector('.data-den-pagination-info');
-    info!.innerHTML = `${firstRowIndex}-${lastRowIndex} ${this.options.ofText || 'of'} ${allTotalRows}`;
+    info!.innerHTML = `${firstRowIndex + 1}-${lastRowIndex} ${this.options.ofText || 'of'} ${allTotalRows}`;
   }
 
   private updatePageSize(pageSize: number): void {
