@@ -4,6 +4,7 @@
   html {
     @apply text-neutral-800;
   }
+
   html.dark {
     @apply text-neutral-50;
     @apply bg-neutral-800;
@@ -19,4 +20,15 @@ code {
 
 p {
   @apply leading-[1.6];
+}
+
+table,
+tr,
+td {
+  @apply border;
+  @apply border-black dark:border-white;
+}
+
+td {
+  @apply p-3;
 }
