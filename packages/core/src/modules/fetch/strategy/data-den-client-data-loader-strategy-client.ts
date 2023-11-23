@@ -60,9 +60,9 @@ export class DataDenClientDataLoaderStrategy extends DataDenDataLoaderStrategy {
       return Promise.resolve(rows);
     }
 
-    const { field, order, sortFn } = sortOptions;
+    const { field, order, comparator, sortFn } = sortOptions;
 
-    const sorted = sortFn(rows, field, order);
+    const sorted = sortFn(rows, field, order, comparator);
 
     return Promise.resolve(sorted);
   }
