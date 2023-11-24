@@ -24,10 +24,10 @@ import { DataDenHeaderSelectFilterRenderer } from '../filter/data-den-header-sel
 export class DataDenHeaderCell extends DataDenCell {
   rowIndex: number;
   colIndex: number;
+  width: number;
   #value: any;
-  #left: number;
+  #left: string;
   #right: string;
-  #width: number;
   #fixed: string;
   #filterRenderer: DataDenHeaderFilterRenderer | null = null;
   #sorterRenderer: DataDenHeaderSorterRenderer | null = null;
@@ -41,18 +41,16 @@ export class DataDenHeaderCell extends DataDenCell {
     colIndex: number,
     rowIndex: number,
     left: number,
-    right: number,
     width: number,
     fixed: string,
     options: DataDenInternalOptions,
     order: Order
   ) {
-    super(value, rowIndex, colIndex, left, right, width, options);
+    super(value, rowIndex, colIndex, left, width, fixed, options);
 
     this.#value = value;
-    this.#left = options.columns[colIndex].fixed === 'right' ? 0 : left;
-    this.#right = options.columns[colIndex].fixed === 'right' ? `${right}px` : 'auto';
-    this.#width = width;
+    this.#left = fixed ? 'auto' : `${left}px`;
+    this.width = width;
     this.#fixed = fixed;
     this.colIndex = colIndex;
     this.rowIndex = rowIndex;
@@ -134,7 +132,7 @@ export class DataDenHeaderCell extends DataDenCell {
           : ''}"
         role="columnheader"
         ref="headerCell"
-        style="left: ${this.#left}px; width: ${this.#width}px; right: ${this.#right}"
+        style="left: ${this.#left}; width: ${this.width}px;"
       ></div>`;
 
     const cellElement = createHtmlElement(template);

@@ -1,28 +1,41 @@
 import { DataDenColDef } from '../data-den-options.interface';
 
-export const getColumnsOrder = (columns: DataDenColDef[]) => {
-  const fixedLeftColumns = columns.reduce((acc, curr, index) => {
-    if (curr.fixed === 'left') {
-      acc.push(index);
-    }
-    return acc;
-  }, [] as number[]);
-  const nonFixedColumns = columns.reduce((acc, curr, index) => {
-    if (!curr.fixed) {
-      acc.push(index);
-    }
-    return acc;
-  }, [] as number[]);
-  const fixedRightColumns = columns.reduce((acc, curr, index) => {
-    if (curr.fixed === 'right') {
-      acc.push(index);
-    }
-    return acc;
-  }, [] as number[]);
+export const getFixedColumnsLeft = (columns: DataDenColDef[]) => {
+  return columns.filter((col) => col.fixed === 'left');
+};
 
-  return [...fixedLeftColumns, ...nonFixedColumns, ...fixedRightColumns.reverse()];
+export const getNonFixedColumns = (columns: DataDenColDef[]) => {
+  return columns.filter((col) => !col.fixed);
+};
+
+export const getFixedColumnsRight = (columns: DataDenColDef[]) => {
+  return columns.filter((col) => col.fixed === 'right');
+};
+
+export const getColumnsOrder = (columns: DataDenColDef[]) => {
+  return getNonFixedColumns(columns).map((col) => columns.indexOf(col));
+};
+
+export const getAllColumnsOrder = (columns: DataDenColDef[]) => {
+  return [
+    ...getFixedColumnsLeft(columns).map((col) => columns.indexOf(col)),
+    ...getNonFixedColumns(columns).map((col) => columns.indexOf(col)),
+    ...getFixedColumnsRight(columns).map((col) => columns.indexOf(col)),
+  ];
 };
 
 export const getOrderedColumns = (columns: DataDenColDef[]) => {
   return getColumnsOrder(columns).map((index) => columns[index]);
+};
+
+export const getFixedLeftColumnsOrder = (columns: DataDenColDef[]) => {
+  return getFixedColumnsLeft(columns).map((_, key) => key);
+};
+
+export const getNonFixedColumnsOrder = (columns: DataDenColDef[]) => {
+  return getNonFixedColumns(columns).map((_, key) => key);
+};
+
+export const getFixedRightColumnsOrder = (columns: DataDenColDef[]) => {
+  return getFixedColumnsRight(columns).map((_, key) => key);
 };

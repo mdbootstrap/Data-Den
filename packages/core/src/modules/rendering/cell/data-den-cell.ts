@@ -7,30 +7,30 @@ import { DataDenInternalOptions } from '../../../data-den-options.interface';
 export class DataDenCell {
   colIndex: number;
   rowIndex: number;
+  width: number;
   #value: any;
   #options: DataDenInternalOptions;
   #renderer!: DataDenCellRenderer;
   #editor!: DataDenCellEditor;
-  #left: number;
-  #right: string;
-  #width: number;
+  #left: string;
+  #fixed: string;
 
   constructor(
     value: any,
     colIndex: number,
     rowIndex: number,
     left: number,
-    right: number,
     width: number,
+    fixed: string,
     options: DataDenInternalOptions
   ) {
     this.colIndex = colIndex;
     this.rowIndex = rowIndex;
+    this.width = width;
     this.#value = value;
     this.#options = options;
-    this.#left = options.columns[colIndex].fixed === 'right' ? 0 : left;
-    this.#right = options.columns[colIndex].fixed === 'right' ? `${right}px` : 'auto';
-    this.#width = width;
+    this.#left = fixed ? 'auto' : `${left}px`;
+    this.#fixed = fixed;
 
     this.#initRenderers();
   }
@@ -60,19 +60,18 @@ export class DataDenCell {
   }
 
   render(): HTMLElement {
-    const fixed = this.#options.columns[this.colIndex].fixed;
     const template =
       /* HTML */
       `
         <div
-          class="${this.#options.cssPrefix}cell ${this.#options.draggable && !fixed
+          class="${this.#options.cssPrefix}cell ${this.#options.draggable && !this.#fixed
             ? `${this.#options.cssPrefix}cell-draggable`
-            : ''} ${fixed === 'left' ? `${this.#options.cssPrefix}cell-fixed-left` : ''} ${fixed === 'right'
+            : ''} ${this.#fixed === 'left' ? `${this.#options.cssPrefix}cell-fixed-left` : ''} ${this.#fixed === 'right'
             ? `${this.#options.cssPrefix}cell-fixed-right`
             : ''}"
           role="gridcell"
           ref="cell"
-          style="left: ${this.#left}px; width: ${this.#width}px; right: ${this.#right}"
+          style="left: ${this.#left}; width: ${this.width}px;"
         ></div>
       `;
 

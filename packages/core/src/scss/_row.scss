@@ -6,8 +6,25 @@
 }
 
 .#{$prefix}row {
-  position: relative;
   width: 100%;
+}
+
+.#{$prefix}left-cells-wrapper {
+  position: sticky;
+  left: 0;
+  float: left;
+  z-index: 2;
+}
+
+.#{$prefix}main-cells-wrapper {
+  position: absolute;
+}
+
+.#{$prefix}right-cells-wrapper {
+  position: sticky;
+  right: 4px;
+  float: right;
+  z-index: 2;
 }
 
 .#{$prefix}cell {
@@ -30,13 +47,11 @@
 }
 
 .#{$prefix}cell-fixed-left {
-  position: sticky;
+  position: relative;
   float: left;
-  z-index: 2;
 }
 
 .#{$prefix}cell-fixed-right {
-  position: sticky;
+  position: relative;
   float: right;
-  z-index: 2;
 }

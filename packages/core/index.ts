@@ -102,7 +102,7 @@ const options: DataDenOptions = {
         debounceTime: 500,
       },
       resize: true,
-      fixed: 'right',
+      // fixed: 'right',
       width: 180,
       cellRenderer: DataDenDefaultCellRenderer,
     },

@@ -8,40 +8,6 @@
 
 .#{$prefix}header-row {
   width: 100%;
-
-  .#{$prefix}header-cell {
-    background-color: var(--#{$prefix}header-cell-bg);
-    border: var(--#{$prefix}header-cell-border);
-    border-right: $cell-border-transparent;
-    border-bottom: $cell-border-transparent;
-    display: flex;
-    padding: 6px var(--#{$prefix}header-cell-padding-x);
-    position: absolute;
-
-    .#{$prefix}header-cell-value {
-      display: flex;
-      flex-direction: row;
-    }
-    &.#{$prefix}active {
-      background-color: #fafafa;
-    }
-  }
-
-  .#{$prefix}header-cell-fixed-left {
-    position: sticky;
-    float: left;
-    z-index: 2;
-    background-color: #ffe2e2;
-    height: var(--#{$prefix}header-height);
-  }
-
-  .#{$prefix}header-cell-fixed-right {
-    position: sticky;
-    float: right;
-    z-index: 2;
-    background-color: #ffe2e2;
-    height: var(--#{$prefix}header-height);
-  }
 }
 
 .#{$prefix}header-row-draggable {
@@ -98,7 +64,7 @@
 
 .#{$prefix}header-resizer {
   position: absolute;
-  z-index: 100;
+  z-index: 1;
   right: -5px;
   top: 0;
   height: 100%;
@@ -108,4 +74,55 @@
   &:hover {
     background-color: #ccc;
   }
+}
+
+.#{$prefix}header-left-cells-wrapper {
+  position: sticky;
+  left: 0;
+  float: left;
+  z-index: 2;
+  height: var(--#{$prefix}header-height);
+}
+
+.#{$prefix}header-main-cells-wrapper {
+  position: absolute;
+  height: var(--#{$prefix}header-height);
+}
+
+.#{$prefix}header-right-cells-wrapper {
+  position: sticky;
+  right: 4px;
+  float: right;
+  z-index: 2;
+  height: var(--#{$prefix}header-height);
+}
+
+.#{$prefix}header-cell {
+  background-color: var(--#{$prefix}header-cell-bg);
+  border: var(--#{$prefix}header-cell-border);
+  border-right: $cell-border-transparent;
+  border-bottom: $cell-border-transparent;
+  display: flex;
+  padding: 6px var(--#{$prefix}header-cell-padding-x);
+  position: absolute;
+
+  .#{$prefix}header-cell-value {
+    display: flex;
+    flex-direction: row;
+  }
+  &.#{$prefix}active {
+    background-color: #fafafa;
+  }
+}
+
+.#{$prefix}header-cell-fixed-left {
+  position: relative;
+  float: left;
+  background-color: #ffe1e1;
+}
+
+.#{$prefix}header-cell-fixed-right {
+  position: relative;
+  float: right;
+  background-color: #ffe1e1;
 }

@@ -7,12 +7,20 @@ import { DataDenPubSub } from '../../data-den-pub-sub';
 import { DataDenEvent } from '../../data-den-event';
 import { Order } from '../sorting/data-den-sorting.interface';
 import { Context } from '../../context';
-import { getColumnsOrder, getOrderedColumns } from '../../utils/columns-order';
+import {
+  getColumnsOrder,
+  getOrderedColumns,
+  getFixedColumnsLeft,
+  getNonFixedColumns,
+  getFixedColumnsRight,
+  getAllColumnsOrder,
+} from '../../utils/columns-order';
 
 export class DataDenRenderingService {
   #container: HTMLElement;
   #options: DataDenInternalOptions;
   #orderedColumns: DataDenColDef[];
+  #defaultOrderedColumns: DataDenColDef[];
   #columnsOrder: number[];
   #headerRow: DataDenHeaderRow;
   #rows: DataDenRow[] = [];
@@ -23,6 +31,7 @@ export class DataDenRenderingService {
     this.#container = container;
     this.#options = options;
     this.#orderedColumns = getOrderedColumns(this.#options.columns);
+    this.#defaultOrderedColumns = getOrderedColumns(this.#options.columns);
     this.#columnsOrder = getColumnsOrder(this.#options.columns);
     this.#headerRow = this.#createHeaderRow(options.columns, '');
 
@@ -44,40 +53,88 @@ export class DataDenRenderingService {
 
   #createHeaderRow(colDefs: DataDenColDef[], order: Order): DataDenHeaderRow {
     const rowIndex = 0;
-    const headerCells = colDefs.map((colDef, colIndex) => {
-      const value = colDef.headerName;
-      const orderedColIndex = this.#columnsOrder.indexOf(colIndex);
-      const left = this.#orderedColumns.slice(0, orderedColIndex).reduce((acc, curr) => acc + (curr.width || 120), 0);
-      const width = this.#orderedColumns[orderedColIndex].width || 120;
 
-      const right =
-        this.#orderedColumns
-          .slice(orderedColIndex + 1, colDefs.length)
-          .filter((col) => col.fixed === 'right')
-          .reduce((acc, curr) => acc + (curr.width || 120), 0) + 4;
+    const fixedColumnsLeft = getFixedColumnsLeft(colDefs);
+    const nonFixedColumns = getNonFixedColumns(colDefs);
+    const fixedColumnsRight = getFixedColumnsRight(colDefs);
 
-      return new DataDenHeaderCell(value, colIndex, rowIndex, left, right, width, colDef.fixed, this.#options, order);
+    const fixedHeaderCellsLeft = fixedColumnsLeft.map((col, index) => {
+      const value = col.headerName;
+      const left = 0;
+      const width = fixedColumnsLeft[index].width || 120;
+      const colIndex = this.#options.columns.map((defaultColumn) => defaultColumn.field).indexOf(col.field);
+
+      return new DataDenHeaderCell(value, colIndex, rowIndex, left, width, col.fixed, this.#options, order);
     });
 
-    return new DataDenHeaderRow(rowIndex, headerCells, this.#options);
+    const headerCells = nonFixedColumns.map((col, index) => {
+      const value = col.headerName;
+      const left = this.#orderedColumns.slice(0, index).reduce((acc, curr) => acc + (curr.width || 120), 0);
+      const width = this.#orderedColumns[index].width || 120;
+      const colIndex = this.#options.columns.map((defaultColumn) => defaultColumn.field).indexOf(col.field);
+
+      return new DataDenHeaderCell(value, colIndex, rowIndex, left, width, col.fixed, this.#options, order);
+    });
+
+    const fixedHeaderCellsRight = fixedColumnsRight.reverse().map((col, index) => {
+      const value = col.headerName;
+      const left = 0;
+      const width = fixedColumnsRight[index].width || 120;
+      const colIndex = this.#options.columns.map((defaultColumn) => defaultColumn.field).indexOf(col.field);
+
+      return new DataDenHeaderCell(value, colIndex, rowIndex, left, width, col.fixed, this.#options, order);
+    });
+
+    return new DataDenHeaderRow(rowIndex, fixedHeaderCellsLeft, headerCells, fixedHeaderCellsRight, this.#options);
   }
 
   #createDataRows(rowsData: any): DataDenRow[] {
     return rowsData.map((rowData: any, rowIndex: number) => {
-      const cells = Object.entries(rowData).map(([, value], colIndex) => {
-        const orderedColIndex = this.#columnsOrder.indexOf(colIndex);
-        const left = this.#orderedColumns.slice(0, orderedColIndex).reduce((acc, curr) => acc + (curr.width || 120), 0);
-        const width = this.#orderedColumns[orderedColIndex].width || 120;
-        const right =
-          this.#orderedColumns
-            .slice(orderedColIndex + 1, this.#columnsOrder.length)
-            .filter((col) => col.fixed === 'right')
-            .reduce((acc, curr) => acc + (curr.width || 120), 0) + 4;
+      const fixedCellsLeft = Object.entries(rowData).map(([key, value], colIndex) => {
+        const colDef = this.#options.columns.find((col) => col.field === key)!;
+        if (colDef.fixed !== 'left') {
+          return;
+        }
 
-        return new DataDenCell(value, colIndex, rowIndex, left, right, width, this.#options);
+        const left = 0;
+        const width = this.#options.columns[colIndex].width || 120;
+
+        return new DataDenCell(value, colIndex, rowIndex, left, width, colDef.fixed, this.#options);
       });
 
-      return new DataDenRow(rowIndex, cells, this.#options);
+      const cells = Object.entries(rowData).map(([key, value], colIndex) => {
+        const colDef = this.#options.columns.find((col) => col.field === key)!;
+        if (colDef.fixed) {
+          return;
+        }
+
+        const orderedColIndex = this.#orderedColumns.findIndex((col) => col.field === key);
+        const left = this.#orderedColumns.slice(0, orderedColIndex).reduce((acc, curr) => acc + (curr.width || 120), 0);
+        const width = this.#orderedColumns[orderedColIndex].width || 120;
+
+        return new DataDenCell(value, colIndex, rowIndex, left, width, colDef.fixed, this.#options);
+      });
+
+      const fixedCellsRight = Object.entries(rowData)
+        .reverse()
+        .map(([key, value], colIndex) => {
+          const colDef = this.#options.columns.find((col) => col.field === key)!;
+          if (colDef.fixed !== 'right') {
+            return;
+          }
+
+          const fixedColIndex = this.#options.columns
+            .filter((col) => col.fixed === 'right')
+            .map((defaultColumn) => defaultColumn.field)
+            .indexOf(key);
+
+          const left = 0;
+          const width = getFixedColumnsRight(this.#options.columns)[fixedColIndex].width || 120;
+
+          return new DataDenCell(value, colIndex, rowIndex, left, width, colDef.fixed, this.#options);
+        });
+
+      return new DataDenRow(rowIndex, fixedCellsLeft, cells, fixedCellsRight, this.#options);
     });
   }
 
@@ -114,13 +171,29 @@ export class DataDenRenderingService {
   #calculateGridSize(): void {
     const header = this.#container.querySelector(`.${this.#options.cssPrefix}header`) as HTMLElement;
     const body = this.#container.querySelector(`.${this.#options.cssPrefix}grid-rows`) as HTMLElement;
+    const headerMainCellsWrapper = this.#container.querySelector('[ref=headerMainCellsWrapper]') as HTMLElement;
+    const rowMainCellsWrappers = this.#container.querySelectorAll('[ref=rowMainCellsWrapper]');
 
-    const gridWidth = this.#orderedColumns.reduce((acc, curr) => acc + (curr.width || 120), 0);
+    const gridWidth = this.#options.columns.reduce((acc, curr) => acc + (curr.width || 120), 0);
+    const leftFixedColsWidth = this.#options.columns
+      .filter((col) => col.fixed === 'left')
+      .reduce((acc, curr) => acc + (curr.width || 120), 0);
+    const rightFixedColsWidth = this.#options.columns
+      .filter((col) => col.fixed === 'right')
+      .reduce((acc, curr) => acc + (curr.width || 120), 0);
     const rowsHeight = this.#options.rowHeight * this.#rows.length + 2;
 
     header.style.width = `${gridWidth}px`;
     body.style.width = `${gridWidth}px`;
     body.style.height = `${rowsHeight}px`;
+    headerMainCellsWrapper.style.left = `${leftFixedColsWidth}px`;
+    headerMainCellsWrapper.style.width = `calc(100% - ${leftFixedColsWidth + rightFixedColsWidth}px)`;
+
+    if (rowMainCellsWrappers) {
+      rowMainCellsWrappers.forEach((rowMainCellsWrapper: HTMLElement) => {
+        rowMainCellsWrapper.style.left = `${leftFixedColsWidth}px`;
+      });
+    }
   }
 
   #renderGrid(): HTMLElement {
@@ -156,10 +229,11 @@ export class DataDenRenderingService {
   #subscribeToEvents(): void {
     DataDenPubSub.subscribe('info:dragging:columns-reorder:done', (event: DataDenEvent) => {
       this.#columnsOrder = event.data.columnsOrder;
-      this.#orderedColumns = this.#columnsOrder.map((columnIndex) => this.#options.columns[columnIndex]);
+      this.#orderedColumns = this.#columnsOrder.map((columnIndex) => this.#defaultOrderedColumns[columnIndex]);
     });
     DataDenPubSub.subscribe('info:resizing:start', (event: DataDenEvent) => {
-      this.#options.columns[event.data.currentColIndex].width = event.data.newCurrentColWidth;
+      const currentColIndex = getAllColumnsOrder(this.#options.columns)[event.data.currentColIndex];
+      this.#options.columns[currentColIndex].width = event.data.newCurrentColWidth;
       this.#calculateGridSize();
     });
   }
