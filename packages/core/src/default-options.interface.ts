@@ -19,7 +19,6 @@ const defaultQuickFilterFn = (searchTerm: any, value: any) => {
 };
 
 const defaultQuickFilterOptions: Required<DataDenQuickFilterOptions> = {
-  debounceTime: 500,
   filterFn: defaultQuickFilterFn,
 };
 
@@ -44,7 +43,6 @@ export const defaultOptions: DataDenInternalOptions = {
   draggable: false,
   pagination: false,
   paginationOptions: defaultPaginationOptions,
-  quickFilter: false,
   quickFilterOptions: defaultQuickFilterOptions,
   resizable: false,
   rowHeight: 26,

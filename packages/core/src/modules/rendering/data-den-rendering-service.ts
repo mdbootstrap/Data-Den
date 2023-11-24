@@ -1,6 +1,5 @@
 import { DataDenColDef, DataDenInternalOptions } from '../../data-den-options.interface';
 import { DataDenCell, DataDenHeaderCell } from './cell';
-import { DataDenQuickFilterParams, DataDenQuickFilterRenderer } from './filter';
 import { DataDenPaginationRenderer } from './pagination';
 import { DataDenHeaderRow, DataDenRow } from './row';
 import { DataDenPubSub } from '../../data-den-pub-sub';
@@ -16,7 +15,6 @@ export class DataDenRenderingService {
   #columnsOrder: number[];
   #headerRow: DataDenHeaderRow;
   #rows: DataDenRow[] = [];
-  #quickFilterRenderer: DataDenQuickFilterRenderer | null = null;
   #paginationRenderer: DataDenPaginationRenderer | null = null;
 
   constructor(container: HTMLElement, options: DataDenInternalOptions) {
@@ -26,12 +24,6 @@ export class DataDenRenderingService {
     this.#orderedColumns = [...this.#options.columns];
     this.#columnsOrder = [];
     this.#headerRow = this.#createHeaderRow(options.columns, '');
-
-    if (options.quickFilter) {
-      const { debounceTime } = options.quickFilterOptions;
-      const params: DataDenQuickFilterParams = { debounceTime, cssPrefix: this.#options.cssPrefix };
-      this.#quickFilterRenderer = new DataDenQuickFilterRenderer(params);
-    }
 
     if (options.pagination) {
       this.#paginationRenderer = new DataDenPaginationRenderer(options.paginationOptions);
@@ -79,10 +71,6 @@ export class DataDenRenderingService {
 
   renderTable(): void {
     const grid = this.#renderGrid();
-
-    if (this.#quickFilterRenderer) {
-      grid.appendChild(this.#quickFilterRenderer.getGui());
-    }
 
     grid.appendChild(this.#renderHeader());
     grid.appendChild(this.#renderBody());

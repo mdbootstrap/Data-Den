@@ -20,6 +20,7 @@ import { DataDenInternalOptions, DataDenOptions } from './data-den-options.inter
 import { defaultOptions } from './default-options.interface';
 import { deepMerge } from './utils/deep-merge';
 import { deepCopy } from './utils';
+import { DataDenQuickFilterChangeEvent } from './modules/rendering/filter/data-den-quick-filter-change-event.interface';
 
 export class DataDen {
   #rendering: DataDenRenderingService;
@@ -78,6 +79,16 @@ export class DataDen {
       field,
       order,
     });
+  }
+
+  quickFilter(searchTerm: any) {
+    const context = new Context('info:filtering:quick-filter-changed');
+    const event: DataDenQuickFilterChangeEvent = {
+      context,
+      searchTerm,
+    };
+
+    DataDenPubSub.publish('info:filtering:quick-filter-changed', event);
   }
 }
 
