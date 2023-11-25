@@ -13,13 +13,13 @@ export const getPinnedRightColumns = (columns: DataDenColDef[]) => {
   return columns.filter((col) => col.pinned === 'right');
 };
 
+export const getMainOrderedColumns = (columns: DataDenColDef[]) => {
+  return getMainColumnIndexes(columns).map((index) => columns[index]);
+};
+
 // Get Indexes
 export const getMainColumnIndexes = (columns: DataDenColDef[]) => {
   return getMainColumns(columns).map((col) => columns.indexOf(col));
-};
-
-export const getMainOrderedColumns = (columns: DataDenColDef[]) => {
-  return getMainColumnIndexes(columns).map((index) => columns[index]);
 };
 
 // Get Orders
