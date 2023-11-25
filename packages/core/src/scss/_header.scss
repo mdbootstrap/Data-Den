@@ -120,13 +120,13 @@
   }
 }
 
-.#{$prefix}header-cell-fixed-left {
+.#{$prefix}header-cell-pinned-left {
   position: relative;
   float: left;
   background-color: #ffe1e1;
 }
 
-.#{$prefix}header-cell-fixed-right {
+.#{$prefix}header-cell-pinned-right {
   position: relative;
   float: right;
   background-color: #ffe1e1;

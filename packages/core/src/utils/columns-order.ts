@@ -1,15 +1,15 @@
 import { DataDenColDef } from '../data-den-options.interface';
 
 export const getFixedColumnsLeft = (columns: DataDenColDef[]) => {
-  return columns.filter((col) => col.fixed === 'left');
+  return columns.filter((col) => col.pinned === 'left');
 };
 
 export const getNonFixedColumns = (columns: DataDenColDef[]) => {
-  return columns.filter((col) => !col.fixed);
+  return columns.filter((col) => !col.pinned);
 };
 
 export const getFixedColumnsRight = (columns: DataDenColDef[]) => {
-  return columns.filter((col) => col.fixed === 'right');
+  return columns.filter((col) => col.pinned === 'right');
 };
 
 export const getColumnsOrder = (columns: DataDenColDef[]) => {

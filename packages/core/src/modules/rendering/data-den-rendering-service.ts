@@ -54,17 +54,17 @@ export class DataDenRenderingService {
   #createHeaderRow(colDefs: DataDenColDef[], order: Order): DataDenHeaderRow {
     const rowIndex = 0;
 
-    const fixedColumnsLeft = getFixedColumnsLeft(colDefs);
+    const pinnedColumnsLeft = getFixedColumnsLeft(colDefs);
     const nonFixedColumns = getNonFixedColumns(colDefs);
-    const fixedColumnsRight = getFixedColumnsRight(colDefs);
+    const pinnedColumnsRight = getFixedColumnsRight(colDefs);
 
-    const fixedHeaderCellsLeft = fixedColumnsLeft.map((col, index) => {
+    const pinnedHeaderCellsLeft = pinnedColumnsLeft.map((col, index) => {
       const value = col.headerName;
       const left = 0;
-      const width = fixedColumnsLeft[index].width || 120;
+      const width = pinnedColumnsLeft[index].width || 120;
       const colIndex = this.#options.columns.map((defaultColumn) => defaultColumn.field).indexOf(col.field);
 
-      return new DataDenHeaderCell(value, colIndex, rowIndex, left, width, col.fixed, this.#options, order);
+      return new DataDenHeaderCell(value, colIndex, rowIndex, left, width, col.pinned, this.#options, order);
     });
 
     const headerCells = nonFixedColumns.map((col, index) => {
@@ -73,38 +73,38 @@ export class DataDenRenderingService {
       const width = this.#orderedColumns[index].width || 120;
       const colIndex = this.#options.columns.map((defaultColumn) => defaultColumn.field).indexOf(col.field);
 
-      return new DataDenHeaderCell(value, colIndex, rowIndex, left, width, col.fixed, this.#options, order);
+      return new DataDenHeaderCell(value, colIndex, rowIndex, left, width, col.pinned, this.#options, order);
     });
 
-    const fixedHeaderCellsRight = fixedColumnsRight.reverse().map((col, index) => {
+    const pinnedHeaderCellsRight = pinnedColumnsRight.reverse().map((col, index) => {
       const value = col.headerName;
       const left = 0;
-      const width = fixedColumnsRight[index].width || 120;
+      const width = pinnedColumnsRight[index].width || 120;
       const colIndex = this.#options.columns.map((defaultColumn) => defaultColumn.field).indexOf(col.field);
 
-      return new DataDenHeaderCell(value, colIndex, rowIndex, left, width, col.fixed, this.#options, order);
+      return new DataDenHeaderCell(value, colIndex, rowIndex, left, width, col.pinned, this.#options, order);
     });
 
-    return new DataDenHeaderRow(rowIndex, fixedHeaderCellsLeft, headerCells, fixedHeaderCellsRight, this.#options);
+    return new DataDenHeaderRow(rowIndex, pinnedHeaderCellsLeft, headerCells, pinnedHeaderCellsRight, this.#options);
   }
 
   #createDataRows(rowsData: any): DataDenRow[] {
     return rowsData.map((rowData: any, rowIndex: number) => {
-      const fixedCellsLeft = Object.entries(rowData).map(([key, value], colIndex) => {
+      const pinnedCellsLeft = Object.entries(rowData).map(([key, value], colIndex) => {
         const colDef = this.#options.columns.find((col) => col.field === key)!;
-        if (colDef.fixed !== 'left') {
+        if (colDef.pinned !== 'left') {
           return;
         }
 
         const left = 0;
         const width = this.#options.columns[colIndex].width || 120;
 
-        return new DataDenCell(value, colIndex, rowIndex, left, width, colDef.fixed, this.#options);
+        return new DataDenCell(value, colIndex, rowIndex, left, width, colDef.pinned, this.#options);
       });
 
       const cells = Object.entries(rowData).map(([key, value], colIndex) => {
         const colDef = this.#options.columns.find((col) => col.field === key)!;
-        if (colDef.fixed) {
+        if (colDef.pinned) {
           return;
         }
 
@@ -112,29 +112,29 @@ export class DataDenRenderingService {
         const left = this.#orderedColumns.slice(0, orderedColIndex).reduce((acc, curr) => acc + (curr.width || 120), 0);
         const width = this.#orderedColumns[orderedColIndex].width || 120;
 
-        return new DataDenCell(value, colIndex, rowIndex, left, width, colDef.fixed, this.#options);
+        return new DataDenCell(value, colIndex, rowIndex, left, width, colDef.pinned, this.#options);
       });
 
-      const fixedCellsRight = Object.entries(rowData)
+      const pinnedCellsRight = Object.entries(rowData)
         .reverse()
         .map(([key, value], colIndex) => {
           const colDef = this.#options.columns.find((col) => col.field === key)!;
-          if (colDef.fixed !== 'right') {
+          if (colDef.pinned !== 'right') {
             return;
           }
 
-          const fixedColIndex = this.#options.columns
-            .filter((col) => col.fixed === 'right')
+          const pinnedColIndex = this.#options.columns
+            .filter((col) => col.pinned === 'right')
             .map((defaultColumn) => defaultColumn.field)
             .indexOf(key);
 
           const left = 0;
-          const width = getFixedColumnsRight(this.#options.columns)[fixedColIndex].width || 120;
+          const width = getFixedColumnsRight(this.#options.columns)[pinnedColIndex].width || 120;
 
-          return new DataDenCell(value, colIndex, rowIndex, left, width, colDef.fixed, this.#options);
+          return new DataDenCell(value, colIndex, rowIndex, left, width, colDef.pinned, this.#options);
         });
 
-      return new DataDenRow(rowIndex, fixedCellsLeft, cells, fixedCellsRight, this.#options);
+      return new DataDenRow(rowIndex, pinnedCellsLeft, cells, pinnedCellsRight, this.#options);
     });
   }
 
@@ -176,10 +176,10 @@ export class DataDenRenderingService {
 
     const gridWidth = this.#options.columns.reduce((acc, curr) => acc + (curr.width || 120), 0);
     const leftFixedColsWidth = this.#options.columns
-      .filter((col) => col.fixed === 'left')
+      .filter((col) => col.pinned === 'left')
       .reduce((acc, curr) => acc + (curr.width || 120), 0);
     const rightFixedColsWidth = this.#options.columns
-      .filter((col) => col.fixed === 'right')
+      .filter((col) => col.pinned === 'right')
       .reduce((acc, curr) => acc + (curr.width || 120), 0);
     const rowsHeight = this.#options.rowHeight * this.#rows.length + 2;
 

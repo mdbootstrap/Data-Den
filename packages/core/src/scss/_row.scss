@@ -47,12 +47,12 @@
   }
 }
 
-.#{$prefix}cell-fixed-left {
+.#{$prefix}cell-pinned-left {
   position: relative;
   float: left;
 }
 
-.#{$prefix}cell-fixed-right {
+.#{$prefix}cell-pinned-right {
   position: relative;
   float: right;
 }

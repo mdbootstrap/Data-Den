@@ -13,7 +13,7 @@ export class DataDenCell {
   #renderer!: DataDenCellRenderer;
   #editor!: DataDenCellEditor;
   #left: string;
-  #fixed: string;
+  #pinned: string;
 
   constructor(
     value: any,
@@ -21,7 +21,7 @@ export class DataDenCell {
     rowIndex: number,
     left: number,
     width: number,
-    fixed: string,
+    pinned: string,
     options: DataDenInternalOptions
   ) {
     this.colIndex = colIndex;
@@ -29,8 +29,8 @@ export class DataDenCell {
     this.width = width;
     this.#value = value;
     this.#options = options;
-    this.#left = fixed ? 'auto' : `${left}px`;
-    this.#fixed = fixed;
+    this.#left = pinned ? 'auto' : `${left}px`;
+    this.#pinned = pinned;
 
     this.#initRenderers();
   }
@@ -64,10 +64,11 @@ export class DataDenCell {
       /* HTML */
       `
         <div
-          class="${this.#options.cssPrefix}cell ${this.#options.draggable && !this.#fixed
+          class="${this.#options.cssPrefix}cell ${this.#options.draggable && !this.#pinned
             ? `${this.#options.cssPrefix}cell-draggable`
-            : ''} ${this.#fixed === 'left' ? `${this.#options.cssPrefix}cell-fixed-left` : ''} ${this.#fixed === 'right'
-            ? `${this.#options.cssPrefix}cell-fixed-right`
+            : ''} ${this.#pinned === 'left' ? `${this.#options.cssPrefix}cell-pinned-left` : ''} ${this.#pinned ===
+          'right'
+            ? `${this.#options.cssPrefix}cell-pinned-right`
             : ''}"
           role="gridcell"
           ref="cell"

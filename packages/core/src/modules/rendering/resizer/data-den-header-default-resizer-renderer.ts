@@ -11,7 +11,7 @@ export class DataDenHeaderDefaultResizerRenderer implements DataDenHeaderResizer
 
   constructor(cssPrefix: string, colDef: DataDenColDef) {
     this.#cssPrefix = cssPrefix;
-    this.#isFixedRight = colDef.fixed === 'right';
+    this.#isFixedRight = colDef.pinned === 'right';
 
     const template = `<div class="${this.#cssPrefix}header-resizer ${
       this.#isFixedRight ? this.#cssPrefix + 'header-resizer-left' : ''

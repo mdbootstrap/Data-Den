@@ -28,7 +28,7 @@ export class DataDenHeaderCell extends DataDenCell {
   #value: any;
   #left: string;
   #right: string;
-  #fixed: string;
+  #pinned: string;
   #filterRenderer: DataDenHeaderFilterRenderer | null = null;
   #sorterRenderer: DataDenHeaderSorterRenderer | null = null;
   #resizerRenderer: DataDenHeaderResizerRenderer | null = null;
@@ -42,16 +42,16 @@ export class DataDenHeaderCell extends DataDenCell {
     rowIndex: number,
     left: number,
     width: number,
-    fixed: string,
+    pinned: string,
     options: DataDenInternalOptions,
     order: Order
   ) {
-    super(value, rowIndex, colIndex, left, width, fixed, options);
+    super(value, rowIndex, colIndex, left, width, pinned, options);
 
     this.#value = value;
-    this.#left = fixed ? 'auto' : `${left}px`;
+    this.#left = pinned ? 'auto' : `${left}px`;
     this.width = width;
-    this.#fixed = fixed;
+    this.#pinned = pinned;
     this.colIndex = colIndex;
     this.rowIndex = rowIndex;
     this.#options = options;
@@ -124,11 +124,11 @@ export class DataDenHeaderCell extends DataDenCell {
     const template =
       /* HTML */
       `<div
-        class="${this.#options.cssPrefix}header-cell ${this.#options.draggable && !this.#fixed
+        class="${this.#options.cssPrefix}header-cell ${this.#options.draggable && !this.#pinned
           ? `${this.#options.cssPrefix}header-cell-draggable`
-          : ''} ${this.#fixed === 'left' ? `${this.#options.cssPrefix}header-cell-fixed-left` : ''} ${this.#fixed ===
+          : ''} ${this.#pinned === 'left' ? `${this.#options.cssPrefix}header-cell-pinned-left` : ''} ${this.#pinned ===
         'right'
-          ? `${this.#options.cssPrefix}header-cell-fixed-right`
+          ? `${this.#options.cssPrefix}header-cell-pinned-right`
           : ''}"
         role="columnheader"
         ref="headerCell"
