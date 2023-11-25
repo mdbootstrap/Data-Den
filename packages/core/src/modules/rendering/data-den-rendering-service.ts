@@ -52,10 +52,11 @@ export class DataDenRenderingService {
   }
 
   #createPinnedHeaderCells(pinnedColumns: DataDenColDef[], rowIndex: number, order: Order): DataDenHeaderCell[] {
-    return pinnedColumns.map((col, colIndex) => {
+    return pinnedColumns.map((col) => {
       const value = col.headerName;
       const left = 0;
       const width = col.width || 120;
+      const colIndex = this.#options.columns.map((defaultColumn) => defaultColumn.field).indexOf(col.field);
 
       return new DataDenHeaderCell(value, colIndex, rowIndex, left, width, col.pinned, this.#options, order);
     });
@@ -77,7 +78,11 @@ export class DataDenRenderingService {
 
     const pinnedHeaderCellsLeft = this.#createPinnedHeaderCells(getPinnedLeftColumns(colDefs), rowIndex, order);
     const mainHeaderCells = this.#createMainHeaderCells(getMainColumns(colDefs), rowIndex, order);
-    const pinnedHeaderCellsRight = this.#createPinnedHeaderCells(getPinnedRightColumns(colDefs), rowIndex, order);
+    const pinnedHeaderCellsRight = this.#createPinnedHeaderCells(
+      getPinnedRightColumns(colDefs).reverse(),
+      rowIndex,
+      order
+    );
 
     return new DataDenHeaderRow(
       rowIndex,
