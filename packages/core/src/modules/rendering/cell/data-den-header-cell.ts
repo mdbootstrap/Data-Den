@@ -77,7 +77,7 @@ export class DataDenHeaderCell extends DataDenCell {
     }
 
     if (resize) {
-      this.#resizerRenderer = new DataDenHeaderDefaultResizerRenderer(cssPrefix);
+      this.#resizerRenderer = new DataDenHeaderDefaultResizerRenderer(cssPrefix, colDef);
     }
   }
 

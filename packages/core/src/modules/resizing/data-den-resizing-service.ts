@@ -17,6 +17,7 @@ export class DataDenResizingService {
   #currentColIndex: number;
   #headersOnTheRight: HTMLElement[];
   #columnsOrder: number[];
+  #isResizeingFixedRightColumn: boolean;
 
   constructor(container: HTMLElement, options: DataDenInternalOptions) {
     this.#container = container;
@@ -31,6 +32,7 @@ export class DataDenResizingService {
     this.#currentCol = null;
     this.#currentColIndex = -1;
     this.#headersOnTheRight = [];
+    this.#isResizeingFixedRightColumn;
 
     this.#subscribeFetchDone();
   }
@@ -72,6 +74,7 @@ export class DataDenResizingService {
   #onMousedown(event: DataDenEvent) {
     this.#currentHeader = event.data.target.parentElement;
     this.#currentCol = this.#getColumnElements(this.#currentHeader);
+    this.#isResizeingFixedRightColumn = event.data.isFixedRight;
 
     if (!this.#currentHeader || !this.#currentHeader.parentElement) {
       return;
@@ -99,8 +102,10 @@ export class DataDenResizingService {
       return;
     }
 
-    this.#resizeCurrentColumn(event.data.event.movementX);
-    this.#updateRemainingColumnsPosition(event.data.event.movementX);
+    const movementX = this.#isResizeingFixedRightColumn ? -event.data.event.movementX : event.data.event.movementX;
+
+    this.#resizeCurrentColumn(movementX);
+    this.#updateRemainingColumnsPosition(movementX);
     DataDenPubSub.publish('info:resizing:start', {
       currentColIndex: this.#headers.indexOf(this.#currentHeader),
       newCurrentColWidth: parseInt(this.#currentHeader.style.width, 10),
@@ -137,10 +142,8 @@ export class DataDenResizingService {
   }
 
   #getHeadersOnTheRight(): HTMLElement[] {
-    if (this.#currentColIndex === -1) {
-      return [];
-    }
-    return this.#headersMain.slice(this.#currentColIndex + 1);
+    const currentHeaderLeft = parseInt(this.#currentHeader?.style.left || '0', 10);
+    return this.#headersMain.filter((header) => parseInt(header.style.left || '0', 10) > currentHeaderLeft);
   }
 
   #getColumnElements(colHeader: HTMLElement | null): HTMLElement[] {

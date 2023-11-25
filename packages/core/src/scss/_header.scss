@@ -65,15 +65,19 @@
 .#{$prefix}header-resizer {
   position: absolute;
   z-index: 1;
-  right: -5px;
+  right: -1px;
   top: 0;
   height: 100%;
-  width: 10px;
+  width: 5px;
   cursor: col-resize;
 
   &:hover {
     background-color: #ccc;
   }
+}
+.#{$prefix}header-resizer-left {
+  left: 0;
+  right: auto;
 }
 
 .#{$prefix}header-left-cells-wrapper {
@@ -112,6 +116,7 @@
   }
   &.#{$prefix}active {
     background-color: #fafafa;
+    z-index: 2;
   }
 }
 

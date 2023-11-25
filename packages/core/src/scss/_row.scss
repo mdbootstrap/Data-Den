@@ -36,6 +36,7 @@
 
   &.#{$prefix}active {
     background-color: #fafafa;
+    z-index: 2;
   }
 }
 

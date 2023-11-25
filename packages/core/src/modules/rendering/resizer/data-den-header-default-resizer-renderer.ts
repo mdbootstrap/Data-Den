@@ -2,18 +2,23 @@ import { createHtmlElement } from '../../../utils';
 import { DataDenHeaderResizerRenderer } from './data-den-header-resizer-renderer.interface';
 import { DataDenPubSub } from '../../../data-den-pub-sub';
 import { Context } from '../../../context';
+import { DataDenColDef } from '../../../data-den-options.interface';
 
 export class DataDenHeaderDefaultResizerRenderer implements DataDenHeaderResizerRenderer {
   element: HTMLElement;
   #cssPrefix: string;
+  #isFixedRight: boolean;
 
-  constructor(cssPrefix: string) {
+  constructor(cssPrefix: string, colDef: DataDenColDef) {
     this.#cssPrefix = cssPrefix;
+    this.#isFixedRight = colDef.fixed === 'right';
 
-    const template = `<div class="${this.#cssPrefix}header-resizer"></div>`;
+    const template = `<div class="${this.#cssPrefix}header-resizer ${
+      this.#isFixedRight ? this.#cssPrefix + 'header-resizer-left' : ''
+    }"></div>`;
 
     this.element = createHtmlElement(template);
-    this.element.addEventListener('mousedown', this.#onMouseDown);
+    this.element.addEventListener('mousedown', (event) => this.#onMouseDown(event));
     document.addEventListener('mousemove', this.#resize);
     document.addEventListener('mouseup', this.#onMouseUp);
   }
@@ -27,6 +32,7 @@ export class DataDenHeaderDefaultResizerRenderer implements DataDenHeaderResizer
 
     DataDenPubSub.publish('info:resizing:mousedown', {
       target: event.target,
+      isFixedRight: this.#isFixedRight,
       context: new Context('info:resizing:mousedown'),
     });
   }
