@@ -7,14 +7,14 @@ import { DataDenColDef } from '../../../data-den-options.interface';
 export class DataDenHeaderDefaultResizerRenderer implements DataDenHeaderResizerRenderer {
   element: HTMLElement;
   #cssPrefix: string;
-  #isFixedRight: boolean;
+  #isPinnedRight: boolean;
 
   constructor(cssPrefix: string, colDef: DataDenColDef) {
     this.#cssPrefix = cssPrefix;
-    this.#isFixedRight = colDef.pinned === 'right';
+    this.#isPinnedRight = colDef.pinned === 'right';
 
     const template = `<div class="${this.#cssPrefix}header-resizer ${
-      this.#isFixedRight ? this.#cssPrefix + 'header-resizer-left' : ''
+      this.#isPinnedRight ? this.#cssPrefix + 'header-resizer-left' : ''
     }"></div>`;
 
     this.element = createHtmlElement(template);
@@ -32,7 +32,7 @@ export class DataDenHeaderDefaultResizerRenderer implements DataDenHeaderResizer
 
     DataDenPubSub.publish('info:resizing:mousedown', {
       target: event.target,
-      isFixedRight: this.#isFixedRight,
+      isPinnedRight: this.#isPinnedRight,
       context: new Context('info:resizing:mousedown'),
     });
   }

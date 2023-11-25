@@ -52,9 +52,11 @@
 .#{$prefix}cell-pinned-left {
   position: relative;
   float: left;
+  background-color: #fffafa;
 }
 
 .#{$prefix}cell-pinned-right {
   position: relative;
   float: right;
+  background-color: #fffafa;
 }

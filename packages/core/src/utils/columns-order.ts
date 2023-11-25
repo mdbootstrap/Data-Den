@@ -1,41 +1,44 @@
 import { DataDenColDef } from '../data-den-options.interface';
 
-export const getFixedColumnsLeft = (columns: DataDenColDef[]) => {
+// Get Elements
+export const getPinnedLeftColumns = (columns: DataDenColDef[]) => {
   return columns.filter((col) => col.pinned === 'left');
 };
 
-export const getNonFixedColumns = (columns: DataDenColDef[]) => {
+export const getMainColumns = (columns: DataDenColDef[]) => {
   return columns.filter((col) => !col.pinned);
 };
 
-export const getFixedColumnsRight = (columns: DataDenColDef[]) => {
+export const getPinnedRightColumns = (columns: DataDenColDef[]) => {
   return columns.filter((col) => col.pinned === 'right');
 };
 
-export const getColumnsOrder = (columns: DataDenColDef[]) => {
-  return getNonFixedColumns(columns).map((col) => columns.indexOf(col));
+// Get Indexes
+export const getMainColumnIndexes = (columns: DataDenColDef[]) => {
+  return getMainColumns(columns).map((col) => columns.indexOf(col));
+};
+
+export const getMainOrderedColumns = (columns: DataDenColDef[]) => {
+  return getMainColumnIndexes(columns).map((index) => columns[index]);
+};
+
+// Get Orders
+export const getPinnedLeftColumnsOrder = (columns: DataDenColDef[]) => {
+  return getPinnedLeftColumns(columns).map((_, key) => key);
+};
+
+export const getMainColumnsOrder = (columns: DataDenColDef[]) => {
+  return getMainColumns(columns).map((_, key) => key);
+};
+
+export const getPinnedRightColumnsOrder = (columns: DataDenColDef[]) => {
+  return getPinnedRightColumns(columns).map((_, key) => key);
 };
 
 export const getAllColumnsOrder = (columns: DataDenColDef[]) => {
   return [
-    ...getFixedColumnsLeft(columns).map((col) => columns.indexOf(col)),
-    ...getNonFixedColumns(columns).map((col) => columns.indexOf(col)),
-    ...getFixedColumnsRight(columns).map((col) => columns.indexOf(col)),
+    ...getPinnedLeftColumns(columns).map((col) => columns.indexOf(col)),
+    ...getMainColumns(columns).map((col) => columns.indexOf(col)),
+    ...getPinnedRightColumns(columns).map((col) => columns.indexOf(col)),
   ];
-};
-
-export const getOrderedColumns = (columns: DataDenColDef[]) => {
-  return getColumnsOrder(columns).map((index) => columns[index]);
-};
-
-export const getFixedLeftColumnsOrder = (columns: DataDenColDef[]) => {
-  return getFixedColumnsLeft(columns).map((_, key) => key);
-};
-
-export const getNonFixedColumnsOrder = (columns: DataDenColDef[]) => {
-  return getNonFixedColumns(columns).map((_, key) => key);
-};
-
-export const getFixedRightColumnsOrder = (columns: DataDenColDef[]) => {
-  return getFixedColumnsRight(columns).map((_, key) => key);
 };

@@ -1,7 +1,7 @@
 import { DataDenInternalOptions } from '../../data-den-options.interface';
 import { DataDenPubSub } from '../../data-den-pub-sub';
 import { Context } from '../../context';
-import { getNonFixedColumnsOrder } from '../../utils/columns-order';
+import { getMainColumnsOrder } from '../../utils/columns-order';
 
 export class DataDenDraggingService {
   #container: HTMLElement;
@@ -142,7 +142,7 @@ export class DataDenDraggingService {
   }
 
   #setDefaultColumnsOrder() {
-    this.#mainColumnsOrder = getNonFixedColumnsOrder(this.#options.columns);
+    this.#mainColumnsOrder = getMainColumnsOrder(this.#options.columns);
   }
 
   #subscribeResizingDone() {

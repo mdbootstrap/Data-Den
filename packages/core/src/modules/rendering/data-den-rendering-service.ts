@@ -8,11 +8,11 @@ import { DataDenEvent } from '../../data-den-event';
 import { Order } from '../sorting/data-den-sorting.interface';
 import { Context } from '../../context';
 import {
-  getColumnsOrder,
-  getOrderedColumns,
-  getFixedColumnsLeft,
-  getNonFixedColumns,
-  getFixedColumnsRight,
+  getMainColumnIndexes,
+  getMainOrderedColumns,
+  getPinnedLeftColumns,
+  getMainColumns,
+  getPinnedRightColumns,
   getAllColumnsOrder,
 } from '../../utils/columns-order';
 
@@ -30,9 +30,9 @@ export class DataDenRenderingService {
   constructor(container: HTMLElement, options: DataDenInternalOptions) {
     this.#container = container;
     this.#options = options;
-    this.#orderedColumns = getOrderedColumns(this.#options.columns);
-    this.#defaultOrderedColumns = getOrderedColumns(this.#options.columns);
-    this.#columnsOrder = getColumnsOrder(this.#options.columns);
+    this.#orderedColumns = getMainOrderedColumns(this.#options.columns);
+    this.#defaultOrderedColumns = getMainOrderedColumns(this.#options.columns);
+    this.#columnsOrder = getMainColumnIndexes(this.#options.columns);
     this.#headerRow = this.#createHeaderRow(options.columns, '');
 
     if (options.quickFilter) {
@@ -54,9 +54,9 @@ export class DataDenRenderingService {
   #createHeaderRow(colDefs: DataDenColDef[], order: Order): DataDenHeaderRow {
     const rowIndex = 0;
 
-    const pinnedColumnsLeft = getFixedColumnsLeft(colDefs);
-    const nonFixedColumns = getNonFixedColumns(colDefs);
-    const pinnedColumnsRight = getFixedColumnsRight(colDefs);
+    const pinnedColumnsLeft = getPinnedLeftColumns(colDefs);
+    const nonPinnedColumns = getMainColumns(colDefs);
+    const pinnedColumnsRight = getPinnedRightColumns(colDefs);
 
     const pinnedHeaderCellsLeft = pinnedColumnsLeft.map((col, index) => {
       const value = col.headerName;
@@ -67,7 +67,7 @@ export class DataDenRenderingService {
       return new DataDenHeaderCell(value, colIndex, rowIndex, left, width, col.pinned, this.#options, order);
     });
 
-    const headerCells = nonFixedColumns.map((col, index) => {
+    const headerCells = nonPinnedColumns.map((col, index) => {
       const value = col.headerName;
       const left = this.#orderedColumns.slice(0, index).reduce((acc, curr) => acc + (curr.width || 120), 0);
       const width = this.#orderedColumns[index].width || 120;
@@ -129,7 +129,7 @@ export class DataDenRenderingService {
             .indexOf(key);
 
           const left = 0;
-          const width = getFixedColumnsRight(this.#options.columns)[pinnedColIndex].width || 120;
+          const width = getPinnedRightColumns(this.#options.columns)[pinnedColIndex].width || 120;
 
           return new DataDenCell(value, colIndex, rowIndex, left, width, colDef.pinned, this.#options);
         });
@@ -175,7 +175,7 @@ export class DataDenRenderingService {
     const rowMainCellsWrappers = this.#container.querySelectorAll('[ref=rowMainCellsWrapper]');
 
     const allColsWidth = this.#options.columns.reduce((acc, curr) => acc + (curr.width || 120), 0);
-    const leftFixedColsWidth = this.#options.columns
+    const leftPinnedColsWidth = this.#options.columns
       .filter((col) => col.pinned === 'left')
       .reduce((acc, curr) => acc + (curr.width || 120), 0);
     const mainColsWidth = this.#options.columns
@@ -186,12 +186,12 @@ export class DataDenRenderingService {
     header.style.width = `${allColsWidth}px`;
     body.style.width = `${allColsWidth}px`;
     body.style.height = `${rowsHeight}px`;
-    headerMainCellsWrapper.style.left = `${leftFixedColsWidth}px`;
+    headerMainCellsWrapper.style.left = `${leftPinnedColsWidth}px`;
     headerMainCellsWrapper.style.width = `${mainColsWidth}px`;
 
     if (rowMainCellsWrappers) {
       rowMainCellsWrappers.forEach((rowMainCellsWrapper: HTMLElement) => {
-        rowMainCellsWrapper.style.left = `${leftFixedColsWidth}px`;
+        rowMainCellsWrapper.style.left = `${leftPinnedColsWidth}px`;
         rowMainCellsWrapper.style.width = `${mainColsWidth}px`;
       });
     }

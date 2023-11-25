@@ -17,7 +17,7 @@ export class DataDenResizingService {
   #currentColIndex: number;
   #headersOnTheRight: HTMLElement[];
   #columnsOrder: number[];
-  #isResizeingFixedRightColumn: boolean;
+  #isResizeingPinnedRightColumn: boolean;
 
   constructor(container: HTMLElement, options: DataDenInternalOptions) {
     this.#container = container;
@@ -32,7 +32,7 @@ export class DataDenResizingService {
     this.#currentCol = null;
     this.#currentColIndex = -1;
     this.#headersOnTheRight = [];
-    this.#isResizeingFixedRightColumn;
+    this.#isResizeingPinnedRightColumn;
 
     this.#subscribeFetchDone();
   }
@@ -74,7 +74,7 @@ export class DataDenResizingService {
   #onMousedown(event: DataDenEvent) {
     this.#currentHeader = event.data.target.parentElement;
     this.#currentCol = this.#getColumnElements(this.#currentHeader);
-    this.#isResizeingFixedRightColumn = event.data.isFixedRight;
+    this.#isResizeingPinnedRightColumn = event.data.isPinnedRight;
 
     if (!this.#currentHeader || !this.#currentHeader.parentElement) {
       return;
@@ -102,7 +102,7 @@ export class DataDenResizingService {
       return;
     }
 
-    const movementX = this.#isResizeingFixedRightColumn ? -event.data.event.movementX : event.data.event.movementX;
+    const movementX = this.#isResizeingPinnedRightColumn ? -event.data.event.movementX : event.data.event.movementX;
 
     this.#resizeCurrentColumn(movementX);
     this.#updateRemainingColumnsPosition(movementX);
