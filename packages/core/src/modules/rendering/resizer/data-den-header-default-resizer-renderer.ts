@@ -4,12 +4,14 @@ import { DataDenPubSub } from '../../../data-den-pub-sub';
 import { Context } from '../../../context';
 import { DataDenColDef } from '../../../data-den-options.interface';
 
-export class DataDenHeaderDefaultResizerRenderer implements DataDenHeaderResizerRenderer {
+export class DataDenHeaderDefaultResizerRenderer extends DataDenHeaderResizerRenderer {
   element: HTMLElement;
   #cssPrefix: string;
   #isPinnedRight: boolean;
 
   constructor(cssPrefix: string, colDef: DataDenColDef) {
+    super();
+
     this.#cssPrefix = cssPrefix;
     this.#isPinnedRight = colDef.pinned === 'right';
 
@@ -18,14 +20,16 @@ export class DataDenHeaderDefaultResizerRenderer implements DataDenHeaderResizer
     }"></div>`;
 
     this.element = createHtmlElement(template);
-    this.element.addEventListener('mousedown', (event) => this.#onMouseDown(event));
+    this.element.addEventListener('mousedown', this.#onMouseDown.bind(this));
     document.addEventListener('mousemove', this.#resize);
-    document.addEventListener('mouseup', this.#onMouseUp);
+    document.addEventListener('mouseup', this.#onMouseUp.bind(this));
   }
 
   getGui(): HTMLElement {
     return this.element;
   }
+
+  destroy() {}
 
   #onMouseDown(event: MouseEvent): void {
     event.stopPropagation();

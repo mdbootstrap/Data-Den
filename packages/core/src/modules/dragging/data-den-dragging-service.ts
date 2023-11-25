@@ -47,9 +47,7 @@ export class DataDenDraggingService {
     this.#handleDocumentMouseUp = () => {};
     this.#handleHeaderMouseDown = () => {};
 
-    if (this.#options.draggable) {
-      this.#subscribeFetchDone();
-    }
+    this.#subscribeFetchDone();
   }
 
   init() {

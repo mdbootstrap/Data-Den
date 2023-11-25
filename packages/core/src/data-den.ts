@@ -19,13 +19,14 @@ import { Context } from './context';
 import { DataDenInternalOptions, DataDenOptions } from './data-den-options.interface';
 import { defaultOptions } from './default-options.interface';
 import { deepMerge } from './utils/deep-merge';
+import { deepCopy } from './utils';
 
 export class DataDen {
   #rendering: DataDenRenderingService;
   #sorting: DataDenSortingService;
   #filtering: DataDenFilteringService;
   #pagination: DataDenPaginationService;
-  #dragging: DataDenDraggingService;
+  #dragging: DataDenDraggingService | null;
   #resizing: DataDenResizingService | null;
   #dataLoaderStrategy: DataDenDataLoaderStrategy | null = null;
   #fetch: DataDenFetchService | null = null;
@@ -42,7 +43,7 @@ export class DataDen {
     this.#sorting = new DataDenSortingService();
     this.#filtering = new DataDenFilteringService(gridOptions);
     this.#pagination = new DataDenPaginationService(gridOptions);
-    this.#dragging = new DataDenDraggingService(container, gridOptions);
+    this.#dragging = options.draggable ? new DataDenDraggingService(container, gridOptions) : null;
     this.#resizing = options.columns.some((column) => column.resize)
       ? new DataDenResizingService(container, gridOptions)
       : null;
@@ -53,7 +54,7 @@ export class DataDen {
   }
 
   #createOptions(defaultOptions: DataDenInternalOptions, userOptions: DataDenOptions): DataDenInternalOptions {
-    return deepMerge(defaultOptions, userOptions);
+    return deepMerge(deepCopy(defaultOptions), userOptions);
   }
 
   #getDataLoaderStrategy(options: DataDenOptions): DataDenDataLoaderStrategy | null {

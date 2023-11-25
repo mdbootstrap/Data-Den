@@ -1,0 +1,3 @@
+{
+  "projects/data-den-angular/**/*.ts": ["eslint projects/data-den-angular --fix"]
+}
