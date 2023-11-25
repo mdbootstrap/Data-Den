@@ -68,7 +68,7 @@
   right: 0;
   top: 0;
   height: 100%;
-  width: 8px;
+  width: 10px;
   cursor: col-resize;
 
   &:hover {
@@ -86,6 +86,7 @@
   float: left;
   z-index: 5;
   height: var(--#{$prefix}header-height);
+  border-right: var(--#{$prefix}header-cell-border);
 }
 
 .#{$prefix}header-main-cells-wrapper {
@@ -99,6 +100,7 @@
   float: right;
   z-index: 5;
   height: var(--#{$prefix}header-height);
+  border-right: var(--#{$prefix}header-cell-border);
 }
 
 .#{$prefix}header-cell {
