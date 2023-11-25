@@ -13,7 +13,7 @@
   position: sticky;
   left: 0;
   float: left;
-  z-index: 2;
+  z-index: 5;
 }
 
 .#{$prefix}main-cells-wrapper {
@@ -22,9 +22,9 @@
 
 .#{$prefix}right-cells-wrapper {
   position: sticky;
-  right: 4px;
+  right: 0;
   float: right;
-  z-index: 2;
+  z-index: 5;
 }
 
 .#{$prefix}cell {

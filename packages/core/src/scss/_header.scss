@@ -64,11 +64,11 @@
 
 .#{$prefix}header-resizer {
   position: absolute;
-  z-index: 1;
-  right: -1px;
+  z-index: 3;
+  right: 0;
   top: 0;
   height: 100%;
-  width: 5px;
+  width: 8px;
   cursor: col-resize;
 
   &:hover {
@@ -84,7 +84,7 @@
   position: sticky;
   left: 0;
   float: left;
-  z-index: 2;
+  z-index: 5;
   height: var(--#{$prefix}header-height);
 }
 
@@ -95,9 +95,9 @@
 
 .#{$prefix}header-right-cells-wrapper {
   position: sticky;
-  right: 4px;
+  right: 0;
   float: right;
-  z-index: 2;
+  z-index: 5;
   height: var(--#{$prefix}header-height);
 }
 
@@ -109,6 +109,7 @@
   display: flex;
   padding: 6px var(--#{$prefix}header-cell-padding-x);
   position: absolute;
+  overflow: hidden;
 
   .#{$prefix}header-cell-value {
     display: flex;
