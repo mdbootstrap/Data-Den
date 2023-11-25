@@ -174,24 +174,25 @@ export class DataDenRenderingService {
     const headerMainCellsWrapper = this.#container.querySelector('[ref=headerMainCellsWrapper]') as HTMLElement;
     const rowMainCellsWrappers = this.#container.querySelectorAll('[ref=rowMainCellsWrapper]');
 
-    const gridWidth = this.#options.columns.reduce((acc, curr) => acc + (curr.width || 120), 0);
+    const allColsWidth = this.#options.columns.reduce((acc, curr) => acc + (curr.width || 120), 0);
     const leftFixedColsWidth = this.#options.columns
       .filter((col) => col.pinned === 'left')
       .reduce((acc, curr) => acc + (curr.width || 120), 0);
-    const rightFixedColsWidth = this.#options.columns
-      .filter((col) => col.pinned === 'right')
+    const mainColsWidth = this.#options.columns
+      .filter((col) => !col.pinned)
       .reduce((acc, curr) => acc + (curr.width || 120), 0);
     const rowsHeight = this.#options.rowHeight * this.#rows.length + 2;
 
-    header.style.width = `${gridWidth}px`;
-    body.style.width = `${gridWidth}px`;
+    header.style.width = `${allColsWidth}px`;
+    body.style.width = `${allColsWidth}px`;
     body.style.height = `${rowsHeight}px`;
     headerMainCellsWrapper.style.left = `${leftFixedColsWidth}px`;
-    headerMainCellsWrapper.style.width = `calc(100% - ${leftFixedColsWidth + rightFixedColsWidth}px)`;
+    headerMainCellsWrapper.style.width = `${mainColsWidth}px`;
 
     if (rowMainCellsWrappers) {
       rowMainCellsWrappers.forEach((rowMainCellsWrapper: HTMLElement) => {
         rowMainCellsWrapper.style.left = `${leftFixedColsWidth}px`;
+        rowMainCellsWrapper.style.width = `${mainColsWidth}px`;
       });
     }
   }
