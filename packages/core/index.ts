@@ -52,7 +52,7 @@ const options: DataDenOptions = {
       },
       resize: true,
       pinned: 'left',
-      width: 180,
+      width: 160,
       cellRenderer: DataDenDefaultCellRenderer,
     },
     {
