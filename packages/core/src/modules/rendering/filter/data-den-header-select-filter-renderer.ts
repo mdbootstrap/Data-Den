@@ -1,16 +1,16 @@
-import { Context } from '../../../context';
-import { DataDenPubSub } from '../../../data-den-pub-sub';
 import { createHtmlElement } from '../../../utils';
-import { DataDenHeaderFilterChangeEvent } from './data-den-header-filter-change-event.interface';
 import { DataDenHeaderFilterRendererParams } from './data-den-header-filter-renderer-params.interface';
 import { DataDenHeaderFilterRenderer } from './data-den-header-filter-renderer.interface';
 
 export class DataDenHeaderSelectFilterRenderer extends DataDenHeaderFilterRenderer {
   element: HTMLElement;
+  select: HTMLSelectElement;
+  params: DataDenHeaderFilterRendererParams;
   #cssPrefix: string;
 
   constructor(params: DataDenHeaderFilterRendererParams) {
     super();
+    this.params = params;
     this.#cssPrefix = params.cssPrefix;
 
     const template =
@@ -24,15 +24,14 @@ export class DataDenHeaderSelectFilterRenderer extends DataDenHeaderFilterRender
       `;
 
     this.element = createHtmlElement(template);
+    this.select = this.element.querySelector(`.${this.#cssPrefix}header-filter-select`);
 
     this.#createSelectOptions(params);
     this.attachUiEvents(params);
   }
 
   #createSelectOptions(params: DataDenHeaderFilterRendererParams) {
-    const select: HTMLSelectElement | null = this.element.querySelector(`.${this.#cssPrefix}header-filter-select`);
-
-    if (select) {
+    if (this.select) {
       const options = params.listOptions;
       const optionsFragment = document.createDocumentFragment();
 
@@ -43,7 +42,7 @@ export class DataDenHeaderSelectFilterRenderer extends DataDenHeaderFilterRender
         optionsFragment.appendChild(optionEl);
       });
 
-      select.appendChild(optionsFragment);
+      this.select.appendChild(optionsFragment);
     }
   }
 
@@ -55,29 +54,41 @@ export class DataDenHeaderSelectFilterRenderer extends DataDenHeaderFilterRender
     return 'select';
   }
 
-  attachUiEvents(params: DataDenHeaderFilterRendererParams) {
-    const select: HTMLSelectElement | null = this.element.querySelector(`.${this.#cssPrefix}header-filter-select`);
-
-    if (select) {
-      select.addEventListener('change', (event: any) => {
-        this.filter(event.target.value, params);
-      });
-    }
+  getState() {
+    return {
+      method: this.params.method,
+      searchTerm: this.select.value,
+    };
   }
 
-  filter(searchTerm: any, params: DataDenHeaderFilterRendererParams): void {
-    const context = new Context('info:filtering:header-filter-changed');
-    const type = this.getType();
-    const { field, method } = params;
-    const filterChangeEvent: DataDenHeaderFilterChangeEvent = {
-      context,
-      field,
-      type,
-      method,
-      searchTerm,
-    };
+  isActive(): boolean {
+    const value = this.select.value;
 
-    DataDenPubSub.publish('info:filtering:header-filter-changed', filterChangeEvent);
+    return !!value;
+  }
+
+  getFilterFn(): (state: any, value: any) => boolean {
+    return (state: any, value: any) => {
+      const method = state.method;
+      value = value.toString().toLowerCase();
+
+      switch (method) {
+        case 'includes':
+          return value.includes(state.searchTerm);
+        case 'equals':
+          return value === state.searchTerm;
+        default:
+          return false;
+      }
+    };
+  }
+
+  attachUiEvents(params: DataDenHeaderFilterRendererParams) {
+    if (this.select) {
+      this.select.addEventListener('change', () => {
+        params.filterChanged();
+      });
+    }
   }
 
   destroy() {}

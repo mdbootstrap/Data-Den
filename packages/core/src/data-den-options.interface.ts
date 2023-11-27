@@ -1,51 +1,18 @@
-import { DataDenCellRenderer } from './modules/rendering';
+import { DataDenCellRenderer, DataDenHeaderFilterRenderer } from './modules/rendering';
 
 export type ClassType<T> = new (...args: any[]) => T;
 
 export type DataDenMode = 'client' | 'server';
 
-export type DataDenHeaderFilterOptions =
-  | DataDenTextFilterOptions
-  | DataDenNumberFilterOptions
-  | DataDenDateFilterOptions
-  | DataDenSelectFilterOptions;
-
-export type DataDenTextFilterMethod = 'includes';
-
-export type DataDenNumberFilterMethod = 'equals';
-
-export type DataDenDateFilterMethod = 'equals';
-
-export type DataDenSelectFilterMethod = 'includes' | 'equals';
+export interface DataDenHeaderFilterOptions {
+  method?: string;
+  caseSensitive?: boolean;
+  debounceTime?: number;
+  dateParserFn?: DataDenDateFilterParserFn;
+  listOptions?: DataDenListOption[];
+}
 
 export type DataDenDateFilterParserFn = (value: string) => Date;
-
-export interface DataDenTextFilterOptions {
-  type: 'text';
-  method: DataDenTextFilterMethod;
-  debounceTime: number;
-  caseSensitive: boolean;
-}
-
-export interface DataDenNumberFilterOptions {
-  type: 'number';
-  method: DataDenNumberFilterMethod;
-  debounceTime: number;
-}
-
-export interface DataDenDateFilterOptions {
-  type: 'date';
-  method: DataDenDateFilterMethod;
-  debounceTime: number;
-  dateParserFn: DataDenDateFilterParserFn;
-}
-
-export interface DataDenSelectFilterOptions {
-  type: 'select';
-  method: DataDenSelectFilterMethod;
-  debounceTime: number;
-  listOptions: DataDenListOption[];
-}
 
 export interface DataDenListOption {
   label: string;
@@ -57,6 +24,7 @@ export interface DataDenColDef {
   headerName?: string;
   sort?: boolean;
   filter?: boolean;
+  filterRenderer?: ClassType<DataDenHeaderFilterRenderer>;
   filterOptions?: DataDenHeaderFilterOptions;
   resize?: boolean;
   width?: number;
@@ -66,6 +34,7 @@ export interface DataDenColDef {
 export interface DataDenDefaultColDef {
   sort?: boolean;
   filter?: boolean;
+  filterRenderer?: ClassType<DataDenHeaderFilterRenderer>;
   filterOptions?: DataDenHeaderFilterOptions;
   resize?: boolean;
   width?: number;
