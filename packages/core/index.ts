@@ -117,14 +117,15 @@ const options: DataDenOptions = {
     pageSizeOptions: [5, 10, 12, 20],
     ofText: 'z',
   },
-  quickFilter: true,
-  quickFilterOptions: {
-    debounceTime: 500,
-  },
 };
 
 const ddEl = document.getElementById('dd');
 const dataDen = new DataDen(ddEl as HTMLElement, options);
+
+const quickFilterInput: HTMLInputElement = document.querySelector('.data-den-quick-filter-input')!;
+quickFilterInput.addEventListener('keyup', () => {
+  dataDen.quickFilter(quickFilterInput.value);
+});
 
 dataDen.on('sortingStart', (event: DataDenSortingEvent) => {
   if (event.field === 'model') {

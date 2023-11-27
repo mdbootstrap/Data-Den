@@ -48,7 +48,6 @@ export interface DataDenPaginationOptions {
 }
 
 export interface DataDenQuickFilterOptions {
-  debounceTime?: number;
   filterFn?: (searchTerm: any, value: any) => boolean;
 }
 
@@ -61,7 +60,6 @@ export interface DataDenOptions<TData = any> {
   draggable?: boolean;
   pagination?: boolean;
   paginationOptions?: DataDenPaginationOptions;
-  quickFilter?: boolean;
   quickFilterOptions?: DataDenQuickFilterOptions;
   rowHeight?: number;
 }
@@ -75,7 +73,6 @@ export interface DataDenInternalOptions {
   draggable: boolean;
   pagination: boolean;
   paginationOptions: Required<DataDenPaginationOptions>;
-  quickFilter: boolean;
   quickFilterOptions: Required<DataDenQuickFilterOptions>;
   resizable: boolean;
   rowHeight: number;
