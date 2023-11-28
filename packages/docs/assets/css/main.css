@@ -21,14 +21,3 @@ code {
 p {
   @apply leading-[1.6];
 }
-
-table,
-tr,
-td {
-  @apply border;
-  @apply border-black dark:border-white;
-}
-
-td {
-  @apply p-3;
-}
