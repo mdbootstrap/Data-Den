@@ -1,8 +1,10 @@
 import {
+  DataDenDateFilterParserFn,
   DataDenInternalOptions,
   DataDenPaginationOptions,
   DataDenQuickFilterOptions,
 } from './data-den-options.interface';
+import { DataDenHeaderTextFilterRenderer } from './modules/rendering';
 import { DataDenDefaultCellRenderer } from './modules/rendering/cell';
 
 const defaultPaginationOptions: Required<DataDenPaginationOptions> = {
@@ -19,8 +21,14 @@ const defaultQuickFilterFn = (searchTerm: any, value: any) => {
 };
 
 const defaultQuickFilterOptions: Required<DataDenQuickFilterOptions> = {
-  debounceTime: 500,
   filterFn: defaultQuickFilterFn,
+};
+
+const defaultDateParserFn: DataDenDateFilterParserFn = (dateString: string) => {
+  const dateParts = dateString.split('/').map((part) => Number(part));
+  const [day, month, year] = dateParts;
+
+  return new Date(year, month - 1, day);
 };
 
 export const defaultOptions: DataDenInternalOptions = {
@@ -30,11 +38,13 @@ export const defaultOptions: DataDenInternalOptions = {
   defaultColDef: {
     sort: false,
     filter: false,
+    filterRenderer: DataDenHeaderTextFilterRenderer,
     filterOptions: {
-      type: 'text',
       method: 'includes',
       debounceTime: 500,
       caseSensitive: false,
+      dateParserFn: defaultDateParserFn,
+      listOptions: [],
     },
     resize: false,
     width: 200,
@@ -44,7 +54,6 @@ export const defaultOptions: DataDenInternalOptions = {
   draggable: false,
   pagination: false,
   paginationOptions: defaultPaginationOptions,
-  quickFilter: false,
   quickFilterOptions: defaultQuickFilterOptions,
   resizable: false,
   rowHeight: 26,

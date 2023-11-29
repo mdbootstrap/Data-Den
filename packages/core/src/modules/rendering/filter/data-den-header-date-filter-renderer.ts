@@ -1,25 +1,28 @@
-import { Context } from '../../../context';
-import { DataDenPubSub } from '../../../data-den-pub-sub';
-import { createHtmlElement, debounce } from '../../../utils';
-import { DataDenHeaderFilterChangeEvent } from './data-den-header-filter-change-event.interface';
+import { createHtmlElement, debounce, isSameDate, parseDate } from '../../../utils';
 import { DataDenHeaderFilterRendererParams } from './data-den-header-filter-renderer-params.interface';
 import { DataDenHeaderFilterRenderer } from './data-den-header-filter-renderer.interface';
 
 export class DataDenHeaderDateFilterRenderer extends DataDenHeaderFilterRenderer {
   element: HTMLElement;
+  input: HTMLInputElement;
+  params: DataDenHeaderFilterRendererParams;
   #cssPrefix: string;
 
   constructor(params: DataDenHeaderFilterRendererParams) {
     super();
+    this.params = params;
     this.#cssPrefix = params.cssPrefix;
 
-    const template = `
-      <div class="${this.#cssPrefix}header-filter">
-          <input type="date" class="${this.#cssPrefix}header-filter-input">
-      </div>
-    `;
+    const template =
+      /* HTML */
+      `
+        <div class="${this.#cssPrefix}header-filter">
+          <input type="date" class="${this.#cssPrefix}header-filter-input" />
+        </div>
+      `;
 
     this.element = createHtmlElement(template);
+    this.input = this.element.querySelector(`.${this.#cssPrefix}header-filter-input`);
 
     this.attachUiEvents(params);
   }
@@ -32,32 +35,45 @@ export class DataDenHeaderDateFilterRenderer extends DataDenHeaderFilterRenderer
     return 'date';
   }
 
-  attachUiEvents(params: DataDenHeaderFilterRendererParams) {
-    const input: HTMLInputElement | null = this.element.querySelector(`.${this.#cssPrefix}header-filter-input`);
+  getState(): any {
+    const value = this.input.value;
 
-    if (input) {
-      const debounceFilter: (searchTerm: any, params: DataDenHeaderFilterRendererParams) => void = debounce(
-        this.filter.bind(this),
-        params.debounceTime
-      );
-
-      input.addEventListener('change', () => debounceFilter(input.value, params));
-    }
+    return {
+      method: this.params.method,
+      searchTerm: value,
+    };
   }
 
-  filter(searchTerm: any, params: DataDenHeaderFilterRendererParams): void {
-    const context = new Context('info:filtering:header-filter-changed');
-    const type = this.getType();
-    const { field, method } = params;
-    const filterChangeEvent: DataDenHeaderFilterChangeEvent = {
-      context,
-      field,
-      type,
-      method,
-      searchTerm,
-    };
+  isActive(): boolean {
+    const value = this.input.value;
 
-    DataDenPubSub.publish('info:filtering:header-filter-changed', filterChangeEvent);
+    return !!value;
+  }
+
+  getFilterFn(): (state: any, value: any) => boolean {
+    const options = this.params.colDef.filterOptions;
+
+    return (state: any, value: any) => {
+      const dateParserFn = options.dateParserFn;
+      const method = state.method;
+      const searchTermAsDate = parseDate(state.searchTerm);
+      const valueAsDate = typeof value === 'string' ? dateParserFn(value) : value;
+
+      switch (method) {
+        case 'equals':
+          return isSameDate(searchTermAsDate, valueAsDate);
+        default:
+          return false;
+      }
+    };
+  }
+
+  attachUiEvents(params: DataDenHeaderFilterRendererParams) {
+    if (this.input) {
+      const debounceFilter: () => void = debounce(() => params.filterChanged(), params.debounceTime);
+
+      this.input.addEventListener('change', () => debounceFilter());
+    }
   }
 
   destroy() {}

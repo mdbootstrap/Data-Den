@@ -1,13 +1,7 @@
 import { Context } from '../../context';
 import { DataDenEvent } from '../../data-den-event';
-import {
-  DataDenDateFilterOptions,
-  DataDenHeaderFilterOptions,
-  DataDenInternalOptions,
-  DataDenTextFilterOptions,
-} from '../../data-den-options.interface';
+import { DataDenInternalOptions } from '../../data-den-options.interface';
 import { DataDenPubSub } from '../../data-den-pub-sub';
-import { isSameDate, parseDate } from '../../utils';
 import { DataDenActiveFiltersChangeEvent } from './data-den-active-filter-change-event.interface';
 import { DataDenActiveHeaderFilter } from './data-den-active-header-filter.interface';
 import { DataDenActiveQuickFilterChangeEvent } from './data-den-active-quick-filter-change-event.interface';
@@ -27,14 +21,10 @@ export class DataDenFilteringService {
   }
 
   #handleHeaderFilterChange(event: DataDenEvent) {
-    const { field, method, searchTerm } = event.data;
-    const column = this.options.columns.find((column) => column.field === field)!;
-    const options = column.filterOptions!;
-    const type = options.type;
-    const filterFn = this.#getFilterFunction(type, method, options);
-    const filter: DataDenActiveHeaderFilter = { type, method, searchTerm, filterFn };
+    const { field, type, state, isActive, filterFn } = event.data;
+    const filter: DataDenActiveHeaderFilter = { type, state, filterFn };
 
-    this.#updateActiveHeaderFilters(field, filter);
+    this.#updateActiveHeaderFilters(field, filter, isActive);
 
     const activeFiltersChangeEvent: DataDenActiveFiltersChangeEvent = {
       context: new Context('info:filtering:active-filters-changed'),
@@ -44,82 +34,8 @@ export class DataDenFilteringService {
     DataDenPubSub.publish('info:filtering:active-filters-changed', activeFiltersChangeEvent);
   }
 
-  #getFilterFunction(type: string, method: string, options: DataDenHeaderFilterOptions) {
-    switch (type) {
-      case 'text':
-        return this.#getTextFilterFunction(method, options as DataDenTextFilterOptions);
-      case 'number':
-        return this.#getNumberFilterFunction(method);
-      case 'date':
-        return this.#getDateFilterFunction(method, options as DataDenDateFilterOptions);
-      case 'select':
-        return this.#getSelectFilterFunction(method);
-      default:
-        return () => false;
-    }
-  }
-
-  #getTextFilterFunction(method: string, options: DataDenTextFilterOptions) {
-    return (searchTerm: string, value: any) => {
-      const caseSensitive = options.caseSensitive;
-      value = caseSensitive ? value : value.toString().toLowerCase();
-      searchTerm = caseSensitive ? searchTerm : searchTerm.toString().toLowerCase();
-
-      switch (method) {
-        case 'includes':
-          return value.includes(searchTerm);
-        default:
-          return false;
-      }
-    };
-  }
-
-  #getNumberFilterFunction(method: string) {
-    return (searchTerm: string, value: any) => {
-      const searchTermAsNumber = Number(searchTerm);
-      const valueAsNumber = Number(value);
-
-      switch (method) {
-        case 'equals':
-          return valueAsNumber === searchTermAsNumber;
-        default:
-          return false;
-      }
-    };
-  }
-
-  #getDateFilterFunction(method: string, options: DataDenDateFilterOptions) {
-    return (searchTerm: string, value: any) => {
-      const dateParserFn = options.dateParserFn;
-      const searchTermAsDate = parseDate(searchTerm);
-      const valueAsDate = typeof value === 'string' ? dateParserFn(value) : value;
-
-      switch (method) {
-        case 'equals':
-          return isSameDate(searchTermAsDate, valueAsDate);
-        default:
-          return false;
-      }
-    };
-  }
-
-  #getSelectFilterFunction(method: string) {
-    return (searchTerm: string, value: any) => {
-      value = value.toString().toLowerCase();
-
-      switch (method) {
-        case 'includes':
-          return value.includes(searchTerm);
-        case 'equals':
-          return value === searchTerm;
-        default:
-          return false;
-      }
-    };
-  }
-
-  #updateActiveHeaderFilters(field: string, filter: DataDenActiveHeaderFilter) {
-    if (filter.searchTerm) {
+  #updateActiveHeaderFilters(field: string, filter: DataDenActiveHeaderFilter, isActive: boolean) {
+    if (isActive) {
       this.activeHeaderFilters[field] = filter;
     } else {
       delete this.activeHeaderFilters[field];
