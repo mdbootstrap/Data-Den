@@ -9,7 +9,7 @@ import {
   DataDenHeaderNumberFilterRenderer,
   DataDenHeaderTextFilterRenderer,
 } from './src/modules/rendering';
-ssssssssssssssssss
+
 const rows = [
   { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
   { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
