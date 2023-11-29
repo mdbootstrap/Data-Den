@@ -1,4 +1,4 @@
-import { DataDenCellEditor, DataDenCellEditorParams, DataDenDefaultCellEditor } from '../editor';
+import { DataDenCellEditor, DataDenCellEditorParams } from '../editor';
 import { DataDenCellRenderer } from './data-den-cell-renderer.interface';
 import { DataDenCellRendererParams } from './data-den-cell-renderer-params.interface';
 import { createHtmlElement } from '../../../utils';
@@ -8,9 +8,9 @@ export class DataDenCell {
   colIndex: number;
   rowIndex: number;
   #value: any;
-  #options: DataDenInternalOptions;
-  #renderer!: DataDenCellRenderer;
-  #editor!: DataDenCellEditor;
+  options: DataDenInternalOptions;
+  renderer!: DataDenCellRenderer;
+  editor!: DataDenCellEditor;
   #left: number;
   #width: number;
 
@@ -25,7 +25,7 @@ export class DataDenCell {
     this.colIndex = colIndex;
     this.rowIndex = rowIndex;
     this.#value = value;
-    this.#options = options;
+    this.options = options;
     this.#left = left;
     this.#width = width;
 
@@ -33,26 +33,27 @@ export class DataDenCell {
   }
 
   #initRenderers() {
-    const colDef = this.#options.columns[this.colIndex];
+    const colDef = this.options.columns[this.colIndex];
     const cellRenderer = colDef.cellRenderer!;
     const cellRendererParams = this.#getCellRendererParams();
     const cellEditorParams = this.#getCellEditorParams();
 
-    this.#renderer = new cellRenderer(cellRendererParams);
-    this.#editor = new DataDenDefaultCellEditor(cellEditorParams);
+    this.renderer = new cellRenderer(cellRendererParams);
+    this.editor = new colDef.cellEditor(cellEditorParams);
   }
 
   #getCellRendererParams(): DataDenCellRendererParams {
     return {
       value: this.#value,
-      cssPrefix: this.#options.cssPrefix,
+      cssPrefix: this.options.cssPrefix,
     };
   }
 
   #getCellEditorParams(): DataDenCellEditorParams {
     return {
+      valueParser: this.options.columns[this.colIndex].valueParser || null,
       value: this.#value,
-      cssPrefix: this.#options.cssPrefix,
+      cssPrefix: this.options.cssPrefix,
     };
   }
 
@@ -61,9 +62,11 @@ export class DataDenCell {
       /* HTML */
       `
         <div
-          class="${this.#options.cssPrefix}cell ${this.#options.draggable
-            ? `${this.#options.cssPrefix}cell-draggable`
+          class="${this.options.cssPrefix}cell ${this.options.draggable
+            ? `${this.options.cssPrefix}cell-draggable`
             : ''}"
+          rowIndex="${this.rowIndex}"
+          colIndex="${this.colIndex}"
           role="gridcell"
           ref="cell"
           style="left: ${this.#left}px; width: ${this.#width}px;"
@@ -71,7 +74,7 @@ export class DataDenCell {
       `;
 
     const cellElement = createHtmlElement(template);
-    cellElement.appendChild(this.#renderer.getGui());
+    cellElement.appendChild(this.renderer.getGui());
 
     return cellElement;
   }

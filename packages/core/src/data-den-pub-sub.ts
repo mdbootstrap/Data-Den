@@ -9,6 +9,7 @@ export class DataDenPubSub {
     'command:pagination:load-prev-page:start': [],
     'command:pagination:load-next-page:start': [],
     'command:pagination:load-last-page:start': [],
+    'command:editing:row-values-changed': [],
     'info:pagination:data-change:done': [],
     'info:pagination:info-change:done': [],
     'info:pagination:page-size-change:done': [],

@@ -127,9 +127,50 @@ export class DataDenRenderingService {
     return headerContainer;
   }
 
+  #renderEditor(e: MouseEvent): HTMLElement {
+    const target = e.target as HTMLElement;
+    if (target.tagName !== 'SPAN') return;
+
+    const cellElement = target.parentElement;
+    const rowIndex = Number(cellElement.getAttribute('rowIndex'));
+    const clickedColIdx = Number(cellElement.getAttribute('colIndex'));
+
+    const cols: Element[] = [];
+
+    if (this.#options.rowEditMode) {
+      cols.push(...document.querySelectorAll(`[rowIndex="${rowIndex}"]`));
+    } else {
+      cols.push(cellElement);
+    }
+    cols.forEach((col: any) => {
+      const colIndex = Number(col.getAttribute('colIndex'));
+      const column = this.#rows[rowIndex].cells[colIndex];
+      const editable = this.#defaultColumns[colIndex].editable;
+      if ((typeof editable === `function` && !editable()) || editable === false) return;
+
+      col.replaceChildren(column.editor.getGui());
+      if (clickedColIdx === colIndex) {
+        const inputElement = col.children[0] as HTMLInputElement;
+        inputElement.select();
+      }
+
+      col.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Enter') {
+          cols.forEach((col: any) => {
+            if (col.children[0].value === undefined) return;
+            const span = document.createElement('span');
+            span.innerText = col.children[0].value;
+            col.replaceChildren(span);
+          });
+        }
+      });
+    });
+  }
+
   #renderBody(): HTMLElement {
     const rowContainer = document.createElement('div');
     rowContainer.classList.add(`${this.#options.cssPrefix}grid-rows`);
+    rowContainer.addEventListener('dblclick', (e: MouseEvent) => this.#renderEditor(e));
     rowContainer.setAttribute('role', 'rowgroup');
 
     const rows = document.createDocumentFragment();
@@ -148,6 +189,15 @@ export class DataDenRenderingService {
       this.#orderedColumns[event.data.currentColIndex].width = event.data.newCurrentColWidth;
       this.#calculateGridSize();
     });
+    DataDenPubSub.subscribe('command:editing:row-values-changed', (event: DataDenEvent) => {
+      this.#updateColumnValue(event);
+    });
+  }
+
+  #updateColumnValue(event: DataDenEvent): void {
+    const data = event.data;
+    const property = Object.keys(this.#options.rows[data.row])[data.column];
+    this.#options.rows[data.row][property] = data.value;
   }
 
   #subscribeFetchDone(): void {

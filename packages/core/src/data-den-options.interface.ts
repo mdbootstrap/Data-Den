@@ -1,4 +1,5 @@
 import { DataDenCellRenderer } from './modules/rendering';
+import { DataDenCellEditor } from './modules/rendering/editor';
 
 export type ClassType<T> = new (...args: any[]) => T;
 
@@ -61,6 +62,9 @@ export interface DataDenColDef {
   resize?: boolean;
   width?: number;
   cellRenderer?: ClassType<DataDenCellRenderer>;
+  cellEditor?: ClassType<DataDenCellEditor>;
+  editable?: boolean | ((...args: any[]) => boolean);
+  valueParser?: (value: string) => any;
 }
 
 export interface DataDenDefaultColDef {
@@ -95,6 +99,7 @@ export interface DataDenOptions<TData = any> {
   quickFilter?: boolean;
   quickFilterOptions?: DataDenQuickFilterOptions;
   rowHeight?: number;
+  rowEditMode?: boolean;
 }
 
 export interface DataDenInternalOptions {
@@ -110,4 +115,5 @@ export interface DataDenInternalOptions {
   quickFilterOptions: Required<DataDenQuickFilterOptions>;
   resizable: boolean;
   rowHeight: number;
+  rowEditMode?: boolean;
 }

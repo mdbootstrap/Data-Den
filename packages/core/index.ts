@@ -3,6 +3,7 @@ import { DataDen } from './src/data-den';
 import { DataDenOptions } from './src/data-den-options.interface';
 import { DataDenDefaultCellRenderer } from './src/modules/rendering/cell/data-den-default-cell-renderer';
 import { DataDenSortingEvent } from './src/modules/sorting';
+import { DataDenDefaultCellEditor } from './src/modules/rendering/editor';
 
 const rows = [
   { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
@@ -53,6 +54,8 @@ const options: DataDenOptions = {
       resize: true,
       width: 260,
       cellRenderer: DataDenDefaultCellRenderer,
+      cellEditor: DataDenDefaultCellEditor,
+      editable: true,
     },
     {
       field: 'model',
@@ -68,6 +71,8 @@ const options: DataDenOptions = {
       resize: true,
       width: 200,
       cellRenderer: DataDenDefaultCellRenderer,
+      cellEditor: DataDenDefaultCellEditor,
+      editable: () => false,
     },
     {
       field: 'year',
@@ -88,6 +93,8 @@ const options: DataDenOptions = {
       resize: true,
       width: 210,
       cellRenderer: DataDenDefaultCellRenderer,
+      cellEditor: DataDenDefaultCellEditor,
+      editable: true,
     },
     {
       field: 'price',
@@ -102,11 +109,15 @@ const options: DataDenOptions = {
       resize: false,
       width: 180,
       cellRenderer: DataDenDefaultCellRenderer,
+      cellEditor: DataDenDefaultCellEditor,
+      editable: true,
+      valueParser: (value: string) => Number(value),
     },
   ],
   rows: rows,
   draggable: true,
   pagination: true,
+  rowEditMode: true,
   paginationOptions: {
     pageSize: 10,
     pageSizeOptions: [5, 10, 12, 20],
