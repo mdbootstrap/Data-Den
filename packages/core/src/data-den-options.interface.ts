@@ -43,7 +43,6 @@ export interface DataDenDefaultColDef {
 
 export interface DataDenPaginationOptions {
   pageSize?: number;
-  pageSizeOptions?: number[];
   ofText?: string;
 }
 

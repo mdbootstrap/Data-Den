@@ -114,8 +114,7 @@ const options: DataDenOptions = {
   pagination: true,
   paginationOptions: {
     pageSize: 10,
-    pageSizeOptions: [5, 10, 12, 20],
-    ofText: 'z',
+    ofText: 'of',
   },
 };
 
