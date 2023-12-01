@@ -9,6 +9,7 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
   element: HTMLElement;
   #field: string;
   #cssPrefix: string;
+  private PubSub: DataDenPubSub;
 
   constructor(field: string, order: Order, cssPrefix: string) {
     super();
@@ -40,7 +41,7 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
 
   sort(): void {
     const command = 'command:sorting:start';
-    DataDenPubSub.publish(command, {
+    this.PubSub.publish(command, {
       caller: this,
       context: new Context(command),
       field: this.#field,
@@ -48,7 +49,7 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
   }
 
   #subscribeSortingStartEvent(): void {
-    DataDenPubSub.subscribe('command:fetch:sort-start', (event) => {
+    this.PubSub.subscribe('command:fetch:sort-start', (event) => {
       if (this.#field === event.data.field) {
         this.#updateArrowDirectionAfterSort(event.data.order);
       }

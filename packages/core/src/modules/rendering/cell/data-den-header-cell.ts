@@ -24,6 +24,7 @@ export class DataDenHeaderCell extends DataDenCell {
   #renderer!: DataDenCellRenderer;
   #options: DataDenInternalOptions;
   #order: Order;
+  private PubSub: DataDenPubSub;
 
   constructor(
     value: any,
@@ -32,7 +33,8 @@ export class DataDenHeaderCell extends DataDenCell {
     left: number,
     width: number,
     options: DataDenInternalOptions,
-    order: Order
+    order: Order,
+    private c: any
   ) {
     super(value, rowIndex, colIndex, left, width, options);
 
@@ -97,6 +99,8 @@ export class DataDenHeaderCell extends DataDenCell {
   #onFilterChange() {
     const colDef = this.#options.columns[this.colIndex];
     const field = colDef.field;
+
+    console.log(this.c, colDef);
     const filter = this.#filterRenderer;
     const context = new Context('info:filtering:header-filter-changed');
     const type = filter.getType();
@@ -113,7 +117,7 @@ export class DataDenHeaderCell extends DataDenCell {
       filterFn,
     };
 
-    DataDenPubSub.publish('info:filtering:header-filter-changed', filterChangeEvent);
+    this.PubSub.publish('info:filtering:header-filter-changed', filterChangeEvent);
   }
 
   render(): HTMLElement {

@@ -16,6 +16,7 @@ export class DataDenResizingService {
   #currentColIndex: number;
   #headersOnTheRight: HTMLElement[];
   #columnsOrder: number[];
+  private PubSub: DataDenPubSub;
 
   constructor(container: HTMLElement, options: DataDenInternalOptions) {
     this.#container = container;
@@ -45,7 +46,7 @@ export class DataDenResizingService {
   }
 
   #subscribeFetchDone(): void {
-    DataDenPubSub.subscribe('info:fetch:done', () => {
+    this.PubSub.subscribe('info:fetch:done', () => {
       if (!this.#isInitiated) {
         this.init();
       }
@@ -55,13 +56,13 @@ export class DataDenResizingService {
   }
 
   #subscribeResizingEvents() {
-    DataDenPubSub.subscribe('info:resizing:mousedown', (event) => this.#onMousedown(event));
-    DataDenPubSub.subscribe('info:resizing:mouseup', () => this.#onMouseup());
-    DataDenPubSub.subscribe('command:resizing:start', (event) => this.#onResizing(event));
+    this.PubSub.subscribe('info:resizing:mousedown', (event) => this.#onMousedown(event));
+    this.PubSub.subscribe('info:resizing:mouseup', () => this.#onMouseup());
+    this.PubSub.subscribe('command:resizing:start', (event) => this.#onResizing(event));
   }
 
   #subscribeDraggingEvent() {
-    DataDenPubSub.subscribe('info:dragging:columns-reorder:done', (event: DataDenEvent) => {
+    this.PubSub.subscribe('info:dragging:columns-reorder:done', (event: DataDenEvent) => {
       this.#columnsOrder = event.data.columnsOrder;
       this.#headers = this.#columnsOrder.map((columnIndex) => this.#defaultHeaders[columnIndex]);
     });
@@ -87,7 +88,7 @@ export class DataDenResizingService {
 
     this.#isResizing = false;
 
-    DataDenPubSub.publish('info:resizing:done', {
+    this.PubSub.publish('info:resizing:done', {
       context: new Context('info:resizing:done'),
     });
   }
@@ -100,7 +101,7 @@ export class DataDenResizingService {
     this.#resizeCurrentColumn(event.data.event.movementX);
     this.#updateRemainingColumnsPosition(event.data.event.movementX);
 
-    DataDenPubSub.publish('info:resizing:start', {
+    this.PubSub.publish('info:resizing:start', {
       currentColIndex: this.#currentColIndex,
       newCurrentColWidth: parseInt(this.#currentHeader.style.width, 10),
       context: new Context('info:resizing:start'),

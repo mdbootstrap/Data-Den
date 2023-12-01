@@ -7,12 +7,13 @@ import { DataDenSortingPreviousState } from './data-den-sorting-previous-state';
 export class DataDenSortingService {
   #field: string;
   #order: Order;
+  private PubSub: DataDenPubSub;
 
   constructor() {
     this.#field = '';
     this.#order = 'asc';
 
-    DataDenPubSub.subscribe('command:sorting:start', (event: DataDenEvent) => {
+    this.PubSub.subscribe('command:sorting:start', (event: DataDenEvent) => {
       const sortingPreviousState = new DataDenSortingPreviousState({ field: this.#field, order: this.#order });
 
       if (this.#field === event.data.field) {
@@ -49,7 +50,7 @@ export class DataDenSortingService {
         return;
       }
 
-      DataDenPubSub.publish('command:fetch:sort-start', {
+      this.PubSub.publish('command:fetch:sort-start', {
         caller: this,
         context: event.context,
         field: this.#field,

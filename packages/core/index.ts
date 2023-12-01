@@ -117,9 +117,84 @@ const options: DataDenOptions = {
     ofText: 'of',
   },
 };
+const options2: DataDenOptions = {
+  columns: [
+    {
+      field: 'car',
+      headerName: 'Car',
+      sort: true,
+      filter: true,
+      filterRenderer: DataDenHeaderTextFilterRenderer,
+      filterOptions: {
+        method: 'includes',
+        debounceTime: 500,
+        caseSensitive: false,
+      },
+      resize: true,
+      width: 260,
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: 'model',
+      headerName: 'Model',
+      sort: true,
+      filter: true,
+      filterRenderer: DataDenHeaderTextFilterRenderer,
+      filterOptions: {
+        method: 'includes',
+        debounceTime: 500,
+        caseSensitive: false,
+      },
+      resize: true,
+      width: 200,
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: 'year',
+      headerName: 'Year',
+      sort: true,
+      filter: true,
+      filterRenderer: DataDenHeaderDateFilterRenderer,
+      filterOptions: {
+        method: 'equals',
+        debounceTime: 500,
+        dateParserFn: (dateString: string) => {
+          const dateParts = dateString.split('/').map((part) => Number(part));
+          const [day, month, year] = dateParts;
+
+          return new Date(year, month - 1, day);
+        },
+      },
+      resize: true,
+      width: 210,
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: 'price',
+      headerName: 'Price',
+      filterOptions: {
+        method: 'equals',
+        debounceTime: 500,
+      },
+      resize: false,
+      width: 180,
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+  ],
+  rows: rows,
+  draggable: true,
+  pagination: true,
+  paginationOptions: {
+    pageSize: 10,
+    ofText: 'of',
+  },
+};
 
 const ddEl = document.getElementById('dd');
 const dataDen = new DataDen(ddEl as HTMLElement, options);
+
+const ddEl2 = document.getElementById('dd2');
+const dataDen2 = new DataDen(ddEl2 as HTMLElement, options2);
 
 const quickFilterInput: HTMLInputElement = document.querySelector('.data-den-quick-filter-input')!;
 quickFilterInput.addEventListener('keyup', () => {

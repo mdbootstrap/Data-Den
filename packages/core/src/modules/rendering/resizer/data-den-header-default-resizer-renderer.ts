@@ -6,6 +6,7 @@ import { Context } from '../../../context';
 export class DataDenHeaderDefaultResizerRenderer extends DataDenHeaderResizerRenderer {
   element: HTMLElement;
   #cssPrefix: string;
+  private PubSub: DataDenPubSub;
 
   constructor(cssPrefix: string) {
     super();
@@ -29,20 +30,20 @@ export class DataDenHeaderDefaultResizerRenderer extends DataDenHeaderResizerRen
   #onMouseDown(event: MouseEvent): void {
     event.stopPropagation();
 
-    DataDenPubSub.publish('info:resizing:mousedown', {
+    this.PubSub.publish('info:resizing:mousedown', {
       target: event.target,
       context: new Context('info:resizing:mousedown'),
     });
   }
 
   #onMouseUp(): void {
-    DataDenPubSub.publish('info:resizing:mouseup', {
+    this.PubSub.publish('info:resizing:mouseup', {
       context: new Context('info:resizing:mouseup'),
     });
   }
 
   #resize(event: MouseEvent): void {
-    DataDenPubSub.publish('command:resizing:start', {
+    this.PubSub.publish('command:resizing:start', {
       event,
       context: new Context('command:resizing:start'),
     });

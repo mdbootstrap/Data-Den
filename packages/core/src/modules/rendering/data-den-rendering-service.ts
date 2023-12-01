@@ -16,6 +16,7 @@ export class DataDenRenderingService {
   #headerRow: DataDenHeaderRow;
   #rows: DataDenRow[] = [];
   #paginationRenderer: DataDenPaginationRenderer | null = null;
+  private PubSub: DataDenPubSub;
 
   constructor(container: HTMLElement, options: DataDenInternalOptions) {
     this.#container = container;
@@ -42,7 +43,7 @@ export class DataDenRenderingService {
       const left = colDefs.slice(0, colIndex).reduce((acc, curr) => acc + (curr.width || 120), 0);
       const width = colDefs[colIndex].width || 120;
 
-      return new DataDenHeaderCell(value, colIndex, rowIndex, left, width, this.#options, order);
+      return new DataDenHeaderCell(value, colIndex, rowIndex, left, width, this.#options, order, this.#container);
     });
 
     return new DataDenHeaderRow(rowIndex, headerCells, this.#options);
@@ -50,7 +51,14 @@ export class DataDenRenderingService {
 
   #createDataRows(rowsData: any): DataDenRow[] {
     return rowsData.map((rowData: any, rowIndex: number) => {
-      const cells = Object.entries(rowData).map(([, value], colIndex) => {
+      const cells = Object.entries(rowData);
+      cells.sort(([aField], [bField]) => {
+        // sort based on this.#defaultColumns order
+        const aIndex = this.#orderedColumns.findIndex((col) => col.field === aField);
+        const bIndex = this.#orderedColumns.findIndex((col) => col.field === bField);
+        return aIndex - bIndex;
+      });
+      const dataCells = cells.map(([, value], colIndex) => {
         const orderedColIndex = this.#columnsOrder.length ? this.#columnsOrder.indexOf(colIndex) : colIndex;
         const left = this.#orderedColumns.slice(0, orderedColIndex).reduce((acc, curr) => acc + (curr.width || 120), 0);
         const width = this.#orderedColumns[orderedColIndex].width || 120;
@@ -58,12 +66,12 @@ export class DataDenRenderingService {
         return new DataDenCell(value, colIndex, rowIndex, left, width, this.#options);
       });
 
-      return new DataDenRow(rowIndex, cells, this.#options);
+      return new DataDenRow(rowIndex, dataCells, this.#options);
     });
   }
 
   #publishFetchStart() {
-    DataDenPubSub.publish('command:fetch:start', {
+    this.PubSub.publish('command:fetch:start', {
       caller: this,
       context: new Context('command:fetch:start'),
     });
@@ -128,24 +136,26 @@ export class DataDenRenderingService {
   }
 
   #subscribeToEvents(): void {
-    DataDenPubSub.subscribe('info:dragging:columns-reorder:done', (event: DataDenEvent) => {
+    this.PubSub.subscribe('info:dragging:columns-reorder:done', (event: DataDenEvent) => {
       this.#columnsOrder = event.data.columnsOrder;
       this.#orderedColumns = this.#columnsOrder.map((columnIndex) => this.#defaultColumns[columnIndex]);
     });
-    DataDenPubSub.subscribe('info:resizing:start', (event: DataDenEvent) => {
+    this.PubSub.subscribe('info:resizing:start', (event: DataDenEvent) => {
       this.#orderedColumns[event.data.currentColIndex].width = event.data.newCurrentColWidth;
       this.#calculateGridSize();
     });
   }
 
   #subscribeFetchDone(): void {
-    DataDenPubSub.subscribe('info:fetch:done', (event: DataDenEvent) => {
+    this.PubSub.subscribe('info:fetch:done', (event: DataDenEvent) => {
       this.#updateRows(event);
     });
   }
 
   #updateRows(event: DataDenEvent): void {
     const { rows } = event.data;
+
+    console.log(this.#container, rows.length);
 
     const rowsEl = document.createDocumentFragment();
     this.#rows = this.#createDataRows(rows);
