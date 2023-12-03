@@ -35,6 +35,7 @@ export class DataDenResizingService {
     this.#isResizeingPinnedRightColumn;
 
     this.#subscribeFetchDone();
+    this.#subscribeRerenderingDone();
   }
 
   init() {
@@ -46,6 +47,7 @@ export class DataDenResizingService {
 
     this.#subscribeResizingEvents();
     this.#subscribeDraggingEvent();
+
     this.#isInitiated = true;
   }
 
@@ -55,7 +57,19 @@ export class DataDenResizingService {
         this.init();
       }
 
-      this.#rows = Array.from(this.#container.querySelectorAll('[ref="row"]'));
+      setTimeout(() => {
+        this.#rows = Array.from(this.#container.querySelectorAll('[ref="row"]'));
+      }, 10);
+    });
+  }
+
+  #subscribeRerenderingDone(): void {
+    DataDenPubSub.subscribe('command:rerendering:done', () => {
+      this.#headers = Array.from(this.#container.querySelectorAll('[ref="headerCell"]'))!;
+      this.#headersMain = Array.from(
+        this.#container.querySelector('[ref="headerMainCellsWrapper"]').querySelectorAll('[ref="headerCell"]')
+      )!;
+      this.#columnsOrder = getAllColumnsOrder(this.#options.columns);
     });
   }
 

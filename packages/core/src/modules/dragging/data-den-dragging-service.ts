@@ -48,6 +48,7 @@ export class DataDenDraggingService {
     this.#handleHeaderMouseDown = () => {};
 
     this.#subscribeFetchDone();
+    this.#subscribeRerenderingDone();
   }
 
   init() {
@@ -78,6 +79,20 @@ export class DataDenDraggingService {
       } else {
         this.init();
       }
+    });
+  }
+
+  #subscribeRerenderingDone() {
+    DataDenPubSub.subscribe('command:rerendering:done', () => {
+      this.#setDefaultColumnsOrder();
+      this.#setHeaderElements();
+
+      setTimeout(() => {
+        this.#gridMain = this.#container.querySelector('[ref="gridMain"]')!;
+        this.update();
+        this.#setColumnParams();
+        this.#addColumnDragEventHandlers();
+      }, 10);
     });
   }
 

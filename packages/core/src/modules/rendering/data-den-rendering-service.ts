@@ -181,6 +181,34 @@ export class DataDenRenderingService {
     this.#calculateGridSize();
   }
 
+  rerenderTable(): void {
+    this.#container.innerHTML = '';
+
+    this.#orderedColumns = getMainOrderedColumns(this.#options.columns);
+    this.#defaultOrderedColumns = getMainOrderedColumns(this.#options.columns);
+    this.#columnsOrder = getMainColumnIndexes(this.#options.columns);
+    this.#headerRow = this.#createHeaderRow(this.#options.columns, '');
+
+    if (this.#options.quickFilter) {
+      const { debounceTime } = this.#options.quickFilterOptions;
+      const params: DataDenQuickFilterParams = { debounceTime, cssPrefix: this.#options.cssPrefix };
+      this.#quickFilterRenderer = new DataDenQuickFilterRenderer(params);
+    }
+
+    if (this.#options.pagination) {
+      this.#paginationRenderer = new DataDenPaginationRenderer(this.#options.paginationOptions);
+    }
+
+    this.renderTable();
+    this.#subscribeFetchDone();
+    this.#publishFetchStart();
+
+    DataDenPubSub.publish('command:rerendering:done', {
+      caller: this,
+      context: new Context('command:rendering:done'),
+    });
+  }
+
   #calculateGridSize(): void {
     const header = this.#container.querySelector(`.${this.#options.cssPrefix}header`) as HTMLElement;
     const body = this.#container.querySelector(`.${this.#options.cssPrefix}grid-rows`) as HTMLElement;
@@ -249,6 +277,10 @@ export class DataDenRenderingService {
       const currentColIndex = getAllColumnsOrder(this.#options.columns)[event.data.currentColIndex];
       this.#options.columns[currentColIndex].width = event.data.newCurrentColWidth;
       this.#calculateGridSize();
+    });
+    DataDenPubSub.subscribe('command:pin-column:start', (event: DataDenEvent) => {
+      this.#options.columns[event.data.colIndex].pinned = event.data.pin;
+      this.rerenderTable();
     });
   }
 

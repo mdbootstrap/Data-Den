@@ -4,6 +4,7 @@
   flex-direction: row;
   position: relative;
   height: var(--#{$prefix}header-height);
+  z-index: 10;
 }
 
 .#{$prefix}header-row {
@@ -55,9 +56,9 @@
 
 .#{$prefix}header-filter {
   display: block;
+  margin: var(--#{$prefix}header-filter-input-margin);
 
   .#{$prefix}header-filter-input {
-    margin: var(--#{$prefix}header-filter-input-margin);
     width: var(--#{$prefix}header-filter-input-width);
   }
 }
@@ -68,7 +69,7 @@
   right: 0;
   top: 0;
   height: 100%;
-  width: 10px;
+  width: 6px;
   cursor: col-resize;
 
   &:hover {
@@ -111,7 +112,6 @@
   display: flex;
   padding: 6px var(--#{$prefix}header-cell-padding-x);
   position: absolute;
-  overflow: hidden;
 
   .#{$prefix}header-cell-value {
     display: flex;
@@ -133,4 +133,66 @@
   position: relative;
   float: right;
   background-color: #ffe1e1;
+}
+
+.#{$prefix}header-menu-toggler {
+  display: none;
+  position: absolute;
+  right: 6px;
+  top: 0;
+  height: 100%;
+  width: 16px;
+  margin: 0 4px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.#{$prefix}header-cell:hover {
+  .#{$prefix}header-menu-toggler {
+    display: block;
+  }
+}
+
+.#{$prefix}header-menu-dropdown {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  margin-top: var(--#{$prefix}header-height);
+  z-index: 3;
+  width: 100px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 4px 0;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: 200px;
+  overflow-y: auto;
+  font-size: 12px;
+  padding: 8px;
+
+  &.active {
+    display: flex;
+  }
+}
+
+.#{$prefix}header-menu-dropdown-item {
+  padding: 4px 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-decoration: none;
+  color: #333;
+
+  &:hover {
+    background-color: #eee;
+  }
 }

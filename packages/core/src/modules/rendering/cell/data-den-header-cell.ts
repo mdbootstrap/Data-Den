@@ -6,6 +6,7 @@ import {
 } from '../filter';
 import { DataDenHeaderDefaultSorterRenderer, DataDenHeaderSorterRenderer } from '../sorter';
 import { DataDenHeaderDefaultResizerRenderer, DataDenHeaderResizerRenderer } from '../resizer';
+import { DataDenHeaderMenuRenderer } from '../menu';
 import { DataDenCell } from './data-den-cell';
 import { DataDenCellRenderer } from './data-den-cell-renderer.interface';
 import {
@@ -27,14 +28,15 @@ export class DataDenHeaderCell extends DataDenCell {
   width: number;
   #value: any;
   #left: string;
-  #right: string;
   #pinned: string;
   #filterRenderer: DataDenHeaderFilterRenderer | null = null;
   #sorterRenderer: DataDenHeaderSorterRenderer | null = null;
   #resizerRenderer: DataDenHeaderResizerRenderer | null = null;
+  #headerMenuRenderer: DataDenHeaderMenuRenderer | null = null;
   #renderer!: DataDenCellRenderer;
   #options: DataDenInternalOptions;
   #order: Order;
+  #isDropdownInitiated: boolean;
 
   constructor(
     value: any,
@@ -56,6 +58,7 @@ export class DataDenHeaderCell extends DataDenCell {
     this.rowIndex = rowIndex;
     this.#options = options;
     this.#order = order;
+    this.#isDropdownInitiated = false;
 
     this.#initRenderers();
   }
@@ -67,6 +70,7 @@ export class DataDenHeaderCell extends DataDenCell {
     const order = this.#order;
 
     this.#renderer = new DataDenDefaultHeaderCellRenderer(this.#getCellRendererParams());
+    this.#headerMenuRenderer = new DataDenHeaderMenuRenderer(cssPrefix, colDef, this.colIndex);
 
     if (filter) {
       this.#filterRenderer = this.#getHeaderFilterRenderer(colDef);
@@ -148,10 +152,23 @@ export class DataDenHeaderCell extends DataDenCell {
         .appendChild(this.#sorterRenderer.getGui());
     }
 
+    cellElement.appendChild(this.#headerMenuRenderer.getGui());
+    this.#renderDropdown(cellElement);
+
     if (this.#resizerRenderer) {
       cellElement.appendChild(this.#resizerRenderer.getGui());
     }
 
     return cellElement;
+  }
+
+  #renderDropdown(cellElement: HTMLElement) {
+    if (this.#isDropdownInitiated) {
+      return;
+    }
+
+    cellElement.appendChild(this.#headerMenuRenderer?.getDropdownGui());
+
+    this.#isDropdownInitiated = true;
   }
 }
