@@ -82,6 +82,7 @@
 }
 
 .#{$prefix}header-left-cells-wrapper {
+  display: flex;
   position: sticky;
   left: 0;
   float: left;
@@ -93,9 +94,11 @@
 .#{$prefix}header-main-cells-wrapper {
   position: absolute;
   height: var(--#{$prefix}header-height);
+  z-index: 0;
 }
 
 .#{$prefix}header-right-cells-wrapper {
+  display: flex;
   position: sticky;
   right: 0;
   float: right;

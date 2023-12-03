@@ -10,6 +10,7 @@
 }
 
 .#{$prefix}left-cells-wrapper {
+  display: flex;
   position: sticky;
   left: 0;
   float: left;
@@ -22,6 +23,7 @@
 }
 
 .#{$prefix}right-cells-wrapper {
+  display: flex;
   position: sticky;
   right: 0;
   float: right;

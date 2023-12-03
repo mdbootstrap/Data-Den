@@ -35,7 +35,7 @@ export class DataDenRow {
       /* HTML */
       `<div
         class="${this.#options.cssPrefix}left-cells-wrapper"
-        style=height: ${this.#options.rowHeight}px;"
+        style="height: ${this.#options.rowHeight + 2}px;"
       ></div>`
     );
     const centerCellsWrapper = createHtmlElement(
@@ -49,7 +49,10 @@ export class DataDenRow {
     );
     const rightCellsWrapper = createHtmlElement(
       /* HTML */
-      `<div class="${this.#options.cssPrefix}right-cells-wrapper" style="height: ${this.#options.rowHeight}px"></div>`
+      `<div
+        class="${this.#options.cssPrefix}right-cells-wrapper"
+        style="height: ${this.#options.rowHeight + 2}px"
+      ></div>`
     );
 
     cells.appendChild(leftCellsWrapper);
