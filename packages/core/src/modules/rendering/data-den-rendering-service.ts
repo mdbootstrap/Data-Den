@@ -30,25 +30,30 @@ export class DataDenRenderingService {
   constructor(container: HTMLElement, options: DataDenInternalOptions) {
     this.#container = container;
     this.#options = options;
+
+    this.#init();
+    this.#subscribeToEvents();
+    this.#subscribeFetchDone();
+    this.#publishFetchStart();
+  }
+
+  #init() {
     this.#orderedColumns = getMainOrderedColumns(this.#options.columns);
     this.#defaultOrderedColumns = getMainOrderedColumns(this.#options.columns);
     this.#columnsOrder = getMainColumnIndexes(this.#options.columns);
-    this.#headerRow = this.#createHeaderRow(options.columns, '');
+    this.#headerRow = this.#createHeaderRow(this.#options.columns, '');
 
-    if (options.quickFilter) {
-      const { debounceTime } = options.quickFilterOptions;
+    if (this.#options.quickFilter) {
+      const { debounceTime } = this.#options.quickFilterOptions;
       const params: DataDenQuickFilterParams = { debounceTime, cssPrefix: this.#options.cssPrefix };
       this.#quickFilterRenderer = new DataDenQuickFilterRenderer(params);
     }
 
-    if (options.pagination) {
-      this.#paginationRenderer = new DataDenPaginationRenderer(options.paginationOptions);
+    if (this.#options.pagination) {
+      this.#paginationRenderer = new DataDenPaginationRenderer(this.#options.paginationOptions);
     }
 
     this.renderTable();
-    this.#subscribeToEvents();
-    this.#subscribeFetchDone();
-    this.#publishFetchStart();
   }
 
   #createPinnedHeaderCells(pinnedColumns: DataDenColDef[], rowIndex: number, order: Order): DataDenHeaderCell[] {
@@ -184,22 +189,7 @@ export class DataDenRenderingService {
   rerenderTable(): void {
     this.#container.innerHTML = '';
 
-    this.#orderedColumns = getMainOrderedColumns(this.#options.columns);
-    this.#defaultOrderedColumns = getMainOrderedColumns(this.#options.columns);
-    this.#columnsOrder = getMainColumnIndexes(this.#options.columns);
-    this.#headerRow = this.#createHeaderRow(this.#options.columns, '');
-
-    if (this.#options.quickFilter) {
-      const { debounceTime } = this.#options.quickFilterOptions;
-      const params: DataDenQuickFilterParams = { debounceTime, cssPrefix: this.#options.cssPrefix };
-      this.#quickFilterRenderer = new DataDenQuickFilterRenderer(params);
-    }
-
-    if (this.#options.pagination) {
-      this.#paginationRenderer = new DataDenPaginationRenderer(this.#options.paginationOptions);
-    }
-
-    this.renderTable();
+    this.#init();
     this.#subscribeFetchDone();
     this.#publishFetchStart();
 
