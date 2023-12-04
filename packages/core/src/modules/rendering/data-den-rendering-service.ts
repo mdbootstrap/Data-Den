@@ -89,13 +89,9 @@ export class DataDenRenderingService {
       order
     );
 
-    return new DataDenHeaderRow(
-      rowIndex,
-      pinnedHeaderCellsLeft,
-      mainHeaderCells,
-      pinnedHeaderCellsRight,
-      this.#options
-    );
+    const headerCells = [...pinnedHeaderCellsLeft, ...mainHeaderCells, ...pinnedHeaderCellsRight];
+
+    return new DataDenHeaderRow(rowIndex, headerCells, this.#options);
   }
 
   #createPinnedCellsLeft(key: string, value: any, colIndex: number, rowIndex: number): DataDenCell | undefined {
@@ -145,14 +141,16 @@ export class DataDenRenderingService {
       const pinnedCellsLeft = Object.entries(rowData).map(([key, value], colIndex) =>
         this.#createPinnedCellsLeft(key, value, colIndex, rowIndex)
       );
-      const cells = Object.entries(rowData).map(([key, value], colIndex) =>
+      const mainCells = Object.entries(rowData).map(([key, value], colIndex) =>
         this.#createMainCells(key, value, colIndex, rowIndex)
       );
       const pinnedCellsRight = Object.entries(rowData)
         .reverse()
         .map(([key, value], colIndex) => this.#createPinnedCellsRight(key, value, colIndex, rowIndex));
 
-      return new DataDenRow(rowIndex, pinnedCellsLeft, cells, pinnedCellsRight, this.#options);
+      const cells = [...pinnedCellsLeft, ...mainCells, ...pinnedCellsRight].filter((cell) => cell !== undefined);
+
+      return new DataDenRow(rowIndex, cells, this.#options);
     });
   }
 

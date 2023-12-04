@@ -28,7 +28,7 @@ export class DataDenHeaderCell extends DataDenCell {
   width: number;
   #value: any;
   #left: string;
-  #pinned: string;
+  pinned: string;
   #filterRenderer: DataDenHeaderFilterRenderer | null = null;
   #sorterRenderer: DataDenHeaderSorterRenderer | null = null;
   #resizerRenderer: DataDenHeaderResizerRenderer | null = null;
@@ -53,7 +53,7 @@ export class DataDenHeaderCell extends DataDenCell {
     this.#value = value;
     this.#left = pinned ? 'auto' : `${left}px`;
     this.width = width;
-    this.#pinned = pinned;
+    this.pinned = pinned;
     this.colIndex = colIndex;
     this.rowIndex = rowIndex;
     this.#options = options;
@@ -128,9 +128,9 @@ export class DataDenHeaderCell extends DataDenCell {
     const template =
       /* HTML */
       `<div
-        class="${this.#options.cssPrefix}header-cell ${this.#options.draggable && !this.#pinned
+        class="${this.#options.cssPrefix}header-cell ${this.#options.draggable && !this.pinned
           ? `${this.#options.cssPrefix}header-cell-draggable`
-          : ''} ${this.#pinned === 'left' ? `${this.#options.cssPrefix}header-cell-pinned-left` : ''} ${this.#pinned ===
+          : ''} ${this.pinned === 'left' ? `${this.#options.cssPrefix}header-cell-pinned-left` : ''} ${this.pinned ===
         'right'
           ? `${this.#options.cssPrefix}header-cell-pinned-right`
           : ''}"

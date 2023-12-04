@@ -6,14 +6,8 @@ import { DataDenRow } from './data-den-row';
 export class DataDenHeaderRow extends DataDenRow {
   #options: DataDenInternalOptions;
 
-  constructor(
-    public index: number,
-    public cellsLeft: DataDenHeaderCell[],
-    public cells: DataDenHeaderCell[],
-    public cellsRight: DataDenHeaderCell[],
-    options: DataDenInternalOptions
-  ) {
-    super(index, cellsLeft, cells, cellsRight, options);
+  constructor(public index: number, public cells: DataDenHeaderCell[], options: DataDenInternalOptions) {
+    super(index, cells, options);
     this.#options = options;
 
     const template =
@@ -31,8 +25,12 @@ export class DataDenHeaderRow extends DataDenRow {
   render(): HTMLElement {
     const cells = document.createDocumentFragment();
 
-    const leftCellsWidth = this.cellsLeft.reduce((acc, curr) => acc + curr.width, 0);
-    const rightCellsWidth = this.cellsRight.reduce((acc, curr) => acc + curr.width, 0);
+    const leftCellsWidth = this.cells
+      .filter((cell) => cell.pinned === 'left')
+      .reduce((acc, curr) => acc + curr.width, 0);
+    const rightCellsWidth = this.cells
+      .filter((cell) => cell.pinned === 'right')
+      .reduce((acc, curr) => acc + curr.width, 0);
 
     const leftCellsWrapper = createHtmlElement(
       /* HTML */
@@ -55,9 +53,11 @@ export class DataDenHeaderRow extends DataDenRow {
     cells.appendChild(centerCellsWrapper);
     cells.appendChild(rightCellsWrapper);
 
-    this.cellsLeft.forEach((cell) => leftCellsWrapper.appendChild(cell.render()));
-    this.cells.forEach((cell) => centerCellsWrapper.appendChild(cell.render()));
-    this.cellsRight.forEach((cell) => rightCellsWrapper.appendChild(cell.render()));
+    this.cells.filter((cell) => cell.pinned === 'left').forEach((cell) => leftCellsWrapper.appendChild(cell.render()));
+    this.cells.filter((cell) => !cell.pinned).forEach((cell) => centerCellsWrapper.appendChild(cell.render()));
+    this.cells
+      .filter((cell) => cell.pinned === 'right')
+      .forEach((cell) => rightCellsWrapper.appendChild(cell.render()));
 
     this.element.appendChild(cells);
 

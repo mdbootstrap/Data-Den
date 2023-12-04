@@ -6,13 +6,7 @@ export class DataDenRow {
   element: HTMLElement;
   #options: DataDenInternalOptions;
 
-  constructor(
-    public index: number,
-    public cellsLeft: DataDenCell[],
-    public cells: DataDenCell[],
-    public cellsRight: DataDenCell[],
-    options: DataDenInternalOptions
-  ) {
+  constructor(public index: number, public cells: DataDenCell[], options: DataDenInternalOptions) {
     this.#options = options;
     const template =
       /* HTML */
@@ -24,11 +18,11 @@ export class DataDenRow {
   render(): HTMLElement {
     const cells = document.createDocumentFragment();
 
-    const leftCellsWidth = this.cellsLeft
-      .filter((cell) => cell !== undefined)
+    const leftCellsWidth = this.cells
+      .filter((cell) => cell.pinned === 'left')
       .reduce((acc, curr) => acc + curr.width, 0);
-    const rightCellsWidth = this.cellsRight
-      .filter((cell) => cell !== undefined)
+    const rightCellsWidth = this.cells
+      .filter((cell) => cell.pinned === 'right')
       .reduce((acc, curr) => acc + curr.width, 0);
 
     const leftCellsWrapper = createHtmlElement(
@@ -59,10 +53,10 @@ export class DataDenRow {
     cells.appendChild(centerCellsWrapper);
     cells.appendChild(rightCellsWrapper);
 
-    this.cellsLeft.filter((cell) => cell !== undefined).forEach((cell) => leftCellsWrapper.appendChild(cell.render()));
-    this.cells.filter((cell) => cell !== undefined).forEach((cell) => centerCellsWrapper.appendChild(cell.render()));
-    this.cellsRight
-      .filter((cell) => cell !== undefined)
+    this.cells.filter((cell) => cell.pinned === 'left').forEach((cell) => leftCellsWrapper.appendChild(cell.render()));
+    this.cells.filter((cell) => !cell.pinned).forEach((cell) => centerCellsWrapper.appendChild(cell.render()));
+    this.cells
+      .filter((cell) => cell.pinned === 'right')
       .forEach((cell) => rightCellsWrapper.appendChild(cell.render()));
 
     this.element.appendChild(cells);

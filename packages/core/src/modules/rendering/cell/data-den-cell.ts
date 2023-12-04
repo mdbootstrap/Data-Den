@@ -13,7 +13,7 @@ export class DataDenCell {
   #renderer!: DataDenCellRenderer;
   #editor!: DataDenCellEditor;
   #left: string;
-  #pinned: string;
+  pinned: string;
 
   constructor(
     value: any,
@@ -30,7 +30,7 @@ export class DataDenCell {
     this.#value = value;
     this.#options = options;
     this.#left = pinned ? 'auto' : `${left}px`;
-    this.#pinned = pinned;
+    this.pinned = pinned;
 
     this.#initRenderers();
   }
@@ -64,9 +64,9 @@ export class DataDenCell {
       /* HTML */
       `
         <div
-          class="${this.#options.cssPrefix}cell ${this.#options.draggable && !this.#pinned
+          class="${this.#options.cssPrefix}cell ${this.#options.draggable && !this.pinned
             ? `${this.#options.cssPrefix}cell-draggable`
-            : ''} ${this.#pinned === 'left' ? `${this.#options.cssPrefix}cell-pinned-left` : ''} ${this.#pinned ===
+            : ''} ${this.pinned === 'left' ? `${this.#options.cssPrefix}cell-pinned-left` : ''} ${this.pinned ===
           'right'
             ? `${this.#options.cssPrefix}cell-pinned-right`
             : ''}"
