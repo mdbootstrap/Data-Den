@@ -56,25 +56,25 @@ export class DataDenRenderingService {
     this.renderTable();
   }
 
-  #createPinnedHeaderCells(pinnedColumns: DataDenColDef[], rowIndex: number, order: Order): DataDenHeaderCell[] {
-    return pinnedColumns.map((col) => {
-      const value = col.headerName;
+  #createPinnedHeaderCells(pinnedColumnsDefs: DataDenColDef[], rowIndex: number, order: Order): DataDenHeaderCell[] {
+    return pinnedColumnsDefs.map((colDef) => {
+      const value = colDef.headerName;
       const left = 0;
-      const width = col.width || 120;
-      const colIndex = this.#options.columns.map((defaultColumn) => defaultColumn.field).indexOf(col.field);
+      const width = colDef.width || 120;
+      const colIndex = this.#options.columns.map((defaultColumn) => defaultColumn.field).indexOf(colDef.field);
 
-      return new DataDenHeaderCell(value, colIndex, rowIndex, left, width, col.pinned, this.#options, order);
+      return new DataDenHeaderCell(value, colIndex, rowIndex, left, width, colDef.pinned, this.#options, order);
     });
   }
 
-  #createMainHeaderCells(mainColumns: DataDenColDef[], rowIndex: number, order: Order): DataDenHeaderCell[] {
-    return mainColumns.map((col, index) => {
-      const value = col.headerName;
+  #createMainHeaderCells(mainColumnsDefs: DataDenColDef[], rowIndex: number, order: Order): DataDenHeaderCell[] {
+    return mainColumnsDefs.map((colDef, index) => {
+      const value = colDef.headerName;
       const left = this.#orderedColumns.slice(0, index).reduce((acc, curr) => acc + (curr.width || 120), 0);
       const width = this.#orderedColumns[index].width || 120;
-      const colIndex = this.#options.columns.map((defaultColumn) => defaultColumn.field).indexOf(col.field);
+      const colIndex = this.#options.columns.map((defaultColumn) => defaultColumn.field).indexOf(colDef.field);
 
-      return new DataDenHeaderCell(value, colIndex, rowIndex, left, width, col.pinned, this.#options, order);
+      return new DataDenHeaderCell(value, colIndex, rowIndex, left, width, colDef.pinned, this.#options, order);
     });
   }
 
