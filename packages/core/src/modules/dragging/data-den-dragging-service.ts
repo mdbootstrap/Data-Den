@@ -92,7 +92,7 @@ export class DataDenDraggingService {
         this.update();
         this.#setColumnParams();
         this.#addColumnDragEventHandlers();
-      }, 10);
+      }, 0);
     });
   }
 

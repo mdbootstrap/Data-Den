@@ -59,7 +59,7 @@ export class DataDenResizingService {
 
       setTimeout(() => {
         this.#rows = Array.from(this.#container.querySelectorAll('[ref="row"]'));
-      }, 10);
+      }, 0);
     });
   }
 
