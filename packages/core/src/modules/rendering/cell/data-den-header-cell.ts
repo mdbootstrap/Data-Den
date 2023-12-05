@@ -5,7 +5,7 @@ import { DataDenCell } from './data-den-cell';
 import { DataDenCellRenderer } from './data-den-cell-renderer.interface';
 import { DataDenColDef, DataDenInternalOptions } from '../../../data-den-options.interface';
 import { DataDenHeaderFilterRendererParams } from '../filter/data-den-header-filter-renderer-params.interface';
-import { Order } from '../../sorting';
+import { DataDenSortOrder } from '../../sorting';
 import { DataDenCellRendererParams } from './data-den-cell-renderer-params.interface';
 import { createHtmlElement } from '../../../utils';
 import { DataDenDefaultHeaderCellRenderer } from './data-den-default-header-cell-renderer';
@@ -23,7 +23,7 @@ export class DataDenHeaderCell extends DataDenCell {
   #resizerRenderer: DataDenHeaderResizerRenderer | null = null;
   #renderer!: DataDenCellRenderer;
   #options: DataDenInternalOptions;
-  #order: Order;
+  #order: DataDenSortOrder;
 
   constructor(
     value: any,
@@ -32,7 +32,7 @@ export class DataDenHeaderCell extends DataDenCell {
     left: number,
     width: number,
     options: DataDenInternalOptions,
-    order: Order
+    order: DataDenSortOrder
   ) {
     super(value, rowIndex, colIndex, left, width, options);
 

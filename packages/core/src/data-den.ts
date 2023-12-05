@@ -41,7 +41,7 @@ export class DataDen {
     }
 
     this.#rendering = new DataDenRenderingService(container, gridOptions);
-    this.#sorting = new DataDenSortingService();
+    this.#sorting = new DataDenSortingService(gridOptions);
     this.#filtering = new DataDenFilteringService(gridOptions);
     this.#pagination = new DataDenPaginationService(gridOptions);
     this.#dragging = options.draggable ? new DataDenDraggingService(container, gridOptions) : null;
