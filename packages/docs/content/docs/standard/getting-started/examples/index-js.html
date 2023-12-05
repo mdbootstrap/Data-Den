@@ -15,33 +15,33 @@
     { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
     { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
   ];
-  (() => {
-    const options = {
-      columns: [
-        {
-          field: 'car',
-          headerName: 'Car',
-          cellRenderer: DataDenDefaultCellRenderer,
-        },
-        {
-          field: 'model',
-          headerName: 'Model',
-          cellRenderer: DataDenDefaultCellRenderer,
-        },
-        {
-          field: 'year',
-          headerName: 'Year',
-          cellRenderer: DataDenDefaultCellRenderer,
-        },
-        {
-          field: 'price',
-          headerName: 'Price',
-          cellRenderer: DataDenDefaultCellRenderer,
-        },
-      ],
-      rows: rows,
-    };
 
+  const options = {
+    columns: [
+      {
+        field: 'car',
+        headerName: 'Car',
+        cellRenderer: DataDenDefaultCellRenderer,
+      },
+      {
+        field: 'model',
+        headerName: 'Model',
+        cellRenderer: DataDenDefaultCellRenderer,
+      },
+      {
+        field: 'year',
+        headerName: 'Year',
+        cellRenderer: DataDenDefaultCellRenderer,
+      },
+      {
+        field: 'price',
+        headerName: 'Price',
+        cellRenderer: DataDenDefaultCellRenderer,
+      },
+    ],
+    rows: rows,
+  };
+  (() => {
     //basic example
     const ddElBasic = document.getElementById('dd-basic');
     const dataDenBasic = new DataDen(ddElBasic, options);
@@ -54,50 +54,28 @@
     searchInput.addEventListener('keyup', () => {
       dataDenSearch.quickFilter(searchInput.value);
     });
-
-    searchInput.style.border = '1px solid #000';
-    searchInput.style.borderRadius = '6px';
-    searchInput.style.padding = '4px';
     //search example
 
     //draggable example
     const ddElDraggable = document.getElementById('dd-draggable');
     const dataDenDraggable = new DataDen(ddElDraggable, { ...options, draggable: true });
     //draggable example
-  })();
 
-  //search column example
-  (() => {
-    const options = {
-      columns: [
-        {
-          field: 'car',
-          headerName: 'Car',
-          cellRenderer: DataDenDefaultCellRenderer,
-        },
-        {
-          field: 'model',
-          headerName: 'Model',
-          cellRenderer: DataDenDefaultCellRenderer,
-        },
-        {
-          field: 'year',
-          headerName: 'Year',
-          cellRenderer: DataDenDefaultCellRenderer,
-        },
-        {
-          field: 'price',
-          headerName: 'Price',
-          cellRenderer: DataDenDefaultCellRenderer,
-        },
-      ],
-      rows: rows,
-    };
+    //Hoverable rows
+    const ddElVerticalBorders = document.getElementById('dd-hovereable-row');
+    const dataDenVerticalBorders = new DataDen(ddElVerticalBorders, options);
+    //Hoverable rows
 
-    const ddElBasic = document.getElementById('dd-search-column');
-    const dataDenBasic = new DataDen(ddElBasic, options);
+    //search column example
+    const ddElSearchColumn = document.getElementById('dd-search-column');
+    const dataDenSearchColumn = new DataDen(ddElSearchColumn, options);
+    //search column example
+
+    //scroll
+    const ddElScroll = document.getElementById('dd-scroll');
+    const dataDenScroll = new DataDen(ddElScroll, options);
+    //scroll
   })();
-  //search column example
 
   //pagination example
   (() => {
@@ -134,35 +112,8 @@
       { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 34000 },
     ];
 
-    const options = {
-      columns: [
-        {
-          field: 'car',
-          headerName: 'Car',
-          cellRenderer: DataDenDefaultCellRenderer,
-        },
-        {
-          field: 'model',
-          headerName: 'Model',
-          cellRenderer: DataDenDefaultCellRenderer,
-        },
-        {
-          field: 'year',
-          headerName: 'Year',
-          cellRenderer: DataDenDefaultCellRenderer,
-        },
-        {
-          field: 'price',
-          headerName: 'Price',
-          cellRenderer: DataDenDefaultCellRenderer,
-        },
-      ],
-      rows: rows,
-      pagination: true,
-    };
-
     const ddEl = document.getElementById('dd-pagination');
-    const dataDenBasic = new DataDen(ddEl, options);
+    const dataDenBasic = new DataDen(ddEl, { ...options, pagination: true });
   })();
   //pagination example
 
@@ -214,15 +165,12 @@
   //cell-formatting
   (() => {
     class ExampleCellRenderer {
-      value;
       constructor(data) {
         this.value = data.value;
       }
       getGui() {
         const el = document.createElement('span');
         el.innerText = this.value;
-        el.classList.add('color-red');
-
         const wrapper = document.createElement('div');
         if (+this.value > 25000 && +this.value < 50000) {
           wrapper.classList.add('bg-warning');
@@ -269,55 +217,16 @@
   })();
   //cell-formatting
 
-  //fixed-header and scroll
+  //fixed-header
   (() => {
-    const options = {
-      columns: [
-        {
-          field: 'car',
-          headerName: 'Car',
-          cellRenderer: DataDenDefaultCellRenderer,
-        },
-        {
-          field: 'model',
-          headerName: 'Model',
-          cellRenderer: DataDenDefaultCellRenderer,
-        },
-        {
-          field: 'year',
-          headerName: 'Year',
-          cellRenderer: DataDenDefaultCellRenderer,
-        },
-        {
-          field: 'price',
-          headerName: 'Price',
-          cellRenderer: DataDenDefaultCellRenderer,
-        },
-      ],
-      rows: rows,
-    };
     //fixed-header
     const ddElFixedHeader = document.getElementById('dd-fixed-header');
     const dataDenFixedHeader = new DataDen(ddElFixedHeader, options);
 
-    const styleDataDenGrid = `overflow: scroll; height: 200px;`;
-    const styleDataDenGridHeader = `position: sticky !important; top: 0; z-index: 1;`;
-
-    const gridFixedHeader = ddElFixedHeader.querySelector('.data-den-grid');
     const headerFixedHeader = ddElFixedHeader.querySelector('.data-den-header');
-    gridFixedHeader.style.cssText = styleDataDenGrid;
-    headerFixedHeader.style.cssText = styleDataDenGridHeader;
+    headerFixedHeader.classList.add('bg-white', 'dark:bg-neutral-800');
 
     //fixed-header
-
-    //scroll
-    const ddElScroll = document.getElementById('dd-scroll');
-    const dataDenScroll = new DataDen(ddElScroll, options);
-    const gridScroll = ddElScroll.querySelector('.data-den-grid');
-    const headerFixedHeaderScroll = ddElScroll.querySelector('.data-den-header');
-    gridScroll.style.cssText = styleDataDenGrid;
-
-    //scroll
   })();
-  //fixed-header and scroll
+  //fixed-header
 </script>
