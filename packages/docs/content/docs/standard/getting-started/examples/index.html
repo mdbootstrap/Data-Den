@@ -115,10 +115,14 @@ const dataDen = new DataDen(ddEl, options);
         </p>
         <!--Section: Demo-->
         {{< twsnippet/demo id="search-example">}}
-        <div class="data-den-quick-filter">
-          <input type="text" class="data-den-quick-filter-input" />
+        <div class="flex flex-col justify-center items-center">
+          <div>
+            <div class="data-den-quick-filter">
+              <input type="text" class="data-den-quick-filter-input" />
+            </div>
+            <div id="dd-search"></div>
+          </div>
         </div>
-        <div id="dd-search"></div>
         {{< /twsnippet/demo>}}
         <!--Section: Demo-->
 
@@ -126,11 +130,14 @@ const dataDen = new DataDen(ddEl, options);
           <!-- prettier-ignore -->
           {{< twsnippet/wrapper "index.html,main.js" "" "mobile" >}}
   {{< twsnippet/code active=true lang="html" >}}
-          <div class="data-den-quick-filter">
-            <input type="text" class="data-den-quick-filter-input" />
+          <div class="flex flex-col justify-center items-center">
+            <div>
+              <div class="data-den-quick-filter">
+                <input type="text" class="data-den-quick-filter-input" />
+              </div>
+              <div id="dd"></div>
+            </div>
           </div>
-          <div id="dd"></div>
-
           {{< /twsnippet/code >}}
           <!-- prettier-ignore -->
           {{< twsnippet/code lang="js" >}}
@@ -573,14 +580,12 @@ const dataDen = new DataDen(ddEl, options);
 import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
 
 class ExampleCellRenderer {
-  value;
   constructor(data) {
     this.value = data.value;
   }
   getGui() {
     const el = document.createElement("span");
     el.innerText = this.value;
-    el.classList.add("color-red");
 
     const wrapper = document.createElement("div");
     if (+this.value > 25000 && +this.value < 50000) {
@@ -658,7 +663,7 @@ const dataDen = new DataDen(ddEl, options);
         <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Scroll</h2>
         <!--Section: Demo-->
         {{< twsnippet/demo id="scroll-example">}}
-        <div id="dd-scroll" class="flex justify-center items-center"></div>
+        <div class="scroll-wrapper"><div id="dd-scroll" class="flex justify-center items-center"></div></div>
         {{< /twsnippet/demo>}}
         <!--Section: Demo-->
 
@@ -666,9 +671,9 @@ const dataDen = new DataDen(ddEl, options);
           <!-- prettier-ignore -->
           {{< twsnippet/wrapper "index.html,main.js,index.css" "" "mobile" >}}
     {{< twsnippet/code active=true lang="html" >}}
-
-          <div id="dd"></div>
-
+          <div class="scroll-wrapper">
+            <div id="dd"></div>
+          </div>
           {{< /twsnippet/code >}}
           <!-- prettier-ignore -->
           {{< twsnippet/code lang="js" >}}
@@ -742,7 +747,9 @@ const dataDen = new DataDen(ddEl, options);
         <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Fixed header example</h2>
         <!--Section: Demo-->
         {{< twsnippet/demo id="fixed-header-example">}}
-        <div id="dd-fixed-header" class="flex justify-center items-center"></div>
+        <div class="scroll-wrapper">
+          <div id="dd-fixed-header" class="flex justify-center items-center"></div>
+        </div>
         {{< /twsnippet/demo>}}
         <!--Section: Demo-->
 
@@ -750,9 +757,9 @@ const dataDen = new DataDen(ddEl, options);
           <!-- prettier-ignore -->
           {{< twsnippet/wrapper "index.html,main.js,index.css" "" "mobile" >}}
     {{< twsnippet/code active=true lang="html" >}}
-
-          <div id="dd"></div>
-
+          <div class="scroll-wrapper">
+            <div id="dd"></div>
+          </div>
           {{< /twsnippet/code >}}
           <!-- prettier-ignore -->
           {{< twsnippet/code lang="js" >}}
@@ -822,5 +829,84 @@ const dataDen = new DataDen(ddEl, options);
   </div>
 </section>
 <!--Section: Fixed header-->
+
+<hr class="my-10" />
+
+<!--Section: Hoverable rows-->
+<section id="hovereable-row-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Hoverable rows</h2>
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="hovereable-row-example">}}
+        <div id="dd-hovereable-row" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo>}}
+        <!--Section: Demo-->
+
+        <div class="pt-2" id="hovereable-row-example">
+          <!-- prettier-ignore -->
+          {{< twsnippet/wrapper "index.html,main.js" "" "mobile" >}}
+    {{< twsnippet/code active=true lang="html" >}}
+
+          <div id="dd"></div>
+
+          {{< /twsnippet/code >}}
+          <!-- prettier-ignore -->
+          {{< twsnippet/code lang="js" >}}
+import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+
+const rows = [
+  { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+  { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+  { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+  { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+  { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+  { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+  { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+  { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+  { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+  { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+];
+
+const options = {
+  columns: [
+    {
+      field: "car",
+      headerName: "Car",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "model",
+      headerName: "Model",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "year",
+      headerName: "Year",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "price",
+      headerName: "Price",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+  ],
+  rows: rows,
+};
+
+const ddEl = document.getElementById("dd");
+const dataDen = new DataDen(ddEl, options);
+
+  {{< /twsnippet/code >}}
+
+
+{{< /twsnippet/wrapper >}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Hoverable rows-->
 
 <hr class="my-10" />
