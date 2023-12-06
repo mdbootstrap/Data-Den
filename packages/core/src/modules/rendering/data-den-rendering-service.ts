@@ -31,6 +31,16 @@ export class DataDenRenderingService {
     this.#container = container;
     this.#options = options;
 
+    if (this.#options.quickFilter) {
+      const { debounceTime } = this.#options.quickFilterOptions;
+      const params: DataDenQuickFilterParams = { debounceTime, cssPrefix: this.#options.cssPrefix };
+      this.#quickFilterRenderer = new DataDenQuickFilterRenderer(params);
+    }
+
+    if (this.#options.pagination) {
+      this.#paginationRenderer = new DataDenPaginationRenderer(this.#options.paginationOptions);
+    }
+
     this.#init();
     this.#subscribeToEvents();
     this.#subscribeFetchDone();
@@ -42,16 +52,6 @@ export class DataDenRenderingService {
     this.#defaultOrderedColumns = getMainOrderedColumns(this.#options.columns);
     this.#columnsOrder = getMainColumnIndexes(this.#options.columns);
     this.#headerRow = this.#createHeaderRow(this.#options.columns, '');
-
-    if (this.#options.quickFilter) {
-      const { debounceTime } = this.#options.quickFilterOptions;
-      const params: DataDenQuickFilterParams = { debounceTime, cssPrefix: this.#options.cssPrefix };
-      this.#quickFilterRenderer = new DataDenQuickFilterRenderer(params);
-    }
-
-    if (this.#options.pagination) {
-      this.#paginationRenderer = new DataDenPaginationRenderer(this.#options.paginationOptions);
-    }
 
     this.renderTable();
   }
@@ -188,12 +188,15 @@ export class DataDenRenderingService {
     this.#container.innerHTML = '';
 
     this.#init();
-    this.#subscribeFetchDone();
     this.#publishFetchStart();
 
     DataDenPubSub.publish('command:rerendering:done', {
       caller: this,
-      context: new Context('command:rendering:done'),
+      context: new Context('command:rerendering:done'),
+    });
+    DataDenPubSub.publish('command:rerendering:done', {
+      caller: this,
+      context: new Context('command:rerendering:done'),
     });
   }
 
