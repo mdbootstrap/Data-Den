@@ -40,6 +40,7 @@
       },
     ],
     rows: rows,
+    rowHeight: 34,
   };
   (() => {
     //basic example
@@ -112,8 +113,36 @@
       { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 34000 },
     ];
 
+    const options = {
+      columns: [
+        {
+          field: 'car',
+          headerName: 'Car',
+          cellRenderer: DataDenDefaultCellRenderer,
+        },
+        {
+          field: 'model',
+          headerName: 'Model',
+          cellRenderer: DataDenDefaultCellRenderer,
+        },
+        {
+          field: 'year',
+          headerName: 'Year',
+          cellRenderer: DataDenDefaultCellRenderer,
+        },
+        {
+          field: 'price',
+          headerName: 'Price',
+          cellRenderer: DataDenDefaultCellRenderer,
+        },
+      ],
+      rows: rows,
+      pagination: true,
+      rowHeight: 34,
+    };
+
     const ddEl = document.getElementById('dd-pagination');
-    const dataDenBasic = new DataDen(ddEl, { ...options, pagination: true });
+    const dataDenBasic = new DataDen(ddEl, options);
   })();
   //pagination example
 
@@ -155,6 +184,7 @@
         },
       ],
       rows: rows,
+      rowHeight: 34,
     };
 
     const ddElBasic = document.getElementById('dd-advanced-structure');
@@ -210,6 +240,7 @@
         },
       ],
       rows: rows,
+      rowHeight: 34,
     };
 
     const ddElBasic = document.getElementById('dd-cell-formatting');

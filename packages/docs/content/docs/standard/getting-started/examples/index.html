@@ -846,7 +846,7 @@ const dataDen = new DataDen(ddEl, options);
 
         <div class="pt-2" id="hovereable-row-example">
           <!-- prettier-ignore -->
-          {{< twsnippet/wrapper "index.html,main.js" "" "mobile" >}}
+          {{< twsnippet/wrapper "index.html,main.js,index.css" "" "mobile" >}}
     {{< twsnippet/code active=true lang="html" >}}
 
           <div id="dd"></div>
@@ -898,8 +898,14 @@ const options = {
 const ddEl = document.getElementById("dd");
 const dataDen = new DataDen(ddEl, options);
 
-  {{< /twsnippet/code >}}
+{{< /twsnippet/code >}}
 
+
+{{< twsnippet/code lang="css" >}}
+.data-den--row:hover {
+  background-color: rgb(245, 245, 245);
+}
+{{< /twsnippet/code >}}
 
 {{< /twsnippet/wrapper >}}
         </div>

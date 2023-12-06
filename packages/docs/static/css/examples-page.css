@@ -1,21 +1,23 @@
 :root {
   --data-den-header-cell-bg: inherit;
   --data-den-grid-row-cell-border: none;
+  --data-den-header-cell-border: none;
+  --data-den-row-cell-border: none;
 }
 
-.data-den-header {
+.data-den-left-cells-wrapper,
+.data-den-right-cells-wrapper {
   border: none;
 }
 
 .data-den-header-row .data-den-header-cell {
   border: none;
-  border-bottom: var(--data-den-header-cell-border);
+  border-bottom: 2px solid #e5e7eb;
   font-weight: 700;
 }
 
-.data-den--row .data-den-cell {
-  border: none;
-  border-bottom: var(--data-den-row-cell-border);
+.data-den-cell {
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .data-den-pagination-content > button {
@@ -51,7 +53,7 @@
 /* Fixed Header, scroll  */
 
 /* Hoverable rows */
-#hovereable-row-section .data-den--row:hover > .data-den-cell {
-  background-color: #eceaea;
+#hovereable-row-section .data-den--row:hover {
+  background-color: rgb(245, 245, 245);
 }
 /* Hoverable rows */
