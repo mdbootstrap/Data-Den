@@ -53,7 +53,7 @@
 /* Fixed Header, scroll  */
 
 /* Hoverable rows */
-#hovereable-row-section .data-den--row:hover {
+#hovereable-row-section .data-den-row:hover .data-den-cell {
   background-color: rgb(245, 245, 245);
 }
 /* Hoverable rows */
