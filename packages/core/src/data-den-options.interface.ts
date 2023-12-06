@@ -34,6 +34,7 @@ export interface DataDenColDef {
   filterRenderer?: ClassType<DataDenHeaderFilterRenderer>;
   filterOptions?: DataDenHeaderFilterOptions;
   resize?: boolean;
+  pinned?: 'left' | 'right';
   width?: number;
   cellRenderer?: ClassType<DataDenCellRenderer>;
 }
