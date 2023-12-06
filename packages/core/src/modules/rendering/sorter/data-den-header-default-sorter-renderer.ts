@@ -2,7 +2,7 @@ import { createHtmlElement } from '../../../utils';
 import { DataDenHeaderSorterRenderer } from './data-den-header-sorter-renderer.interface';
 import { DataDenPubSub } from './../../../data-den-pub-sub';
 import { Context } from '../../../context';
-import { Order } from '../../sorting/data-den-sorting.interface';
+import { DataDenSortOrder } from '../../sorting/data-den-sorting.interface';
 
 export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRenderer {
   arrowElement: HTMLElement;
@@ -10,7 +10,7 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
   #field: string;
   #cssPrefix: string;
 
-  constructor(field: string, order: Order, cssPrefix: string) {
+  constructor(field: string, order: DataDenSortOrder, cssPrefix: string) {
     super();
     this.#cssPrefix = cssPrefix;
     const template = `

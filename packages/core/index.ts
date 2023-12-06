@@ -42,12 +42,31 @@ const rows = [
   { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 34000 },
 ];
 
+const sortComparator = (fieldA: any, fieldB: any) => {
+  if (typeof fieldA === 'string') {
+    fieldA = fieldA.toLowerCase();
+  }
+
+  if (typeof fieldB === 'string') {
+    fieldB = fieldB.toLowerCase();
+  }
+
+  if (fieldA === fieldB) {
+    return 0;
+  }
+
+  return fieldA > fieldB ? 1 : -1;
+};
+
 const options: DataDenOptions = {
   columns: [
     {
       field: 'car',
       headerName: 'Car',
       sort: true,
+      sortOptions: {
+        comparator: sortComparator,
+      },
       filter: true,
       filterRenderer: DataDenHeaderTextFilterRenderer,
       filterOptions: {
@@ -63,6 +82,9 @@ const options: DataDenOptions = {
       field: 'model',
       headerName: 'Model',
       sort: true,
+      sortOptions: {
+        comparator: sortComparator,
+      },
       filter: true,
       filterRenderer: DataDenHeaderTextFilterRenderer,
       filterOptions: {
@@ -78,6 +100,9 @@ const options: DataDenOptions = {
       field: 'year',
       headerName: 'Year',
       sort: true,
+      sortOptions: {
+        comparator: sortComparator,
+      },
       filter: true,
       filterRenderer: DataDenHeaderDateFilterRenderer,
       filterOptions: {
@@ -98,6 +123,9 @@ const options: DataDenOptions = {
       field: 'price',
       headerName: 'Price',
       sort: true,
+      sortOptions: {
+        comparator: sortComparator,
+      },
       filter: true,
       filterRenderer: DataDenHeaderNumberFilterRenderer,
       filterOptions: {

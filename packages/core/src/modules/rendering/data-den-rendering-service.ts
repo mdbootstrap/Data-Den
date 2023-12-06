@@ -4,7 +4,7 @@ import { DataDenPaginationRenderer } from './pagination';
 import { DataDenHeaderRow, DataDenRow } from './row';
 import { DataDenPubSub } from '../../data-den-pub-sub';
 import { DataDenEvent } from '../../data-den-event';
-import { Order } from '../sorting/data-den-sorting.interface';
+import { DataDenSortOrder } from '../sorting/data-den-sorting.interface';
 import { Context } from '../../context';
 
 export class DataDenRenderingService {
@@ -35,7 +35,7 @@ export class DataDenRenderingService {
     this.#publishFetchStart();
   }
 
-  #createHeaderRow(colDefs: DataDenColDef[], order: Order): DataDenHeaderRow {
+  #createHeaderRow(colDefs: DataDenColDef[], order: DataDenSortOrder): DataDenHeaderRow {
     const rowIndex = 0;
     const headerCells = colDefs.map((colDef, colIndex) => {
       const value = colDef.headerName;
