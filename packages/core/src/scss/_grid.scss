@@ -1,5 +1,14 @@
+[class^='data-den'] {
+  box-sizing: border-box;
+}
+
 .#{$prefix}grid {
   position: relative;
-  box-sizing: border-box;
-  margin: 10px;
+}
+
+.#{$prefix}grid-main {
+  position: relative;
+  width: 100%;
+  height: auto;
+  overflow: auto;
 }

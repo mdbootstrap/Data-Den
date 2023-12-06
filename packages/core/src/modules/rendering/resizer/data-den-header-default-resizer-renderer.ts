@@ -2,21 +2,26 @@ import { createHtmlElement } from '../../../utils';
 import { DataDenHeaderResizerRenderer } from './data-den-header-resizer-renderer.interface';
 import { DataDenPubSub } from '../../../data-den-pub-sub';
 import { Context } from '../../../context';
+import { DataDenColDef } from '../../../data-den-options.interface';
 
 export class DataDenHeaderDefaultResizerRenderer extends DataDenHeaderResizerRenderer {
   element: HTMLElement;
   #cssPrefix: string;
+  #isPinnedRight: boolean;
 
-  constructor(cssPrefix: string) {
+  constructor(cssPrefix: string, colDef: DataDenColDef) {
     super();
 
     this.#cssPrefix = cssPrefix;
+    this.#isPinnedRight = colDef.pinned === 'right';
 
-    const template = `<div class="${this.#cssPrefix}header-resizer"></div>`;
+    const template = `<div class="${this.#cssPrefix}header-resizer ${
+      this.#isPinnedRight ? this.#cssPrefix + 'header-resizer-left' : ''
+    }"></div>`;
 
     this.element = createHtmlElement(template);
     this.element.addEventListener('mousedown', this.#onMouseDown.bind(this));
-    document.addEventListener('mousemove', this.#resize.bind(this));
+    document.addEventListener('mousemove', this.#resize);
     document.addEventListener('mouseup', this.#onMouseUp.bind(this));
   }
 
@@ -31,6 +36,7 @@ export class DataDenHeaderDefaultResizerRenderer extends DataDenHeaderResizerRen
 
     DataDenPubSub.publish('info:resizing:mousedown', {
       target: event.target,
+      isPinnedRight: this.#isPinnedRight,
       context: new Context('info:resizing:mousedown'),
     });
   }

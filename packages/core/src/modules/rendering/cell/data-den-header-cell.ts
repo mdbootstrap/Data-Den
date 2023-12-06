@@ -1,6 +1,7 @@
 import { DataDenHeaderFilterChangeEvent, DataDenHeaderFilterRenderer } from '../filter';
 import { DataDenHeaderDefaultSorterRenderer, DataDenHeaderSorterRenderer } from '../sorter';
 import { DataDenHeaderDefaultResizerRenderer, DataDenHeaderResizerRenderer } from '../resizer';
+import { DataDenHeaderMenuRenderer } from '../menu';
 import { DataDenCell } from './data-den-cell';
 import { DataDenCellRenderer } from './data-den-cell-renderer.interface';
 import { DataDenColDef, DataDenInternalOptions } from '../../../data-den-options.interface';
@@ -15,15 +16,18 @@ import { DataDenPubSub } from '../../../data-den-pub-sub';
 export class DataDenHeaderCell extends DataDenCell {
   rowIndex: number;
   colIndex: number;
+  width: number;
   #value: any;
-  #left: number;
-  #width: number;
+  #left: string;
+  pinned: string;
   #filterRenderer: DataDenHeaderFilterRenderer | null = null;
   #sorterRenderer: DataDenHeaderSorterRenderer | null = null;
   #resizerRenderer: DataDenHeaderResizerRenderer | null = null;
+  #headerMenuRenderer: DataDenHeaderMenuRenderer | null = null;
   #renderer!: DataDenCellRenderer;
   #options: DataDenInternalOptions;
   #order: DataDenSortOrder;
+  #isDropdownInitiated: boolean;
 
   constructor(
     value: any,
@@ -31,18 +35,21 @@ export class DataDenHeaderCell extends DataDenCell {
     rowIndex: number,
     left: number,
     width: number,
+    pinned: string,
     options: DataDenInternalOptions,
     order: DataDenSortOrder
   ) {
-    super(value, rowIndex, colIndex, left, width, options);
+    super(value, rowIndex, colIndex, left, width, pinned, options);
 
     this.#value = value;
-    this.#left = left;
-    this.#width = width;
+    this.#left = pinned ? 'auto' : `${left}px`;
+    this.width = width;
+    this.pinned = pinned;
     this.colIndex = colIndex;
-    this.rowIndex = colIndex;
+    this.rowIndex = rowIndex;
     this.#options = options;
     this.#order = order;
+    this.#isDropdownInitiated = false;
 
     this.#initRenderers();
   }
@@ -54,6 +61,7 @@ export class DataDenHeaderCell extends DataDenCell {
     const order = this.#order;
 
     this.#renderer = new DataDenDefaultHeaderCellRenderer(this.#getCellRendererParams());
+    this.#headerMenuRenderer = new DataDenHeaderMenuRenderer(cssPrefix, colDef, this.colIndex);
 
     if (filter) {
       const filterRenderer = colDef.filterRenderer;
@@ -66,7 +74,7 @@ export class DataDenHeaderCell extends DataDenCell {
     }
 
     if (resize) {
-      this.#resizerRenderer = new DataDenHeaderDefaultResizerRenderer(cssPrefix);
+      this.#resizerRenderer = new DataDenHeaderDefaultResizerRenderer(cssPrefix, colDef);
     }
   }
 
@@ -120,12 +128,15 @@ export class DataDenHeaderCell extends DataDenCell {
     const template =
       /* HTML */
       `<div
-        class="${this.#options.cssPrefix}header-cell ${this.#options.draggable
+        class="${this.#options.cssPrefix}header-cell ${this.#options.draggable && !this.pinned
           ? `${this.#options.cssPrefix}header-cell-draggable`
+          : ''} ${this.pinned === 'left' ? `${this.#options.cssPrefix}header-cell-pinned-left` : ''} ${this.pinned ===
+        'right'
+          ? `${this.#options.cssPrefix}header-cell-pinned-right`
           : ''}"
         role="columnheader"
         ref="headerCell"
-        style="left: ${this.#left}px; width: ${this.#width}px"
+        style="left: ${this.#left}; width: ${this.width}px;"
       ></div>`;
 
     const cellElement = createHtmlElement(template);
@@ -141,10 +152,23 @@ export class DataDenHeaderCell extends DataDenCell {
         .appendChild(this.#sorterRenderer.getGui());
     }
 
+    cellElement.appendChild(this.#headerMenuRenderer.getGui());
+    this.#renderDropdown(cellElement);
+
     if (this.#resizerRenderer) {
       cellElement.appendChild(this.#resizerRenderer.getGui());
     }
 
     return cellElement;
+  }
+
+  #renderDropdown(cellElement: HTMLElement) {
+    if (this.#isDropdownInitiated) {
+      return;
+    }
+
+    cellElement.appendChild(this.#headerMenuRenderer?.getDropdownGui());
+
+    this.#isDropdownInitiated = true;
   }
 }

@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+declare var require: any;
+
 describe('data-den-sorting-service', () => {
   let DataDenSortingService: any;
   let exampleData: any[] = [];
