@@ -33,10 +33,10 @@ export class DataDenClientDataLoaderStrategy extends DataDenDataLoaderStrategy {
     const filtered = headers.reduce((res, header) => {
       return res.filter((row: any) => {
         const filterFn = filtersOptions.filters[header].filterFn;
-        const searchTerm = filtersOptions.filters[header].searchTerm;
+        const state = filtersOptions.filters[header].state;
         const value = row[header];
 
-        return filterFn(searchTerm, value);
+        return filterFn(state, value);
       });
     }, rows);
 
@@ -60,9 +60,9 @@ export class DataDenClientDataLoaderStrategy extends DataDenDataLoaderStrategy {
       return Promise.resolve(rows);
     }
 
-    const { field, order, sortFn } = sortOptions;
+    const { field, order, comparator, sortFn } = sortOptions;
 
-    const sorted = sortFn(rows, field, order);
+    const sorted = sortFn(rows, field, order, comparator);
 
     return Promise.resolve(sorted);
   }

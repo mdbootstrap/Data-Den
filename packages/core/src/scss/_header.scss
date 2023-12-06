@@ -28,6 +28,10 @@
   justify-content: center;
   align-items: center;
 
+  &:hover .#{$prefix}header-sorter-arrow:after {
+    color: var(--#{$prefix}header-sorter-arrow-sorted-color);
+  }
+
   .#{$prefix}header-sorter-arrow {
     &:after {
       display: inline-block;

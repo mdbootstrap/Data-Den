@@ -3,6 +3,11 @@ import { DataDen } from './src/data-den';
 import { DataDenOptions } from './src/data-den-options.interface';
 import { DataDenDefaultCellRenderer } from './src/modules/rendering/cell/data-den-default-cell-renderer';
 import { DataDenSortingEvent } from './src/modules/sorting';
+import {
+  DataDenHeaderDateFilterRenderer,
+  DataDenHeaderNumberFilterRenderer,
+  DataDenHeaderTextFilterRenderer,
+} from './src/modules/rendering';
 
 const rows = [
   { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000, transmission: 'Manual', fuel: 'Gasoline' },
@@ -37,31 +42,53 @@ const rows = [
   { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 34000, transmission: 'Manual', fuel: 'Gasoline' },
 ];
 
+const sortComparator = (fieldA: any, fieldB: any) => {
+  if (typeof fieldA === 'string') {
+    fieldA = fieldA.toLowerCase();
+  }
+
+  if (typeof fieldB === 'string') {
+    fieldB = fieldB.toLowerCase();
+  }
+
+  if (fieldA === fieldB) {
+    return 0;
+  }
+
+  return fieldA > fieldB ? 1 : -1;
+};
+
 const options: DataDenOptions = {
   columns: [
     {
       field: 'car',
       headerName: 'Car',
       sort: true,
+      sortOptions: {
+        comparator: sortComparator,
+      },
       filter: true,
+      filterRenderer: DataDenHeaderTextFilterRenderer,
       filterOptions: {
-        type: 'text',
         method: 'includes',
         debounceTime: 500,
         caseSensitive: false,
       },
       resize: true,
+      width: 180,
       pinned: 'left',
-      width: 160,
       cellRenderer: DataDenDefaultCellRenderer,
     },
     {
       field: 'model',
       headerName: 'Model',
       sort: true,
+      sortOptions: {
+        comparator: sortComparator,
+      },
       filter: true,
+      filterRenderer: DataDenHeaderTextFilterRenderer,
       filterOptions: {
-        type: 'text',
         method: 'includes',
         debounceTime: 500,
         caseSensitive: false,
@@ -74,9 +101,12 @@ const options: DataDenOptions = {
       field: 'year',
       headerName: 'Year',
       sort: true,
+      sortOptions: {
+        comparator: sortComparator,
+      },
       filter: true,
+      filterRenderer: DataDenHeaderDateFilterRenderer,
       filterOptions: {
-        type: 'date',
         method: 'equals',
         debounceTime: 500,
         dateParserFn: (dateString: string) => {
@@ -94,13 +124,16 @@ const options: DataDenOptions = {
       field: 'price',
       headerName: 'Price',
       sort: true,
+      sortOptions: {
+        comparator: sortComparator,
+      },
       filter: true,
+      filterRenderer: DataDenHeaderNumberFilterRenderer,
       filterOptions: {
-        type: 'number',
         method: 'equals',
         debounceTime: 500,
       },
-      resize: true,
+      resize: false,
       width: 180,
       cellRenderer: DataDenDefaultCellRenderer,
     },
@@ -108,9 +141,12 @@ const options: DataDenOptions = {
       field: 'transmission',
       headerName: 'Transmission',
       sort: true,
+      sortOptions: {
+        comparator: sortComparator,
+      },
       filter: true,
+      filterRenderer: DataDenHeaderTextFilterRenderer,
       filterOptions: {
-        type: 'text',
         method: 'includes',
         debounceTime: 500,
         caseSensitive: false,
@@ -123,9 +159,12 @@ const options: DataDenOptions = {
       field: 'fuel',
       headerName: 'Fuel',
       sort: true,
+      sortOptions: {
+        comparator: sortComparator,
+      },
       filter: true,
+      filterRenderer: DataDenHeaderTextFilterRenderer,
       filterOptions: {
-        type: 'text',
         method: 'includes',
         debounceTime: 500,
         caseSensitive: false,
@@ -139,18 +178,18 @@ const options: DataDenOptions = {
   draggable: true,
   pagination: true,
   paginationOptions: {
-    pageSize: 20,
-    pageSizeOptions: [5, 10, 12, 20],
-    ofText: 'z',
-  },
-  quickFilter: true,
-  quickFilterOptions: {
-    debounceTime: 500,
+    pageSize: 10,
+    ofText: 'of',
   },
 };
 
 const ddEl = document.getElementById('dd');
 const dataDen = new DataDen(ddEl as HTMLElement, options);
+
+const quickFilterInput: HTMLInputElement = document.querySelector('.data-den-quick-filter-input')!;
+quickFilterInput.addEventListener('keyup', () => {
+  dataDen.quickFilter(quickFilterInput.value);
+});
 
 dataDen.on('sortingStart', (event: DataDenSortingEvent) => {
   if (event.field === 'model') {

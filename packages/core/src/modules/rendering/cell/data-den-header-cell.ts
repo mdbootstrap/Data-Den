@@ -1,26 +1,17 @@
-import {
-  DataDenHeaderDateFilterRenderer,
-  DataDenHeaderFilterRenderer,
-  DataDenHeaderNumberFilterRenderer,
-  DataDenHeaderTextFilterRenderer,
-} from '../filter';
+import { DataDenHeaderFilterChangeEvent, DataDenHeaderFilterRenderer } from '../filter';
 import { DataDenHeaderDefaultSorterRenderer, DataDenHeaderSorterRenderer } from '../sorter';
 import { DataDenHeaderDefaultResizerRenderer, DataDenHeaderResizerRenderer } from '../resizer';
 import { DataDenHeaderMenuRenderer } from '../menu';
 import { DataDenCell } from './data-den-cell';
 import { DataDenCellRenderer } from './data-den-cell-renderer.interface';
-import {
-  DataDenColDef,
-  DataDenInternalOptions,
-  DataDenListOption,
-  DataDenSelectFilterOptions,
-} from '../../../data-den-options.interface';
+import { DataDenColDef, DataDenInternalOptions } from '../../../data-den-options.interface';
 import { DataDenHeaderFilterRendererParams } from '../filter/data-den-header-filter-renderer-params.interface';
-import { Order } from '../../sorting';
+import { DataDenSortOrder } from '../../sorting';
 import { DataDenCellRendererParams } from './data-den-cell-renderer-params.interface';
 import { createHtmlElement } from '../../../utils';
 import { DataDenDefaultHeaderCellRenderer } from './data-den-default-header-cell-renderer';
-import { DataDenHeaderSelectFilterRenderer } from '../filter/data-den-header-select-filter-renderer';
+import { Context } from '../../../context';
+import { DataDenPubSub } from '../../../data-den-pub-sub';
 
 export class DataDenHeaderCell extends DataDenCell {
   rowIndex: number;
@@ -35,7 +26,7 @@ export class DataDenHeaderCell extends DataDenCell {
   #headerMenuRenderer: DataDenHeaderMenuRenderer | null = null;
   #renderer!: DataDenCellRenderer;
   #options: DataDenInternalOptions;
-  #order: Order;
+  #order: DataDenSortOrder;
   #isDropdownInitiated: boolean;
 
   constructor(
@@ -46,7 +37,7 @@ export class DataDenHeaderCell extends DataDenCell {
     width: number,
     pinned: string,
     options: DataDenInternalOptions,
-    order: Order
+    order: DataDenSortOrder
   ) {
     super(value, rowIndex, colIndex, left, width, pinned, options);
 
@@ -73,7 +64,9 @@ export class DataDenHeaderCell extends DataDenCell {
     this.#headerMenuRenderer = new DataDenHeaderMenuRenderer(cssPrefix, colDef, this.colIndex);
 
     if (filter) {
-      this.#filterRenderer = this.#getHeaderFilterRenderer(colDef);
+      const filterRenderer = colDef.filterRenderer;
+      const filterParams = this.#getHeaderFilterParams(colDef);
+      this.#filterRenderer = new filterRenderer(filterParams);
     }
 
     if (sort) {
@@ -92,36 +85,43 @@ export class DataDenHeaderCell extends DataDenCell {
     };
   }
 
-  #getHeaderFilterRenderer(colDef: DataDenColDef) {
+  #getHeaderFilterParams(colDef: DataDenColDef): DataDenHeaderFilterRendererParams {
     const field = colDef.field;
-    const { type, method, debounceTime } = colDef.filterOptions!;
-    let listOptions: DataDenListOption[] = [];
-
-    if (type === 'select') {
-      const filterOptions = colDef.filterOptions as DataDenSelectFilterOptions;
-      listOptions = filterOptions.listOptions;
-    }
+    const { method, debounceTime, listOptions } = colDef.filterOptions;
 
     const params: DataDenHeaderFilterRendererParams = {
+      colDef,
       field,
       method,
       debounceTime,
       cssPrefix: this.#options.cssPrefix,
       listOptions,
+      filterChanged: () => this.#onFilterChange(),
     };
 
-    switch (type) {
-      case 'text':
-        return new DataDenHeaderTextFilterRenderer(params);
-      case 'number':
-        return new DataDenHeaderNumberFilterRenderer(params);
-      case 'date':
-        return new DataDenHeaderDateFilterRenderer(params);
-      case 'select':
-        return new DataDenHeaderSelectFilterRenderer(params);
-      default:
-        return new DataDenHeaderTextFilterRenderer(params);
-    }
+    return params;
+  }
+
+  #onFilterChange() {
+    const colDef = this.#options.columns[this.colIndex];
+    const field = colDef.field;
+    const filter = this.#filterRenderer;
+    const context = new Context('info:filtering:header-filter-changed');
+    const type = filter.getType();
+    const state = filter.getState();
+    const isActive = filter.isActive();
+    const filterFn = filter.getFilterFn();
+
+    const filterChangeEvent: DataDenHeaderFilterChangeEvent = {
+      context,
+      field,
+      type,
+      state,
+      isActive,
+      filterFn,
+    };
+
+    DataDenPubSub.publish('info:filtering:header-filter-changed', filterChangeEvent);
   }
 
   render(): HTMLElement {

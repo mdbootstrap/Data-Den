@@ -1,11 +1,10 @@
 import { DataDenColDef, DataDenInternalOptions } from '../../data-den-options.interface';
 import { DataDenCell, DataDenHeaderCell } from './cell';
-import { DataDenQuickFilterParams, DataDenQuickFilterRenderer } from './filter';
 import { DataDenPaginationRenderer } from './pagination';
 import { DataDenHeaderRow, DataDenRow } from './row';
 import { DataDenPubSub } from '../../data-den-pub-sub';
 import { DataDenEvent } from '../../data-den-event';
-import { Order } from '../sorting/data-den-sorting.interface';
+import { DataDenSortOrder } from '../sorting/data-den-sorting.interface';
 import { Context } from '../../context';
 import {
   getMainColumnIndexes,
@@ -24,21 +23,14 @@ export class DataDenRenderingService {
   #columnsOrder: number[];
   #headerRow: DataDenHeaderRow;
   #rows: DataDenRow[] = [];
-  #quickFilterRenderer: DataDenQuickFilterRenderer | null = null;
   #paginationRenderer: DataDenPaginationRenderer | null = null;
 
   constructor(container: HTMLElement, options: DataDenInternalOptions) {
     this.#container = container;
     this.#options = options;
 
-    if (this.#options.quickFilter) {
-      const { debounceTime } = this.#options.quickFilterOptions;
-      const params: DataDenQuickFilterParams = { debounceTime, cssPrefix: this.#options.cssPrefix };
-      this.#quickFilterRenderer = new DataDenQuickFilterRenderer(params);
-    }
-
-    if (this.#options.pagination) {
-      this.#paginationRenderer = new DataDenPaginationRenderer(this.#options.paginationOptions);
+    if (options.pagination) {
+      this.#paginationRenderer = new DataDenPaginationRenderer(options.paginationOptions);
     }
 
     this.#init();
@@ -56,7 +48,11 @@ export class DataDenRenderingService {
     this.renderTable();
   }
 
-  #createPinnedHeaderCells(pinnedColumnsDefs: DataDenColDef[], rowIndex: number, order: Order): DataDenHeaderCell[] {
+  #createPinnedHeaderCells(
+    pinnedColumnsDefs: DataDenColDef[],
+    rowIndex: number,
+    order: DataDenSortOrder
+  ): DataDenHeaderCell[] {
     return pinnedColumnsDefs.map((colDef) => {
       const value = colDef.headerName;
       const left = 0;
@@ -163,10 +159,6 @@ export class DataDenRenderingService {
 
   renderTable(): void {
     const grid = this.#renderGrid();
-
-    if (this.#quickFilterRenderer) {
-      grid.appendChild(this.#quickFilterRenderer.getGui());
-    }
 
     const gridMain = document.createElement('div');
     gridMain.setAttribute('ref', 'gridMain');

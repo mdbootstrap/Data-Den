@@ -1,50 +1,23 @@
-import { DataDenCellRenderer } from './modules/rendering';
+import { DataDenCellRenderer, DataDenHeaderFilterRenderer } from './modules/rendering';
 
 export type ClassType<T> = new (...args: any[]) => T;
 
 export type DataDenMode = 'client' | 'server';
 
-export type DataDenHeaderFilterOptions =
-  | DataDenTextFilterOptions
-  | DataDenNumberFilterOptions
-  | DataDenDateFilterOptions
-  | DataDenSelectFilterOptions;
-
-export type DataDenTextFilterMethod = 'includes';
-
-export type DataDenNumberFilterMethod = 'equals';
-
-export type DataDenDateFilterMethod = 'equals';
-
-export type DataDenSelectFilterMethod = 'includes' | 'equals';
+export interface DataDenHeaderFilterOptions {
+  method?: string;
+  caseSensitive?: boolean;
+  debounceTime?: number;
+  dateParserFn?: DataDenDateFilterParserFn;
+  listOptions?: DataDenListOption[];
+}
 
 export type DataDenDateFilterParserFn = (value: string) => Date;
 
-export interface DataDenTextFilterOptions {
-  type: 'text';
-  method: DataDenTextFilterMethod;
-  debounceTime: number;
-  caseSensitive: boolean;
-}
+export type DataDenSortComparator = (valueA: any, valueB: any) => number;
 
-export interface DataDenNumberFilterOptions {
-  type: 'number';
-  method: DataDenNumberFilterMethod;
-  debounceTime: number;
-}
-
-export interface DataDenDateFilterOptions {
-  type: 'date';
-  method: DataDenDateFilterMethod;
-  debounceTime: number;
-  dateParserFn: DataDenDateFilterParserFn;
-}
-
-export interface DataDenSelectFilterOptions {
-  type: 'select';
-  method: DataDenSelectFilterMethod;
-  debounceTime: number;
-  listOptions: DataDenListOption[];
+export interface DataDenSortOptions {
+  comparator: DataDenSortComparator;
 }
 
 export interface DataDenListOption {
@@ -56,7 +29,9 @@ export interface DataDenColDef {
   field: string;
   headerName?: string;
   sort?: boolean;
+  sortOptions?: DataDenSortOptions;
   filter?: boolean;
+  filterRenderer?: ClassType<DataDenHeaderFilterRenderer>;
   filterOptions?: DataDenHeaderFilterOptions;
   resize?: boolean;
   pinned?: 'left' | 'right';
@@ -66,7 +41,9 @@ export interface DataDenColDef {
 
 export interface DataDenDefaultColDef {
   sort?: boolean;
+  sortOptions?: DataDenSortOptions;
   filter?: boolean;
+  filterRenderer?: ClassType<DataDenHeaderFilterRenderer>;
   filterOptions?: DataDenHeaderFilterOptions;
   resize?: boolean;
   width?: number;
@@ -75,12 +52,10 @@ export interface DataDenDefaultColDef {
 
 export interface DataDenPaginationOptions {
   pageSize?: number;
-  pageSizeOptions?: number[];
   ofText?: string;
 }
 
 export interface DataDenQuickFilterOptions {
-  debounceTime?: number;
   filterFn?: (searchTerm: any, value: any) => boolean;
 }
 
@@ -93,7 +68,6 @@ export interface DataDenOptions<TData = any> {
   draggable?: boolean;
   pagination?: boolean;
   paginationOptions?: DataDenPaginationOptions;
-  quickFilter?: boolean;
   quickFilterOptions?: DataDenQuickFilterOptions;
   rowHeight?: number;
 }
@@ -107,7 +81,6 @@ export interface DataDenInternalOptions {
   draggable: boolean;
   pagination: boolean;
   paginationOptions: Required<DataDenPaginationOptions>;
-  quickFilter: boolean;
   quickFilterOptions: Required<DataDenQuickFilterOptions>;
   resizable: boolean;
   rowHeight: number;

@@ -1,8 +1,12 @@
 import {
+  DataDenDateFilterParserFn,
   DataDenInternalOptions,
   DataDenPaginationOptions,
   DataDenQuickFilterOptions,
+  DataDenSortComparator,
+  DataDenSortOptions,
 } from './data-den-options.interface';
+import { DataDenHeaderTextFilterRenderer } from './modules/rendering';
 import { DataDenDefaultCellRenderer } from './modules/rendering/cell';
 
 const defaultPaginationOptions: Required<DataDenPaginationOptions> = {
@@ -19,8 +23,34 @@ const defaultQuickFilterFn = (searchTerm: any, value: any) => {
 };
 
 const defaultQuickFilterOptions: Required<DataDenQuickFilterOptions> = {
-  debounceTime: 500,
   filterFn: defaultQuickFilterFn,
+};
+
+const defaultDateParserFn: DataDenDateFilterParserFn = (dateString: string) => {
+  const dateParts = dateString.split('/').map((part) => Number(part));
+  const [day, month, year] = dateParts;
+
+  return new Date(year, month - 1, day);
+};
+
+const defaultSortComparator: DataDenSortComparator = (fieldA, fieldB) => {
+  if (typeof fieldA === 'string') {
+    fieldA = fieldA.toLowerCase();
+  }
+
+  if (typeof fieldB === 'string') {
+    fieldB = fieldB.toLowerCase();
+  }
+
+  if (fieldA === fieldB) {
+    return 0;
+  }
+
+  return fieldA > fieldB ? 1 : -1;
+};
+
+const defaultSortOptions: Required<DataDenSortOptions> = {
+  comparator: defaultSortComparator,
 };
 
 export const defaultOptions: DataDenInternalOptions = {
@@ -29,12 +59,15 @@ export const defaultOptions: DataDenInternalOptions = {
   columns: [],
   defaultColDef: {
     sort: false,
+    sortOptions: defaultSortOptions,
     filter: false,
+    filterRenderer: DataDenHeaderTextFilterRenderer,
     filterOptions: {
-      type: 'text',
       method: 'includes',
       debounceTime: 500,
       caseSensitive: false,
+      dateParserFn: defaultDateParserFn,
+      listOptions: [],
     },
     resize: false,
     width: 200,
@@ -44,7 +77,6 @@ export const defaultOptions: DataDenInternalOptions = {
   draggable: false,
   pagination: false,
   paginationOptions: defaultPaginationOptions,
-  quickFilter: false,
   quickFilterOptions: defaultQuickFilterOptions,
   resizable: false,
   rowHeight: 26,

@@ -104,7 +104,8 @@ export class DataDenDraggingService {
   #setColumnParams() {
     this.#columnPositions = [...this.#getAllColumnPositions()];
     this.#setBreakpoints();
-    this.#defaultGridOffsetLeft = this.#headerMainCellsWrapper!.getBoundingClientRect().left;
+    this.#defaultGridOffsetLeft =
+      this.#gridMain!.getBoundingClientRect().left + parseFloat(this.#headerMainCellsWrapper!.style.left);
   }
 
   #setBreakpoints() {
@@ -163,7 +164,8 @@ export class DataDenDraggingService {
       const orderedColumnPositions = [...this.#getAllColumnPositions()];
       this.#columnPositions = this.#mainColumnsOrder.map((columnIndex) => orderedColumnPositions[columnIndex]);
       this.#setBreakpoints();
-      this.#defaultGridOffsetLeft = this.#headerMainCellsWrapper!.getBoundingClientRect().left;
+      this.#defaultGridOffsetLeft =
+        this.#gridMain!.getBoundingClientRect().left + parseFloat(this.#headerMainCellsWrapper!.style.left);
     });
   }
 

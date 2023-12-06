@@ -1,6 +1,5 @@
 export interface DataDenActiveHeaderFilter {
   type: string;
-  method: string;
-  searchTerm: any;
+  state: any;
   filterFn: (searchTerm: any, value: any) => boolean;
 }
