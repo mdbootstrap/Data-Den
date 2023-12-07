@@ -61,36 +61,6 @@
     const ddElDraggable = document.getElementById('dd-draggable');
     const dataDenDraggable = new DataDen(ddElDraggable, { ...options, draggable: true });
     //draggable example
-
-    //Hoverable rows
-    const ddElVerticalBorders = document.getElementById('dd-hovereable-row');
-    const dataDenVerticalBorders = new DataDen(ddElVerticalBorders, options);
-    //Hoverable rows
-
-    //search column example
-    const ddElSearchColumn = document.getElementById('dd-search-column');
-    const dataDenSearchColumn = new DataDen(ddElSearchColumn, options);
-    //search column example
-
-    //scroll
-    const ddElScroll = document.getElementById('dd-scroll');
-    const dataDenScroll = new DataDen(ddElScroll, options);
-    //scroll
-
-    // Without vertical borders
-    const ddElVertical = document.getElementById('dd-vertical-borders');
-    const dataDenVertical = new DataDen(ddElVertical, options);
-    // Without vertical borders
-
-    // Without horizontal borders
-    const ddElHorizontal = document.getElementById('dd-horizontal-borders');
-    const dataDenHorizontal = new DataDen(ddElHorizontal, options);
-    // Without horizontal borders
-
-    // Unstriped rows
-    const ddElUnstriped = document.getElementById('dd-unstriped-rows');
-    const dataDenUnstriped = new DataDen(ddElUnstriped, options);
-    // Unstriped rows
   })();
 
   //pagination example
@@ -263,16 +233,159 @@
   })();
   //cell-formatting
 
-  //fixed-header
+  //search column example
   (() => {
-    //fixed-header
-    const ddElFixedHeader = document.getElementById('dd-fixed-header');
-    const dataDenFixedHeader = new DataDen(ddElFixedHeader, options);
+    class DataDenHeaderTextFilterRenderer {
+      constructor(params) {
+        this.params = params;
+        this.cssPrefix = params.cssPrefix;
+        const template = `
+      <div class="${this.cssPrefix}header-filter">
+        <input type="text" class="${this.cssPrefix}header-filter-input" />
+      </div>
+    `;
 
-    const headerFixedHeader = ddElFixedHeader.querySelector('.data-den-header');
-    headerFixedHeader.classList.add('bg-white', 'dark:bg-neutral-800');
+        this.element = this.createHtmlElement(template);
+        this.input = this.element.querySelector(`.${this.cssPrefix}header-filter-input`);
 
-    //fixed-header
+        this.attachUiEvents(params);
+      }
+
+      createHtmlElement(template, elementName = 'div') {
+        const placeholder = document.createElement(elementName);
+        placeholder.innerHTML = template;
+
+        return placeholder.firstElementChild;
+      }
+
+      debounce(callback, debounceTime) {
+        let timeout;
+
+        return function (...args) {
+          const debounceFn = () => {
+            clearTimeout(timeout);
+            callback(...args);
+          };
+
+          clearTimeout(timeout);
+          timeout = setTimeout(debounceFn, debounceTime);
+        };
+      }
+
+      getGui() {
+        return this.element;
+      }
+
+      getType() {
+        return 'text';
+      }
+
+      getState() {
+        const value = this.input ? this.input.value : null;
+
+        return {
+          method: this.params.method,
+          searchTerm: value,
+        };
+      }
+
+      isActive() {
+        const value = this.input ? this.input.value : null;
+
+        return !!value;
+      }
+
+      getFilterFn() {
+        const options = this.params.colDef.filterOptions;
+
+        return (state, value) => {
+          let searchTerm = state.searchTerm;
+          const method = state.method;
+          const caseSensitive = options.caseSensitive;
+          value = caseSensitive ? value : value.toString().toLowerCase();
+          searchTerm = caseSensitive ? searchTerm : searchTerm.toString().toLowerCase();
+
+          switch (method) {
+            case 'includes':
+              return value.includes(searchTerm);
+            default:
+              return false;
+          }
+        };
+      }
+
+      attachUiEvents(params) {
+        if (this.input) {
+          const debounceFilter = this.debounce(() => params.filterChanged(), params.debounceTime);
+
+          this.input.addEventListener('keyup', () => debounceFilter());
+        }
+      }
+
+      destroy() {}
+    }
+
+    const options = {
+      columns: [
+        {
+          field: 'car',
+          headerName: 'Car',
+          filter: true,
+          filterRenderer: DataDenHeaderTextFilterRenderer,
+          filterOptions: {
+            method: 'includes',
+            debounceTime: 500,
+            caseSensitive: false,
+          },
+          cellRenderer: DataDenDefaultCellRenderer,
+          width: 180,
+        },
+        {
+          field: 'model',
+          headerName: 'Model',
+          filter: true,
+          filterRenderer: DataDenHeaderTextFilterRenderer,
+          filterOptions: {
+            method: 'includes',
+            debounceTime: 500,
+            caseSensitive: false,
+          },
+          cellRenderer: DataDenDefaultCellRenderer,
+          width: 180,
+        },
+        {
+          field: 'year',
+          headerName: 'Year',
+          filter: true,
+          filterRenderer: DataDenHeaderTextFilterRenderer,
+          filterOptions: {
+            method: 'includes',
+            debounceTime: 500,
+            caseSensitive: false,
+          },
+          cellRenderer: DataDenDefaultCellRenderer,
+          width: 180,
+        },
+        {
+          field: 'price',
+          headerName: 'Price',
+          filter: true,
+          filterRenderer: DataDenHeaderTextFilterRenderer,
+          filterOptions: {
+            method: 'includes',
+            debounceTime: 500,
+            caseSensitive: false,
+          },
+          cellRenderer: DataDenDefaultCellRenderer,
+          width: 180,
+        },
+      ],
+      rows: rows,
+      rowHeight: 32,
+    };
+
+    const ddElSearchColumn = document.getElementById('dd-search-column');
+    const dataDenSearchColumn = new DataDen(ddElSearchColumn, options);
   })();
-  //fixed-header
+  //search column example
 </script>
