@@ -65,7 +65,7 @@ export class DataDenResizingService {
   }
 
   #subscribeRerenderingDone(): void {
-    DataDenPubSub.subscribe('command:rerendering:done', () => {
+    this.PubSub.subscribe('command:rerendering:done', () => {
       this.#headers = Array.from(this.#container.querySelectorAll('[ref="headerCell"]'))!;
       this.#headersMain = Array.from(
         this.#container.querySelector('[ref="headerMainCellsWrapper"]').querySelectorAll('[ref="headerCell"]')

@@ -22,7 +22,7 @@ export class DataDenHeaderDefaultResizerRenderer extends DataDenHeaderResizerRen
 
     this.element = createHtmlElement(template);
     this.element.addEventListener('mousedown', this.#onMouseDown.bind(this));
-    document.addEventListener('mousemove', this.#resize);
+    document.addEventListener('mousemove', this.#resize.bind(this));
     document.addEventListener('mouseup', this.#onMouseUp.bind(this));
   }
 

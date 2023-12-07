@@ -84,7 +84,7 @@ export class DataDenDraggingService {
   }
 
   #subscribeRerenderingDone() {
-    DataDenPubSub.subscribe('command:rerendering:done', () => {
+    this.PubSub.subscribe('command:rerendering:done', () => {
       this.#setDefaultColumnsOrder();
       this.#setHeaderElements();
 

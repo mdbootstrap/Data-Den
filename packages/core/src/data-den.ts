@@ -32,6 +32,7 @@ import { inject } from './utils/inject';
 import { DataDenHeaderSelectFilterRenderer } from './modules/rendering/filter/data-den-header-select-filter-renderer';
 import { DataDenPaginationRenderer } from './modules/rendering/pagination';
 import { DataDenHeaderDefaultResizerRenderer } from './modules/rendering/resizer';
+import { DataDenHeaderMenuRenderer } from './modules/rendering/menu';
 
 export class DataDen {
   #rendering: DataDenRenderingService;
@@ -62,6 +63,7 @@ export class DataDen {
       DataDenPaginationRenderer,
       DataDenHeaderDefaultResizerRenderer,
       DataDenHeaderDefaultSorterRenderer,
+      DataDenHeaderMenuRenderer,
     ].forEach((clazz) => {
       inject(clazz, 'PubSub', this.PubSub);
     });

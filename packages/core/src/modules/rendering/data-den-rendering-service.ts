@@ -189,11 +189,11 @@ export class DataDenRenderingService {
     this.#init();
     this.#publishFetchStart();
 
-    DataDenPubSub.publish('command:rerendering:done', {
+    this.PubSub.publish('command:rerendering:done', {
       caller: this,
       context: new Context('command:rerendering:done'),
     });
-    DataDenPubSub.publish('command:rerendering:done', {
+    this.PubSub.publish('command:rerendering:done', {
       caller: this,
       context: new Context('command:rerendering:done'),
     });
@@ -268,7 +268,7 @@ export class DataDenRenderingService {
       this.#options.columns[currentColIndex].width = event.data.newCurrentColWidth;
       this.#calculateGridSize();
     });
-    DataDenPubSub.subscribe('command:pin-column:start', (event: DataDenEvent) => {
+    this.PubSub.subscribe('command:pin-column:start', (event: DataDenEvent) => {
       this.#options.columns[event.data.colIndex].pinned = event.data.pin;
       this.rerenderTable();
     });
