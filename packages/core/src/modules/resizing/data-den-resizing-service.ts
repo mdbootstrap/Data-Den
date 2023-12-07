@@ -17,6 +17,7 @@ export class DataDenResizingService {
   #currentColIndex: number;
   #headersOnTheRight: HTMLElement[];
   #columnsOrder: number[];
+  private PubSub: DataDenPubSub;
   #isResizeingPinnedRightColumn: boolean;
 
   constructor(container: HTMLElement, options: DataDenInternalOptions) {
@@ -52,7 +53,7 @@ export class DataDenResizingService {
   }
 
   #subscribeFetchDone(): void {
-    DataDenPubSub.subscribe('info:fetch:done', () => {
+    this.PubSub.subscribe('info:fetch:done', () => {
       if (!this.#isInitiated) {
         this.init();
       }
@@ -64,7 +65,7 @@ export class DataDenResizingService {
   }
 
   #subscribeRerenderingDone(): void {
-    DataDenPubSub.subscribe('command:rerendering:done', () => {
+    this.PubSub.subscribe('command:rerendering:done', () => {
       this.#headers = Array.from(this.#container.querySelectorAll('[ref="headerCell"]'))!;
       this.#headersMain = Array.from(
         this.#container.querySelector('[ref="headerMainCellsWrapper"]').querySelectorAll('[ref="headerCell"]')
@@ -74,13 +75,13 @@ export class DataDenResizingService {
   }
 
   #subscribeResizingEvents() {
-    DataDenPubSub.subscribe('info:resizing:mousedown', (event) => this.#onMousedown(event));
-    DataDenPubSub.subscribe('info:resizing:mouseup', () => this.#onMouseup());
-    DataDenPubSub.subscribe('command:resizing:start', (event) => this.#onResizing(event));
+    this.PubSub.subscribe('info:resizing:mousedown', (event) => this.#onMousedown(event));
+    this.PubSub.subscribe('info:resizing:mouseup', () => this.#onMouseup());
+    this.PubSub.subscribe('command:resizing:start', (event) => this.#onResizing(event));
   }
 
   #subscribeDraggingEvent() {
-    DataDenPubSub.subscribe('info:dragging:columns-reorder:done', (event: DataDenEvent) => {
+    this.PubSub.subscribe('info:dragging:columns-reorder:done', (event: DataDenEvent) => {
       this.#columnsOrder = event.data.columnsOrder;
     });
   }
@@ -106,7 +107,7 @@ export class DataDenResizingService {
 
     this.#isResizing = false;
 
-    DataDenPubSub.publish('info:resizing:done', {
+    this.PubSub.publish('info:resizing:done', {
       context: new Context('info:resizing:done'),
     });
   }
@@ -120,7 +121,7 @@ export class DataDenResizingService {
 
     this.#resizeCurrentColumn(movementX);
     this.#updateRemainingColumnsPosition(movementX);
-    DataDenPubSub.publish('info:resizing:start', {
+    this.PubSub.publish('info:resizing:start', {
       currentColIndex: this.#headers.indexOf(this.#currentHeader),
       newCurrentColWidth: parseInt(this.#currentHeader.style.width, 10),
       context: new Context('info:resizing:start'),

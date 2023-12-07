@@ -24,6 +24,7 @@ export class DataDenRenderingService {
   #headerRow: DataDenHeaderRow;
   #rows: DataDenRow[] = [];
   #paginationRenderer: DataDenPaginationRenderer | null = null;
+  private PubSub: DataDenPubSub;
 
   constructor(container: HTMLElement, options: DataDenInternalOptions) {
     this.#container = container;
@@ -137,9 +138,15 @@ export class DataDenRenderingService {
       const pinnedCellsLeft = Object.entries(rowData).map(([key, value], colIndex) =>
         this.#createPinnedCellsLeft(key, value, colIndex, rowIndex)
       );
-      const mainCells = Object.entries(rowData).map(([key, value], colIndex) =>
-        this.#createMainCells(key, value, colIndex, rowIndex)
-      );
+      let mainCells = Object.entries(rowData);
+      mainCells.sort(([aField], [bField]) => {
+        // sort based on this.#orderedColumns order
+        const aIndex = this.#orderedColumns.findIndex((col) => col.field === aField);
+        const bIndex = this.#orderedColumns.findIndex((col) => col.field === bField);
+        return aIndex - bIndex;
+      });
+      mainCells = mainCells.map(([key, value], colIndex) => this.#createMainCells(key, value, colIndex, rowIndex));
+
       const pinnedCellsRight = Object.entries(rowData)
         .reverse()
         .map(([key, value], colIndex) => this.#createPinnedCellsRight(key, value, colIndex, rowIndex));
@@ -151,7 +158,7 @@ export class DataDenRenderingService {
   }
 
   #publishFetchStart() {
-    DataDenPubSub.publish('command:fetch:start', {
+    this.PubSub.publish('command:fetch:start', {
       caller: this,
       context: new Context('command:fetch:start'),
     });
@@ -182,11 +189,11 @@ export class DataDenRenderingService {
     this.#init();
     this.#publishFetchStart();
 
-    DataDenPubSub.publish('command:rerendering:done', {
+    this.PubSub.publish('command:rerendering:done', {
       caller: this,
       context: new Context('command:rerendering:done'),
     });
-    DataDenPubSub.publish('command:rerendering:done', {
+    this.PubSub.publish('command:rerendering:done', {
       caller: this,
       context: new Context('command:rerendering:done'),
     });
@@ -252,29 +259,31 @@ export class DataDenRenderingService {
   }
 
   #subscribeToEvents(): void {
-    DataDenPubSub.subscribe('info:dragging:columns-reorder:done', (event: DataDenEvent) => {
+    this.PubSub.subscribe('info:dragging:columns-reorder:done', (event: DataDenEvent) => {
       this.#columnsOrder = event.data.columnsOrder;
       this.#orderedColumns = this.#columnsOrder.map((columnIndex) => this.#defaultOrderedColumns[columnIndex]);
     });
-    DataDenPubSub.subscribe('info:resizing:start', (event: DataDenEvent) => {
+    this.PubSub.subscribe('info:resizing:start', (event: DataDenEvent) => {
       const currentColIndex = getAllColumnsOrder(this.#options.columns)[event.data.currentColIndex];
       this.#options.columns[currentColIndex].width = event.data.newCurrentColWidth;
       this.#calculateGridSize();
     });
-    DataDenPubSub.subscribe('command:pin-column:start', (event: DataDenEvent) => {
+    this.PubSub.subscribe('command:pin-column:start', (event: DataDenEvent) => {
       this.#options.columns[event.data.colIndex].pinned = event.data.pin;
       this.rerenderTable();
     });
   }
 
   #subscribeFetchDone(): void {
-    DataDenPubSub.subscribe('info:fetch:done', (event: DataDenEvent) => {
+    this.PubSub.subscribe('info:fetch:done', (event: DataDenEvent) => {
       this.#updateRows(event);
     });
   }
 
   #updateRows(event: DataDenEvent): void {
     const { rows } = event.data;
+
+    console.log(this.#container, rows.length);
 
     const rowsEl = document.createDocumentFragment();
     this.#rows = this.#createDataRows(rows);

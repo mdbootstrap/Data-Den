@@ -26,6 +26,7 @@ export class DataDenHeaderCell extends DataDenCell {
   #headerMenuRenderer: DataDenHeaderMenuRenderer | null = null;
   #renderer!: DataDenCellRenderer;
   #options: DataDenInternalOptions;
+  private PubSub: DataDenPubSub;
   #order: DataDenSortOrder;
   #isDropdownInitiated: boolean;
 
@@ -105,6 +106,7 @@ export class DataDenHeaderCell extends DataDenCell {
   #onFilterChange() {
     const colDef = this.#options.columns[this.colIndex];
     const field = colDef.field;
+
     const filter = this.#filterRenderer;
     const context = new Context('info:filtering:header-filter-changed');
     const type = filter.getType();
@@ -121,7 +123,7 @@ export class DataDenHeaderCell extends DataDenCell {
       filterFn,
     };
 
-    DataDenPubSub.publish('info:filtering:header-filter-changed', filterChangeEvent);
+    this.PubSub.publish('info:filtering:header-filter-changed', filterChangeEvent);
   }
 
   render(): HTMLElement {

@@ -20,6 +20,7 @@ export class DataDenDraggingService {
   #mainColumnsOrder: number[];
   #defaultGridOffsetLeft: number;
   #cssPrefix: string;
+  private PubSub: DataDenPubSub;
 
   #handleGridMouseMove: (e: MouseEvent) => void;
   #handleDocumentMouseUp: (e: MouseEvent) => void;
@@ -73,7 +74,7 @@ export class DataDenDraggingService {
   }
 
   #subscribeFetchDone() {
-    DataDenPubSub.subscribe('info:fetch:done', () => {
+    this.PubSub.subscribe('info:fetch:done', () => {
       if (this.#isInitiated) {
         this.update();
       } else {
@@ -83,7 +84,7 @@ export class DataDenDraggingService {
   }
 
   #subscribeRerenderingDone() {
-    DataDenPubSub.subscribe('command:rerendering:done', () => {
+    this.PubSub.subscribe('command:rerendering:done', () => {
       this.#setDefaultColumnsOrder();
       this.#setHeaderElements();
 
@@ -160,7 +161,7 @@ export class DataDenDraggingService {
   }
 
   #subscribeResizingDone() {
-    DataDenPubSub.subscribe('info:resizing:done', () => {
+    this.PubSub.subscribe('info:resizing:done', () => {
       const orderedColumnPositions = [...this.#getAllColumnPositions()];
       this.#columnPositions = this.#mainColumnsOrder.map((columnIndex) => orderedColumnPositions[columnIndex]);
       this.#setBreakpoints();
@@ -332,7 +333,7 @@ export class DataDenDraggingService {
   }
 
   #publishColumnsOrder() {
-    DataDenPubSub.publish('info:dragging:columns-reorder:done', {
+    this.PubSub.publish('info:dragging:columns-reorder:done', {
       columnsOrder: this.#mainColumnsOrder,
       context: new Context('info:dragging:columns-reorder:done'),
     });

@@ -7,6 +7,7 @@ import { DataDenInternalOptions, DataDenSortComparator } from '../../data-den-op
 
 export class DataDenSortingService {
   #field: string;
+  private PubSub: DataDenPubSub;
   #order: DataDenSortOrder;
   #options: DataDenInternalOptions;
 
@@ -15,7 +16,7 @@ export class DataDenSortingService {
     this.#order = 'asc';
     this.#options = options;
 
-    DataDenPubSub.subscribe('command:sorting:start', (event: DataDenEvent) => {
+    this.PubSub.subscribe('command:sorting:start', (event: DataDenEvent) => {
       const sortingPreviousState = new DataDenSortingPreviousState({ field: this.#field, order: this.#order });
 
       if (this.#field === event.data.field) {
@@ -55,7 +56,7 @@ export class DataDenSortingService {
         return;
       }
 
-      DataDenPubSub.publish('command:fetch:sort-start', {
+      this.PubSub.publish('command:fetch:sort-start', {
         caller: this,
         context: event.context,
         field: this.#field,
