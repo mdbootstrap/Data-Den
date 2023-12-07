@@ -9,6 +9,7 @@ export class DataDenHeaderMenuRenderer {
   #cssPrefix: string;
   colDef: DataDenColDef;
   colIndex: number;
+  private PubSub: DataDenPubSub;
 
   constructor(cssPrefix: string, colDef: DataDenColDef, colIndex: number) {
     this.#cssPrefix = cssPrefix;
@@ -46,7 +47,7 @@ export class DataDenHeaderMenuRenderer {
     const pinRightTrigger = this.dropdown.querySelector('[ref="pinRightPinColTrigger"]');
 
     unPinTrigger?.addEventListener('click', () => {
-      DataDenPubSub.publish('command:pin-column:start', {
+      this.PubSub.publish('command:pin-column:start', {
         pin: false,
         colIndex: this.colIndex,
         context: new Context('command:pin-column:start'),
@@ -54,7 +55,7 @@ export class DataDenHeaderMenuRenderer {
     });
 
     pinLeftTrigger?.addEventListener('click', () => {
-      DataDenPubSub.publish('command:pin-column:start', {
+      this.PubSub.publish('command:pin-column:start', {
         pin: 'left',
         colIndex: this.colIndex,
         context: new Context('command:pin-column:start'),
@@ -62,7 +63,7 @@ export class DataDenHeaderMenuRenderer {
     });
 
     pinRightTrigger?.addEventListener('click', () => {
-      DataDenPubSub.publish('command:pin-column:start', {
+      this.PubSub.publish('command:pin-column:start', {
         pin: 'right',
         colIndex: this.colIndex,
         context: new Context('command:pin-column:start'),

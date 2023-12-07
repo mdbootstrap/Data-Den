@@ -9,6 +9,7 @@ import { DataDenEventEmitter } from '../../data-den-event-emitter';
 export class DataDenFetchService {
   #loader: DataDenDataLoaderStrategy;
   #fetchOptions: DataDenFetchOptions;
+  private PubSub: DataDenPubSub;
 
   constructor(loader: DataDenDataLoaderStrategy) {
     this.#loader = loader;
@@ -30,11 +31,11 @@ export class DataDenFetchService {
       context,
       rows: data,
     };
-    DataDenPubSub.publish('info:fetch:done', EventData);
+    this.PubSub.publish('info:fetch:done', EventData);
   }
 
   #subscribeFetchStart(): void {
-    DataDenPubSub.subscribe('command:fetch:start', (event: DataDenEvent) => {
+    this.PubSub.subscribe('command:fetch:start', (event: DataDenEvent) => {
       this.#getData(this.#fetchOptions).then((data: any[]) => {
         this.#publishFetchDone(event.context, data);
       });
@@ -42,7 +43,7 @@ export class DataDenFetchService {
   }
 
   #subscribeSortingDone(): void {
-    DataDenPubSub.subscribe('command:fetch:sort-start', (event: DataDenEvent) => {
+    this.PubSub.subscribe('command:fetch:sort-start', (event: DataDenEvent) => {
       this.#fetchOptions.sortingOptions = {
         field: event.data.field,
         order: event.data.order,
@@ -57,7 +58,7 @@ export class DataDenFetchService {
   }
 
   #subscribeQuickFilterChanged(): void {
-    DataDenPubSub.subscribe('info:filtering:active-quick-filter-changed', (event: DataDenEvent) => {
+    this.PubSub.subscribe('info:filtering:active-quick-filter-changed', (event: DataDenEvent) => {
       this.#fetchOptions.quickFilterOptions = {
         searchTerm: event.data.filter.searchTerm,
         filterFn: event.data.filter.filterFn,
@@ -69,7 +70,7 @@ export class DataDenFetchService {
   }
 
   #subscribeFilterChange(): void {
-    DataDenPubSub.subscribe('info:filtering:active-filters-changed', (event: DataDenEvent) => {
+    this.PubSub.subscribe('info:filtering:active-filters-changed', (event: DataDenEvent) => {
       this.#fetchOptions.filtersOptions = {
         filters: event.data.filters,
       };
@@ -80,7 +81,7 @@ export class DataDenFetchService {
   }
 
   #subscribePaginationChange(): void {
-    DataDenPubSub.subscribe('info:pagination:info-change:done', (event: DataDenEvent) => {
+    this.PubSub.subscribe('info:pagination:info-change:done', (event: DataDenEvent) => {
       this.#fetchOptions.paginationOptions = {
         firstRowIndex: event.data.firstRowIndex,
         lastRowIndex: event.data.lastRowIndex,

@@ -11,13 +11,14 @@ export class DataDenFilteringService {
   activeHeaderFilters: { [key: string]: DataDenActiveHeaderFilter } = {};
   activeQuickFilter: DataDenActiveQuickFilter;
   options: DataDenInternalOptions;
+  private PubSub: DataDenPubSub;
 
   constructor(options: DataDenInternalOptions) {
     this.options = options;
     this.activeQuickFilter = { searchTerm: '', filterFn: options.quickFilterOptions.filterFn };
 
-    DataDenPubSub.subscribe('info:filtering:header-filter-changed', this.#handleHeaderFilterChange.bind(this));
-    DataDenPubSub.subscribe('info:filtering:quick-filter-changed', this.#handleQuickFilterChange.bind(this));
+    this.PubSub.subscribe('info:filtering:header-filter-changed', this.#handleHeaderFilterChange.bind(this));
+    this.PubSub.subscribe('info:filtering:quick-filter-changed', this.#handleQuickFilterChange.bind(this));
   }
 
   #handleHeaderFilterChange(event: DataDenEvent) {
@@ -31,7 +32,7 @@ export class DataDenFilteringService {
       filters: this.activeHeaderFilters,
     };
 
-    DataDenPubSub.publish('info:filtering:active-filters-changed', activeFiltersChangeEvent);
+    this.PubSub.publish('info:filtering:active-filters-changed', activeFiltersChangeEvent);
   }
 
   #updateActiveHeaderFilters(field: string, filter: DataDenActiveHeaderFilter, isActive: boolean) {
@@ -52,6 +53,6 @@ export class DataDenFilteringService {
       filter: this.activeQuickFilter,
     };
 
-    DataDenPubSub.publish('info:filtering:active-quick-filter-changed', activeQuickFilterChangeEvent);
+    this.PubSub.publish('info:filtering:active-quick-filter-changed', activeQuickFilterChangeEvent);
   }
 }
