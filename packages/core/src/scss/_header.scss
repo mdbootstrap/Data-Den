@@ -119,6 +119,8 @@
   display: flex;
   padding: 6px var(--#{$prefix}header-cell-padding-x);
   position: absolute;
+  font-weight: 700;
+  text-transform: uppercase;
 
   .#{$prefix}header-cell-value {
     display: flex;
@@ -133,13 +135,13 @@
 .#{$prefix}header-cell-pinned-left {
   position: relative;
   float: left;
-  background-color: #ffe1e1;
+  background-color: rgb(245, 245, 245);
 }
 
 .#{$prefix}header-cell-pinned-right {
   position: relative;
   float: right;
-  background-color: #ffe1e1;
+  background-color: rgb(245, 245, 245);
 }
 
 .#{$prefix}header-menu-toggler {

@@ -5,6 +5,10 @@
   position: relative;
 }
 
+.#{$prefix}row:nth-child(even) .data-den-cell {
+  background-color: rgb(250, 250, 250);
+}
+
 .#{$prefix}row {
   width: 100%;
 }

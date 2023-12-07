@@ -283,8 +283,6 @@ export class DataDenRenderingService {
   #updateRows(event: DataDenEvent): void {
     const { rows } = event.data;
 
-    console.log(this.#container, rows.length);
-
     const rowsEl = document.createDocumentFragment();
     this.#rows = this.#createDataRows(rows);
     this.#rows.forEach((row) => rowsEl.appendChild(row.render()));
