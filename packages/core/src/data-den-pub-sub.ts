@@ -27,6 +27,8 @@ export class DataDenPubSub {
     'command:fetch:start': [],
     'command:fetch:sort-start': [],
     'info:fetch:done': [],
+    'command:pin-column:start': [],
+    'command:rerendering:done': [],
   };
 
   publish(name: string, data: DataDenPublishedEvent) {

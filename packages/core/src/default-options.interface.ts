@@ -3,6 +3,8 @@ import {
   DataDenInternalOptions,
   DataDenPaginationOptions,
   DataDenQuickFilterOptions,
+  DataDenSortComparator,
+  DataDenSortOptions,
 } from './data-den-options.interface';
 import { DataDenHeaderTextFilterRenderer } from './modules/rendering';
 import { DataDenDefaultCellRenderer } from './modules/rendering/cell';
@@ -31,12 +33,33 @@ const defaultDateParserFn: DataDenDateFilterParserFn = (dateString: string) => {
   return new Date(year, month - 1, day);
 };
 
+const defaultSortComparator: DataDenSortComparator = (fieldA, fieldB) => {
+  if (typeof fieldA === 'string') {
+    fieldA = fieldA.toLowerCase();
+  }
+
+  if (typeof fieldB === 'string') {
+    fieldB = fieldB.toLowerCase();
+  }
+
+  if (fieldA === fieldB) {
+    return 0;
+  }
+
+  return fieldA > fieldB ? 1 : -1;
+};
+
+const defaultSortOptions: Required<DataDenSortOptions> = {
+  comparator: defaultSortComparator,
+};
+
 export const defaultOptions: DataDenInternalOptions = {
   cssPrefix: 'data-den-',
   mode: 'client',
   columns: [],
   defaultColDef: {
     sort: false,
+    sortOptions: defaultSortOptions,
     filter: false,
     filterRenderer: DataDenHeaderTextFilterRenderer,
     filterOptions: {

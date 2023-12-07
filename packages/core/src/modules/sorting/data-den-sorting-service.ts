@@ -1,17 +1,20 @@
-import { Order } from './data-den-sorting.interface';
+import { DataDenSortOrder } from './data-den-sorting.interface';
 import { DataDenPubSub } from '../../data-den-pub-sub';
 import { DataDenEvent } from '../../data-den-event';
 import { DataDenEventEmitter } from '../../data-den-event-emitter';
 import { DataDenSortingPreviousState } from './data-den-sorting-previous-state';
+import { DataDenInternalOptions, DataDenSortComparator } from '../../data-den-options.interface';
 
 export class DataDenSortingService {
   #field: string;
-  #order: Order;
   private PubSub: DataDenPubSub;
+  #order: DataDenSortOrder;
+  #options: DataDenInternalOptions;
 
-  constructor() {
+  constructor(options: DataDenInternalOptions) {
     this.#field = '';
     this.#order = 'asc';
+    this.#options = options;
 
     this.PubSub.subscribe('command:sorting:start', (event: DataDenEvent) => {
       const sortingPreviousState = new DataDenSortingPreviousState({ field: this.#field, order: this.#order });
@@ -37,10 +40,13 @@ export class DataDenSortingService {
       }
 
       this.#field = event.data.field;
+      const colDef = this.#options.columns.find((column) => column.field === this.#field);
+      const comparator = colDef.sortOptions.comparator;
 
       const sortingStartEvent = DataDenEventEmitter.triggerEvent('sortingStart', {
         field: this.#field,
         order: this.#order,
+        comparator,
         sortFn: this.sort,
       });
 
@@ -55,32 +61,23 @@ export class DataDenSortingService {
         context: event.context,
         field: this.#field,
         order: this.#order,
+        comparator,
         sortFn: this.sort,
       });
     });
   }
 
-  sort(rows: any, field: string, order: string): any[] {
+  sort(rows: any, field: string, order: DataDenSortOrder, comparator: DataDenSortComparator): any[] {
     if (!order) return rows;
 
     const sortedData = rows.sort((a: any, b: any) => {
-      let fieldA = a[field];
-      let fieldB = b[field];
+      const isAscending = order === 'asc';
+      const fieldA = a[field];
+      const fieldB = b[field];
 
-      if (typeof fieldA === 'string') {
-        fieldA = fieldA.toLowerCase();
-      }
-      if (typeof fieldB === 'string') {
-        fieldB = fieldB.toLowerCase();
-      }
+      const result = comparator(fieldA, fieldB);
 
-      if (fieldA < fieldB) {
-        return order === 'desc' ? 1 : -1;
-      }
-      if (fieldA > fieldB) {
-        return order === 'desc' ? -1 : 1;
-      }
-      return 0;
+      return isAscending ? result : result * -1;
     });
 
     return sortedData;

@@ -1,21 +1,23 @@
 import { DataDenInternalOptions } from '../../data-den-options.interface';
 import { DataDenPubSub } from '../../data-den-pub-sub';
 import { Context } from '../../context';
+import { getMainColumnsOrder } from '../../utils/columns-order';
 
 export class DataDenDraggingService {
   #container: HTMLElement;
+  #gridMain: HTMLElement;
   #options: DataDenInternalOptions;
   #isInitiated: boolean;
   #isDragging: boolean;
-  #headerRow: HTMLElement | null;
+  #headerMainCellsWrapper: HTMLElement | null;
   #headers: HTMLElement[];
   #currentIndex: number;
   #targetIndex: number;
   #prevTargetIndex: number;
   #columns: HTMLElement[][];
-  #columnPositions: { left: number; width: number }[];
+  #columnPositions: { left: string; width: number }[];
   #breakpoints: number[];
-  #columnsOrder: number[];
+  #mainColumnsOrder: number[];
   #defaultGridOffsetLeft: number;
   #cssPrefix: string;
   private PubSub: DataDenPubSub;
@@ -26,10 +28,11 @@ export class DataDenDraggingService {
 
   constructor(container: HTMLElement, options: DataDenInternalOptions) {
     this.#container = container;
+    this.#gridMain = container.querySelector('[ref="gridMain"]')!;
     this.#options = options;
     this.#isInitiated = false;
     this.#isDragging = false;
-    this.#headerRow = null;
+    this.#headerMainCellsWrapper = null;
     this.#headers = [];
     this.#currentIndex = -1;
     this.#targetIndex = -1;
@@ -37,7 +40,7 @@ export class DataDenDraggingService {
     this.#columns = [];
     this.#columnPositions = [];
     this.#breakpoints = [];
-    this.#columnsOrder = [];
+    this.#mainColumnsOrder = [];
     this.#defaultGridOffsetLeft = 0;
     this.#cssPrefix = options.cssPrefix;
 
@@ -46,6 +49,7 @@ export class DataDenDraggingService {
     this.#handleHeaderMouseDown = () => {};
 
     this.#subscribeFetchDone();
+    this.#subscribeRerenderingDone();
   }
 
   init() {
@@ -66,7 +70,7 @@ export class DataDenDraggingService {
 
   update() {
     const tempColumns = [...this.#getAllColumnElements()];
-    this.#columns = this.#columnsOrder.map((columnIndex) => tempColumns[columnIndex]);
+    this.#columns = this.#mainColumnsOrder.map((columnIndex) => tempColumns[columnIndex]);
   }
 
   #subscribeFetchDone() {
@@ -79,24 +83,51 @@ export class DataDenDraggingService {
     });
   }
 
+  #subscribeRerenderingDone() {
+    DataDenPubSub.subscribe('command:rerendering:done', () => {
+      this.#setDefaultColumnsOrder();
+      this.#setHeaderElements();
+
+      setTimeout(() => {
+        this.#gridMain = this.#container.querySelector('[ref="gridMain"]')!;
+        this.update();
+        this.#setColumnParams();
+        this.#addColumnDragEventHandlers();
+      }, 0);
+    });
+  }
+
   #setHeaderElements() {
-    this.#headerRow = this.#container.querySelector('[ref="headerRow"]')!;
-    this.#headers = Array.from(this.#container.querySelectorAll('[ref="headerCell"]'))!;
+    this.#headerMainCellsWrapper = this.#container.querySelector('[ref="headerMainCellsWrapper"]')!;
+    this.#headers = Array.from(this.#headerMainCellsWrapper.querySelectorAll('[ref="headerCell"]'))!;
   }
 
   #setColumnParams() {
     this.#columnPositions = [...this.#getAllColumnPositions()];
-    this.#breakpoints = this.#columnPositions.map((column) => column.left);
-    this.#defaultGridOffsetLeft = this.#headerRow!.getBoundingClientRect().left;
+    this.#setBreakpoints();
+    this.#defaultGridOffsetLeft =
+      this.#gridMain!.getBoundingClientRect().left + parseFloat(this.#headerMainCellsWrapper!.style.left);
+  }
+
+  #setBreakpoints() {
+    this.#breakpoints = [];
+    this.#columnPositions.forEach((column) => {
+      if (column.left === 'auto') {
+        return;
+      }
+
+      this.#breakpoints.push(parseFloat(column.left));
+    });
+    this.#breakpoints.sort((a, b) => a - b);
   }
 
   #getOffsetX(pageX: number) {
-    return pageX - this.#defaultGridOffsetLeft;
+    return pageX - this.#defaultGridOffsetLeft + this.#gridMain.scrollLeft;
   }
 
   #getAllColumnPositions() {
     return this.#headers.map((column: HTMLElement) => ({
-      left: parseFloat(column.style.left),
+      left: column.style.left,
       width: parseFloat(column.style.width),
     }));
   }
@@ -108,7 +139,9 @@ export class DataDenDraggingService {
   #getColumnElements(index: number) {
     const colHeader = this.#headers[index];
     const rows = this.#container.querySelectorAll('[ref="row"]');
-    const cells = Array.from(rows).map((row) => row.querySelectorAll('[ref="cell"]')[index] as HTMLElement);
+    const cells = Array.from(rows).map(
+      (row) => row.querySelectorAll('.data-den-main-cells-wrapper [ref="cell"]')[index] as HTMLElement
+    );
 
     return [colHeader, ...cells];
   }
@@ -118,20 +151,22 @@ export class DataDenDraggingService {
     this.#handleGridMouseMove = this.#onGridMouseMove.bind(this);
     this.#handleDocumentMouseUp = this.#onDocumentMouseUp.bind(this);
 
-    this.#headerRow!.addEventListener('mousedown', this.#handleHeaderMouseDown);
+    this.#headerMainCellsWrapper!.addEventListener('mousedown', this.#handleHeaderMouseDown);
     this.#container.addEventListener('mousemove', this.#handleGridMouseMove);
     document.addEventListener('mouseup', this.#handleDocumentMouseUp);
   }
 
   #setDefaultColumnsOrder() {
-    this.#columnsOrder = this.#options.columns.map((_, index: number) => index);
+    this.#mainColumnsOrder = getMainColumnsOrder(this.#options.columns);
   }
 
   #subscribeResizingDone() {
     this.PubSub.subscribe('info:resizing:done', () => {
       const orderedColumnPositions = [...this.#getAllColumnPositions()];
-      this.#columnPositions = this.#columnsOrder.map((columnIndex) => orderedColumnPositions[columnIndex]);
-      this.#breakpoints = this.#columnPositions.map((column) => column.left);
+      this.#columnPositions = this.#mainColumnsOrder.map((columnIndex) => orderedColumnPositions[columnIndex]);
+      this.#setBreakpoints();
+      this.#defaultGridOffsetLeft =
+        this.#gridMain!.getBoundingClientRect().left + parseFloat(this.#headerMainCellsWrapper!.style.left);
     });
   }
 
@@ -141,13 +176,13 @@ export class DataDenDraggingService {
   }
 
   #onMouseDown(offsetX: number) {
-    this.#initializeDragging(offsetX);
+    this.#getCurrentIndex(offsetX);
+    this.#isDragging = true;
     this.#enableTransition();
     this.#setActiveStyle();
   }
 
-  #initializeDragging(offsetX: number) {
-    this.#isDragging = true;
+  #getCurrentIndex(offsetX: number) {
     this.#currentIndex = this.#getMinBreakpointIndex(this.#breakpoints, offsetX);
   }
 
@@ -241,13 +276,15 @@ export class DataDenDraggingService {
 
     this.#swapArrayElements(this.#columnPositions, currentOrderedIndex, this.#targetIndex);
     this.#swapArrayElements(this.#columns, currentOrderedIndex, this.#targetIndex);
-    this.#swapArrayElements(this.#columnsOrder, currentOrderedIndex, this.#targetIndex);
+    this.#swapArrayElements(this.#mainColumnsOrder, currentOrderedIndex, this.#targetIndex);
 
     this.#columns.forEach((column, index) => {
       column.forEach((cell) => {
         cell.style.left = `${this.#breakpoints[index]}px`;
       });
     });
+
+    this.#publishColumnsOrder();
   }
 
   #getDirection() {
@@ -275,7 +312,6 @@ export class DataDenDraggingService {
     this.#disableTransition();
     this.#unsetActiveStyle();
     this.#resetIndexes();
-    this.#publishColumnsOrder();
   }
 
   #resetIndexes() {
@@ -291,14 +327,14 @@ export class DataDenDraggingService {
   }
 
   #removeDocumentEventListeners() {
-    this.#headerRow!.removeEventListener('mousedown', this.#handleHeaderMouseDown);
+    this.#headerMainCellsWrapper!.removeEventListener('mousedown', this.#handleHeaderMouseDown);
     this.#container.removeEventListener('mousemove', this.#handleGridMouseMove);
     document.removeEventListener('mouseup', this.#handleDocumentMouseUp);
   }
 
   #publishColumnsOrder() {
     this.PubSub.publish('info:dragging:columns-reorder:done', {
-      columnsOrder: this.#columnsOrder,
+      columnsOrder: this.#mainColumnsOrder,
       context: new Context('info:dragging:columns-reorder:done'),
     });
   }

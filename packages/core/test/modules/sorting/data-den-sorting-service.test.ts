@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 import { inject } from '../../../src/utils/inject';
+declare var require: any;
 
 describe('data-den-sorting-service', () => {
   let DataDenSortingService: any;
   let exampleData: any[] = [];
+  let options: any = {};
+  let sortComparator: any;
 
   beforeEach(() => {
     exampleData = [
@@ -12,6 +15,43 @@ describe('data-den-sorting-service', () => {
       { car: 'Porsche', model: 'Boxster' },
       { car: 'Honda', model: 'Civic' },
     ];
+
+    sortComparator = (fieldA: any, fieldB: any) => {
+      if (typeof fieldA === 'string') {
+        fieldA = fieldA.toLowerCase();
+      }
+
+      if (typeof fieldB === 'string') {
+        fieldB = fieldB.toLowerCase();
+      }
+
+      if (fieldA === fieldB) {
+        return 0;
+      }
+
+      return fieldA > fieldB ? 1 : -1;
+    };
+
+    options = {
+      columns: [
+        {
+          field: 'car',
+          headerName: 'Car',
+          sort: true,
+          sortOptions: {
+            comparator: sortComparator,
+          },
+        },
+        {
+          field: 'model',
+          headerName: 'Model',
+          sort: true,
+          sortOptions: {
+            comparator: sortComparator,
+          },
+        },
+      ],
+    };
   });
 
   describe('PubSub communications', () => {
@@ -49,7 +89,7 @@ describe('data-den-sorting-service', () => {
       caller = 'test caller';
       field = 'car';
 
-      new DataDenSortingService();
+      new DataDenSortingService(options);
       mockFn = jest.fn();
 
       DataDenPubSub.subscribe(COMMAND_FETCH_START, (event: any) => {
@@ -145,17 +185,17 @@ describe('data-den-sorting-service', () => {
       DataDenPubSub = new PubSubClass();
       DataDenSortingService = require('../../../src/modules/sorting/data-den-sorting-service').DataDenSortingService;
       inject(DataDenSortingService, 'PubSub', DataDenPubSub);
-      instance = new DataDenSortingService();
+      instance = new DataDenSortingService(options);
     });
 
     it('should sort ascending', () => {
-      let sortedData = instance.sort(exampleData, 'car', 'asc');
+      let sortedData = instance.sort(exampleData, 'car', 'asc', sortComparator);
 
       expect(sortedData[0].car).toEqual('Honda');
       expect(sortedData[1].car).toEqual('Mitsubishi');
       expect(sortedData[2].car).toEqual('Porsche');
 
-      sortedData = instance.sort(exampleData, 'model', 'asc');
+      sortedData = instance.sort(exampleData, 'model', 'asc', sortComparator);
 
       expect(sortedData[0].model).toEqual('Boxster');
       expect(sortedData[1].model).toEqual('Civic');
@@ -163,13 +203,13 @@ describe('data-den-sorting-service', () => {
     });
 
     it('should sort descending', () => {
-      let sortedData = instance.sort(exampleData, 'car', 'desc');
+      let sortedData = instance.sort(exampleData, 'car', 'desc', sortComparator);
 
       expect(sortedData[0].car).toEqual('Porsche');
       expect(sortedData[1].car).toEqual('Mitsubishi');
       expect(sortedData[2].car).toEqual('Honda');
 
-      sortedData = instance.sort(exampleData, 'model', 'desc');
+      sortedData = instance.sort(exampleData, 'model', 'desc', sortComparator);
 
       expect(sortedData[0].model).toEqual('Lancer');
       expect(sortedData[1].model).toEqual('Civic');
@@ -177,13 +217,13 @@ describe('data-den-sorting-service', () => {
     });
 
     it('should return the same data if the order is false value', () => {
-      let sortedData = instance.sort(exampleData, 'car', '');
+      let sortedData = instance.sort(exampleData, 'car', '', sortComparator);
 
       expect(sortedData[0].car).toEqual('Mitsubishi');
       expect(sortedData[1].car).toEqual('Porsche');
       expect(sortedData[2].car).toEqual('Honda');
 
-      sortedData = instance.sort(exampleData, 'model', '');
+      sortedData = instance.sort(exampleData, 'model', '', sortComparator);
 
       expect(sortedData[0].model).toEqual('Lancer');
       expect(sortedData[1].model).toEqual('Boxster');
