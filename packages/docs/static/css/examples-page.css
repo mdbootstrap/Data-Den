@@ -1,23 +1,21 @@
 :root {
-  --data-den-header-cell-bg: inherit;
-  --data-den-grid-row-cell-border: none;
-  --data-den-header-cell-border: none;
-  --data-den-row-cell-border: none;
+  /* --data-den-header-cell-bg: inherit; */
+  /* --data-den-grid-row-cell-border: none; */
+  /* --data-den-header-cell-border: none; */
+  /* --data-den-row-cell-border: none; */
 }
 
-.data-den-left-cells-wrapper,
+/* .data-den-left-cells-wrapper,
 .data-den-right-cells-wrapper {
   border: none;
-}
+} */
 
 .data-den-header-row .data-den-header-cell {
-  border: none;
-  border-bottom: 2px solid #e5e7eb;
-  font-weight: 700;
+  border-bottom: var(--data-den-header-cell-border);
 }
 
 .data-den-cell {
-  border-bottom: 1px solid #e5e7eb;
+  /* border-bottom: 1px solid #e5e7eb; */
 }
 
 .data-den-pagination-content > button {
@@ -40,15 +38,14 @@
 /* search */
 
 /* Fixed Header, scroll */
-#fixed-header-section .scroll-wrapper,
-#scroll-section .scroll-wrapper {
+#fixed-header-section .data-den-grid-main,
+#scroll-section .data-den-grid-main {
   overflow-y: scroll;
   height: 200px;
 }
 #fixed-header-section .data-den-header {
   position: sticky !important;
   top: 0;
-  z-index: 1;
 }
 /* Fixed Header, scroll  */
 
@@ -57,3 +54,36 @@
   background-color: rgb(245, 245, 245);
 }
 /* Hoverable rows */
+
+/* Without vertical borders */
+#vertical-borders-section .data-den-header-cell,
+#vertical-borders-section .data-den-cell {
+  border-left: none;
+  border-right: none;
+}
+#vertical-borders-section .data-den-left-cells-wrapper,
+#vertical-borders-section .data-den-right-cells-wrapper,
+#vertical-borders-section .data-den-header-left-cells-wrapper,
+#vertical-borders-section .data-den-header-right-cells-wrapper {
+  border: none;
+}
+/* Without vertical borders */
+
+/* Without horizontal borders */
+#horizontal-borders-section .data-den-header-cell,
+#horizontal-borders-section .data-den-cell {
+  border-top: none;
+  border-bottom: none;
+}
+/* Without horizontal borders */
+
+/* Unstriped rows */
+#unstriped-rows-section .data-den-row:nth-child(even) .data-den-cell,
+#unstriped-rows-section .data-den-header-cell {
+  background-color: inherit;
+}
+
+#unstriped-rows-section .data-den-header-cell {
+  border-bottom-color: transparent;
+}
+/* Unstriped rows */

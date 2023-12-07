@@ -112,6 +112,8 @@
   display: flex;
   padding: 6px var(--data-den-header-cell-padding-x);
   position: absolute;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 .data-den-header-cell .data-den-header-cell-value {
   display: flex;
@@ -124,12 +126,12 @@
 .data-den-header-cell-pinned-left {
   position: relative;
   float: left;
-  background-color: #ffe1e1;
+  background-color: #f5f5f5;
 }
 .data-den-header-cell-pinned-right {
   position: relative;
   float: right;
-  background-color: #ffe1e1;
+  background-color: #f5f5f5;
 }
 .data-den-header-menu-toggler {
   display: none;
@@ -198,15 +200,17 @@ body {
 :root {
   --data-den-cell-padding-x: 12px;
   --data-den-cell-border-width: 1px;
-  --data-den-cell-border: solid var(--data-den-cell-border-width) #ccc;
-  --data-den-grid-row-cell-border: solid var(--data-den-cell-border-width) #ccc;
-  --data-den-row-cell-border: solid var(--data-den-cell-border-width) #ccc;
+  --data-den-cell-border: solid var(--data-den-cell-border-width) var(--data-den-cell-border-color);
+  --data-den-cell-border-color: #e5e7eb;
+  --data-den-grid-row-cell-border: solid var(--data-den-row-cell-border-width) var(--data-den-cell-border-color);
+  --data-den-row-cell-border-width: 1px;
+  --data-den-row-cell-border: solid var(--data-den-row-cell-border-width) var(--data-den-cell-border-color);
   --data-den-row-cell-padding-x: var(--data-den-cell-padding-x);
   --data-den-pagination-content-marin: 10px 0;
   --data-den-pagination-info-margin: 0 5px;
   --data-den-header-height: 35px;
-  --data-den-header-cell-bg: #eceaea;
-  --data-den-header-cell-border: solid var(--data-den-cell-border-width) #ccc;
+  --data-den-header-cell-bg: rgb(250, 250, 250);
+  --data-den-header-cell-border: solid var(--data-den-cell-border-width) var(--data-den-cell-border-color);
   --data-den-header-cell-padding-x: var(--data-den-cell-padding-x);
   --data-den-header-sorter-margin-left: 5px;
   --data-den-header-sorter-arrow-sorted-color: unset;
@@ -221,6 +225,9 @@ body {
   flex-flow: row wrap;
   flex-direction: column;
   position: relative;
+}
+.data-den-row:nth-child(2n) .data-den-cell {
+  background-color: #fafafa;
 }
 .data-den-row {
   width: 100%;
