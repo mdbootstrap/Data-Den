@@ -6,6 +6,7 @@ import { DataDenDraggingService } from './modules/dragging';
 import { DataDenResizingService } from './modules/resizing';
 import { DataDenFilteringService } from './modules/filtering';
 import { DataDenSortingService, DataDenSortingEvent } from './modules/sorting';
+import { DataDenPinningEvent } from './modules/pinning';
 import { DataDenFetchService } from './modules/fetch';
 import { DataDenDefaultCellRenderer } from './modules/rendering/cell/data-den-default-cell-renderer';
 import {
@@ -90,6 +91,15 @@ export class DataDen {
 
     DataDenPubSub.publish('info:filtering:quick-filter-changed', event);
   }
+
+  pinColumn(pin: string | boolean, colIndex: number) {
+    const command = 'command:pin-column:start';
+    DataDenPubSub.publish(command, {
+      context: new Context(command),
+      pin,
+      colIndex,
+    });
+  }
 }
 
 export {
@@ -99,4 +109,4 @@ export {
   DataDenDataLoaderStrategy,
 };
 
-export type { DataDenOptions, DataDenSortingEvent };
+export type { DataDenOptions, DataDenSortingEvent, DataDenPinningEvent };

@@ -14,6 +14,8 @@ import {
   getPinnedRightColumns,
   getAllColumnsOrder,
 } from '../../utils/columns-order';
+import { DataDenPinningPreviousState } from '../pinning/data-den-pinning-previous-state';
+import { DataDenEventEmitter } from '../../data-den-event-emitter';
 
 export class DataDenRenderingService {
   #container: HTMLElement;
@@ -63,7 +65,11 @@ export class DataDenRenderingService {
     });
   }
 
-  #createMainHeaderCells(mainColumnsDefs: DataDenColDef[], rowIndex: number, order: Order): DataDenHeaderCell[] {
+  #createMainHeaderCells(
+    mainColumnsDefs: DataDenColDef[],
+    rowIndex: number,
+    order: DataDenSortOrder
+  ): DataDenHeaderCell[] {
     return mainColumnsDefs.map((colDef, index) => {
       const value = colDef.headerName;
       const left = this.#orderedColumns.slice(0, index).reduce((acc, curr) => acc + (curr.width || 120), 0);
@@ -74,7 +80,7 @@ export class DataDenRenderingService {
     });
   }
 
-  #createHeaderRow(colDefs: DataDenColDef[], order: Order): DataDenHeaderRow {
+  #createHeaderRow(colDefs: DataDenColDef[], order: DataDenSortOrder): DataDenHeaderRow {
     const rowIndex = 0;
 
     const pinnedHeaderCellsLeft = this.#createPinnedHeaderCells(getPinnedLeftColumns(colDefs), rowIndex, order);
@@ -262,8 +268,29 @@ export class DataDenRenderingService {
       this.#calculateGridSize();
     });
     DataDenPubSub.subscribe('command:pin-column:start', (event: DataDenEvent) => {
+      const pinningPreviousState = new DataDenPinningPreviousState({
+        pin: this.#options.columns[event.data.colIndex].pinned,
+      });
       this.#options.columns[event.data.colIndex].pinned = event.data.pin;
+
+      const pinningStartEvent = DataDenEventEmitter.triggerEvent('pinningStart', {
+        pin: event.data.pin,
+        colIndex: event.data.colIndex,
+        columns: this.#options.columns,
+      });
+
+      if (pinningStartEvent.defaultPrevented) {
+        this.#options.columns[event.data.colIndex].pinned = pinningPreviousState.getValue('pin');
+        return;
+      }
+
       this.rerenderTable();
+
+      DataDenEventEmitter.triggerEvent('pinningDone', {
+        pin: event.data.pin,
+        colIndex: event.data.colIndex,
+        columns: this.#options.columns,
+      });
     });
   }
 
