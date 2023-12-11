@@ -184,13 +184,15 @@ describe('data-den-sorting-service', () => {
     });
 
     it('should sort ascending', () => {
-      let sortedData = instance.sort(exampleData, 'car', 'asc', sortComparator);
+      let activeSorters = [{ field: 'car', order: 'asc', comparator: sortComparator, sortIndex: 0 }];
+      let sortedData = instance.sort(exampleData, activeSorters);
 
       expect(sortedData[0].car).toEqual('Honda');
       expect(sortedData[1].car).toEqual('Mitsubishi');
       expect(sortedData[2].car).toEqual('Porsche');
 
-      sortedData = instance.sort(exampleData, 'model', 'asc', sortComparator);
+      activeSorters = [{ field: 'model', order: 'asc', comparator: sortComparator, sortIndex: 0 }];
+      sortedData = instance.sort(exampleData, activeSorters);
 
       expect(sortedData[0].model).toEqual('Boxster');
       expect(sortedData[1].model).toEqual('Civic');
@@ -198,13 +200,15 @@ describe('data-den-sorting-service', () => {
     });
 
     it('should sort descending', () => {
-      let sortedData = instance.sort(exampleData, 'car', 'desc', sortComparator);
+      let activeSorters = [{ field: 'car', order: 'desc', comparator: sortComparator, sortIndex: 0 }];
+      let sortedData = instance.sort(exampleData, activeSorters);
 
       expect(sortedData[0].car).toEqual('Porsche');
       expect(sortedData[1].car).toEqual('Mitsubishi');
       expect(sortedData[2].car).toEqual('Honda');
 
-      sortedData = instance.sort(exampleData, 'model', 'desc', sortComparator);
+      activeSorters = [{ field: 'model', order: 'desc', comparator: sortComparator, sortIndex: 0 }];
+      sortedData = instance.sort(exampleData, activeSorters);
 
       expect(sortedData[0].model).toEqual('Lancer');
       expect(sortedData[1].model).toEqual('Civic');
@@ -212,17 +216,12 @@ describe('data-den-sorting-service', () => {
     });
 
     it('should return the same data if the order is false value', () => {
-      let sortedData = instance.sort(exampleData, 'car', '', sortComparator);
+      const activeSorters: any[] = [];
+      const sortedData = instance.sort(exampleData, activeSorters);
 
       expect(sortedData[0].car).toEqual('Mitsubishi');
       expect(sortedData[1].car).toEqual('Porsche');
       expect(sortedData[2].car).toEqual('Honda');
-
-      sortedData = instance.sort(exampleData, 'model', '', sortComparator);
-
-      expect(sortedData[0].model).toEqual('Lancer');
-      expect(sortedData[1].model).toEqual('Boxster');
-      expect(sortedData[2].model).toEqual('Civic');
     });
   });
 });

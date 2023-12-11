@@ -5,37 +5,53 @@ import { DataDenEventEmitter } from '../../data-den-event-emitter';
 import { DataDenSortingPreviousState } from './data-den-sorting-previous-state';
 import { DataDenInternalOptions, DataDenSortComparator } from '../../data-den-options.interface';
 
+export interface DataDenActiveSorter {
+  field: string;
+  order: DataDenSortOrder;
+  comparator: DataDenSortComparator;
+  sortIndex: number;
+}
+
 export class DataDenSortingService {
   #field: string;
   #order: DataDenSortOrder;
   #options: DataDenInternalOptions;
+  activeSortersMap: Map<string, DataDenActiveSorter>;
 
   constructor(options: DataDenInternalOptions, private PubSub: DataDenPubSub) {
     this.#field = '';
     this.#order = 'asc';
     this.#options = options;
 
+    this.activeSortersMap = new Map();
+
     this.PubSub.subscribe('command:sorting:start', (event: DataDenEvent) => {
       const sortingPreviousState = new DataDenSortingPreviousState({ field: this.#field, order: this.#order });
 
-      if (this.#field === event.data.field) {
-        switch (this.#order) {
+      const { field, isMultiSort } = event.data;
+      const isCurrentSorterActive = this.activeSortersMap.has(field);
+      const currentSorterOrder = isCurrentSorterActive ? this.activeSortersMap.get(field).order : '';
+
+      let nextOrder: DataDenSortOrder;
+
+      if (isCurrentSorterActive) {
+        switch (currentSorterOrder) {
           case 'asc':
-            this.#order = 'desc';
+            nextOrder = 'desc';
             break;
           case 'desc':
-            this.#order = '';
+            nextOrder = '';
             break;
           default:
-            this.#order = 'asc';
+            nextOrder = 'asc';
             break;
         }
       } else {
-        this.#order = 'asc';
+        nextOrder = 'asc';
       }
 
       if (event.data.order) {
-        this.#order = event.data.order;
+        nextOrder = event.data.order;
       }
 
       this.#field = event.data.field;
@@ -43,8 +59,8 @@ export class DataDenSortingService {
       const comparator = colDef.sortOptions.comparator;
 
       const sortingStartEvent = DataDenEventEmitter.triggerEvent('sortingStart', {
-        field: this.#field,
-        order: this.#order,
+        field: field,
+        order: nextOrder,
         comparator,
         sortFn: this.sort,
       });
@@ -55,30 +71,79 @@ export class DataDenSortingService {
         return;
       }
 
+      if (isMultiSort) {
+        this.updateActiveSortersMap(field, nextOrder, comparator);
+      } else {
+        this.activeSortersMap.clear();
+        this.updateActiveSortersMap(field, nextOrder, comparator);
+      }
+
       this.PubSub.publish('command:fetch:sort-start', {
         caller: this,
         context: event.context,
-        field: this.#field,
-        order: this.#order,
+        field: field,
+        order: nextOrder,
         comparator,
         sortFn: this.sort,
+        activeSorters: this.getActiveSortersArray(),
+        isMultiSort,
       });
     });
   }
 
-  sort(rows: any, field: string, order: DataDenSortOrder, comparator: DataDenSortComparator): any[] {
-    if (!order) return rows;
+  updateActiveSortersMap(field: string, order: DataDenSortOrder, comparator: DataDenSortComparator) {
+    const sorterExist = this.activeSortersMap.has(field);
 
-    const sortedData = rows.sort((a: any, b: any) => {
-      const isAscending = order === 'asc';
-      const fieldA = a[field];
-      const fieldB = b[field];
+    if (order === '' && sorterExist) {
+      this.activeSortersMap.delete(field);
+      this.updateSortIndexes();
+      return;
+    }
 
-      const result = comparator(fieldA, fieldB);
+    if (sorterExist && order !== '') {
+      const sort = this.activeSortersMap.get(field);
+      sort.order = order;
+    } else if (!sorterExist && order !== '') {
+      const sortIndex = this.activeSortersMap.size;
+      this.activeSortersMap.set(this.#field, { field, order, comparator, sortIndex });
+    }
+  }
 
-      return isAscending ? result : result * -1;
+  updateSortIndexes() {
+    let currentIndex = 0;
+
+    for (const sorter of this.activeSortersMap.values()) {
+      sorter.sortIndex = currentIndex++;
+    }
+  }
+
+  getActiveSortersArray(): DataDenActiveSorter[] {
+    return Array.from(this.activeSortersMap.values()).sort((a, b) => a.sortIndex - b.sortIndex);
+  }
+
+  sort(rows: any, activeSorters: DataDenActiveSorter[]): any[] {
+    rows.sort((a: any, b: any) => {
+      let sortResult = 0;
+
+      for (const sorter of activeSorters) {
+        const { order, field, comparator } = sorter;
+
+        if (sortResult === 0) {
+          const isAscending = order === 'asc';
+          const fieldA = a[field];
+          const fieldB = b[field];
+
+          const result = comparator(fieldA, fieldB);
+
+          sortResult = isAscending ? result : result * -1;
+        } else {
+          break;
+        }
+      }
+
+      return sortResult;
     });
 
-    return sortedData;
+    return rows;
   }
 }
