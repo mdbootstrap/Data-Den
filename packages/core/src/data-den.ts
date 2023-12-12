@@ -14,6 +14,11 @@ import {
   DataDenServerDataLoaderStrategy,
   DataDenDataLoaderStrategy,
 } from './modules/fetch';
+import {
+  DataDenHeaderDateFilterRenderer,
+  DataDenHeaderNumberFilterRenderer,
+  DataDenHeaderTextFilterRenderer,
+} from './modules/rendering';
 import { DataDenPubSub } from './data-den-pub-sub';
 import { DataDenEventEmitter } from './data-den-event-emitter';
 import { Context } from './context';
@@ -107,6 +112,9 @@ export {
   DataDenClientDataLoaderStrategy,
   DataDenServerDataLoaderStrategy,
   DataDenDataLoaderStrategy,
+  DataDenHeaderDateFilterRenderer,
+  DataDenHeaderNumberFilterRenderer,
+  DataDenHeaderTextFilterRenderer,
 };
 
 export type { DataDenOptions, DataDenSortingEvent, DataDenPinningEvent };

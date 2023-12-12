@@ -2,12 +2,12 @@ import './src/scss/index.scss';
 import { DataDen } from './src/data-den';
 import { DataDenOptions } from './src/data-den-options.interface';
 import { DataDenDefaultCellRenderer } from './src/modules/rendering/cell/data-den-default-cell-renderer';
-import { DataDenSortingEvent } from './src/modules/sorting';
 import {
   DataDenHeaderDateFilterRenderer,
   DataDenHeaderNumberFilterRenderer,
   DataDenHeaderTextFilterRenderer,
 } from './src/modules/rendering';
+import { DataDenSortingEvent } from './src/modules/sorting';
 import { DataDenPinningEvent } from './src/modules/pinning';
 
 const rows = [
@@ -205,7 +205,7 @@ dataDen.on('sortingDone', (event: DataDenSortingEvent) => {
 });
 
 dataDen.on('pinningStart', (event: DataDenPinningEvent) => {
-  if (event.colIndex === 1) {
+  if (event.colIndex === 2) {
     event.preventDefault();
   }
   console.log(event);

@@ -1,1 +1,6 @@
 @import 'data-den-core/dist/css/data-den.min.css';
+
+#dd {
+  width: 700px;
+  margin: 10px;
+}
