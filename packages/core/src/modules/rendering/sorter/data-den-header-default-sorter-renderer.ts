@@ -2,15 +2,16 @@ import { createHtmlElement } from '../../../utils';
 import { DataDenHeaderSorterRenderer } from './data-den-header-sorter-renderer.interface';
 import { DataDenPubSub } from './../../../data-den-pub-sub';
 import { Context } from '../../../context';
-import { Order } from '../../sorting/data-den-sorting.interface';
+import { DataDenSortOrder } from '../../sorting/data-den-sorting.interface';
 
 export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRenderer {
   arrowElement: HTMLElement;
   element: HTMLElement;
   #field: string;
   #cssPrefix: string;
+  private PubSub: DataDenPubSub;
 
-  constructor(field: string, order: Order, cssPrefix: string) {
+  constructor(field: string, order: DataDenSortOrder, cssPrefix: string) {
     super();
     this.#cssPrefix = cssPrefix;
     const template = `
@@ -40,7 +41,7 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
 
   sort(): void {
     const command = 'command:sorting:start';
-    DataDenPubSub.publish(command, {
+    this.PubSub.publish(command, {
       caller: this,
       context: new Context(command),
       field: this.#field,
@@ -48,7 +49,7 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
   }
 
   #subscribeSortingStartEvent(): void {
-    DataDenPubSub.subscribe('command:fetch:sort-start', (event) => {
+    this.PubSub.subscribe('command:fetch:sort-start', (event) => {
       if (this.#field === event.data.field) {
         this.#updateArrowDirectionAfterSort(event.data.order);
       }

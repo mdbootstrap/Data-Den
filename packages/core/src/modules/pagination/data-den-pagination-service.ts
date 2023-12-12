@@ -8,6 +8,7 @@ export class DataDenPaginationService {
   #currentPage: number;
   #pageSize: number;
   #allTotalRows: number;
+  private PubSub: DataDenPubSub;
 
   constructor(options: DataDenInternalOptions) {
     this.#options = options.paginationOptions;
@@ -20,24 +21,24 @@ export class DataDenPaginationService {
   }
 
   #subscribeToEvents() {
-    DataDenPubSub.subscribe('command:pagination:load-first-page:start', () => {
+    this.PubSub.subscribe('command:pagination:load-first-page:start', () => {
       this.#loadFirstPage();
     });
-    DataDenPubSub.subscribe('command:pagination:load-prev-page:start', () => {
+    this.PubSub.subscribe('command:pagination:load-prev-page:start', () => {
       this.#loadPrevPage();
     });
-    DataDenPubSub.subscribe('command:pagination:load-next-page:start', () => {
+    this.PubSub.subscribe('command:pagination:load-next-page:start', () => {
       this.#loadNextPage();
     });
-    DataDenPubSub.subscribe('command:pagination:load-last-page:start', () => {
+    this.PubSub.subscribe('command:pagination:load-last-page:start', () => {
       this.#loadLastPage();
     });
-    DataDenPubSub.subscribe('info:pagination:page-size-change:done', (event: { data: { pageSize: number } }) => {
+    this.PubSub.subscribe('info:pagination:page-size-change:done', (event: { data: { pageSize: number } }) => {
       this.#pageSize = event.data.pageSize;
       this.#currentPage = 0;
       this.#updateState();
     });
-    DataDenPubSub.subscribe('info:fetch:done', (event: DataDenEvent) => {
+    this.PubSub.subscribe('info:fetch:done', (event: DataDenEvent) => {
       if (this.#allTotalRows || this.#allTotalRows === event.data.rows.length) {
         return;
       }
@@ -54,7 +55,7 @@ export class DataDenPaginationService {
   }
 
   #publishEvents(firstRowIndex: number, lastRowIndex: number, allTotalRows: number) {
-    DataDenPubSub.publish('info:pagination:info-change:done', {
+    this.PubSub.publish('info:pagination:info-change:done', {
       firstRowIndex,
       lastRowIndex,
       allTotalRows,

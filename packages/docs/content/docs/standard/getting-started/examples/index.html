@@ -1,0 +1,781 @@
+---
+title: 'Examples'
+date: 2023-02-09T10:00:00+02:00
+draft: false
+main_title: 'Examples'
+subheading: ''
+seo_title: 'Data Den examples'
+description: 'Data Den examples'
+image: ''
+video: ''
+url: 'docs/standard/getting-started/examples/'
+menu:
+  gettingstarted:
+    name: 'Examples'
+    weight: 6
+---
+
+<div class="w-full">
+  <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="formats" data-te-spy-item>
+    Data Den is a plugin that extends the functionality of the library with table component.
+  </h2>
+</div>
+
+<hr class="my-10" />
+
+<!--Section: Basic-->
+<section id="basic-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Basic example</h2>
+        <p>Use the following example of a responsive table component to show multiple rows and columns of text data.</p>
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="basic-example">}}
+        <div id="dd-basic" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo>}}
+        <!--Section: Demo-->
+
+        <div class="pt-2" id="basic-example">
+          <!-- prettier-ignore -->
+          {{< twsnippet/wrapper "index.html,main.js" "" "mobile" >}}
+    {{< twsnippet/code active=true lang="html" >}}
+
+          <div id="dd"></div>
+
+          {{< /twsnippet/code >}}
+          <!-- prettier-ignore -->
+          {{< twsnippet/code lang="js" >}}
+import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+
+const rows = [
+  { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+  { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+  { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+  { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+  { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+  { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+  { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+  { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+  { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+  { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+];
+
+const options = {
+  columns: [
+    {
+      field: "car",
+      headerName: "Car",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "model",
+      headerName: "Model",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "year",
+      headerName: "Year",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "price",
+      headerName: "Price",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+  ],
+  rows: rows,
+};
+
+const ddEl = document.getElementById("dd");
+const dataDen = new DataDen(ddEl, options);
+
+  {{< /twsnippet/code >}}
+
+
+{{< /twsnippet/wrapper >}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Basic-->
+
+<hr class="my-10" />
+
+<!--Section: Search-->
+<section id="search-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Search example</h2>
+        <p>
+          The search field is not a part of the DataDen - place an input field on your page and add
+          <code>quickFilter</code> prop to filter entries.
+        </p>
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="search-example">}}
+        <div class="flex flex-col justify-center items-center">
+          <div>
+            <div class="data-den-quick-filter">
+              <input type="text" class="data-den-quick-filter-input" />
+            </div>
+            <div id="dd-search"></div>
+          </div>
+        </div>
+        {{< /twsnippet/demo>}}
+        <!--Section: Demo-->
+
+        <div class="pt-2" id="search-example">
+          <!-- prettier-ignore -->
+          {{< twsnippet/wrapper "index.html,main.js" "" "mobile" >}}
+  {{< twsnippet/code active=true lang="html" >}}
+          <div class="flex flex-col justify-center items-center">
+            <div>
+              <div class="data-den-quick-filter">
+                <input type="text" class="data-den-quick-filter-input" />
+              </div>
+              <div id="dd"></div>
+            </div>
+          </div>
+          {{< /twsnippet/code >}}
+          <!-- prettier-ignore -->
+          {{< twsnippet/code lang="js" >}}
+import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+
+const rows = [
+  { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+  { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+  { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+  { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+  { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+  { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+  { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+  { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+  { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+  { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+];
+
+const options = {
+  columns: [
+    {
+      field: "car",
+      headerName: "Car",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "model",
+      headerName: "Model",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "year",
+      headerName: "Year",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "price",
+      headerName: "Price",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+  ],
+  rows: rows,
+  quickFilter: true,
+};
+
+const ddEl = document.getElementById("dd");
+const dataDen = new DataDen(ddEl, options);
+const searchInput = document.querySelector('.data-den-quick-filter-input');
+searchInput.addEventListener('keyup', () => {
+  dataDen.quickFilter(searchInput.value);
+});
+
+  {{< /twsnippet/code >}}
+
+
+{{< /twsnippet/wrapper >}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Search-->
+
+<hr class="my-10" />
+
+<!--Section: Search column-->
+<section id="search-column-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Search column example</h2>
+
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="search-column-example">}}
+        <div id="dd-search-column" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo>}}
+        <!--Section: Demo-->
+
+        <div class="pt-2" id="search-column-example">
+          <!-- prettier-ignore -->
+          {{< twsnippet/wrapper "index.html,main.js" "" "mobile" >}}
+  {{< twsnippet/code active=true lang="html" >}}
+
+          <div id="dd"></div>
+
+          {{< /twsnippet/code >}}
+          <!-- prettier-ignore -->
+          {{< twsnippet/code lang="js" >}}
+import { DataDen, DataDenDefaultCellRenderer } from 'data-den-core';
+
+  class DataDenHeaderTextFilterRenderer {
+    
+    constructor(params) {
+      
+      this.params = params;
+      this.cssPrefix = params.cssPrefix;
+      const template = `
+          <div class="${this.cssPrefix}header-filter">
+            <input type="text" class="${this.cssPrefix}header-filter-input" />
+          </div>
+          `;
+          <!-- prettier-ignore -->
+
+          this.element = this.createHtmlElement(template);
+      this.input = this.element.querySelector(`.${this.cssPrefix}header-filter-input`);
+
+      this.attachUiEvents(params);
+    }
+
+    createHtmlElement(template, elementName = 'div') {
+      const placeholder = document.createElement(elementName);
+      placeholder.innerHTML = template;
+
+      return placeholder.firstElementChild;
+    }
+
+    debounce(callback, debounceTime) {
+      let timeout;
+
+      return function (...args) {
+        const debounceFn = () => {
+          clearTimeout(timeout);
+          callback(...args);
+        };
+
+        clearTimeout(timeout);
+        timeout = setTimeout(debounceFn, debounceTime);
+      };
+    }
+
+    getGui() {
+      return this.element;
+    }
+
+    getType() {
+      return 'text';
+    }
+
+    getState() {
+      const value = this.input ? this.input.value : null;
+
+      return {
+        method: this.params.method,
+        searchTerm: value,
+      };
+    }
+
+    isActive() {
+      const value = this.input ? this.input.value : null;
+
+      return !!value;
+    }
+
+    getFilterFn() {
+      const options = this.params.colDef.filterOptions;
+
+      return (state, value) => {
+        let searchTerm = state.searchTerm;
+        const method = state.method;
+        const caseSensitive = options.caseSensitive;
+        value = caseSensitive ? value : value.toString().toLowerCase();
+        searchTerm = caseSensitive ? searchTerm : searchTerm.toString().toLowerCase();
+
+        switch (method) {
+          case 'includes':
+            return value.includes(searchTerm);
+          default:
+            return false;
+        }
+      };
+    }
+
+    attachUiEvents(params) {
+      if (this.input) {
+        const debounceFilter = this.debounce(() => params.filterChanged(), params.debounceTime);
+
+        this.input.addEventListener('keyup', () => debounceFilter());
+      }
+    }
+
+    destroy() {}
+  }
+
+  const rows = [
+    { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+    { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+    { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+    { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+    { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+    { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+    { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+    { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+    { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+    { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+  ];
+
+  const options = {
+    columns: [
+      {
+        field: 'car',
+        headerName: 'Car',
+        filter: true,
+        filterRenderer: DataDenHeaderTextFilterRenderer,
+        filterOptions: {
+          method: 'includes',
+          debounceTime: 500,
+          caseSensitive: false,
+        },
+        cellRenderer: DataDenDefaultCellRenderer,
+        width: 180,
+      },
+      {
+        field: 'model',
+        headerName: 'Model',
+        filter: true,
+        filterRenderer: DataDenHeaderTextFilterRenderer,
+        filterOptions: {
+          method: 'includes',
+          debounceTime: 500,
+          caseSensitive: false,
+        },
+        cellRenderer: DataDenDefaultCellRenderer,
+        width: 180,
+      },
+      {
+        field: 'year',
+        headerName: 'Year',
+        filter: true,
+        filterRenderer: DataDenHeaderTextFilterRenderer,
+        filterOptions: {
+          method: 'includes',
+          debounceTime: 500,
+          caseSensitive: false,
+        },
+        cellRenderer: DataDenDefaultCellRenderer,
+        width: 180,
+      },
+      {
+        field: 'price',
+        headerName: 'Price',
+        filter: true,
+        filterRenderer: DataDenHeaderTextFilterRenderer,
+        filterOptions: {
+          method: 'includes',
+          debounceTime: 500,
+          caseSensitive: false,
+        },
+        cellRenderer: DataDenDefaultCellRenderer,
+        width: 180,
+      },
+    ],
+    rows: rows,
+  };
+
+  const ddEl = document.getElementById('dd');
+  const dataDen = new DataDen(ddEl, options);
+
+{{< /twsnippet/code >}}
+{{< /twsnippet/wrapper >}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Search column-->
+
+<hr class="my-10" />
+
+<!--Section: Pagination-->
+<section id="pagination-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Pagination example</h2>
+        <p>Use the <code>pagination</code> prop to set pagination.</p>
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="pagination-example">}}
+        <div id="dd-pagination" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo>}}
+        <!--Section: Demo-->
+
+        <div class="pt-2" id="pagination-example">
+          <!-- prettier-ignore -->
+          {{< twsnippet/wrapper "index.html,main.js" "" "mobile" >}}
+  {{< twsnippet/code active=true lang="html" >}}
+
+          <div id="dd"></div>
+
+          {{< /twsnippet/code >}}
+          <!-- prettier-ignore -->
+          {{< twsnippet/code lang="js" >}}
+import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+
+const rows = [
+  { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+  { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+  { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+  { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+  { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+  { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+  { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+  { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+  { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+  { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+  { car: 'Porsche', model: 'Boxster', year: '28/08/2004', price: 28000 },
+  { car: 'Toyota', model: 'Celica', year: '28/08/2004', price: 12000 },
+  { car: 'Mitsubishi', model: 'Lancer', year: '16/12/2010', price: 34000 },
+  { car: 'Toyota', model: 'Celica', year: '28/08/2004', price: 18000 },
+  { car: 'Lamborghini', model: 'Aventador', year: '24/01/2015', price: 56000 },
+  { car: 'Nissan', model: 'X-Trail', year: '01/05/2013', price: 56000 },
+  { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 15000 },
+  { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 24000 },
+  { car: 'Ford', model: 'Focus', year: '14/09/2006', price: 15000 },
+  { car: 'Lamborghini', model: 'Aventador', year: '14/09/2006', price: 15000 },
+  { car: 'Ford', model: 'Focus', year: '09/02/2020', price: 12000 },
+  { car: 'Honda', model: 'Civic', year: '24/01/2015', price: 34000 },
+  { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 34000 },
+  { car: 'Honda', model: 'Civic', year: '09/02/2020', price: 12000 },
+  { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 15000 },
+  { car: 'Ford', model: 'Focus', year: '28/08/2004', price: 24000 },
+  { car: 'Nissan', model: 'X-Trail', year: '16/12/2010', price: 15000 },
+  { car: 'Toyota', model: 'Celica', year: '13/11/2021', price: 15000 },
+  { car: 'Toyota', model: 'Celica', year: '09/02/2020', price: 12000 },
+  { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 34000 },
+];
+
+const options = {
+  columns: [
+    {
+      field: "car",
+      headerName: "Car",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "model",
+      headerName: "Model",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "year",
+      headerName: "Year",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "price",
+      headerName: "Price",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+  ],
+  rows: rows, 
+  pagination: true,
+};
+
+const ddEl = document.getElementById("dd");
+const dataDen = new DataDen(ddEl, options);
+
+{{< /twsnippet/code >}}
+{{< /twsnippet/wrapper >}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Pagination-->
+
+<hr class="my-10" />
+
+<!--Section: Advanced data structure-->
+<section id="advanced-structure-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>
+          Advanced data structure
+        </h2>
+        <p>
+          The last and most advanced data structure allows customizing each column (sort, width, resize, field) and
+          matches values from each row to a column in which the `field` equals to a given key value.
+        </p>
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="advanced-structure-example">}}
+        <div id="dd-advanced-structure" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo>}}
+        <!--Section: Demo-->
+
+        <div class="pt-2" id="advanced-structure-example">
+          <!-- prettier-ignore -->
+          {{< twsnippet/wrapper "index.html,main.js" "" "mobile" >}}
+  {{< twsnippet/code active=true lang="html" >}}
+
+          <div id="dd"></div>
+
+          {{< /twsnippet/code >}}
+          <!-- prettier-ignore -->
+          {{< twsnippet/code lang="js" >}}
+import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+
+const rows = [
+  { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+  { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+  { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+  { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+  { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+  { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+  { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+  { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+  { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+  { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+];
+
+const options = {
+  columns: [
+    {
+      field: "car",
+      headerName: "Car",
+      sort: true,
+      resize: true,
+      width: 150,
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "model",
+      headerName: "Model",
+      sort: true,
+      resize: true,
+      width: 150,
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "year",
+      headerName: "Year",
+      sort: true,
+      resize: true,
+      width: 150,
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "price",
+      headerName: "Price",
+      sort: true,
+      resize: true,
+      width: 150,
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+  ],
+  rows: rows, 
+};
+
+const ddEl = document.getElementById("dd");
+const dataDen = new DataDen(ddEl, options);
+
+{{< /twsnippet/code >}}
+{{< /twsnippet/wrapper >}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Advanced data structure-->
+
+<hr class="my-10" />
+
+<!--Section: Column draggable-->
+<section id="draggable-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Column draggable</h2>
+        <p>Use the <code>draggable</code> prop to set draggable column.</p>
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="draggable-example">}}
+        <div id="dd-draggable" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo>}}
+        <!--Section: Demo-->
+
+        <div class="pt-2" id="draggable-example">
+          <!-- prettier-ignore -->
+          {{< twsnippet/wrapper "index.html,main.js" "" "mobile" >}}
+  {{< twsnippet/code active=true lang="html" >}}
+
+          <div id="dd"></div>
+
+          {{< /twsnippet/code >}}
+          <!-- prettier-ignore -->
+          {{< twsnippet/code lang="js" >}}
+import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+
+const rows = [
+  { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+  { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+  { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+  { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+  { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+  { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+  { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+  { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+  { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+  { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+];
+
+const options = {
+  columns: [
+    {
+      field: "car",
+      headerName: "Car",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "model",
+      headerName: "Model",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "year",
+      headerName: "Year",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "price",
+      headerName: "Price",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+  ],
+  rows: rows, 
+  draggable: true,
+};
+
+const ddEl = document.getElementById("dd");
+const dataDen = new DataDen(ddEl, options);
+
+{{< /twsnippet/code >}}
+{{< /twsnippet/wrapper >}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Column draggable-->
+
+<hr class="my-10" />
+
+<!--Section: Cell formatting-->
+<section id="cell-formatting-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Cell formatting</h2>
+        <p>Use cell formatting to color individual cells.</p>
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="cell-formatting-example">}}
+        <div id="dd-cell-formatting" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo>}}
+        <!--Section: Demo-->
+
+        <div class="pt-2" id="cell-formatting-example">
+          <!-- prettier-ignore -->
+          {{< twsnippet/wrapper "index.html,main.js" "" "mobile" >}}
+  {{< twsnippet/code active=true lang="html" >}}
+
+          <div id="dd"></div>
+
+          {{< /twsnippet/code >}}
+          <!-- prettier-ignore -->
+          {{< twsnippet/code lang="js" >}}
+import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+
+class ExampleCellRenderer {
+  constructor(data) {
+    this.value = data.value;
+  }
+  getGui() {
+    const el = document.createElement("span");
+    el.innerText = this.value;
+
+    const wrapper = document.createElement("div");
+    if (+this.value > 25000 && +this.value < 50000) {
+      wrapper.classList.add("bg-warning");
+    } else if (+this.value > 50000) {
+      wrapper.classList.add("bg-danger");
+    } else {
+      wrapper.classList.add("bg-success");
+    }
+
+    wrapper.appendChild(el);
+
+    return wrapper;
+  }
+}
+
+const rows = [
+  { car: "Honda", model: "Civic", year: "01/05/2013", price: 28000 },
+  { car: "Mitsubishi", model: "Lancer", year: "01/05/2013", price: 56000 },
+  { car: "Porsche", model: "Boxster", year: "09/02/2020", price: 31000 },
+  { car: "Toyota", model: "Celica", year: "16/12/2010", price: 18000 },
+  { car: "Kia", model: "Sportage", year: "14/09/2006", price: 28000 },
+  { car: "Ford", model: "Focus", year: "04/07/2014", price: 24000 },
+  { car: "Ford", model: "Focus", year: "16/12/2010", price: 24000 },
+  { car: "Porsche", model: "Boxster", year: "24/01/2015", price: 31000 },
+  { car: "Mitsubishi", model: "Lancer", year: "14/09/2006", price: 18000 },
+  { car: "Kia", model: "Sportage", year: "01/05/2013", price: 24000 },
+];
+
+const options = {
+  columns: [
+    {
+      field: "car",
+      headerName: "Car",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "model",
+      headerName: "Model",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "year",
+      headerName: "Year",
+      cellRenderer: DataDenDefaultCellRenderer,
+    },
+    {
+      field: "price",
+      headerName: "Price",
+      cellRenderer: ExampleCellRenderer,
+    },
+  ],
+  rows: rows,
+};
+
+const ddEl = document.getElementById("dd");
+const dataDen = new DataDen(ddEl, options);
+
+{{< /twsnippet/code >}}
+{{< /twsnippet/wrapper >}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Cell formatting-->
+
+<hr class="my-10" />

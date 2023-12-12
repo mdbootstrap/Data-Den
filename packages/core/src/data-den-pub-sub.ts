@@ -4,7 +4,7 @@ import { DataDenEvent } from './data-den-event';
 type DataDenEventCallback = (event: DataDenEvent) => void;
 
 export class DataDenPubSub {
-  static #listeners: { [key: string]: DataDenEventCallback[] } = {
+  #listeners: { [key: string]: DataDenEventCallback[] } = {
     'command:pagination:load-first-page:start': [],
     'command:pagination:load-prev-page:start': [],
     'command:pagination:load-next-page:start': [],
@@ -28,9 +28,11 @@ export class DataDenPubSub {
     'command:fetch:start': [],
     'command:fetch:sort-start': [],
     'info:fetch:done': [],
+    'command:pin-column:start': [],
+    'command:rerendering:done': [],
   };
 
-  static publish(name: string, data: DataDenPublishedEvent) {
+  publish(name: string, data: DataDenPublishedEvent) {
     if (!this.#listeners[name]) {
       return;
     }
@@ -41,7 +43,7 @@ export class DataDenPubSub {
     });
   }
 
-  static subscribe(name: string, callback: DataDenEventCallback) {
+  subscribe(name: string, callback: DataDenEventCallback) {
     if (!this.#listeners[name]) {
       throw new Error(`Could not subscribe: Unsupported event: ${name}`);
     }
@@ -52,7 +54,7 @@ export class DataDenPubSub {
     };
   }
 
-  static #unsubscribe(name: string, callback: DataDenEventCallback) {
+  #unsubscribe(name: string, callback: DataDenEventCallback) {
     if (!this.#listeners[name]) {
       return;
     }

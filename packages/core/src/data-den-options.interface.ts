@@ -15,6 +15,12 @@ export interface DataDenHeaderFilterOptions {
 
 export type DataDenDateFilterParserFn = (value: string) => Date;
 
+export type DataDenSortComparator = (valueA: any, valueB: any) => number;
+
+export interface DataDenSortOptions {
+  comparator: DataDenSortComparator;
+}
+
 export interface DataDenListOption {
   label: string;
   value: any;
@@ -24,10 +30,12 @@ export interface DataDenColDef {
   field: string;
   headerName?: string;
   sort?: boolean;
+  sortOptions?: DataDenSortOptions;
   filter?: boolean;
   filterRenderer?: ClassType<DataDenHeaderFilterRenderer>;
   filterOptions?: DataDenHeaderFilterOptions;
   resize?: boolean;
+  pinned?: 'left' | 'right';
   width?: number;
   cellRenderer?: ClassType<DataDenCellRenderer>;
   cellEditor?: ClassType<DataDenCellEditor>;
@@ -37,6 +45,7 @@ export interface DataDenColDef {
 
 export interface DataDenDefaultColDef {
   sort?: boolean;
+  sortOptions?: DataDenSortOptions;
   filter?: boolean;
   filterRenderer?: ClassType<DataDenHeaderFilterRenderer>;
   filterOptions?: DataDenHeaderFilterOptions;

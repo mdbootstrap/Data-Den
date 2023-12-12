@@ -7,6 +7,7 @@ export class DataDenPaginationRenderer {
   element: HTMLElement;
   options: DataDenPaginationOptions;
   buttons: Record<string, HTMLButtonElement>;
+  private PubSub: DataDenPubSub;
 
   constructor(options: DataDenPaginationOptions) {
     this.options = options;
@@ -40,22 +41,22 @@ export class DataDenPaginationRenderer {
 
   attachUiEvents(): void {
     this.buttons.first.addEventListener('click', () => {
-      DataDenPubSub.publish('command:pagination:load-first-page:start', {
+      this.PubSub.publish('command:pagination:load-first-page:start', {
         context: new Context('command:pagination:load-first-page:start'),
       });
     });
     this.buttons.prev.addEventListener('click', () => {
-      DataDenPubSub.publish('command:pagination:load-prev-page:start', {
+      this.PubSub.publish('command:pagination:load-prev-page:start', {
         context: new Context('command:pagination:load-prev-page:start'),
       });
     });
     this.buttons.next.addEventListener('click', () => {
-      DataDenPubSub.publish('command:pagination:load-next-page:start', {
+      this.PubSub.publish('command:pagination:load-next-page:start', {
         context: new Context('command:pagination:load-next-page:start'),
       });
     });
     this.buttons.last.addEventListener('click', () => {
-      DataDenPubSub.publish('command:pagination:load-last-page:start', {
+      this.PubSub.publish('command:pagination:load-last-page:start', {
         context: new Context('command:pagination:load-last-page:start'),
       });
     });
@@ -67,7 +68,7 @@ export class DataDenPaginationRenderer {
   }
 
   private subscribeToEvents(): void {
-    DataDenPubSub.subscribe(
+    this.PubSub.subscribe(
       'info:pagination:info-change:done',
       (event: { data: { firstRowIndex: number; lastRowIndex: number; allTotalRows: number; pageSize: number } }) => {
         this.updateInfo(event.data.firstRowIndex, event.data.lastRowIndex, event.data.allTotalRows);
@@ -96,7 +97,7 @@ export class DataDenPaginationRenderer {
   }
 
   public updatePageSize(pageSize: number): void {
-    DataDenPubSub.publish('info:pagination:page-size-change:done', {
+    this.PubSub.publish('info:pagination:page-size-change:done', {
       pageSize: pageSize,
       context: new Context('info:pagination:page-size-change:done'),
     });

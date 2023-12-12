@@ -1,7 +1,8 @@
 $prefix: 'data-den-';
 
 $cell-border-width: 1px;
-$cell-border: solid var(--#{$prefix}cell-border-width) #ccc;
+$cell-border-color: #e5e7eb;
+$cell-border: solid var(--#{$prefix}cell-border-width) var(--#{$prefix}cell-border-color);
 $cell-border-transparent: solid var(--#{$prefix}cell-border-width) transparent;
 $cell-padding-x: 12px;
 $cell-width: 180px;
@@ -14,7 +15,7 @@ $header-filter-input-width: 100%;
 $header-cell-border: $cell-border;
 $header-cell-padding-x: var(--#{$prefix}cell-padding-x);
 $header-cell-width: $cell-width;
-$header-cell-bg: #eceaea;
+$header-cell-bg: rgb(250, 250, 250);
 
 $header-sorter-margin-left: 5px;
 $header-sorter-asc-transform: rotate(180deg);
@@ -25,6 +26,7 @@ $header-sorter-arrow-unsorted-color: #a9a9a9;
 $pagination-info-margin: 0 5px;
 $pagination-content-marin: 10px 0;
 
-$row-cell-border: $cell-border;
+$row-cell-border-width: 1px;
+$row-cell-border: solid var(--#{$prefix}row-cell-border-width) var(--#{$prefix}cell-border-color);
 $row-cell-padding-x: var(--#{$prefix}cell-padding-x);
 $row-cell-width: $cell-width;

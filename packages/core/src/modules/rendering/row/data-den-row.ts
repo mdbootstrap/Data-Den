@@ -4,16 +4,13 @@ import { DataDenInternalOptions } from '../../../data-den-options.interface';
 
 export class DataDenRow {
   element: HTMLElement;
+  #options: DataDenInternalOptions;
 
   constructor(public index: number, public cells: DataDenCell[], options: DataDenInternalOptions) {
+    this.#options = options;
     const template =
       /* HTML */
-      `<div
-        class="${options.cssPrefix}-row"
-        role="row"
-        ref="row"
-        style="height: ${options.rowHeight}px; top: ${index * options.rowHeight}px"
-      ></div>`;
+      `<div class="${options.cssPrefix}row" role="row" ref="row" style="height: ${options.rowHeight}px;"></div>`;
 
     this.element = createHtmlElement(template);
   }
@@ -21,7 +18,47 @@ export class DataDenRow {
   render(): HTMLElement {
     const cells = document.createDocumentFragment();
 
-    this.cells.forEach((cell) => cells.appendChild(cell.render()));
+    const leftCellsWidth = this.cells
+      .filter((cell) => cell.pinned === 'left')
+      .reduce((acc, curr) => acc + curr.width, 0);
+    const rightCellsWidth = this.cells
+      .filter((cell) => cell.pinned === 'right')
+      .reduce((acc, curr) => acc + curr.width, 0);
+
+    const leftCellsWrapper = createHtmlElement(
+      /* HTML */
+      `<div
+        class="${this.#options.cssPrefix}left-cells-wrapper"
+        style="height: ${this.#options.rowHeight + 2}px;"
+      ></div>`
+    );
+    const centerCellsWrapper = createHtmlElement(
+      /* HTML */
+      `<div
+        class="${this.#options.cssPrefix}main-cells-wrapper"
+        style="left: ${leftCellsWidth}px; width: calc(100% - ${leftCellsWidth + rightCellsWidth}px); height: ${this
+          .#options.rowHeight}px;"
+        ref="rowMainCellsWrapper"
+      ></div>`
+    );
+    const rightCellsWrapper = createHtmlElement(
+      /* HTML */
+      `<div
+        class="${this.#options.cssPrefix}right-cells-wrapper"
+        style="height: ${this.#options.rowHeight + 2}px"
+      ></div>`
+    );
+
+    cells.appendChild(leftCellsWrapper);
+    cells.appendChild(centerCellsWrapper);
+    cells.appendChild(rightCellsWrapper);
+
+    this.cells.filter((cell) => cell.pinned === 'left').forEach((cell) => leftCellsWrapper.appendChild(cell.render()));
+    this.cells.filter((cell) => !cell.pinned).forEach((cell) => centerCellsWrapper.appendChild(cell.render()));
+    this.cells
+      .filter((cell) => cell.pinned === 'right')
+      .forEach((cell) => rightCellsWrapper.appendChild(cell.render()));
+
     this.element.appendChild(cells);
 
     return this.element;

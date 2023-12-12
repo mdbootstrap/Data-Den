@@ -2,17 +2,23 @@ import { createHtmlElement } from '../../../utils';
 import { DataDenHeaderResizerRenderer } from './data-den-header-resizer-renderer.interface';
 import { DataDenPubSub } from '../../../data-den-pub-sub';
 import { Context } from '../../../context';
+import { DataDenColDef } from '../../../data-den-options.interface';
 
 export class DataDenHeaderDefaultResizerRenderer extends DataDenHeaderResizerRenderer {
   element: HTMLElement;
   #cssPrefix: string;
+  private PubSub: DataDenPubSub;
+  #isPinnedRight: boolean;
 
-  constructor(cssPrefix: string) {
+  constructor(cssPrefix: string, colDef: DataDenColDef) {
     super();
 
     this.#cssPrefix = cssPrefix;
+    this.#isPinnedRight = colDef.pinned === 'right';
 
-    const template = `<div class="${this.#cssPrefix}header-resizer"></div>`;
+    const template = `<div class="${this.#cssPrefix}header-resizer ${
+      this.#isPinnedRight ? this.#cssPrefix + 'header-resizer-left' : ''
+    }"></div>`;
 
     this.element = createHtmlElement(template);
     this.element.addEventListener('mousedown', this.#onMouseDown.bind(this));
@@ -29,20 +35,21 @@ export class DataDenHeaderDefaultResizerRenderer extends DataDenHeaderResizerRen
   #onMouseDown(event: MouseEvent): void {
     event.stopPropagation();
 
-    DataDenPubSub.publish('info:resizing:mousedown', {
+    this.PubSub.publish('info:resizing:mousedown', {
       target: event.target,
+      isPinnedRight: this.#isPinnedRight,
       context: new Context('info:resizing:mousedown'),
     });
   }
 
   #onMouseUp(): void {
-    DataDenPubSub.publish('info:resizing:mouseup', {
+    this.PubSub.publish('info:resizing:mouseup', {
       context: new Context('info:resizing:mouseup'),
     });
   }
 
   #resize(event: MouseEvent): void {
-    DataDenPubSub.publish('command:resizing:start', {
+    this.PubSub.publish('command:resizing:start', {
       event,
       context: new Context('command:resizing:start'),
     });
