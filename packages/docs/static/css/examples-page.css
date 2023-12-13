@@ -14,10 +14,30 @@
 }
 
 /* search */
+.data-den-quick-filter {
+  position: relative;
+  margin-bottom: 1rem;
+}
+.data-den-quick-filter label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
 #search-section .data-den-quick-filter-input {
-  border: 1px solid #ccc;
+  border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
-  padding: 0.25rem;
+  padding: 0.25rem 1rem 0.25rem 2.5rem;
+}
+.data-den-quick-filter svg {
+  position: absolute;
+  top: 0;
+  transform: translate(50%, 50%);
 }
 /* search */
 
@@ -69,6 +89,25 @@
 }
 /* Without horizontal borders */
 
+/* Without  borders */
+#without-borders-section .data-den-header-cell,
+#without-borders-section .data-den-cell {
+  border-left: none;
+  border-right: none;
+}
+#without-borders-section .data-den-left-cells-wrapper,
+#without-borders-section .data-den-right-cells-wrapper,
+#without-borders-section .data-den-header-left-cells-wrapper,
+#without-borders-section .data-den-header-right-cells-wrapper {
+  border: none;
+}
+#without-borders-section .data-den-header-cell,
+#without-borders-section .data-den-cell {
+  border-top: none;
+  border-bottom: none;
+}
+/* Without  borders */
+
 /* Unstriped rows */
 #unstriped-rows-section .data-den-row:nth-child(even) .data-den-cell,
 #unstriped-rows-section .data-den-header-cell {
@@ -79,3 +118,20 @@
   border-bottom-color: transparent;
 }
 /* Unstriped rows */
+
+/* Small text */
+#small-text-section #dd-small-text {
+  font-size: 0.75rem;
+}
+#small-text-section .data-den-header {
+  height: 30px;
+}
+/* Small text */
+
+/* Row spacing */
+#row-spacing-section .data-den-cell {
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+/* Row spacing */
