@@ -142,14 +142,12 @@ export class DataDenHeaderCell extends DataDenCell {
     const cellElement = createHtmlElement(template);
     cellElement.appendChild(this.#renderer.getGui());
 
-    if (this.#filterRenderer) {
-      cellElement.appendChild(this.#filterRenderer.getGui());
+    if (this.#sorterRenderer) {
+      cellElement.appendChild(this.#sorterRenderer.getGui());
     }
 
-    if (this.#sorterRenderer) {
-      cellElement
-        .querySelector(`.${this.#options.cssPrefix}header-cell-value`)!
-        .appendChild(this.#sorterRenderer.getGui());
+    if (this.#filterRenderer) {
+      cellElement.appendChild(this.#filterRenderer.getGui());
     }
 
     cellElement.appendChild(this.#headerMenuRenderer.getGui());

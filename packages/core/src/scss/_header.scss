@@ -123,10 +123,14 @@
   .#{$prefix}header-cell-value {
     display: flex;
     flex-direction: row;
+    pointer-events: none;
   }
   &.#{$prefix}active {
     background-color: #fafafa;
     z-index: 2;
+    & > * {
+      pointer-events: none;
+    }
   }
 }
 
