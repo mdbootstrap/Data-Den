@@ -26,7 +26,7 @@ export class DataDenHeaderMenuRenderer {
 
     const dropdownTemplate = `<div class="${this.#cssPrefix}header-menu-dropdown">
       ${
-        this.colDef
+        this.colDef.pinned
           ? `<a href="#" class="${this.#cssPrefix}header-menu-dropdown-item" ref="unPinColTrigger">Unpin</a>`
           : ''
       }
