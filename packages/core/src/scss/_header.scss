@@ -171,23 +171,22 @@
 
 .#{$prefix}header-menu-dropdown {
   position: absolute;
-  right: 5px;
-  top: 5px;
+  right: var(--#{$prefix}header-menu-right);
+  top: var(--#{$prefix}header-menu-top);
   margin-top: var(--#{$prefix}header-height);
   z-index: 3;
-  width: 100px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  padding: 4px 0;
+  width: var(--#{$prefix}header-menu-width);
+  background-color: var(--#{$prefix}header-menu-bg);
+  border: var(--#{$prefix}header-menu-border);
+  border-radius: var(--#{$prefix}header-menu-border-radius);
+  box-shadow: var(--#{$prefix}header-menu-box-shadow);
   display: none;
   flex-direction: column;
   overflow: hidden;
-  max-height: 200px;
+  max-height: var(--#{$prefix}header-menu-max-height);
   overflow-y: auto;
-  font-size: 12px;
-  padding: 8px;
+  font-size: var(--#{$prefix}header-menu-font-size);
+  padding: var(--#{$prefix}header-menu-border);
 
   &.active {
     display: flex;
@@ -195,7 +194,7 @@
 }
 
 .#{$prefix}header-menu-dropdown-item {
-  padding: 4px 8px;
+  padding: var(--#{$prefix}header-menu-item-padding);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -204,9 +203,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
   text-decoration: none;
-  color: #333;
+  color: var(--#{$prefix}header-menu-item-color);
 
   &:hover {
-    background-color: #eee;
+    background-color: var(--#{$prefix}header-menu-item-hover-bg);
   }
 }
