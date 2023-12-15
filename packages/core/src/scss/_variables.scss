@@ -12,6 +12,7 @@ $header-filter-input-margin: 0 8px;
 $header-filter-input-width: 100%;
 
 $header-cell-border: $cell-border;
+$header-cell-active-border: $cell-border;
 $header-cell-padding-x: var(--#{$prefix}cell-padding-x);
 $header-cell-width: $cell-width;
 $header-cell-bg: #eceaea;
@@ -22,9 +23,18 @@ $header-sorter-desc-transform: rotate(0deg);
 $header-sorter-arrow-sorted-color: unset;
 $header-sorter-arrow-unsorted-color: #a9a9a9;
 
+$header-resizer-bg: #ccc;
+$header-resizer-width: 6px;
+
+$header-pinned-bg: #ffe1e1;
+
 $pagination-info-margin: 0 5px;
 $pagination-content-marin: 10px 0;
 
+$row-cell-bg: #ffffff;
 $row-cell-border: $cell-border;
+$row-cell-active-border: $cell-border;
 $row-cell-padding-x: var(--#{$prefix}cell-padding-x);
 $row-cell-width: $cell-width;
+
+$row-cell-pinned-bg: $header-pinned-bg;

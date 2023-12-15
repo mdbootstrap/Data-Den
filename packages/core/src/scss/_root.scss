@@ -5,14 +5,18 @@
 
   --#{$prefix}grid-row-cell-border: #{$row-cell-border};
 
+  --#{$prefix}row-cell-bg: #{$row-cell-bg};
   --#{$prefix}row-cell-border: #{$row-cell-border};
+  --#{$prefix}row-cell-active-border: #{$row-cell-active-border};
   --#{$prefix}row-cell-padding-x: #{$row-cell-padding-x};
+  --#{$prefix}row-cell-pinned-bg: #{$row-cell-pinned-bg};
 
   --#{$prefix}pagination-content-marin: #{$pagination-content-marin};
   --#{$prefix}pagination-info-margin: #{$pagination-info-margin};
 
   --#{$prefix}header-height: #{$header-height};
   --#{$prefix}header-cell-border: #{$header-cell-border};
+  --#{$prefix}header-cell-active-border: #{$header-cell-active-border};
   --#{$prefix}header-cell-bg: #{$header-cell-bg};
   --#{$prefix}header-cell-border: #{$header-cell-border};
   --#{$prefix}header-cell-padding-x: #{$header-cell-padding-x};
@@ -23,4 +27,7 @@
   --#{$prefix}header-sorter-desc-transform: #{$header-sorter-desc-transform};
   --#{$prefix}header-filter-input-margin: #{$header-filter-input-margin};
   --#{$prefix}header-filter-input-width: #{$header-filter-input-width};
+  --#{$prefix}header-resizer-bg: #{$header-resizer-bg};
+  --#{$prefix}header-resizer-width: #{$header-resizer-width};
+  --#{$prefix}header-pinned-bg: #{$header-pinned-bg};
 }
