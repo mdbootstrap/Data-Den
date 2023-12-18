@@ -1,0 +1,94 @@
+---
+title: 'Data Den'
+date: 2023-02-09T10:00:00+02:00
+draft: false
+main_title: 'Data Loader'
+subheading: ''
+seo_title: 'Data Den Data Loader'
+description: 'Data Loader'
+image: ''
+video: ''
+url: 'docs/grid/features/data-loader/'
+menu:
+  features:
+    name: 'Data Loader'
+    weight: 1
+---
+
+<!-- Section: client-side-data -->
+<section>
+  <!-- Title -->
+  <h2
+    class="mb-5 mt-0 text-3xl font-semibold leading-normal text-neutral-800 dark:text-neutral-200"
+    id="client-side-data-example"
+    data-te-spy-item>
+    Client-Side Data
+  </h2>
+  <!-- Description -->
+  <p class="mb-3">
+    In most cases, there is no need to customize the strategy for Client-Side Data. Just pass data to Data Grid.
+  </p>
+
+  <!-- prettier-ignore -->
+  {{< twsnippet/demo id="example1">}}
+  <div class="flex items-center justify-center overflow-x-auto">
+    <div id="grid-client-side-data"></div>
+  </div>
+  {{< /twsnippet/demo >}}
+
+
+  <section class="!visible hidden" data-te-collapse-item id="example1">
+    <div class="pt-4">
+      {{< twsnippet/wrapper "HTML,javascript" "" "mobile" >}}
+      {{< twsnippet/code active=true lang="HTML" >}}
+      <div id="grid"></div>
+      {{< /twsnippet/code >}}
+      <!-- prettier-ignore -->
+      {{< twsnippet/code lang="js" >}}
+          const rows = [
+            { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+            { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+            { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+            { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+            { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+            { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+            { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+            { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+            { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+            { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+          ];
+        
+          const options = {
+            columns: [
+              {
+                field: 'car',
+                headerName: 'Car',
+                cellRenderer: DataDenDefaultCellRenderer,
+              },
+              {
+                field: 'model',
+                headerName: 'Model',
+                cellRenderer: DataDenDefaultCellRenderer,
+              },
+              {
+                field: 'year',
+                headerName: 'Year',
+                cellRenderer: DataDenDefaultCellRenderer,
+              },
+              {
+                field: 'price',
+                headerName: 'Price',
+                cellRenderer: DataDenDefaultCellRenderer,
+              },
+            ],
+            rows: rows,
+          };
+          
+          const gridEl = document.getElementById('basic-example');
+          const grid = new DataDen(gridEl, options);
+        {{< /twsnippet/code >}}
+      {{< /twsnippet/wrapper >}}
+    </div>
+  </section>
+</section>
+<!-- Section: client-side-data -->
