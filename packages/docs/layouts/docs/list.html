@@ -38,18 +38,13 @@
         class="mb-3 flex items-center justify-center rounded-md py-6 pr-3 text-lg font-medium dark:text-neutral-100"
         aria-current="page"
       >
-        Data Den</a
-      >
+        Data Den
+      </a>
       {{ partial "sidenav/standard.html" . }}
     </nav>
     <div class="{{ if ne $hidden_sidenav true }}xl:!pl-60{{ end }} mt-10" id="page-content">
       <div
-        class="{{ if eq $hidden_sidenav true }}
-          mx-auto w-1/2
-        {{ else }}
-          max-w-[540px] sm:max-w-[604px] md:max-w-[720px] lg:max-w-[972px]
-          xl:max-w-full xl:px-12 2xl:max-w-[1400px] mx-auto
-        {{ end }} flex"
+        class="{{ if eq $hidden_sidenav true }} mx-auto w-1/2 {{ else }} max-w-[540px] sm:max-w-[604px] md:max-w-[720px] lg:max-w-[972px] xl:max-w-full xl:px-12 2xl:max-w-[1400px] mx-auto {{ end }} flex"
       >
         <div class="flex w-full flex-col">
           {{ if (or ($api_file_exists) (isset .Params "custom_links")) }}
@@ -65,8 +60,9 @@
                 aria-selected="true"
                 aria-controls="docsTabsOverview"
                 data-te-nav-active
-                >Overview</a
               >
+                Overview
+              </a>
             </li>
 
             {{ if isset .Params "custom_links" }} {{ $link_entries := split .Params.custom_links "," }} {{ range $entry
@@ -76,8 +72,10 @@
                 class="my-2 block min-w-[120px] rounded bg-neutral-100 px-6 pb-3.5 pt-4 text-center text-xs font-medium uppercase leading-tight text-neutral-500 data-[te-nav-active]:!bg-primary-100 data-[te-nav-active]:text-primary-700 dark:bg-neutral-700 dark:text-white dark:data-[te-nav-active]:text-primary-700 md:mr-4"
                 href="{{ index $link_data 1 }}"
                 target="_blank"
-                >{{ index $link_data 0 }}<span class="inline-block align-bottom"
-                  ><svg
+              >
+                {{ index $link_data 0 }}
+                <span class="inline-block align-bottom">
+                  <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -106,12 +104,7 @@
             aria-labelledby="docs-tab-overview-tab"
             data-te-tab-active
           >
-            <div
-              class="{{ if $scrollspy_file_exists }}
-                lg:w-4/5
-              {{ end }}
-              flex w-full flex-col px-3"
-            >
+            <div class="{{ if $scrollspy_file_exists }} lg:w-4/5 {{ end }} flex w-full flex-col px-3">
               {{ if not (isset .Params "custom_links") }}
               <h2 class="mt-0 text-3xl font-bold leading-8 sm:text-[33px] md:text-4xl lg:text-[40px]">
                 {{ .Params.main_title }}
