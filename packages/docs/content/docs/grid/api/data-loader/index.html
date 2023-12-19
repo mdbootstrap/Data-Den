@@ -1,0 +1,91 @@
+---
+title: 'Data Den'
+date: 2023-02-09T10:00:00+02:00
+draft: false
+main_title: 'Data Loader'
+subheading: ''
+seo_title: 'Data Den Data Loader'
+description: 'Data Loader'
+image: ''
+video: ''
+url: 'docs/grid/api/data-loader/'
+---
+
+<!--Section: Methods-->
+<section id="DataDenMethods">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-4 text-4xl font-medium">Methods</h2>
+
+        <table class="min-w-full table border">
+          <thead class="border-b">
+            <tr class="border-b">
+              <th class="border-r p-3">Name</th>
+              <th class="border-r p-3">Return Type</th>
+              <th class="border-r p-3">Params</th>
+              <th class="border-r p-3">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+              <td class="whitespace-nowrap border-r p-3">
+                <code>getData</code>
+              </td>
+              <td class="border-r p-3"><i>Promise&lt;any[]&gt;</i></td>
+              <td class="border-r p-3"><code>options: DataDenFetchOptions</code></td>
+              <td class="border-r p-3">
+                A method for retrieving data. It returns a promise that resolves with an array of data items.
+              </td>
+            </tr>
+            <tr class="border-b">
+              <td class="whitespace-nowrap border-r p-3">
+                <code>filterData</code>
+              </td>
+              <td class="border-r p-3"><i>Promise&lt;any[]&gt;</i></td>
+              <td class="border-r p-3"><code>data: any[], params: DataDenFiltersOptions</code></td>
+              <td class="border-r p-3">
+                A method responsible for filtering data. It returns a promise that resolves with an array of filtered
+                data items.
+              </td>
+            </tr>
+            <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+              <td class="whitespace-nowrap border-r p-3">
+                <code>sortData</code>
+              </td>
+              <td class="border-r p-3"><i>Promise&lt;any[]&gt;</i></td>
+              <td class="border-r p-3"><code>data: any[], params: DataDenSortOptions</code></td>
+              <td class="border-r p-3">
+                A method responsible for sorting data. It returns a promise that resolves with an array of sorted data
+                items.
+              </td>
+            </tr>
+            <tr class="border-b">
+              <td class="whitespace-nowrap border-r p-3">
+                <code>quickFilterData</code>
+              </td>
+              <td class="border-r p-3"><i>Promise&lt;any[]&gt;</i></td>
+              <td class="border-r p-3"><code>data: any[], params: DataDenQuickFilterOptions</code></td>
+              <td class="border-r p-3">
+                A method responsible for quick filtering data. It returns a promise that resolves with an array of
+                filtered data items.
+              </td>
+            </tr>
+            <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+              <td class="whitespace-nowrap border-r p-3">
+                <code>paginateData</code>
+              </td>
+              <td class="border-r p-3"><i>Promise&lt;any[]&gt;</i></td>
+              <td class="border-r p-3"><code>data: any[], params: DataDenPaginationOptions</code></td>
+              <td class="border-r p-3">
+                A method responsible for paginating data. It returns a promise that resolves with an array of paginated
+                data items.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Methods-->

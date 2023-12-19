@@ -9,10 +9,6 @@ description: 'Data Den custom CSS'
 image: ''
 video: ''
 url: 'docs/grid/getting-started/custom-css/'
-menu:
-  gettingstarted:
-    name: 'Custom CSS'
-    weight: 7
 ---
 
 <div class="w-full">
@@ -30,9 +26,9 @@ menu:
       <div class="overflow-hidden">
         <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Scroll</h2>
         <!--Section: Demo-->
-        {{< twsnippet/demo id="scroll-example">}}
+        {{< twsnippet/demo id="scroll-example" >}}
         <div id="dd-scroll" class="flex justify-center items-center"></div>
-        {{< /twsnippet/demo>}}
+        {{< /twsnippet/demo >}}
         <!--Section: Demo-->
 
         <div class="pt-2" id="scroll-example">
@@ -87,6 +83,7 @@ const options = {
 const ddEl = document.getElementById("dd");
 const dataDen = new DataDen(ddEl, options);
 {{< /twsnippet/code >}}
+          
 
 {{< twsnippet/code lang="css" >}}
 .data-den-grid-main{
@@ -94,6 +91,7 @@ const dataDen = new DataDen(ddEl, options);
   height: 200px;
 }
 {{< /twsnippet/code >}}
+          
 
 {{< /twsnippet/wrapper >}}
         </div>
@@ -112,9 +110,9 @@ const dataDen = new DataDen(ddEl, options);
       <div class="overflow-hidden">
         <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Fixed header example</h2>
         <!--Section: Demo-->
-        {{< twsnippet/demo id="fixed-header-example">}}
+        {{< twsnippet/demo id="fixed-header-example" >}}
         <div id="dd-fixed-header" class="flex justify-center items-center"></div>
-        {{< /twsnippet/demo>}}
+        {{< /twsnippet/demo >}}
         <!--Section: Demo-->
 
         <div class="pt-2" id="fixed-header-example">
@@ -169,6 +167,7 @@ const options = {
 const ddEl = document.getElementById("dd");
 const dataDen = new DataDen(ddEl, options);
 {{< /twsnippet/code >}}
+          
 
 {{< twsnippet/code lang="css" >}}
 .data-den-grid-main{
@@ -181,6 +180,7 @@ const dataDen = new DataDen(ddEl, options);
   z-index: 1;
 }
 {{< /twsnippet/code >}}
+          
 
 
 
@@ -201,15 +201,16 @@ const dataDen = new DataDen(ddEl, options);
       <div class="overflow-hidden">
         <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Hoverable rows</h2>
         <!--Section: Demo-->
-        {{< twsnippet/demo id="hovereable-row-example">}}
+        {{< twsnippet/demo id="hovereable-row-example" >}}
         <div id="dd-hovereable-row" class="flex justify-center items-center"></div>
-        {{< /twsnippet/demo>}}
+        {{< /twsnippet/demo >}}
         <!--Section: Demo-->
 
         <div class="pt-2" id="hovereable-row-example">
           <!-- prettier-ignore -->
           {{< twsnippet/wrapper "index.html,main.js,index.css" "" "mobile" >}}
     {{< twsnippet/code active=true lang="html" >}}
+
 
           <div id="dd"></div>
 
@@ -261,6 +262,7 @@ const ddEl = document.getElementById("dd");
 const dataDen = new DataDen(ddEl, options);
 
 {{< /twsnippet/code >}}
+          
 
 
 {{< twsnippet/code lang="css" >}}
@@ -268,6 +270,7 @@ const dataDen = new DataDen(ddEl, options);
   background-color: rgb(245, 245, 245);
 }
 {{< /twsnippet/code >}}
+          
 
 {{< /twsnippet/wrapper >}}
         </div>
@@ -288,15 +291,16 @@ const dataDen = new DataDen(ddEl, options);
           Without vertical borders
         </h2>
         <!--Section: Demo-->
-        {{< twsnippet/demo id="vertical-borders-example">}}
+        {{< twsnippet/demo id="vertical-borders-example" >}}
         <div id="dd-vertical-borders" class="flex justify-center items-center"></div>
-        {{< /twsnippet/demo>}}
+        {{< /twsnippet/demo >}}
         <!--Section: Demo-->
 
         <div class="pt-2" id="vertical-borders-example">
           <!-- prettier-ignore -->
           {{< twsnippet/wrapper "index.html,main.js,index.css" "" "mobile" >}}
     {{< twsnippet/code active=true lang="html" >}}
+
 
           <div id="dd"></div>
 
@@ -348,6 +352,7 @@ const ddEl = document.getElementById("dd");
 const dataDen = new DataDen(ddEl, options);
 
 {{< /twsnippet/code >}}
+          
 
 
 {{< twsnippet/code lang="css" >}}
@@ -363,6 +368,7 @@ const dataDen = new DataDen(ddEl, options);
   border: none;
 }
 {{< /twsnippet/code >}}
+          
 
 {{< /twsnippet/wrapper >}}
         </div>
@@ -383,15 +389,16 @@ const dataDen = new DataDen(ddEl, options);
           Without horizontal borders
         </h2>
         <!--Section: Demo-->
-        {{< twsnippet/demo id="horizontal-borders-example">}}
+        {{< twsnippet/demo id="horizontal-borders-example" >}}
         <div id="dd-horizontal-borders" class="flex justify-center items-center"></div>
-        {{< /twsnippet/demo>}}
+        {{< /twsnippet/demo >}}
         <!--Section: Demo-->
 
         <div class="pt-2" id="horizontal-borders-example">
           <!-- prettier-ignore -->
           {{< twsnippet/wrapper "index.html,main.js,index.css" "" "mobile" >}}
     {{< twsnippet/code active=true lang="html" >}}
+
 
           <div id="dd"></div>
 
@@ -443,6 +450,7 @@ const ddEl = document.getElementById("dd");
 const dataDen = new DataDen(ddEl, options);
 
 {{< /twsnippet/code >}}
+          
 
 
 {{< twsnippet/code lang="css" >}}
@@ -453,6 +461,7 @@ const dataDen = new DataDen(ddEl, options);
 }
 
 {{< /twsnippet/code >}}
+          
 
 {{< /twsnippet/wrapper >}}
         </div>
@@ -471,15 +480,16 @@ const dataDen = new DataDen(ddEl, options);
       <div class="overflow-hidden">
         <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Without borders</h2>
         <!--Section: Demo-->
-        {{< twsnippet/demo id="without-borders-example">}}
+        {{< twsnippet/demo id="without-borders-example" >}}
         <div id="dd-without-borders" class="flex justify-center items-center"></div>
-        {{< /twsnippet/demo>}}
+        {{< /twsnippet/demo >}}
         <!--Section: Demo-->
 
         <div class="pt-2" id="without-borders-example">
           <!-- prettier-ignore -->
           {{< twsnippet/wrapper "index.html,main.js,index.css" "" "mobile" >}}
     {{< twsnippet/code active=true lang="html" >}}
+
 
           <div id="dd"></div>
 
@@ -531,6 +541,7 @@ const ddEl = document.getElementById("dd");
 const dataDen = new DataDen(ddEl, options);
 
 {{< /twsnippet/code >}}
+          
 
 
 {{< twsnippet/code lang="css" >}}
@@ -552,6 +563,7 @@ const dataDen = new DataDen(ddEl, options);
 }
 
 {{< /twsnippet/code >}}
+          
 
 {{< /twsnippet/wrapper >}}
         </div>
@@ -570,15 +582,16 @@ const dataDen = new DataDen(ddEl, options);
       <div class="overflow-hidden">
         <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Unstriped rows</h2>
         <!--Section: Demo-->
-        {{< twsnippet/demo id="unstriped-rows-example">}}
+        {{< twsnippet/demo id="unstriped-rows-example" >}}
         <div id="dd-unstriped-rows" class="flex justify-center items-center"></div>
-        {{< /twsnippet/demo>}}
+        {{< /twsnippet/demo >}}
         <!--Section: Demo-->
 
         <div class="pt-2" id="unstriped-rows-example">
           <!-- prettier-ignore -->
           {{< twsnippet/wrapper "index.html,main.js,index.css" "" "mobile" >}}
     {{< twsnippet/code active=true lang="html" >}}
+
 
           <div id="dd"></div>
 
@@ -630,6 +643,7 @@ const ddEl = document.getElementById("dd");
 const dataDen = new DataDen(ddEl, options);
 
 {{< /twsnippet/code >}}
+          
 
 
 {{< twsnippet/code lang="css" >}}
@@ -638,6 +652,7 @@ const dataDen = new DataDen(ddEl, options);
   background-color: inherit;
 }
 {{< /twsnippet/code >}}
+          
 
 {{< /twsnippet/wrapper >}}
         </div>
@@ -656,15 +671,16 @@ const dataDen = new DataDen(ddEl, options);
       <div class="overflow-hidden">
         <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Small text</h2>
         <!--Section: Demo-->
-        {{< twsnippet/demo id="small-text-example">}}
+        {{< twsnippet/demo id="small-text-example" >}}
         <div id="dd-small-text" class="flex justify-center items-center"></div>
-        {{< /twsnippet/demo>}}
+        {{< /twsnippet/demo >}}
         <!--Section: Demo-->
 
         <div class="pt-2" id="small-text-example">
           <!-- prettier-ignore -->
           {{< twsnippet/wrapper "index.html,main.js,index.css" "" "mobile" >}}
     {{< twsnippet/code active=true lang="html" >}}
+
 
           <div id="dd"></div>
 
@@ -716,15 +732,18 @@ const ddEl = document.getElementById("dd");
 const dataDen = new DataDen(ddEl, options);
 
 {{< /twsnippet/code >}}
+          
 
 
 {{< twsnippet/code lang="css" >}}
+          
 
 #dd {
   font-size: 0.75rem;
 }
 
 {{< /twsnippet/code >}}
+          
 
 {{< /twsnippet/wrapper >}}
         </div>
@@ -744,15 +763,16 @@ const dataDen = new DataDen(ddEl, options);
         <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Row spacing</h2>
         <p>Use the <code>rowHeight</code> prop to set row height.</p>
         <!--Section: Demo-->
-        {{< twsnippet/demo id="row-spacing-example">}}
+        {{< twsnippet/demo id="row-spacing-example" >}}
         <div id="dd-row-spacing" class="flex justify-center items-center"></div>
-        {{< /twsnippet/demo>}}
+        {{< /twsnippet/demo >}}
         <!--Section: Demo-->
 
         <div class="pt-2" id="row-spacing-example">
           <!-- prettier-ignore -->
           {{< twsnippet/wrapper "index.html,main.js" "" "mobile" >}}
     {{< twsnippet/code active=true lang="html" >}}
+
 
           <div id="dd"></div>
 
@@ -807,6 +827,7 @@ const dataDen = new DataDen(ddEl, options);
 
 {{< /twsnippet/code >}}
 {{< twsnippet/code lang="css" >}}
+          
 
 .data-den-cell {
   height: 50px;

@@ -9,10 +9,6 @@ description: 'Data Den examples'
 image: ''
 video: ''
 url: 'docs/grid/getting-started/examples/'
-menu:
-  gettingstarted:
-    name: 'Examples'
-    weight: 6
 ---
 
 <div class="w-full">
@@ -31,15 +27,16 @@ menu:
         <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Basic example</h2>
         <p>Use the following example of a responsive table component to show multiple rows and columns of text data.</p>
         <!--Section: Demo-->
-        {{< twsnippet/demo id="basic-example">}}
+        {{< twsnippet/demo id="basic-example" >}}
         <div id="dd-basic" class="flex justify-center items-center"></div>
-        {{< /twsnippet/demo>}}
+        {{< /twsnippet/demo >}}
         <!--Section: Demo-->
 
         <div class="pt-2" id="basic-example">
           <!-- prettier-ignore -->
           {{< twsnippet/wrapper "index.html,main.js" "" "mobile" >}}
     {{< twsnippet/code active=true lang="html" >}}
+
 
           <div id="dd"></div>
 
@@ -91,6 +88,7 @@ const ddEl = document.getElementById("dd");
 const dataDen = new DataDen(ddEl, options);
 
   {{< /twsnippet/code >}}
+          
 
 
 {{< /twsnippet/wrapper >}}
@@ -114,7 +112,7 @@ const dataDen = new DataDen(ddEl, options);
           <code>quickFilter</code> prop to filter entries.
         </p>
         <!--Section: Demo-->
-        {{< twsnippet/demo id="search-example">}}
+        {{< twsnippet/demo id="search-example" >}}
         <div class="flex flex-col justify-center items-center">
           <div>
             <div class="data-den-quick-filter">
@@ -126,19 +124,17 @@ const dataDen = new DataDen(ddEl, options);
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="h-4 w-4 text-neutral-500 dark:text-neutral-200"
-              >
+                class="h-4 w-4 text-neutral-500 dark:text-neutral-200">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                />
+                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
               </svg>
             </div>
             <div id="dd-search"></div>
           </div>
         </div>
-        {{< /twsnippet/demo>}}
+        {{< /twsnippet/demo >}}
         <!--Section: Demo-->
 
         <div class="pt-2" id="search-example">
@@ -156,13 +152,11 @@ const dataDen = new DataDen(ddEl, options);
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
                   stroke="currentColor"
-                  class="h-4 w-4 text-neutral-500 dark:text-neutral-200"
-                >
+                  class="h-4 w-4 text-neutral-500 dark:text-neutral-200">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                  />
+                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                 </svg>
               </div>
               <div id="dd"></div>
@@ -221,6 +215,7 @@ searchInput.addEventListener('keyup', () => {
 });
 
   {{< /twsnippet/code >}}
+          
 
 
 {{< /twsnippet/wrapper >}}
@@ -241,15 +236,16 @@ searchInput.addEventListener('keyup', () => {
         <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Search column example</h2>
 
         <!--Section: Demo-->
-        {{< twsnippet/demo id="search-column-example">}}
+        {{< twsnippet/demo id="search-column-example" >}}
         <div id="dd-search-column" class="flex justify-center items-center"></div>
-        {{< /twsnippet/demo>}}
+        {{< /twsnippet/demo >}}
         <!--Section: Demo-->
 
         <div class="pt-2" id="search-column-example">
           <!-- prettier-ignore -->
           {{< twsnippet/wrapper "index.html,main.js" "" "mobile" >}}
   {{< twsnippet/code active=true lang="html" >}}
+
 
           <div id="dd"></div>
 
@@ -444,15 +440,16 @@ import { DataDen, DataDenDefaultCellRenderer } from 'data-den-core';
         <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Pagination example</h2>
         <p>Use the <code>pagination</code> prop to set pagination.</p>
         <!--Section: Demo-->
-        {{< twsnippet/demo id="pagination-example">}}
+        {{< twsnippet/demo id="pagination-example" >}}
         <div id="dd-pagination" class="flex justify-center items-center"></div>
-        {{< /twsnippet/demo>}}
+        {{< /twsnippet/demo >}}
         <!--Section: Demo-->
 
         <div class="pt-2" id="pagination-example">
           <!-- prettier-ignore -->
           {{< twsnippet/wrapper "index.html,main.js" "" "mobile" >}}
   {{< twsnippet/code active=true lang="html" >}}
+
 
           <div id="dd"></div>
 
@@ -548,15 +545,16 @@ const dataDen = new DataDen(ddEl, options);
           matches values from each row to a column in which the `field` equals to a given key value.
         </p>
         <!--Section: Demo-->
-        {{< twsnippet/demo id="advanced-structure-example">}}
+        {{< twsnippet/demo id="advanced-structure-example" >}}
         <div id="dd-advanced-structure" class="flex justify-center items-center"></div>
-        {{< /twsnippet/demo>}}
+        {{< /twsnippet/demo >}}
         <!--Section: Demo-->
 
         <div class="pt-2" id="advanced-structure-example">
           <!-- prettier-ignore -->
           {{< twsnippet/wrapper "index.html,main.js" "" "mobile" >}}
   {{< twsnippet/code active=true lang="html" >}}
+
 
           <div id="dd"></div>
 
@@ -666,15 +664,16 @@ const dataDen = new DataDen(ddEl, options);
         <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Column draggable</h2>
         <p>Use the <code>draggable</code> prop to set draggable column.</p>
         <!--Section: Demo-->
-        {{< twsnippet/demo id="draggable-example">}}
+        {{< twsnippet/demo id="draggable-example" >}}
         <div id="dd-draggable" class="flex justify-center items-center"></div>
-        {{< /twsnippet/demo>}}
+        {{< /twsnippet/demo >}}
         <!--Section: Demo-->
 
         <div class="pt-2" id="draggable-example">
           <!-- prettier-ignore -->
           {{< twsnippet/wrapper "index.html,main.js" "" "mobile" >}}
   {{< twsnippet/code active=true lang="html" >}}
+
 
           <div id="dd"></div>
 
@@ -745,15 +744,16 @@ const dataDen = new DataDen(ddEl, options);
         <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Cell formatting</h2>
         <p>Use cell formatting to color individual cells.</p>
         <!--Section: Demo-->
-        {{< twsnippet/demo id="cell-formatting-example">}}
+        {{< twsnippet/demo id="cell-formatting-example" >}}
         <div id="dd-cell-formatting" class="flex justify-center items-center"></div>
-        {{< /twsnippet/demo>}}
+        {{< /twsnippet/demo >}}
         <!--Section: Demo-->
 
         <div class="pt-2" id="cell-formatting-example">
           <!-- prettier-ignore -->
           {{< twsnippet/wrapper "index.html,main.js" "" "mobile" >}}
   {{< twsnippet/code active=true lang="html" >}}
+
 
           <div id="dd"></div>
 
