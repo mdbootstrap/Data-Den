@@ -3,5 +3,14 @@
   "singleQuote": true,
   "trailingComma": "es5",
   "printWidth": 120,
-  "endOfLine": "auto"
+  "endOfLine": "auto",
+  "overrides": [
+    {
+      "files": ["*.html"],
+      "options": {
+        "parser": "go-template",
+        "bracketSameLine": true
+      }
+    }
+  ]
 }
