@@ -23,7 +23,7 @@ import {
 import { DataDenPubSub } from './data-den-pub-sub';
 import { DataDenEventEmitter } from './data-den-event-emitter';
 import { Context } from './context';
-import { DataDenInternalOptions, DataDenOptions } from './data-den-options.interface';
+import { DataDenColDef, DataDenInternalOptions, DataDenOptions } from './data-den-options.interface';
 import { defaultOptions } from './default-options.interface';
 import { deepMerge } from './utils/deep-merge';
 import { deepCopy } from './utils';
@@ -90,7 +90,13 @@ export class DataDen {
   }
 
   #createOptions(defaultOptions: DataDenInternalOptions, userOptions: DataDenOptions): DataDenInternalOptions {
-    return deepMerge(deepCopy(defaultOptions), userOptions);
+    const options = deepMerge(deepCopy(defaultOptions), userOptions);
+
+    options.columns.forEach((colDef: DataDenColDef, index: number) => {
+      options.columns[index] = deepMerge(deepCopy(options.defaultColDef), colDef);
+    });
+
+    return options;
   }
 
   #getDataLoaderStrategy(options: DataDenOptions): DataDenDataLoaderStrategy | null {
