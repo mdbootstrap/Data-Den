@@ -22,18 +22,22 @@
   <li class="relative pt-4">
     <span class="px-6 my-4 text-[0.8rem] font-bold uppercase text-gray-600 dark:text-gray-400"> Features </span>
     <ul>
+      {{ partial "sidenav/sidenav-link" (dict "context" . "href" "/docs/grid/features/column-pinning" "text" "Column pinning") }}
       {{ partial "sidenav/sidenav-link" (dict "context" . "href" "/docs/grid/features/data-loader" "text" "Data Loader") }}
-      <!-- Placeholder for a future example of a collapsible section in the sidebar -->
-      <!-- <li class="relative mx-1 first:mt-1">
-        {{ partial "sidenav/sidenav-collapse" (dict "context" . "name" "Filter") }}
+      {{ partial "sidenav/sidenav-link" (dict "context" . "href" "/docs/grid/features/drag-and-drop" "text" "Drag And Drop") }}
+      <li class="relative mx-1 first:mt-1">
+        {{ partial "sidenav/sidenav-collapse" (dict "context" . "name" "Filtering") }}
         <ul
           class="!visible relative m-0 hidden list-none p-0 data-[te-collapse-show]:block"
           data-te-sidenav-collapse-ref
           {{ if in .Page "filter" }}data-te-collapse-show{{ end }}>
-          {{ partial "sidenav/sidenav-collapse-link" (dict "context" . "href" "/docs/grid/features/filter" "text" "Filter") }}
-          {{ partial "sidenav/sidenav-collapse-link" (dict "context" . "href" "/docs/grid/features/quick-filter" "text" "Quick filter") }}
+          {{ partial "sidenav/sidenav-collapse-link" (dict "context" . "href" "/docs/grid/features/filtering/header-filters" "text" "Header filters") }}
+          {{ partial "sidenav/sidenav-collapse-link" (dict "context" . "href" "/docs/grid/features/filtering/quick-filter" "text" "Quick filter") }}
         </ul>
-      </li> -->
+      </li>
+      {{ partial "sidenav/sidenav-link" (dict "context" . "href" "/docs/grid/features/pagination" "text" "Pagination") }}
+      {{ partial "sidenav/sidenav-link" (dict "context" . "href" "/docs/grid/features/resizing" "text" "Resizing") }}
+      {{ partial "sidenav/sidenav-link" (dict "context" . "href" "/docs/grid/features/sorting" "text" "Sorting") }}
     </ul>
   </li>
 
@@ -41,6 +45,7 @@
     <span class="px-6 my-4 text-[0.8rem] font-bold uppercase text-gray-600 dark:text-gray-400"> Api </span>
     <ul>
       {{ partial "sidenav/sidenav-link" (dict "context" . "href" "/docs/grid/api/data-loader" "text" "Data Loader") }}
+      {{ partial "sidenav/sidenav-link" (dict "context" . "href" "/docs/grid/api/filter-renderer" "text" "Filter renderer") }}
     </ul>
   </li>
 </ul>

@@ -1,0 +1,57 @@
+---
+---
+
+<script type="module">
+  import { DataDen, DataDenDefaultCellRenderer } from '/js/data-den.es.min.js';
+
+  const rows = [
+    { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+    { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+    { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+    { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+    { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+    { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+    { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+    { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+    { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+    { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+  ];
+
+  const options = {
+    columns: [
+      {
+        field: 'car',
+        headerName: 'Car',
+        cellRenderer: DataDenDefaultCellRenderer,
+        resize: true,
+      },
+      {
+        field: 'model',
+        headerName: 'Model',
+        cellRenderer: DataDenDefaultCellRenderer,
+        resize: true,
+      },
+      {
+        field: 'year',
+        headerName: 'Year',
+        cellRenderer: DataDenDefaultCellRenderer,
+        resize: true,
+      },
+      {
+        field: 'price',
+        headerName: 'Price',
+        cellRenderer: DataDenDefaultCellRenderer,
+        resize: true,
+      },
+    ],
+    rows: rows,
+    rowHeight: 32,
+  };
+
+  (() => {
+    //basic example
+    const ddElBasicResize = document.getElementById('dd-basic-resize');
+    const dataDenBasicResize = new DataDen(ddElBasicResize, options);
+    //basic example
+  })();
+</script>

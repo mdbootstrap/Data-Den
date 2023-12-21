@@ -1,0 +1,82 @@
+---
+title: 'Data Den'
+date: 2023-02-09T10:00:00+02:00
+draft: false
+main_title: 'Filter renderer'
+subheading: ''
+seo_title: 'Data Den Filter Renderer'
+description: 'Filter renderer'
+image: ''
+video: ''
+url: 'docs/grid/api/filter-renderer/'
+---
+
+<!--Section: Methods-->
+<section id="api-methods">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-4 text-4xl font-medium">Methods</h2>
+
+        <table class="min-w-full table border">
+          <thead class="border-b">
+            <tr class="border-b">
+              <th class="border-r p-3">Name</th>
+              <th class="border-r p-3">Return Type</th>
+              <th class="border-r p-3">Params</th>
+              <th class="border-r p-3">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+              <td class="whitespace-nowrap border-r p-3"><code>getGui</code></td>
+              <td class="border-r p-3">HTMLElement</td>
+              <td class="border-r p-3">-</td>
+              <td class="border-r p-3">Returns the HTML element that represents the filter's user interface.</td>
+            </tr>
+            <tr class="border-b">
+              <td class="whitespace-nowrap border-r p-3"><code>getType</code></td>
+              <td class="border-r p-3">string</td>
+              <td class="border-r p-3">-</td>
+              <td class="border-r p-3">Returns a string that represents the type of the filter.</td>
+            </tr>
+            <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+              <td class="whitespace-nowrap border-r p-3"><code>getState</code></td>
+              <td class="border-r p-3">any</td>
+              <td class="border-r p-3">-</td>
+              <td class="border-r p-3">Returns the current state of the filter.</td>
+            </tr>
+            <tr class="border-b">
+              <td class="whitespace-nowrap border-r p-3"><code>isActive</code></td>
+              <td class="border-r p-3">boolean</td>
+              <td class="border-r p-3">-</td>
+              <td class="border-r p-3">Returns a boolean indicating whether the filter is currently active.</td>
+            </tr>
+            <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+              <td class="whitespace-nowrap border-r p-3"><code>getFilterFn</code></td>
+              <td class="border-r p-3">(state: any, value: any) => boolean</td>
+              <td class="border-r p-3"><code>state: any, value: any</code></td>
+              <td class="border-r p-3">
+                Returns a function that takes in the current state of the filter and a value from the data, and returns
+                a boolean indicating whether the value passes the filter.
+              </td>
+            </tr>
+            <tr class="border-b">
+              <td class="whitespace-nowrap border-r p-3"><code>attachUiEvents</code></td>
+              <td class="border-r p-3">void</td>
+              <td class="border-r p-3"><code>DataDenHeaderFilterRendererParams</code></td>
+              <td class="border-r p-3">Attaches any necessary event listeners to the filter's user interface.</td>
+            </tr>
+            <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+              <td class="whitespace-nowrap border-r p-3"><code>destroy</code></td>
+              <td class="border-r p-3">void</td>
+              <td class="border-r p-3">-</td>
+              <td class="border-r p-3">Cleans up when the filter is no longer needed.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Methods-->

@@ -1,0 +1,86 @@
+---
+title: 'Data Den'
+date: 2023-02-09T10:00:00+02:00
+draft: false
+main_title: 'Drag And Drop'
+subheading: ''
+seo_title: 'Data Den Drag And Drop'
+description: 'Drag and drop allows you to reorder grid columns.'
+image: ''
+video: ''
+url: 'docs/grid/features/drag-and-drop/'
+---
+
+<hr class="my-10" />
+
+<!--Section: Basic-->
+<section id="basic-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Basic example</h2>
+        <p>Use <code>draggable: true</code> option to enable Drag And Drop feature.</p>
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="basic-drag-and-drop" >}}
+        <div id="dd-basic-drag-and-drop" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo >}}
+        <!--Section: Demo-->
+
+        <section class="!visible hidden" data-te-collapse-item id="basic-drag-and-drop">
+          <div class="pt-2">
+            <!-- prettier-ignore -->
+            {{< twsnippet/wrapper "HTML,javascript" "" "mobile" >}}
+              {{< twsnippet/code active=true lang="html" >}}
+            <div id="grid"></div>
+            {{< /twsnippet/code >}}
+            <!-- prettier-ignore -->
+            {{< twsnippet/code lang="js" >}}
+                import { DataDen } from "data-den-core";
+
+                const rows = [
+                  { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+                  { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+                  { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+                  { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+                  { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+                  { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+                  { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+                  { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+                  { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+                  { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+                ];
+
+                const options = {
+                  columns: [
+                    {
+                      field: "car",
+                      headerName: "Car",
+                    },
+                    {
+                      field: "model",
+                      headerName: "Model",
+                    },
+                    {
+                      field: "year",
+                      headerName: "Year",
+                    },
+                    {
+                      field: "price",
+                      headerName: "Price",
+                    },
+                  ],
+                  rows: rows,
+                  draggable: true
+                };
+
+                const gridEl = document.getElementById('grid');
+                const dataDen = new DataDen(gridEl, options);
+              {{< /twsnippet/code >}}
+            {{< /twsnippet/wrapper >}}
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Basic-->
