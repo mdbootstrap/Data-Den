@@ -21,28 +21,17 @@ code {
 p {
   @apply leading-[1.6];
 }
-.data-den-cell {
-  @apply dark:bg-neutral-700;
-  @apply dark:border-neutral-600;
-}
 
-.data-den-row:nth-child(even) .data-den-cell,
-.data-den-header-cell {
-  @apply dark:bg-neutral-800;
-  @apply dark:border-neutral-600;
-}
-.data-den-left-cells-wrapper,
-.data-den-right-cells-wrapper,
-.data-den-header-left-cells-wrapper,
-.data-den-header-right-cells-wrapper {
-  @apply dark:border-neutral-600;
-}
-
-#hovereable-row-section .data-den-row:hover .data-den-cell {
-  @apply dark:bg-neutral-600;
-}
-
-.data-den-quick-filter-input,
-.data-den-header-filter-input {
-  @apply dark:border-none dark:bg-neutral-600;
+.dark .data-den-grid {
+  --data-den-cell-border: solid var(--data-den-cell-border-width) rgb(82 82 82);
+  --data-den-cell-bg: rgb(64 64 64);
+  --data-den-cell-hover-bg: rgb(82 82 82);
+  --data-den-cell-active-bg: rgb(38 38 38);
+  --data-den-header-cell-bg: rgb(38 38 38);
+  --data-den-header-menu-dropdown-bg: rgb(64 64 64);
+  --data-den-header-menu-dropdown-border: solid 1px rgb(82 82 82);
+  --data-den-header-menu-dropdown-item-hover-bg: rgb(82 82 82);
+  --data-den-header-menu-dropdown-item-color: rgb(229 229 229);
+  --data-den-header-cell-active-bg: rgb(38 38 38);
+  --data-den-row-stripped-bg: rgb(38 38 38);
 }
