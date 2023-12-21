@@ -128,7 +128,7 @@
     pointer-events: none;
   }
   &.#{$prefix}active {
-    background-color: #fafafa;
+    background-color: var(--#{$prefix}header-cell-active-bg);
     border: var(--#{$prefix}header-cell-active-border);
     border-bottom: none;
     border-right: 1px solid transparent;

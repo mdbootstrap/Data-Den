@@ -1,7 +1,7 @@
 .#{$prefix}pagination-content {
   display: flex;
   align-items: center;
-  margin: var(--#{$prefix}pagination-content-marin);
+  margin: var(--#{$prefix}pagination-content-margin);
 }
 .#{$prefix}pagination-info {
   margin: var(--#{$prefix}pagination-info-margin);
