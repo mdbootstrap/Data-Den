@@ -14,10 +14,10 @@ export class DataDenResizingService {
   #rows: HTMLElement[];
   #currentHeader: HTMLElement | null;
   #currentCol: HTMLElement[] | null;
-  #currentColIndex: number;
   #headersOnTheRight: HTMLElement[];
   #columnsOrder: number[];
-  #isResizeingPinnedRightColumn: boolean;
+  private PubSub: DataDenPubSub;
+  #isResizingPinnedRightColumn: boolean;
 
   constructor(container: HTMLElement, options: DataDenInternalOptions) {
     this.#container = container;
@@ -30,9 +30,8 @@ export class DataDenResizingService {
     this.#rows = [];
     this.#currentHeader = null;
     this.#currentCol = null;
-    this.#currentColIndex = -1;
     this.#headersOnTheRight = [];
-    this.#isResizeingPinnedRightColumn;
+    this.#isResizingPinnedRightColumn;
 
     this.#subscribeFetchDone();
     this.#subscribeRerenderingDone();
@@ -52,7 +51,7 @@ export class DataDenResizingService {
   }
 
   #subscribeFetchDone(): void {
-    DataDenPubSub.subscribe('info:fetch:done', () => {
+    this.PubSub.subscribe('info:fetch:done', () => {
       if (!this.#isInitiated) {
         this.init();
       }
@@ -64,7 +63,7 @@ export class DataDenResizingService {
   }
 
   #subscribeRerenderingDone(): void {
-    DataDenPubSub.subscribe('command:rerendering:done', () => {
+    this.PubSub.subscribe('command:rerendering:done', () => {
       this.#headers = Array.from(this.#container.querySelectorAll('[ref="headerCell"]'))!;
       this.#headersMain = Array.from(
         this.#container.querySelector('[ref="headerMainCellsWrapper"]').querySelectorAll('[ref="headerCell"]')
@@ -74,13 +73,13 @@ export class DataDenResizingService {
   }
 
   #subscribeResizingEvents() {
-    DataDenPubSub.subscribe('info:resizing:mousedown', (event) => this.#onMousedown(event));
-    DataDenPubSub.subscribe('info:resizing:mouseup', () => this.#onMouseup());
-    DataDenPubSub.subscribe('command:resizing:start', (event) => this.#onResizing(event));
+    this.PubSub.subscribe('info:resizing:mousedown', this.#onMousedown.bind(this));
+    document.addEventListener('mousemove', this.#onMousemove.bind(this));
+    document.addEventListener('mouseup', this.#onMouseup.bind(this));
   }
 
   #subscribeDraggingEvent() {
-    DataDenPubSub.subscribe('info:dragging:columns-reorder:done', (event: DataDenEvent) => {
+    this.PubSub.subscribe('info:dragging:columns-reorder:done', (event: DataDenEvent) => {
       this.#columnsOrder = event.data.columnsOrder;
     });
   }
@@ -88,14 +87,13 @@ export class DataDenResizingService {
   #onMousedown(event: DataDenEvent) {
     this.#currentHeader = event.data.target.parentElement;
     this.#currentCol = this.#getColumnElements(this.#currentHeader);
-    this.#isResizeingPinnedRightColumn = event.data.isPinnedRight;
+    this.#isResizingPinnedRightColumn = event.data.isPinnedRight;
 
     if (!this.#currentHeader || !this.#currentHeader.parentElement) {
       return;
     }
 
     this.#isResizing = true;
-    this.#currentColIndex = this.#headersMain.indexOf(this.#currentHeader);
     this.#headersOnTheRight = this.#getHeadersOnTheRight();
   }
 
@@ -106,21 +104,22 @@ export class DataDenResizingService {
 
     this.#isResizing = false;
 
-    DataDenPubSub.publish('info:resizing:done', {
+    this.PubSub.publish('info:resizing:done', {
       context: new Context('info:resizing:done'),
     });
   }
 
-  #onResizing(event: DataDenEvent) {
-    if (!this.#isResizing || !this.#currentHeader) {
+  #onMousemove(event: MouseEvent) {
+    if (!this.#isResizing || !this.#currentHeader || this.#currentCol.some((cell) => cell === undefined)) {
+      this.#isResizing = false;
       return;
     }
 
-    const movementX = this.#isResizeingPinnedRightColumn ? -event.data.event.movementX : event.data.event.movementX;
+    const movementX = this.#isResizingPinnedRightColumn ? -event.movementX : event.movementX;
 
     this.#resizeCurrentColumn(movementX);
     this.#updateRemainingColumnsPosition(movementX);
-    DataDenPubSub.publish('info:resizing:start', {
+    this.PubSub.publish('info:resizing:start', {
       currentColIndex: this.#headers.indexOf(this.#currentHeader),
       newCurrentColWidth: parseInt(this.#currentHeader.style.width, 10),
       context: new Context('info:resizing:start'),
@@ -130,10 +129,6 @@ export class DataDenResizingService {
   #resizeCurrentColumn(movementX: number) {
     const currentWidth = this.#currentHeader?.style.width;
     const newWidth = parseInt(currentWidth || '0') + movementX;
-
-    if (!this.#currentCol) {
-      return;
-    }
 
     this.#currentCol.forEach((cell) => (cell.style.width = `${newWidth}px`));
   }

@@ -40,7 +40,9 @@
       },
     ],
     rows: rows,
+    rowHeight: 32,
   };
+
   (() => {
     //basic example
     const ddElBasic = document.getElementById('dd-basic');
@@ -60,21 +62,6 @@
     const ddElDraggable = document.getElementById('dd-draggable');
     const dataDenDraggable = new DataDen(ddElDraggable, { ...options, draggable: true });
     //draggable example
-
-    //Hoverable rows
-    const ddElVerticalBorders = document.getElementById('dd-hovereable-row');
-    const dataDenVerticalBorders = new DataDen(ddElVerticalBorders, options);
-    //Hoverable rows
-
-    //search column example
-    const ddElSearchColumn = document.getElementById('dd-search-column');
-    const dataDenSearchColumn = new DataDen(ddElSearchColumn, options);
-    //search column example
-
-    //scroll
-    const ddElScroll = document.getElementById('dd-scroll');
-    const dataDenScroll = new DataDen(ddElScroll, options);
-    //scroll
   })();
 
   //pagination example
@@ -92,7 +79,7 @@
       { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
       { car: 'Porsche', model: 'Boxster', year: '28/08/2004', price: 28000 },
       { car: 'Toyota', model: 'Celica', year: '28/08/2004', price: 12000 },
-      { car: 'Mitsubishi', model: 'Lancer', year: '16/12/2010', price: 34000 },
+      { car: 'Mitsubishi', model: 'Lancer', year: '16/12/2010', price: 32000 },
       { car: 'Toyota', model: 'Celica', year: '28/08/2004', price: 18000 },
       { car: 'Lamborghini', model: 'Aventador', year: '24/01/2015', price: 56000 },
       { car: 'Nissan', model: 'X-Trail', year: '01/05/2013', price: 56000 },
@@ -101,30 +88,77 @@
       { car: 'Ford', model: 'Focus', year: '14/09/2006', price: 15000 },
       { car: 'Lamborghini', model: 'Aventador', year: '14/09/2006', price: 15000 },
       { car: 'Ford', model: 'Focus', year: '09/02/2020', price: 12000 },
-      { car: 'Honda', model: 'Civic', year: '24/01/2015', price: 34000 },
-      { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 34000 },
+      { car: 'Honda', model: 'Civic', year: '24/01/2015', price: 32000 },
+      { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 32000 },
       { car: 'Honda', model: 'Civic', year: '09/02/2020', price: 12000 },
       { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 15000 },
       { car: 'Ford', model: 'Focus', year: '28/08/2004', price: 24000 },
       { car: 'Nissan', model: 'X-Trail', year: '16/12/2010', price: 15000 },
       { car: 'Toyota', model: 'Celica', year: '13/11/2021', price: 15000 },
       { car: 'Toyota', model: 'Celica', year: '09/02/2020', price: 12000 },
-      { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 34000 },
+      { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 32000 },
     ];
 
+    const options = {
+      columns: [
+        {
+          field: 'car',
+          headerName: 'Car',
+          cellRenderer: DataDenDefaultCellRenderer,
+        },
+        {
+          field: 'model',
+          headerName: 'Model',
+          cellRenderer: DataDenDefaultCellRenderer,
+        },
+        {
+          field: 'year',
+          headerName: 'Year',
+          cellRenderer: DataDenDefaultCellRenderer,
+        },
+        {
+          field: 'price',
+          headerName: 'Price',
+          cellRenderer: DataDenDefaultCellRenderer,
+        },
+      ],
+      rows: rows,
+      pagination: true,
+      rowHeight: 32,
+    };
+
     const ddEl = document.getElementById('dd-pagination');
-    const dataDenBasic = new DataDen(ddEl, { ...options, pagination: true });
+    const dataDenBasic = new DataDen(ddEl, options);
   })();
   //pagination example
 
   //advanced structure
   (() => {
+    const sortComparator = (fieldA, fieldB) => {
+      if (typeof fieldA === 'string') {
+        fieldA = fieldA.toLowerCase();
+      }
+
+      if (typeof fieldB === 'string') {
+        fieldB = fieldB.toLowerCase();
+      }
+
+      if (fieldA === fieldB) {
+        return 0;
+      }
+
+      return fieldA > fieldB ? 1 : -1;
+    };
+
     const options = {
       columns: [
         {
           field: 'car',
           headerName: 'Car',
           sort: true,
+          sortOptions: {
+            comparator: sortComparator,
+          },
           resize: true,
           width: 150,
           cellRenderer: DataDenDefaultCellRenderer,
@@ -133,6 +167,9 @@
           field: 'model',
           headerName: 'Model',
           sort: true,
+          sortOptions: {
+            comparator: sortComparator,
+          },
           resize: true,
           width: 150,
           cellRenderer: DataDenDefaultCellRenderer,
@@ -141,6 +178,9 @@
           field: 'year',
           headerName: 'Year',
           sort: true,
+          sortOptions: {
+            comparator: sortComparator,
+          },
           resize: true,
           width: 150,
           cellRenderer: DataDenDefaultCellRenderer,
@@ -149,12 +189,16 @@
           field: 'price',
           headerName: 'Price',
           sort: true,
+          sortOptions: {
+            comparator: sortComparator,
+          },
           resize: true,
           width: 150,
           cellRenderer: DataDenDefaultCellRenderer,
         },
       ],
       rows: rows,
+      rowHeight: 32,
     };
 
     const ddElBasic = document.getElementById('dd-advanced-structure');
@@ -210,6 +254,7 @@
         },
       ],
       rows: rows,
+      rowHeight: 32,
     };
 
     const ddElBasic = document.getElementById('dd-cell-formatting');
@@ -217,16 +262,159 @@
   })();
   //cell-formatting
 
-  //fixed-header
+  //search column example
   (() => {
-    //fixed-header
-    const ddElFixedHeader = document.getElementById('dd-fixed-header');
-    const dataDenFixedHeader = new DataDen(ddElFixedHeader, options);
+    class DataDenHeaderTextFilterRenderer {
+      constructor(params) {
+        this.params = params;
+        this.cssPrefix = params.cssPrefix;
+        const template = `
+      <div class="${this.cssPrefix}header-filter">
+        <input type="text" class="${this.cssPrefix}header-filter-input" />
+      </div>
+    `;
 
-    const headerFixedHeader = ddElFixedHeader.querySelector('.data-den-header');
-    headerFixedHeader.classList.add('bg-white', 'dark:bg-neutral-800');
+        this.element = this.createHtmlElement(template);
+        this.input = this.element.querySelector(`.${this.cssPrefix}header-filter-input`);
 
-    //fixed-header
+        this.attachUiEvents(params);
+      }
+
+      createHtmlElement(template, elementName = 'div') {
+        const placeholder = document.createElement(elementName);
+        placeholder.innerHTML = template;
+
+        return placeholder.firstElementChild;
+      }
+
+      debounce(callback, debounceTime) {
+        let timeout;
+
+        return function (...args) {
+          const debounceFn = () => {
+            clearTimeout(timeout);
+            callback(...args);
+          };
+
+          clearTimeout(timeout);
+          timeout = setTimeout(debounceFn, debounceTime);
+        };
+      }
+
+      getGui() {
+        return this.element;
+      }
+
+      getType() {
+        return 'text';
+      }
+
+      getState() {
+        const value = this.input ? this.input.value : null;
+
+        return {
+          method: this.params.method,
+          searchTerm: value,
+        };
+      }
+
+      isActive() {
+        const value = this.input ? this.input.value : null;
+
+        return !!value;
+      }
+
+      getFilterFn() {
+        const options = this.params.colDef.filterOptions;
+
+        return (state, value) => {
+          let searchTerm = state.searchTerm;
+          const method = state.method;
+          const caseSensitive = options.caseSensitive;
+          value = caseSensitive ? value : value.toString().toLowerCase();
+          searchTerm = caseSensitive ? searchTerm : searchTerm.toString().toLowerCase();
+
+          switch (method) {
+            case 'includes':
+              return value.includes(searchTerm);
+            default:
+              return false;
+          }
+        };
+      }
+
+      attachUiEvents(params) {
+        if (this.input) {
+          const debounceFilter = this.debounce(() => params.filterChanged(), params.debounceTime);
+
+          this.input.addEventListener('keyup', () => debounceFilter());
+        }
+      }
+
+      destroy() {}
+    }
+
+    const options = {
+      columns: [
+        {
+          field: 'car',
+          headerName: 'Car',
+          filter: true,
+          filterRenderer: DataDenHeaderTextFilterRenderer,
+          filterOptions: {
+            method: 'includes',
+            debounceTime: 500,
+            caseSensitive: false,
+          },
+          cellRenderer: DataDenDefaultCellRenderer,
+          width: 180,
+        },
+        {
+          field: 'model',
+          headerName: 'Model',
+          filter: true,
+          filterRenderer: DataDenHeaderTextFilterRenderer,
+          filterOptions: {
+            method: 'includes',
+            debounceTime: 500,
+            caseSensitive: false,
+          },
+          cellRenderer: DataDenDefaultCellRenderer,
+          width: 180,
+        },
+        {
+          field: 'year',
+          headerName: 'Year',
+          filter: true,
+          filterRenderer: DataDenHeaderTextFilterRenderer,
+          filterOptions: {
+            method: 'includes',
+            debounceTime: 500,
+            caseSensitive: false,
+          },
+          cellRenderer: DataDenDefaultCellRenderer,
+          width: 180,
+        },
+        {
+          field: 'price',
+          headerName: 'Price',
+          filter: true,
+          filterRenderer: DataDenHeaderTextFilterRenderer,
+          filterOptions: {
+            method: 'includes',
+            debounceTime: 500,
+            caseSensitive: false,
+          },
+          cellRenderer: DataDenDefaultCellRenderer,
+          width: 180,
+        },
+      ],
+      rows: rows,
+      rowHeight: 32,
+    };
+
+    const ddElSearchColumn = document.getElementById('dd-search-column');
+    const dataDenSearchColumn = new DataDen(ddElSearchColumn, options);
   })();
-  //fixed-header
+  //search column example
 </script>

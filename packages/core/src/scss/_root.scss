@@ -2,10 +2,12 @@
   --#{$prefix}cell-padding-x: #{$cell-padding-x};
   --#{$prefix}cell-border-width: #{$cell-border-width};
   --#{$prefix}cell-border: #{$cell-border};
+  --#{$prefix}cell-border-color: #{$cell-border-color};
 
   --#{$prefix}grid-row-cell-border: #{$row-cell-border};
 
   --#{$prefix}row-cell-bg: #{$row-cell-bg};
+  --#{$prefix}row-cell-border-width: #{$row-cell-border-width};
   --#{$prefix}row-cell-border: #{$row-cell-border};
   --#{$prefix}row-cell-active-border: #{$row-cell-active-border};
   --#{$prefix}row-cell-padding-x: #{$row-cell-padding-x};
