@@ -7,9 +7,8 @@ export class DataDenPaginationRenderer {
   element: HTMLElement;
   options: DataDenPaginationOptions;
   buttons: Record<string, HTMLButtonElement>;
-  private PubSub: DataDenPubSub;
 
-  constructor(options: DataDenPaginationOptions) {
+  constructor(options: DataDenPaginationOptions, private PubSub: DataDenPubSub) {
     this.options = options;
 
     const template =

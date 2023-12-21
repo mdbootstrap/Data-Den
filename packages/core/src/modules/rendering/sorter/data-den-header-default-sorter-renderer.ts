@@ -9,9 +9,8 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
   element: HTMLElement;
   #field: string;
   #cssPrefix: string;
-  private PubSub: DataDenPubSub;
 
-  constructor(field: string, order: DataDenSortOrder, cssPrefix: string) {
+  constructor(field: string, order: DataDenSortOrder, cssPrefix: string, private PubSub: DataDenPubSub) {
     super();
     this.#cssPrefix = cssPrefix;
     const template = `

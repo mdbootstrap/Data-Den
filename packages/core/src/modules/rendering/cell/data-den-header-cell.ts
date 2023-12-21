@@ -26,7 +26,6 @@ export class DataDenHeaderCell extends DataDenCell {
   #headerMenuRenderer: DataDenHeaderMenuRenderer | null = null;
   #renderer!: DataDenCellRenderer;
   #options: DataDenInternalOptions;
-  private PubSub: DataDenPubSub;
   #order: DataDenSortOrder;
   #isDropdownInitiated: boolean;
 
@@ -38,7 +37,8 @@ export class DataDenHeaderCell extends DataDenCell {
     width: number,
     pinned: string,
     options: DataDenInternalOptions,
-    order: DataDenSortOrder
+    order: DataDenSortOrder,
+    private PubSub: DataDenPubSub
   ) {
     super(value, rowIndex, colIndex, left, width, pinned, options);
 
@@ -62,7 +62,7 @@ export class DataDenHeaderCell extends DataDenCell {
     const order = this.#order;
 
     this.#renderer = new DataDenDefaultHeaderCellRenderer(this.#getCellRendererParams());
-    this.#headerMenuRenderer = new DataDenHeaderMenuRenderer(cssPrefix, colDef, this.colIndex);
+    this.#headerMenuRenderer = new DataDenHeaderMenuRenderer(cssPrefix, colDef, this.colIndex, this.PubSub);
 
     if (filter) {
       const filterRenderer = colDef.filterRenderer;
@@ -71,11 +71,11 @@ export class DataDenHeaderCell extends DataDenCell {
     }
 
     if (sort) {
-      this.#sorterRenderer = new DataDenHeaderDefaultSorterRenderer(field, order, cssPrefix);
+      this.#sorterRenderer = new DataDenHeaderDefaultSorterRenderer(field, order, cssPrefix, this.PubSub);
     }
 
     if (resize) {
-      this.#resizerRenderer = new DataDenHeaderDefaultResizerRenderer(cssPrefix, colDef);
+      this.#resizerRenderer = new DataDenHeaderDefaultResizerRenderer(cssPrefix, colDef, this.PubSub);
     }
   }
 

@@ -9,9 +9,8 @@ export class DataDenHeaderMenuRenderer {
   #cssPrefix: string;
   colDef: DataDenColDef;
   colIndex: number;
-  private PubSub: DataDenPubSub;
 
-  constructor(cssPrefix: string, colDef: DataDenColDef, colIndex: number) {
+  constructor(cssPrefix: string, colDef: DataDenColDef, colIndex: number, private PubSub: DataDenPubSub) {
     this.#cssPrefix = cssPrefix;
     this.colDef = colDef;
     this.colIndex = colIndex;

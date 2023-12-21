@@ -16,10 +16,9 @@ export class DataDenResizingService {
   #currentCol: HTMLElement[] | null;
   #headersOnTheRight: HTMLElement[];
   #columnsOrder: number[];
-  private PubSub: DataDenPubSub;
   #isResizingPinnedRightColumn: boolean;
 
-  constructor(container: HTMLElement, options: DataDenInternalOptions) {
+  constructor(container: HTMLElement, options: DataDenInternalOptions, private PubSub: DataDenPubSub) {
     this.#container = container;
     this.#options = options;
     this.#isInitiated = false;

@@ -1,8 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-import { inject } from '../../../src/utils/inject';
-declare var require: any;
-
 describe('data-den-sorting-service', () => {
   let DataDenSortingService: any;
   let exampleData: any[] = [];
@@ -83,13 +80,12 @@ describe('data-den-sorting-service', () => {
       const PubSubClass = require('../../../src/data-den-pub-sub').DataDenPubSub;
       DataDenPubSub = new PubSubClass();
       DataDenSortingService = require('../../../src/modules/sorting/data-den-sorting-service').DataDenSortingService;
-      inject(DataDenSortingService, 'PubSub', DataDenPubSub);
 
       context = new Context(COMMAND_SORTING_START);
       caller = 'test caller';
       field = 'car';
 
-      new DataDenSortingService(options);
+      new DataDenSortingService(options, DataDenPubSub);
       mockFn = jest.fn();
 
       DataDenPubSub.subscribe(COMMAND_FETCH_START, (event: any) => {
@@ -184,8 +180,7 @@ describe('data-den-sorting-service', () => {
       const PubSubClass = require('../../../src/data-den-pub-sub').DataDenPubSub;
       DataDenPubSub = new PubSubClass();
       DataDenSortingService = require('../../../src/modules/sorting/data-den-sorting-service').DataDenSortingService;
-      inject(DataDenSortingService, 'PubSub', DataDenPubSub);
-      instance = new DataDenSortingService(options);
+      instance = new DataDenSortingService(options, DataDenPubSub);
     });
 
     it('should sort ascending', () => {

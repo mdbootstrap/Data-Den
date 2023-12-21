@@ -11,9 +11,8 @@ export class DataDenFilteringService {
   activeHeaderFilters: { [key: string]: DataDenActiveHeaderFilter } = {};
   activeQuickFilter: DataDenActiveQuickFilter;
   options: DataDenInternalOptions;
-  private PubSub: DataDenPubSub;
 
-  constructor(options: DataDenInternalOptions) {
+  constructor(options: DataDenInternalOptions, private PubSub: DataDenPubSub) {
     this.options = options;
     this.activeQuickFilter = { searchTerm: '', filterFn: options.quickFilterOptions.filterFn };
 

@@ -20,13 +20,12 @@ export class DataDenDraggingService {
   #mainColumnsOrder: number[];
   #defaultGridOffsetLeft: number;
   #cssPrefix: string;
-  private PubSub: DataDenPubSub;
 
   #handleGridMouseMove: (e: MouseEvent) => void;
   #handleDocumentMouseUp: (e: MouseEvent) => void;
   #handleHeaderMouseDown: (e: MouseEvent) => void;
 
-  constructor(container: HTMLElement, options: DataDenInternalOptions) {
+  constructor(container: HTMLElement, options: DataDenInternalOptions, private PubSub: DataDenPubSub) {
     this.#container = container;
     this.#gridMain = container.querySelector('[ref="gridMain"]')!;
     this.#options = options;

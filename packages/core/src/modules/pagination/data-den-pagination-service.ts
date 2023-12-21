@@ -8,9 +8,8 @@ export class DataDenPaginationService {
   #currentPage: number;
   #pageSize: number;
   #allTotalRows: number;
-  private PubSub: DataDenPubSub;
 
-  constructor(options: DataDenInternalOptions) {
+  constructor(options: DataDenInternalOptions, private PubSub: DataDenPubSub) {
     this.#options = options.paginationOptions;
 
     this.#currentPage = 0;

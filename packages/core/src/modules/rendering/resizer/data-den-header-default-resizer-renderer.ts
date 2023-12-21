@@ -7,10 +7,9 @@ import { DataDenColDef } from '../../../data-den-options.interface';
 export class DataDenHeaderDefaultResizerRenderer extends DataDenHeaderResizerRenderer {
   element: HTMLElement;
   #cssPrefix: string;
-  private PubSub: DataDenPubSub;
   #isPinnedRight: boolean;
 
-  constructor(cssPrefix: string, colDef: DataDenColDef) {
+  constructor(cssPrefix: string, colDef: DataDenColDef, private PubSub: DataDenPubSub) {
     super();
 
     this.#cssPrefix = cssPrefix;

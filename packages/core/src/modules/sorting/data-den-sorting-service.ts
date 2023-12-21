@@ -7,11 +7,10 @@ import { DataDenInternalOptions, DataDenSortComparator } from '../../data-den-op
 
 export class DataDenSortingService {
   #field: string;
-  private PubSub: DataDenPubSub;
   #order: DataDenSortOrder;
   #options: DataDenInternalOptions;
 
-  constructor(options: DataDenInternalOptions) {
+  constructor(options: DataDenInternalOptions, private PubSub: DataDenPubSub) {
     this.#field = '';
     this.#order = 'asc';
     this.#options = options;

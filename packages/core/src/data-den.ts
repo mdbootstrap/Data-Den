@@ -1,9 +1,7 @@
 import './scss/index.scss';
 
 import {
-  DataDenHeaderCell,
   DataDenHeaderDateFilterRenderer,
-  DataDenHeaderDefaultSorterRenderer,
   DataDenHeaderNumberFilterRenderer,
   DataDenHeaderTextFilterRenderer,
   DataDenRenderingService,
@@ -29,11 +27,6 @@ import { defaultOptions } from './default-options.interface';
 import { deepMerge } from './utils/deep-merge';
 import { deepCopy } from './utils';
 import { DataDenQuickFilterChangeEvent } from './modules/rendering/filter/data-den-quick-filter-change-event.interface';
-import { inject } from './utils/inject';
-import { DataDenHeaderSelectFilterRenderer } from './modules/rendering/filter/data-den-header-select-filter-renderer';
-import { DataDenPaginationRenderer } from './modules/rendering/pagination';
-import { DataDenHeaderDefaultResizerRenderer } from './modules/rendering/resizer';
-import { DataDenHeaderMenuRenderer } from './modules/rendering/menu';
 
 export class DataDen {
   #rendering: DataDenRenderingService;
@@ -48,41 +41,20 @@ export class DataDen {
   private PubSub: DataDenPubSub = new DataDenPubSub();
 
   constructor(container: HTMLElement, options: DataDenOptions) {
-    [
-      DataDenHeaderCell,
-      DataDenFetchService,
-      DataDenRenderingService,
-      DataDenSortingService,
-      DataDenFilteringService,
-      DataDenPaginationService,
-      DataDenDraggingService,
-      DataDenResizingService,
-      DataDenHeaderDateFilterRenderer,
-      DataDenHeaderNumberFilterRenderer,
-      DataDenHeaderTextFilterRenderer,
-      DataDenHeaderSelectFilterRenderer,
-      DataDenPaginationRenderer,
-      DataDenHeaderDefaultResizerRenderer,
-      DataDenHeaderDefaultSorterRenderer,
-      DataDenHeaderMenuRenderer,
-    ].forEach((clazz) => {
-      inject(clazz, 'PubSub', this.PubSub);
-    });
-
     const gridOptions = this.#createOptions(defaultOptions, options);
     this.#dataLoaderStrategy = this.#getDataLoaderStrategy(gridOptions);
 
     if (this.#dataLoaderStrategy) {
-      this.#fetch = new DataDenFetchService(this.#dataLoaderStrategy);
+      this.#fetch = new DataDenFetchService(this.#dataLoaderStrategy, this.PubSub);
     }
 
-    this.#rendering = new DataDenRenderingService(container, gridOptions);
-    this.#sorting = new DataDenSortingService(gridOptions);
-    this.#filtering = new DataDenFilteringService(gridOptions);
-    this.#pagination = new DataDenPaginationService(gridOptions);
-    this.#dragging = options.draggable ? new DataDenDraggingService(container, gridOptions) : null;
+    this.#rendering = new DataDenRenderingService(container, gridOptions, this.PubSub);
+    this.#sorting = new DataDenSortingService(gridOptions, this.PubSub);
+    this.#filtering = new DataDenFilteringService(gridOptions, this.PubSub);
+    this.#pagination = new DataDenPaginationService(gridOptions, this.PubSub);
+    this.#dragging = options.draggable ? new DataDenDraggingService(container, gridOptions, this.PubSub) : null;
     this.#resizing = options.columns.some((column) => column.resize)
-      ? new DataDenResizingService(container, gridOptions)
+      ? new DataDenResizingService(container, gridOptions, this.PubSub)
       : null;
   }
 

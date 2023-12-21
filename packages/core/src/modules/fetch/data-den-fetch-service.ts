@@ -9,9 +9,8 @@ import { DataDenEventEmitter } from '../../data-den-event-emitter';
 export class DataDenFetchService {
   #loader: DataDenDataLoaderStrategy;
   #fetchOptions: DataDenFetchOptions;
-  private PubSub: DataDenPubSub;
 
-  constructor(loader: DataDenDataLoaderStrategy) {
+  constructor(loader: DataDenDataLoaderStrategy, private PubSub: DataDenPubSub) {
     this.#loader = loader;
     this.#fetchOptions = {};
     this.#subscribeFetchStart();
