@@ -40,10 +40,12 @@
   border-right: $cell-border-transparent;
   padding: 4px var(--#{$prefix}row-cell-padding-x);
   position: absolute;
-  background-color: #ffffff;
+  background-color: var(--#{$prefix}row-cell-bg);
 
   &.#{$prefix}active {
     background-color: #fafafa;
+    border: var(--#{$prefix}row-cell-active-border);
+    border-right: none;
     z-index: 2;
   }
 }
@@ -58,11 +60,11 @@
 .#{$prefix}cell-pinned-left {
   position: relative;
   float: left;
-  background-color: #fffafa;
+  background-color: var(--#{$prefix}row-cell-pinned-bg);
 }
 
 .#{$prefix}cell-pinned-right {
   position: relative;
   float: right;
-  background-color: #fffafa;
+  background-color: var(--#{$prefix}row-cell-pinned-bg);
 }

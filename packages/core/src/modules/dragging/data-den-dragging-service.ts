@@ -172,6 +172,12 @@ export class DataDenDraggingService {
 
   #onHeaderMouseDown(event: MouseEvent) {
     event.stopPropagation();
+    const target = event.target as HTMLElement;
+
+    if (event.button !== 0 || target.getAttribute('ref') !== 'headerCell') {
+      return;
+    }
+
     this.#onMouseDown(this.#getOffsetX(event.pageX));
   }
 

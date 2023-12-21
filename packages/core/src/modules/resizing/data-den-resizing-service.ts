@@ -14,11 +14,10 @@ export class DataDenResizingService {
   #rows: HTMLElement[];
   #currentHeader: HTMLElement | null;
   #currentCol: HTMLElement[] | null;
-  #currentColIndex: number;
   #headersOnTheRight: HTMLElement[];
   #columnsOrder: number[];
   private PubSub: DataDenPubSub;
-  #isResizeingPinnedRightColumn: boolean;
+  #isResizingPinnedRightColumn: boolean;
 
   constructor(container: HTMLElement, options: DataDenInternalOptions) {
     this.#container = container;
@@ -31,9 +30,8 @@ export class DataDenResizingService {
     this.#rows = [];
     this.#currentHeader = null;
     this.#currentCol = null;
-    this.#currentColIndex = -1;
     this.#headersOnTheRight = [];
-    this.#isResizeingPinnedRightColumn;
+    this.#isResizingPinnedRightColumn;
 
     this.#subscribeFetchDone();
     this.#subscribeRerenderingDone();
@@ -75,9 +73,9 @@ export class DataDenResizingService {
   }
 
   #subscribeResizingEvents() {
-    this.PubSub.subscribe('info:resizing:mousedown', (event) => this.#onMousedown(event));
-    this.PubSub.subscribe('info:resizing:mouseup', () => this.#onMouseup());
-    this.PubSub.subscribe('command:resizing:start', (event) => this.#onResizing(event));
+    this.PubSub.subscribe('info:resizing:mousedown', this.#onMousedown.bind(this));
+    document.addEventListener('mousemove', this.#onMousemove.bind(this));
+    document.addEventListener('mouseup', this.#onMouseup.bind(this));
   }
 
   #subscribeDraggingEvent() {
@@ -89,14 +87,13 @@ export class DataDenResizingService {
   #onMousedown(event: DataDenEvent) {
     this.#currentHeader = event.data.target.parentElement;
     this.#currentCol = this.#getColumnElements(this.#currentHeader);
-    this.#isResizeingPinnedRightColumn = event.data.isPinnedRight;
+    this.#isResizingPinnedRightColumn = event.data.isPinnedRight;
 
     if (!this.#currentHeader || !this.#currentHeader.parentElement) {
       return;
     }
 
     this.#isResizing = true;
-    this.#currentColIndex = this.#headersMain.indexOf(this.#currentHeader);
     this.#headersOnTheRight = this.#getHeadersOnTheRight();
   }
 
@@ -112,12 +109,13 @@ export class DataDenResizingService {
     });
   }
 
-  #onResizing(event: DataDenEvent) {
-    if (!this.#isResizing || !this.#currentHeader) {
+  #onMousemove(event: MouseEvent) {
+    if (!this.#isResizing || !this.#currentHeader || this.#currentCol.some((cell) => cell === undefined)) {
+      this.#isResizing = false;
       return;
     }
 
-    const movementX = this.#isResizeingPinnedRightColumn ? -event.data.event.movementX : event.data.event.movementX;
+    const movementX = this.#isResizingPinnedRightColumn ? -event.movementX : event.movementX;
 
     this.#resizeCurrentColumn(movementX);
     this.#updateRemainingColumnsPosition(movementX);
@@ -131,10 +129,6 @@ export class DataDenResizingService {
   #resizeCurrentColumn(movementX: number) {
     const currentWidth = this.#currentHeader?.style.width;
     const newWidth = parseInt(currentWidth || '0') + movementX;
-
-    if (!this.#currentCol) {
-      return;
-    }
 
     this.#currentCol.forEach((cell) => (cell.style.width = `${newWidth}px`));
   }

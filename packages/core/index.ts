@@ -2,12 +2,13 @@ import './src/scss/index.scss';
 import { DataDen } from './src/data-den';
 import { DataDenOptions } from './src/data-den-options.interface';
 import { DataDenDefaultCellRenderer } from './src/modules/rendering/cell/data-den-default-cell-renderer';
-import { DataDenSortingEvent } from './src/modules/sorting';
 import {
   DataDenHeaderDateFilterRenderer,
   DataDenHeaderNumberFilterRenderer,
   DataDenHeaderTextFilterRenderer,
 } from './src/modules/rendering';
+import { DataDenSortingEvent } from './src/modules/sorting';
+import { DataDenPinningEvent } from './src/modules/pinning';
 
 const rows = [
   { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000, transmission: 'Manual', fuel: 'Gasoline' },
@@ -311,5 +312,16 @@ dataDen.on('sortingStart', (event: DataDenSortingEvent) => {
 });
 
 dataDen.on('sortingDone', (event: DataDenSortingEvent) => {
+  console.log(event);
+});
+
+dataDen.on('pinningStart', (event: DataDenPinningEvent) => {
+  if (event.colIndex === 2) {
+    event.preventDefault();
+  }
+  console.log(event);
+});
+
+dataDen.on('pinningDone', (event: DataDenPinningEvent) => {
   console.log(event);
 });

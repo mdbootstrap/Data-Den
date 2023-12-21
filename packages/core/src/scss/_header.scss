@@ -73,11 +73,11 @@
   right: 0;
   top: 0;
   height: 100%;
-  width: 6px;
+  width: var(--#{$prefix}header-resizer-width);
   cursor: col-resize;
 
   &:hover {
-    background-color: #ccc;
+    background-color: var(--#{$prefix}header-resizer-bg);
   }
 }
 .#{$prefix}header-resizer-left {
@@ -125,23 +125,30 @@
   .#{$prefix}header-cell-value {
     display: flex;
     flex-direction: row;
+    pointer-events: none;
   }
   &.#{$prefix}active {
     background-color: #fafafa;
+    border: var(--#{$prefix}header-cell-active-border);
+    border-bottom: none;
+    border-right: 1px solid transparent;
     z-index: 2;
+    & > * {
+      pointer-events: none;
+    }
   }
 }
 
 .#{$prefix}header-cell-pinned-left {
   position: relative;
   float: left;
-  background-color: rgb(245, 245, 245);
+  background-color: var(--#{$prefix}header-pinned-bg);
 }
 
 .#{$prefix}header-cell-pinned-right {
   position: relative;
   float: right;
-  background-color: rgb(245, 245, 245);
+  background-color: var(--#{$prefix}header-pinned-bg);
 }
 
 .#{$prefix}header-menu-toggler {
@@ -166,23 +173,22 @@
 
 .#{$prefix}header-menu-dropdown {
   position: absolute;
-  right: 5px;
-  top: 5px;
+  right: var(--#{$prefix}header-menu-right);
+  top: var(--#{$prefix}header-menu-top);
   margin-top: var(--#{$prefix}header-height);
   z-index: 3;
-  width: 100px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  padding: 4px 0;
+  width: var(--#{$prefix}header-menu-width);
+  background-color: var(--#{$prefix}header-menu-bg);
+  border: var(--#{$prefix}header-menu-border);
+  border-radius: var(--#{$prefix}header-menu-border-radius);
+  box-shadow: var(--#{$prefix}header-menu-box-shadow);
   display: none;
   flex-direction: column;
   overflow: hidden;
-  max-height: 200px;
+  max-height: var(--#{$prefix}header-menu-max-height);
   overflow-y: auto;
-  font-size: 12px;
-  padding: 8px;
+  font-size: var(--#{$prefix}header-menu-font-size);
+  padding: var(--#{$prefix}header-menu-border);
 
   &.active {
     display: flex;
@@ -190,7 +196,7 @@
 }
 
 .#{$prefix}header-menu-dropdown-item {
-  padding: 4px 8px;
+  padding: var(--#{$prefix}header-menu-item-padding);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -199,9 +205,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
   text-decoration: none;
-  color: #333;
+  color: var(--#{$prefix}header-menu-item-color);
 
   &:hover {
-    background-color: #eee;
+    background-color: var(--#{$prefix}header-menu-item-hover-bg);
   }
 }
