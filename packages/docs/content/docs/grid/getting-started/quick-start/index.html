@@ -8,11 +8,7 @@ seo_title: 'Install a Data Den library'
 description: 'Install Data Den via npm, via command line, via CDN or download a free .zip package. Use our open source Tailwind CSS components for free.'
 image: ''
 video: ''
-url: 'docs/standard/getting-started/quick-start/'
-menu:
-  gettingstarted:
-    name: 'Quick start'
-    weight: 1
+url: 'docs/grid/getting-started/quick-start/'
 ---
 
 <div class="w-full">
@@ -43,43 +39,43 @@ menu:
 <p class="mb-2">2. Run the following command to install the package via NPM:</p>
 <div class="pt-2" id="download-npm-step-2">
   <!-- prettier-ignore -->
-  {{<twsnippet/wrapper "terminal" "" "mobile">}}
-  {{<twsnippet/code active=true lang="Plaintext" type="terminal">}}
-   npm install data-den-core 
-  {{< /twsnippet/code>}}
-  {{< /twsnippet/wrapper>}}
+  {{< twsnippet/wrapper "terminal" "" "mobile" >}}
+  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}}
+    npm install data-den-core 
+  {{< /twsnippet/code >}}
+  {{< /twsnippet/wrapper >}}
 </div>
 
 <p class="mb-2">3. Import the entire library or just individual modules:</p>
 <div class="pt-2" id="download-npm-step-2">
   <!-- prettier-ignore -->
-  {{<twsnippet/wrapper "JAVASCRIPT" "" "mobile">}}
-  {{<twsnippet/code active=true lang="Plaintext" type="terminal">}} 
-  import * as mdb from 'data-den-core'; // lib
-  import { DataDen } from 'data-den-core'; // module 
-  {{< /twsnippet/code>}}
-  {{< /twsnippet/wrapper>}}
+  {{< twsnippet/wrapper "JAVASCRIPT" "" "mobile" >}}
+  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}} 
+    import * as mdb from 'data-den-core'; // lib
+    import { DataDen } from 'data-den-core'; // module 
+  {{< /twsnippet/code >}}
+  {{< /twsnippet/wrapper >}}
 </div>
 
 <p class="mb-2">4. Import Data Den stylesheet please use the following syntax:</p>
 <p class="font-semibold">CSS</p>
 <div class="pt-2" id="download-npm-step-2">
   <!-- prettier-ignore -->
-  {{<twsnippet/wrapper "SCSS" "" "mobile">}}
-  {{<twsnippet/code active=true lang="Plaintext" type="terminal">}} 
-  @import 'data-den-core/dist/css/data-den.min.css';
- {{< /twsnippet/code>}}
- {{< /twsnippet/wrapper>}}
+  {{< twsnippet/wrapper "SCSS" "" "mobile" >}}
+  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}} 
+    @import 'data-den-core/dist/css/data-den.min.css';
+  {{< /twsnippet/code >}}
+  {{< /twsnippet/wrapper >}}
 </div>
 
 <p class="font-semibold">JS</p>
 <div class="pt-2" id="download-npm-step-2">
   <!-- prettier-ignore -->
-  {{<twsnippet/wrapper "JAVASCRIPT" "" "mobile">}}
-  {{<twsnippet/code active=true lang="Plaintext" type="terminal">}}
-  import 'data-den-core/dist/css/data-den.min.css';
- {{< /twsnippet/code>}}
- {{< /twsnippet/wrapper>}}
+  {{< twsnippet/wrapper "JAVASCRIPT" "" "mobile" >}}
+  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}}
+    import 'data-den-core/dist/css/data-den.min.css';
+  {{< /twsnippet/code >}}
+  {{< /twsnippet/wrapper >}}
 </div>
 
 <p class="mb-2 mt-6">
@@ -99,61 +95,61 @@ menu:
 <p class="mb-2 mt-4">1. To start using MDB GO / CLI install it with one command:</p>
 <div class="pt-2" id="download-mdbgo-step-1">
   <!-- prettier-ignore -->
-  {{<twsnippet/wrapper "terminal" "!bg-[#BB2E3E] !text-white dark:!bg-rose-300 dark:!text-rose-900" "mobile">}}
-  {{<twsnippet/code active=true lang="Plaintext" type="terminal">}} 
+  {{< twsnippet/wrapper "terminal" "!bg-[#BB2E3E] !text-white dark:!bg-rose-300 dark:!text-rose-900" "mobile" >}}
+  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}} 
     npm install -g mdb-cli
-  {{< /twsnippet/code>}}
-  {{< /twsnippet/wrapper>}}
+  {{< /twsnippet/code >}}
+  {{< /twsnippet/wrapper >}}
 </div>
 
 <p class="mb-2 mt-4">2. Log into the CLI using your MDB account:</p>
 <div class="pt-2" id="download-mdbgo-step-2">
   <!-- prettier-ignore -->
-  {{<twsnippet/wrapper "terminal" "!bg-[#4A24AA] !text-white dark:!bg-violet-300 dark:!text-violet-900" "mobile">}}
-  {{<twsnippet/code active=true lang="Plaintext" type="terminal">}}
+  {{< twsnippet/wrapper "terminal" "!bg-[#4A24AA] !text-white dark:!bg-violet-300 dark:!text-violet-900" "mobile" >}}
+  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}}
     mdb login 
-  {{< /twsnippet/code>}}
-  {{< /twsnippet/wrapper>}}
+  {{< /twsnippet/code >}}
+  {{< /twsnippet/wrapper >}}
 </div>
 
 <p class="mb-2 mt-4">3. Initialize a project and choose <strong>Data Den</strong> from the list:</p>
 <div class="pt-2" id="download-mdbgo-step-3">
   <!-- prettier-ignore -->
-  {{<twsnippet/wrapper "terminal" "!bg-[#4A24AA] !text-white dark:!bg-violet-300 dark:!text-violet-900" "mobile">}}
-  {{<twsnippet/code active=true lang="Plaintext" type="terminal">}} 
+  {{< twsnippet/wrapper "terminal" "!bg-[#4A24AA] !text-white dark:!bg-violet-300 dark:!text-violet-900" "mobile" >}}
+  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}} 
     mdb init data-den-core 
-  {{< /twsnippet/code>}}
-  {{< /twsnippet/wrapper>}}
+  {{< /twsnippet/code >}}
+  {{< /twsnippet/wrapper >}}
 </div>
 
 <p class="mb-2 mt-4">4. Install the dependencies (inside the project directory):</p>
 <div class="pt-2" id="download-mdbgo-step-4">
   <!-- prettier-ignore -->
-  {{<twsnippet/wrapper "terminal" "!bg-[#BB2E3E] !text-white dark:!bg-rose-300 dark:!text-rose-900" "mobile">}}
-  {{<twsnippet/code active=true lang="Plaintext" type="terminal">}} 
+  {{< twsnippet/wrapper "terminal" "!bg-[#BB2E3E] !text-white dark:!bg-rose-300 dark:!text-rose-900" "mobile" >}}
+  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}} 
     npm install
-  {{< /twsnippet/code>}}
-  {{< /twsnippet/wrapper>}}
+  {{< /twsnippet/code >}}
+  {{< /twsnippet/wrapper >}}
 </div>
 
 <p class="mb-2 mt-4">5. Run the app:</p>
 <div class="pt-2" id="download-mdbgo-step-5">
   <!-- prettier-ignore -->
-  {{<twsnippet/wrapper "terminal" "!bg-[#BB2E3E] !text-white dark:!bg-rose-300 dark:!text-rose-900" "mobile">}}
-  {{<twsnippet/code active=true lang="Plaintext" type="terminal">}} 
+  {{< twsnippet/wrapper "terminal" "!bg-[#BB2E3E] !text-white dark:!bg-rose-300 dark:!text-rose-900" "mobile" >}}
+  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}} 
     npm start 
-  {{< /twsnippet/code>}}
-  {{< /twsnippet/wrapper>}}
+  {{< /twsnippet/code >}}
+  {{< /twsnippet/wrapper >}}
 </div>
 
 <p class="mb-2 mt-4">6. Publish when you're ready:</p>
 <div class="pt-2" id="download-mdbgo-step-6">
   <!-- prettier-ignore -->
-  {{<twsnippet/wrapper "terminal" "!bg-[#4A24AA] !text-white dark:!bg-violet-300 dark:!text-violet-900" "mobile">}}
-  {{<twsnippet/code active=true lang="Plaintext" type="terminal">}} 
+  {{< twsnippet/wrapper "terminal" "!bg-[#4A24AA] !text-white dark:!bg-violet-300 dark:!text-violet-900" "mobile" >}}
+  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}} 
     mdb publish 
-  {{< /twsnippet/code>}}
-  {{< /twsnippet/wrapper>}}
+  {{< /twsnippet/code >}}
+  {{< /twsnippet/wrapper >}}
 </div>
 
 <hr class="my-10" />
@@ -163,8 +159,7 @@ menu:
     <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="vite" data-te-scrollspy-item>Vite</h2>
 
     <div
-      class="mb-4 mr-4 overflow-hidden rounded-md border-l-[6px] border-solid border-blue-600 bg-blue-100 p-2.5 dark:text-gray-600"
-    >
+      class="mb-4 mr-4 overflow-hidden rounded-md border-l-[6px] border-solid border-blue-600 bg-blue-100 p-2.5 dark:text-gray-600">
       <strong>Note:</strong> Make sure that you have <code>Node.js version 16.17.0 + / 18.1.0 +</code> installed. Please
       update if your package manager asks for it. If you are expecting issues with <code>vite.config.js</code> and you
       don't want to update the npm, try using the <code>4.3.9</code> version of vite.
@@ -187,9 +182,10 @@ menu:
   <!-- prettier-ignore -->
   {{< twsnippet/wrapper "terminal" "" "mobile" >}}
   {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}}
-  npm create vite@latest my-project 
-  cd my-project
-  {{< /twsnippet/code >}}{{< /twsnippet/wrapper >}}
+    npm create vite@latest my-project 
+    cd my-project
+  {{< /twsnippet/code >}}
+  {{< /twsnippet/wrapper >}}
 </div>
 
 <p class="mb-2 mt-6">2. Install the <strong>Data Den</strong> package.</p>
@@ -198,8 +194,9 @@ menu:
   <!-- prettier-ignore -->
   {{< twsnippet/wrapper "terminal" "" "mobile" >}}
   {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}}
-  npm install data-den-core
-  {{< /twsnippet/code >}}{{< /twsnippet/wrapper >}}
+    npm install data-den-core
+  {{< /twsnippet/code >}}
+  {{< /twsnippet/wrapper >}}
 </div>
 
 <p class="mb-2 mt-6">
@@ -211,7 +208,8 @@ menu:
   {{< twsnippet/wrapper "style.css" "" "mobile" >}}
   {{< twsnippet/code active=true lang="css" >}}
     @import 'data-den-core/dist/css/data-den.min.css';
-  {{< /twsnippet/code >}}{{< /twsnippet/wrapper >}}
+  {{< /twsnippet/code >}}
+  {{< /twsnippet/wrapper >}}
 </div>
 
 <p class="mb-2 mt-6">4. Link the css file inside the <code>index.html</code>.</p>
@@ -224,7 +222,8 @@ menu:
     <link rel="stylesheet" href="style.css" />
     ...
   </head>
-  {{< /twsnippet/code >}}{{< /twsnippet/wrapper >}}
+  {{< /twsnippet/code >}}
+  {{< /twsnippet/wrapper >}}
 </div>
 
 <p class="mb-2 mt-6">
@@ -236,8 +235,9 @@ menu:
   <!-- prettier-ignore -->
   {{< twsnippet/wrapper "terminal" "" "mobile" >}}
   {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}}
-  npm run dev
-  {{< /twsnippet/code >}}{{< /twsnippet/wrapper >}}
+    npm run dev
+  {{< /twsnippet/code >}}
+  {{< /twsnippet/wrapper >}}
 </div>
 
 <p class="mb-2 mt-6">
@@ -266,46 +266,45 @@ menu:
   {{< /twsnippet/code >}}
   <!-- prettier-ignore -->
   {{< twsnippet/code lang="js" >}}
-import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+    import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
 
-const rows = [
-  { car: "Honda", model: "Civic", year: "01/05/2013", price: 28000 },
-  { car: "Mitsubishi", model: "Lancer", year: "01/05/2013", price: 56000 },
-  { car: "Porsche", model: "Boxster", year: "09/02/2020", price: 31000 },
-  { car: "Toyota", model: "Celica", year: "16/12/2010", price: 18000 },
-  { car: "Kia", model: "Sportage", year: "14/09/2006", price: 28000 },
-  { car: "Ford", model: "Focus", year: "04/07/2014", price: 24000 },
-];
+    const rows = [
+      { car: "Honda", model: "Civic", year: "01/05/2013", price: 28000 },
+      { car: "Mitsubishi", model: "Lancer", year: "01/05/2013", price: 56000 },
+      { car: "Porsche", model: "Boxster", year: "09/02/2020", price: 31000 },
+      { car: "Toyota", model: "Celica", year: "16/12/2010", price: 18000 },
+      { car: "Kia", model: "Sportage", year: "14/09/2006", price: 28000 },
+      { car: "Ford", model: "Focus", year: "04/07/2014", price: 24000 },
+    ];
 
-const options = {
-  columns: [
-    {
-      field: "car",
-      headerName: "Car",
-      cellRenderer: DataDenDefaultCellRenderer,
-    },
-    {
-      field: "model",
-      headerName: "Model",
-      cellRenderer: DataDenDefaultCellRenderer,
-    },
-    {
-      field: "year",
-      headerName: "Year",
-      cellRenderer: DataDenDefaultCellRenderer,
-    },
-    {
-      field: "price",
-      headerName: "Price",
-      cellRenderer: DataDenDefaultCellRenderer,
-    },
-  ],
-  rows: rows,
-};
+    const options = {
+      columns: [
+        {
+          field: "car",
+          headerName: "Car",
+          cellRenderer: DataDenDefaultCellRenderer,
+        },
+        {
+          field: "model",
+          headerName: "Model",
+          cellRenderer: DataDenDefaultCellRenderer,
+        },
+        {
+          field: "year",
+          headerName: "Year",
+          cellRenderer: DataDenDefaultCellRenderer,
+        },
+        {
+          field: "price",
+          headerName: "Price",
+          cellRenderer: DataDenDefaultCellRenderer,
+        },
+      ],
+      rows: rows,
+    };
 
-const ddEl = document.getElementById("dd");
-const dataDen = new DataDen(ddEl, options);
-
+    const ddEl = document.getElementById("dd");
+    const dataDen = new DataDen(ddEl, options);
   {{< /twsnippet/code >}}
   {{< /twsnippet/wrapper >}}
 </div>
@@ -327,25 +326,25 @@ const dataDen = new DataDen(ddEl, options);
     <p class="font-semibold">CSS</p>
     <div class="pt-2" id="download-npm-step-4">
       <!-- prettier-ignore -->
-      {{<twsnippet/wrapper "CSS" "" "mobile">}}
-    {{<twsnippet/code active=true lang="HTML">}}
+      {{< twsnippet/wrapper "CSS" "" "mobile" >}}
+      {{< twsnippet/code active=true lang="HTML" >}}
       <link
         href="https://cdnjs.cloudflare.com/ajax/libs/data-den-core/1.0.0/dist/css/data-den.min.css"
-        rel="stylesheet"
-      />
-      {{< /twsnippet/code>}} {{< /twsnippet/wrapper>}}
+        rel="stylesheet" />
+      {{< /twsnippet/code >}}
+      {{< /twsnippet/wrapper >}}
     </div>
 
     <p class="font-semibold">JS</p>
     <div class="pt-2" id="download-npm-step-4">
       <!-- prettier-ignore -->
-      {{<twsnippet/wrapper "JAVASCRIPT" "" "mobile">}}
-      {{<twsnippet/code active=true lang="HTML">}}
+      {{< twsnippet/wrapper "JAVASCRIPT" "" "mobile" >}}
+      {{< twsnippet/code active=true lang="HTML" >}}
       <script
         type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/data-den-core/1.0.0/dist/js/data-den.umd.min.js"
-      ></script>
-      {{< /twsnippet/code>}} {{< /twsnippet/wrapper>}}
+        src="https://cdnjs.cloudflare.com/ajax/libs/data-den-core/1.0.0/dist/js/data-den.umd.min.js"></script>
+      {{< /twsnippet/code >}}
+      {{< /twsnippet/wrapper >}}
     </div>
   </div>
 </div>
@@ -364,8 +363,7 @@ const dataDen = new DataDen(ddEl, options);
       <a href="" id="download-zip-step-1">
         <button
           class="mb-3 mr-1 mt-3 rounded border border-solid border-purple-500 bg-transparent px-6 py-3 text-sm font-bold uppercase text-purple-500 outline-none transition-all duration-150 ease-linear hover:bg-purple-500 hover:text-white focus:outline-none active:bg-purple-600"
-          type="button"
-        >
+          type="button">
           Download ZIP starter
         </button>
       </a>
