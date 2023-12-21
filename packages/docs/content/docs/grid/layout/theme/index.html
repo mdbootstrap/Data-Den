@@ -1,0 +1,40 @@
+---
+title: 'Theme'
+date: 2023-02-09T10:00:00+02:00
+draft: false
+main_title: 'Theme'
+subheading: ''
+seo_title: 'Data Den theme'
+description: 'Data Den theme'
+image: ''
+video: ''
+url: 'docs/grid/layout/theme/'
+---
+
+<!-- Section: Custom theme -->
+<section>
+  <!-- Title -->
+  <h2
+    class="mb-5 mt-0 text-3xl font-semibold leading-normal text-neutral-800 dark:text-neutral-200"
+    id="css-variables"
+    data-te-spy-item>
+    Custom theme
+  </h2>
+  <!-- Description -->
+  <p class="mb-3">
+    You can use CSS variables to create a custom theme. Below you will find an example of the styles we used to create
+    the dark theme in our documentation.
+  </p>
+
+  {{< twsnippet/wrapper "CSS" "" "mobile" >}}
+  {{< twsnippet/code active=true lang="CSS" >}}
+  .dark .data-den-grid { --data-den-cell-border: solid var(--data-den-cell-border-width) rgb(82 82 82);
+  --data-den-cell-bg: rgb(64 64 64); --data-den-cell-hover-bg: rgb(82 82 82); --data-den-cell-active-bg: rgb(38 38 38);
+  --data-den-header-cell-bg: rgb(38 38 38); --data-den-header-menu-dropdown-bg: rgb(64 64 64);
+  --data-den-header-menu-dropdown-border: solid 1px rgb(82 82 82); --data-den-header-menu-dropdown-item-hover-bg: rgb(82
+  82 82); --data-den-header-menu-dropdown-item-color: rgb(229 229 229); --data-den-header-cell-active-bg: rgb(38 38 38);
+  --data-den-row-stripped-bg: rgb(38 38 38); }
+  {{< /twsnippet/code >}}
+  {{< /twsnippet/wrapper >}}
+</section>
+<!-- Section: Custom theme -->

@@ -1,0 +1,706 @@
+---
+title: 'Custom CSS'
+date: 2023-02-09T10:00:00+02:00
+draft: false
+main_title: 'Custom CSS'
+subheading: ''
+seo_title: 'Data Den custom CSS'
+description: 'Data Den custom CSS'
+image: ''
+video: ''
+url: 'docs/grid/layout/custom-css/'
+---
+
+<div class="w-full">
+  <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="formats" data-te-spy-item>
+    Data Den custom CSS examples.
+  </h2>
+</div>
+
+<hr class="my-10" />
+
+<!--Section: Scroll-->
+<section id="scroll-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Scroll</h2>
+        <!-- Custom styles for scroll example -->
+        <style>
+          #dd-scroll .data-den-grid-main {
+            overflow-y: scroll;
+            height: 200px;
+          }
+        </style>
+        <!-- Custom styles for scroll example -->
+
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="scroll-example" >}}
+        <div class="flex justify-center items-center">
+          <div id="dd-scroll"></div>
+        </div>
+        {{< /twsnippet/demo >}}
+        <!--Section: Demo-->
+
+        <div class="!visible hidden" data-te-collapse-item id="scroll-example">
+          {{< twsnippet/wrapper "index.html,main.js,index.css" "" "mobile" >}}
+          {{< twsnippet/code active=true lang="html" >}}
+          <div id="dd"></div>
+          {{< /twsnippet/code >}}
+          {{< twsnippet/code lang="js" >}}
+          import { DataDen, DataDenDefaultCellRenderer } from "data-den-core"; const rows = [ { car: 'Honda', model:
+          'Civic', year: '01/05/2013', price: 28000 }, { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price:
+          56000 }, { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 }, { car: 'Toyota', model:
+          'Celica', year: '16/12/2010', price: 18000 }, { car: 'Kia', model: 'Sportage', year: '14/09/2006', price:
+          28000 }, { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 }, { car: 'Ford', model: 'Focus',
+          year: '16/12/2010', price: 24000 }, { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 }, {
+          car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 }, { car: 'Kia', model: 'Sportage', year:
+          '01/05/2013', price: 24000 }, ]; const options = { columns: [ { field: "car", headerName: "Car", cellRenderer:
+          DataDenDefaultCellRenderer, }, { field: "model", headerName: "Model", cellRenderer:
+          DataDenDefaultCellRenderer, }, { field: "year", headerName: "Year", cellRenderer: DataDenDefaultCellRenderer,
+          }, { field: "price", headerName: "Price", cellRenderer: DataDenDefaultCellRenderer, }, ], rows: rows, }; const
+          ddEl = document.getElementById("dd"); const dataDen = new DataDen(ddEl, options);
+          {{< /twsnippet/code >}}
+          {{< twsnippet/code lang="css" >}}
+          .dd-scroll { height: 200px; overflow-y: auto; }
+          {{< /twsnippet/code >}}
+          {{< /twsnippet/wrapper >}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Scroll-->
+
+<hr class="my-10" />
+
+<!--Section: Fixed header-->
+<section id="fixed-header-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Fixed header example</h2>
+        <!-- Custom styles for fixed header example -->
+        <style>
+          #dd-fixed-header .data-den-grid-main {
+            overflow-y: scroll;
+            height: 200px;
+          }
+          #dd-fixed-header .data-den-header {
+            position: sticky;
+            top: 0;
+          }
+        </style>
+        <!-- Custom styles for fixed header example -->
+
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="fixed-header-example" >}}
+        <div class="flex justify-center items-center">
+          <div id="dd-fixed-header"></div>
+        </div>
+        {{< /twsnippet/demo >}}
+        <!--Section: Demo-->
+
+        <div class="!visible hidden" data-te-collapse-item id="fixed-header-example">
+          {{< twsnippet/wrapper "index.html,main.js,index.css" "" "mobile" >}}
+          {{< twsnippet/code active=true lang="html" >}}
+          <div id="dd"></div>
+          {{< /twsnippet/code >}}
+          {{< twsnippet/code lang="js" >}}
+          import { DataDen, DataDenDefaultCellRenderer } from "data-den-core"; const rows = [ { car: 'Honda', model:
+          'Civic', year: '01/05/2013', price: 28000 }, { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price:
+          56000 }, { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 }, { car: 'Toyota', model:
+          'Celica', year: '16/12/2010', price: 18000 }, { car: 'Kia', model: 'Sportage', year: '14/09/2006', price:
+          28000 }, { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 }, { car: 'Ford', model: 'Focus',
+          year: '16/12/2010', price: 24000 }, { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 }, {
+          car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 }, { car: 'Kia', model: 'Sportage', year:
+          '01/05/2013', price: 24000 }, ]; const options = { columns: [ { field: "car", headerName: "Car", cellRenderer:
+          DataDenDefaultCellRenderer, }, { field: "model", headerName: "Model", cellRenderer:
+          DataDenDefaultCellRenderer, }, { field: "year", headerName: "Year", cellRenderer: DataDenDefaultCellRenderer,
+          }, { field: "price", headerName: "Price", cellRenderer: DataDenDefaultCellRenderer, }, ], rows: rows, }; const
+          ddEl = document.getElementById("dd"); const dataDen = new DataDen(ddEl, options);
+          {{< /twsnippet/code >}}
+          {{< twsnippet/code lang="css" >}}
+          .data-den-grid-main { overflow: scroll; height: 200px; } .data-den-header { position: sticky; top: 0; z-index:
+          1; }
+          {{< /twsnippet/code >}}
+          {{< /twsnippet/wrapper >}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Fixed header-->
+
+<hr class="my-10" />
+
+<!--Section: Hoverable rows-->
+<section id="hovereable-row-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Hoverable rows</h2>
+        <!-- Custom styles for hoverable rows example -->
+        <style>
+          #dd-hovereable-row .data-den-row:hover .data-den-cell {
+            background-color: rgb(245, 245, 245);
+          }
+          .dark #dd-hovereable-row .data-den-row:hover .data-den-cell {
+            background-color: rgb(82, 82, 82);
+          }
+        </style>
+        <!-- Custom styles for hoverable rows example -->
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="hovereable-row-example" >}}
+        <div class="flex justify-center items-center">
+          <div id="dd-hovereable-row"></div>
+        </div>
+        {{< /twsnippet/demo >}}
+        <!--Section: Demo-->
+
+        <div class="!visible hidden" data-te-collapse-item id="hovereable-row-example">
+          <!-- prettier-ignore -->
+          {{< twsnippet/wrapper "index.html,main.js,index.css" "" "mobile" >}}
+            {{< twsnippet/code active=true lang="html" >}}
+          <div id="dd"></div>
+          {{< /twsnippet/code >}}
+          <!-- prettier-ignore -->
+          {{< twsnippet/code lang="js" >}}
+              import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+
+              const rows = [
+                { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+                { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+                { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+                { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+                { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+                { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+                { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+                { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+                { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+                { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+              ];
+
+              const options = {
+                columns: [
+                  {
+                    field: "car",
+                    headerName: "Car",
+                    cellRenderer: DataDenDefaultCellRenderer,
+                  },
+                  {
+                    field: "model",
+                    headerName: "Model",
+                    cellRenderer: DataDenDefaultCellRenderer,
+                  },
+                  {
+                    field: "year",
+                    headerName: "Year",
+                    cellRenderer: DataDenDefaultCellRenderer,
+                  },
+                  {
+                    field: "price",
+                    headerName: "Price",
+                    cellRenderer: DataDenDefaultCellRenderer,
+                  },
+                ],
+                rows: rows,
+              };
+
+              const ddEl = document.getElementById("dd");
+              const dataDen = new DataDen(ddEl, options);
+            {{< /twsnippet/code >}}
+            {{< twsnippet/code lang="css" >}}
+              .data-den-row:hover .data-den-cell {
+                background-color: rgb(245, 245, 245);
+              }
+            {{< /twsnippet/code >}}
+          {{< /twsnippet/wrapper >}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Hoverable rows-->
+
+<hr class="my-10" />
+
+<!--Section: Without vertical borders-->
+<section id="vertical-borders-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>
+          Without vertical borders
+        </h2>
+        <!-- Custom styles for vertical borders example -->
+        <style>
+          #dd-vertical-borders .data-den-header-cell,
+          #dd-vertical-borders .data-den-cell {
+            border-left: none;
+            border-right: none;
+          }
+          #dd-vertical-borders .data-den-left-cells-wrapper,
+          #dd-vertical-borders .data-den-right-cells-wrapper,
+          #dd-vertical-borders .data-den-header-left-cells-wrapper,
+          #dd-vertical-borders .data-den-header-right-cells-wrapper {
+            border: none;
+          }
+        </style>
+        <!-- Custom styles for vertical borders example -->
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="vertical-borders-example" >}}
+        <div id="dd-vertical-borders" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo >}}
+        <!--Section: Demo-->
+
+        <div class="!visible hidden" data-te-collapse-item id="vertical-borders-example">
+          {{< twsnippet/wrapper "index.html,main.js,index.css" "" "mobile" >}}
+          {{< twsnippet/code active=true lang="html" >}}
+          <div id="dd"></div>
+          {{< /twsnippet/code >}}
+          {{< twsnippet/code lang="js" >}}
+          import { DataDen, DataDenDefaultCellRenderer } from "data-den-core"; const rows = [ { car: 'Honda', model:
+          'Civic', year: '01/05/2013', price: 28000 }, { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price:
+          56000 }, { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 }, { car: 'Toyota', model:
+          'Celica', year: '16/12/2010', price: 18000 }, { car: 'Kia', model: 'Sportage', year: '14/09/2006', price:
+          28000 }, { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 }, { car: 'Ford', model: 'Focus',
+          year: '16/12/2010', price: 24000 }, { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 }, {
+          car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 }, { car: 'Kia', model: 'Sportage', year:
+          '01/05/2013', price: 24000 }, ]; const options = { columns: [ { field: "car", headerName: "Car", cellRenderer:
+          DataDenDefaultCellRenderer, }, { field: "model", headerName: "Model", cellRenderer:
+          DataDenDefaultCellRenderer, }, { field: "year", headerName: "Year", cellRenderer: DataDenDefaultCellRenderer,
+          }, { field: "price", headerName: "Price", cellRenderer: DataDenDefaultCellRenderer, }, ], rows: rows, }; const
+          ddEl = document.getElementById("dd"); const dataDen = new DataDen(ddEl, options);
+          {{< /twsnippet/code >}}
+          {{< twsnippet/code lang="css" >}}
+          .data-den-header-cell, .data-den-cell { border-left: none; border-right: none; } .data-den-left-cells-wrapper,
+          .data-den-right-cells-wrapper, .data-den-header-left-cells-wrapper, .data-den-header-right-cells-wrapper {
+          border: none; }
+          {{< /twsnippet/code >}}
+          {{< /twsnippet/wrapper >}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Without vertical borders-->
+
+<hr class="my-10" />
+
+<!--Section: Without horizontal borders-->
+<section id="horizontal-borders-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>
+          Without horizontal borders
+        </h2>
+        <!-- Custom styles for horizontal borders example -->
+        <style>
+          #dd-horizontal-borders .data-den-header-cell,
+          #dd-horizontal-borders .data-den-cell {
+            border-top: none;
+            border-bottom: none;
+          }
+        </style>
+        <!-- Custom styles for horizontal borders example -->
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="horizontal-borders-example" >}}
+        <div id="dd-horizontal-borders" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo >}}
+        <!--Section: Demo-->
+
+        <div class="!visible hidden" data-te-collapse-item id="horizontal-borders-example">
+          {{< twsnippet/wrapper "index.html,main.js,index.css" "" "mobile" >}}
+          {{< twsnippet/code active=true lang="html" >}}
+          <div id="dd"></div>
+          {{< /twsnippet/code >}}
+          {{< twsnippet/code lang="js" >}}
+          import { DataDen, DataDenDefaultCellRenderer } from "data-den-core"; const rows = [ { car: 'Honda', model:
+          'Civic', year: '01/05/2013', price: 28000 }, { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price:
+          56000 }, { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 }, { car: 'Toyota', model:
+          'Celica', year: '16/12/2010', price: 18000 }, { car: 'Kia', model: 'Sportage', year: '14/09/2006', price:
+          28000 }, { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 }, { car: 'Ford', model: 'Focus',
+          year: '16/12/2010', price: 24000 }, { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 }, {
+          car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 }, { car: 'Kia', model: 'Sportage', year:
+          '01/05/2013', price: 24000 }, ]; const options = { columns: [ { field: "car", headerName: "Car", cellRenderer:
+          DataDenDefaultCellRenderer, }, { field: "model", headerName: "Model", cellRenderer:
+          DataDenDefaultCellRenderer, }, { field: "year", headerName: "Year", cellRenderer: DataDenDefaultCellRenderer,
+          }, { field: "price", headerName: "Price", cellRenderer: DataDenDefaultCellRenderer, }, ], rows: rows, }; const
+          ddEl = document.getElementById("dd"); const dataDen = new DataDen(ddEl, options);
+          {{< /twsnippet/code >}}
+          {{< twsnippet/code lang="css" >}}
+          .data-den-header-cell, .data-den-cell { border-top: none; border-bottom: none; }
+          {{< /twsnippet/code >}}
+          {{< /twsnippet/wrapper >}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Without horizontal borders-->
+
+<hr class="my-10" />
+
+<!--Section: Without  borders-->
+<section id="without-borders-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Without borders</h2>
+        <!-- Custom styles for borders example -->
+        <style>
+          #dd-without-borders .data-den-grid {
+            --data-den-cell-border: none;
+          }
+        </style>
+        <!-- Custom styles for borders example -->
+
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="without-borders-example" >}}
+        <div id="dd-without-borders" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo >}}
+        <!--Section: Demo-->
+
+        <div class="!visible hidden" data-te-collapse-item id="without-borders-example">
+          <!-- prettier-ignore -->
+          {{< twsnippet/wrapper "index.html,main.js,index.css" "" "mobile" >}}
+            {{< twsnippet/code active=true lang="html" >}}
+          <div id="dd"></div>
+          {{< /twsnippet/code >}}
+          <!-- prettier-ignore -->
+          {{< twsnippet/code lang="js" >}}
+              import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+
+              const rows = [
+                { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+                { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+                { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+                { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+                { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+                { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+                { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+                { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+                { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+                { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+              ];
+
+              const options = {
+                columns: [
+                  {
+                    field: "car",
+                    headerName: "Car",
+                    cellRenderer: DataDenDefaultCellRenderer,
+                  },
+                  {
+                    field: "model",
+                    headerName: "Model",
+                    cellRenderer: DataDenDefaultCellRenderer,
+                  },
+                  {
+                    field: "year",
+                    headerName: "Year",
+                    cellRenderer: DataDenDefaultCellRenderer,
+                  },
+                  {
+                    field: "price",
+                    headerName: "Price",
+                    cellRenderer: DataDenDefaultCellRenderer,
+                  },
+                ],
+                rows: rows,
+              };
+
+              const ddEl = document.getElementById("dd");
+              const dataDen = new DataDen(ddEl, options);
+            {{< /twsnippet/code >}}
+            {{< twsnippet/code lang="css" >}}
+              .data-den-grid {
+                --data-den-cell-border: none;
+              }
+              .data-den-cell,
+              .data-den-header-cell {
+                border-right: none;
+              }
+            {{< /twsnippet/code >}}
+          {{< /twsnippet/wrapper >}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Without  borders-->
+
+<hr class="my-10" />
+
+<!--Section: Unstriped rows-->
+<section id="unstriped-rows-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Unstriped rows</h2>
+        <!-- Custom styles for unstripped rows example -->
+        <style>
+          #dd-unstriped-rows .data-den-grid {
+            --data-den-row-stripped-bg: var(--data-den-cell-bg);
+          }
+        </style>
+        <!-- Custom styles for unstripped rows example -->
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="unstriped-rows-example" >}}
+        <div id="dd-unstriped-rows" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo >}}
+        <!--Section: Demo-->
+
+        <div class="!visible hidden" data-te-collapse-item id="unstriped-rows-example">
+          <!-- prettier-ignore -->
+          {{< twsnippet/wrapper "index.html,main.js,index.css" "" "mobile" >}}
+            {{< twsnippet/code active=true lang="html" >}}
+          <div id="dd"></div>
+          {{< /twsnippet/code >}}
+          <!-- prettier-ignore -->
+          {{< twsnippet/code lang="js" >}}
+              import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+
+              const rows = [
+                { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+                { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+                { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+                { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+                { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+                { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+                { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+                { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+                { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+                { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+              ];
+
+              const options = {
+                columns: [
+                  {
+                    field: "car",
+                    headerName: "Car",
+                    cellRenderer: DataDenDefaultCellRenderer,
+                  },
+                  {
+                    field: "model",
+                    headerName: "Model",
+                    cellRenderer: DataDenDefaultCellRenderer,
+                  },
+                  {
+                    field: "year",
+                    headerName: "Year",
+                    cellRenderer: DataDenDefaultCellRenderer,
+                  },
+                  {
+                    field: "price",
+                    headerName: "Price",
+                    cellRenderer: DataDenDefaultCellRenderer,
+                  },
+                ],
+                rows: rows,
+              };
+
+              const ddEl = document.getElementById("dd");
+              const dataDen = new DataDen(ddEl, options);
+            {{< /twsnippet/code >}}
+            {{< twsnippet/code lang="css" >}}
+              .data-den-grid {
+                --data-den-row-stripped-color-bg: inherit;
+              }
+            {{< /twsnippet/code >}}
+          {{< /twsnippet/wrapper >}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Unstriped rows-->
+
+<hr class="my-10" />
+
+<!--Section: Without  borders-->
+<section id="small-text-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Small text</h2>
+        <!-- Custom styles for small text example -->
+        <style>
+          #dd-small-text {
+            font-size: 0.75rem;
+          }
+          #dd-small-text .data-den-header {
+            height: 30px;
+          }
+        </style>
+        <!-- Custom styles for small text example -->
+
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="small-text-example" >}}
+        <div id="dd-small-text" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo >}}
+        <!--Section: Demo-->
+
+        <div class="!visible hidden" data-te-collapse-item id="small-text-example">
+          <!-- prettier-ignore -->
+          {{< twsnippet/wrapper "index.html,main.js,index.css" "" "mobile" >}}
+            {{< twsnippet/code active=true lang="html" >}}
+          <div id="dd"></div>
+          {{< /twsnippet/code >}}
+          <!-- prettier-ignore -->
+          {{< twsnippet/code lang="js" >}}
+              import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+
+              const rows = [
+                { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+                { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+                { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+                { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+                { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+                { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+                { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+                { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+                { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+                { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+              ];
+
+              const options = {
+                columns: [
+                  {
+                    field: "car",
+                    headerName: "Car",
+                    cellRenderer: DataDenDefaultCellRenderer,
+                  },
+                  {
+                    field: "model",
+                    headerName: "Model",
+                    cellRenderer: DataDenDefaultCellRenderer,
+                  },
+                  {
+                    field: "year",
+                    headerName: "Year",
+                    cellRenderer: DataDenDefaultCellRenderer,
+                  },
+                  {
+                    field: "price",
+                    headerName: "Price",
+                    cellRenderer: DataDenDefaultCellRenderer,
+                  },
+                ],
+                rows: rows,
+              };
+
+              const ddEl = document.getElementById("dd");
+              const dataDen = new DataDen(ddEl, options);
+            {{< /twsnippet/code >}}
+            {{< twsnippet/code lang="css" >}}
+            #dd {
+              font-size: 0.75rem;
+            }
+            .data-den-header {
+              height: 30px;
+            }
+            {{< /twsnippet/code >}}
+          {{< /twsnippet/wrapper >}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Without  borders-->
+
+<hr class="my-10" />
+
+<!--Section: Row Spacing-->
+<section id="row-spacing-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Row spacing</h2>
+        <p>Use the <code>rowHeight</code> prop to set row height.</p>
+        <!-- Custom styles for row spacing example -->
+        <style>
+          #dd-row-spacing .data-den-cell {
+            height: 50px;
+            display: flex;
+            align-items: center;
+          }
+        </style>
+        <!-- Custom styles for row spacing example -->
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="row-spacing-example" >}}
+        <div id="dd-row-spacing" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo >}}
+        <!--Section: Demo-->
+
+        <div class="!visible hidden" data-te-collapse-item id="row-spacing-example">
+          <!-- prettier-ignore -->
+          {{< twsnippet/wrapper "index.html,main.js,index.css" "" "mobile" >}}
+            {{< twsnippet/code active=true lang="html" >}}
+          <div id="dd"></div>
+          {{< /twsnippet/code >}}
+          <!-- prettier-ignore -->
+          {{< twsnippet/code lang="js" >}}
+              import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+
+              const rows = [
+                { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+                { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+                { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+                { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+                { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+                { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+                { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+                { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+                { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+                { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+              ];
+
+              const options = {
+                columns: [
+                  {
+                    field: "car",
+                    headerName: "Car",
+                    cellRenderer: DataDenDefaultCellRenderer,
+                  },
+                  {
+                    field: "model",
+                    headerName: "Model",
+                    cellRenderer: DataDenDefaultCellRenderer,
+                  },
+                  {
+                    field: "year",
+                    headerName: "Year",
+                    cellRenderer: DataDenDefaultCellRenderer,
+                  },
+                  {
+                    field: "price",
+                    headerName: "Price",
+                    cellRenderer: DataDenDefaultCellRenderer,
+                  },
+                ],
+                rows: rows,
+                rowHeight: 50,
+
+              };
+
+              const ddEl = document.getElementById("dd");
+              const dataDen = new DataDen(ddEl, options);
+
+            {{< /twsnippet/code >}}
+            {{< twsnippet/code lang="css" >}}
+              .data-den-cell {
+                height: 50px;
+                display: flex;
+                align-items: center;
+              }
+            {{< /twsnippet/code >}}
+          {{< /twsnippet/wrapper >}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Row Spacing-->
