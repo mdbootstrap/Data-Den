@@ -47,22 +47,62 @@ url: 'docs/grid/layout/custom-css/'
           {{< twsnippet/code active=true lang="html" >}}
           <div id="dd"></div>
           {{< /twsnippet/code >}}
+          <!-- prettier-ignore -->
           {{< twsnippet/code lang="js" >}}
-          import { DataDen, DataDenDefaultCellRenderer } from "data-den-core"; const rows = [ { car: 'Honda', model:
-          'Civic', year: '01/05/2013', price: 28000 }, { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price:
-          56000 }, { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 }, { car: 'Toyota', model:
-          'Celica', year: '16/12/2010', price: 18000 }, { car: 'Kia', model: 'Sportage', year: '14/09/2006', price:
-          28000 }, { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 }, { car: 'Ford', model: 'Focus',
-          year: '16/12/2010', price: 24000 }, { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 }, {
-          car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 }, { car: 'Kia', model: 'Sportage', year:
-          '01/05/2013', price: 24000 }, ]; const options = { columns: [ { field: "car", headerName: "Car", cellRenderer:
-          DataDenDefaultCellRenderer, }, { field: "model", headerName: "Model", cellRenderer:
-          DataDenDefaultCellRenderer, }, { field: "year", headerName: "Year", cellRenderer: DataDenDefaultCellRenderer,
-          }, { field: "price", headerName: "Price", cellRenderer: DataDenDefaultCellRenderer, }, ], rows: rows, }; const
-          ddEl = document.getElementById("dd"); const dataDen = new DataDen(ddEl, options);
+            import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+
+            const rows = [
+              { car: "Honda", model: "Civic", year: "01/05/2013", price: 28000 },
+              { car: "Mitsubishi", model: "Lancer", year: "01/05/2013", price: 56000 },
+              { car: "Porsche", model: "Boxster", year: "09/02/2020", price: 31000 },
+              { car: "Toyota", model: "Celica", year: "16/12/2010", price: 18000 },
+              { car: "Kia", model: "Sportage", year: "14/09/2006", price: 28000 },
+              { car: "Ford", model: "Focus", year: "04/07/2014", price: 24000 },
+              { car: "Ford", model: "Focus", year: "16/12/2010", price: 24000 },
+              { car: "Porsche", model: "Boxster", year: "24/01/2015", price: 31000 },
+              {
+                car: "Mitsubishi",
+                model: "Lancer",
+                year: "14/09/2006",
+                price: 18000,
+              },
+              { car: "Kia", model: "Sportage", year: "01/05/2013", price: 24000 },
+            ];
+
+            const options = {
+              columns: [
+                {
+                  field: "car",
+                  headerName: "Car",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "model",
+                  headerName: "Model",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "year",
+                  headerName: "Year",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "price",
+                  headerName: "Price",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+              ],
+              rows: rows,
+            };
+
+            const ddEl = document.getElementById("dd");
+            const dataDen = new DataDen(ddEl, options);
           {{< /twsnippet/code >}}
           {{< twsnippet/code lang="css" >}}
-          .dd-scroll { height: 200px; overflow-y: auto; }
+            .dd-scroll { 
+              height: 200px;
+              overflow-y: auto;
+            }
           {{< /twsnippet/code >}}
           {{< /twsnippet/wrapper >}}
         </div>
@@ -106,23 +146,67 @@ url: 'docs/grid/layout/custom-css/'
           {{< twsnippet/code active=true lang="html" >}}
           <div id="dd"></div>
           {{< /twsnippet/code >}}
+          <!-- prettier-ignore -->
           {{< twsnippet/code lang="js" >}}
-          import { DataDen, DataDenDefaultCellRenderer } from "data-den-core"; const rows = [ { car: 'Honda', model:
-          'Civic', year: '01/05/2013', price: 28000 }, { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price:
-          56000 }, { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 }, { car: 'Toyota', model:
-          'Celica', year: '16/12/2010', price: 18000 }, { car: 'Kia', model: 'Sportage', year: '14/09/2006', price:
-          28000 }, { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 }, { car: 'Ford', model: 'Focus',
-          year: '16/12/2010', price: 24000 }, { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 }, {
-          car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 }, { car: 'Kia', model: 'Sportage', year:
-          '01/05/2013', price: 24000 }, ]; const options = { columns: [ { field: "car", headerName: "Car", cellRenderer:
-          DataDenDefaultCellRenderer, }, { field: "model", headerName: "Model", cellRenderer:
-          DataDenDefaultCellRenderer, }, { field: "year", headerName: "Year", cellRenderer: DataDenDefaultCellRenderer,
-          }, { field: "price", headerName: "Price", cellRenderer: DataDenDefaultCellRenderer, }, ], rows: rows, }; const
-          ddEl = document.getElementById("dd"); const dataDen = new DataDen(ddEl, options);
+            import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+
+            const rows = [
+              { car: "Honda", model: "Civic", year: "01/05/2013", price: 28000 },
+              { car: "Mitsubishi", model: "Lancer", year: "01/05/2013", price: 56000 },
+              { car: "Porsche", model: "Boxster", year: "09/02/2020", price: 31000 },
+              { car: "Toyota", model: "Celica", year: "16/12/2010", price: 18000 },
+              { car: "Kia", model: "Sportage", year: "14/09/2006", price: 28000 },
+              { car: "Ford", model: "Focus", year: "04/07/2014", price: 24000 },
+              { car: "Ford", model: "Focus", year: "16/12/2010", price: 24000 },
+              { car: "Porsche", model: "Boxster", year: "24/01/2015", price: 31000 },
+              {
+                car: "Mitsubishi",
+                model: "Lancer",
+                year: "14/09/2006",
+                price: 18000,
+              },
+              { car: "Kia", model: "Sportage", year: "01/05/2013", price: 24000 },
+            ];
+
+            const options = {
+              columns: [
+                {
+                  field: "car",
+                  headerName: "Car",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "model",
+                  headerName: "Model",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "year",
+                  headerName: "Year",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "price",
+                  headerName: "Price",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+              ],
+              rows: rows,
+            };
+
+            const ddEl = document.getElementById("dd");
+            const dataDen = new DataDen(ddEl, options);
           {{< /twsnippet/code >}}
           {{< twsnippet/code lang="css" >}}
-          .data-den-grid-main { overflow: scroll; height: 200px; } .data-den-header { position: sticky; top: 0; z-index:
-          1; }
+            .data-den-grid-main {
+              overflow: scroll;
+              height: 200px;
+            }
+            .data-den-header {
+              position: sticky;
+              top: 0;
+              z-index: 1;
+            }
           {{< /twsnippet/code >}}
           {{< /twsnippet/wrapper >}}
         </div>
@@ -259,24 +343,69 @@ url: 'docs/grid/layout/custom-css/'
           {{< twsnippet/code active=true lang="html" >}}
           <div id="dd"></div>
           {{< /twsnippet/code >}}
+          <!-- prettier-ignore -->
           {{< twsnippet/code lang="js" >}}
-          import { DataDen, DataDenDefaultCellRenderer } from "data-den-core"; const rows = [ { car: 'Honda', model:
-          'Civic', year: '01/05/2013', price: 28000 }, { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price:
-          56000 }, { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 }, { car: 'Toyota', model:
-          'Celica', year: '16/12/2010', price: 18000 }, { car: 'Kia', model: 'Sportage', year: '14/09/2006', price:
-          28000 }, { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 }, { car: 'Ford', model: 'Focus',
-          year: '16/12/2010', price: 24000 }, { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 }, {
-          car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 }, { car: 'Kia', model: 'Sportage', year:
-          '01/05/2013', price: 24000 }, ]; const options = { columns: [ { field: "car", headerName: "Car", cellRenderer:
-          DataDenDefaultCellRenderer, }, { field: "model", headerName: "Model", cellRenderer:
-          DataDenDefaultCellRenderer, }, { field: "year", headerName: "Year", cellRenderer: DataDenDefaultCellRenderer,
-          }, { field: "price", headerName: "Price", cellRenderer: DataDenDefaultCellRenderer, }, ], rows: rows, }; const
-          ddEl = document.getElementById("dd"); const dataDen = new DataDen(ddEl, options);
+            import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+
+            const rows = [
+              { car: "Honda", model: "Civic", year: "01/05/2013", price: 28000 },
+              { car: "Mitsubishi", model: "Lancer", year: "01/05/2013", price: 56000 },
+              { car: "Porsche", model: "Boxster", year: "09/02/2020", price: 31000 },
+              { car: "Toyota", model: "Celica", year: "16/12/2010", price: 18000 },
+              { car: "Kia", model: "Sportage", year: "14/09/2006", price: 28000 },
+              { car: "Ford", model: "Focus", year: "04/07/2014", price: 24000 },
+              { car: "Ford", model: "Focus", year: "16/12/2010", price: 24000 },
+              { car: "Porsche", model: "Boxster", year: "24/01/2015", price: 31000 },
+              {
+                car: "Mitsubishi",
+                model: "Lancer",
+                year: "14/09/2006",
+                price: 18000,
+              },
+              { car: "Kia", model: "Sportage", year: "01/05/2013", price: 24000 },
+            ];
+
+            const options = {
+              columns: [
+                {
+                  field: "car",
+                  headerName: "Car",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "model",
+                  headerName: "Model",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "year",
+                  headerName: "Year",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "price",
+                  headerName: "Price",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+              ],
+              rows: rows,
+            };
+
+            const ddEl = document.getElementById("dd");
+            const dataDen = new DataDen(ddEl, options);
           {{< /twsnippet/code >}}
           {{< twsnippet/code lang="css" >}}
-          .data-den-header-cell, .data-den-cell { border-left: none; border-right: none; } .data-den-left-cells-wrapper,
-          .data-den-right-cells-wrapper, .data-den-header-left-cells-wrapper, .data-den-header-right-cells-wrapper {
-          border: none; }
+            .data-den-header-cell,
+            .data-den-cell {
+              border-left: none;
+              border-right: none;
+            }
+            .data-den-left-cells-wrapper,
+            .data-den-right-cells-wrapper,
+            .data-den-header-left-cells-wrapper,
+            .data-den-header-right-cells-wrapper {
+              border: none;
+            }
           {{< /twsnippet/code >}}
           {{< /twsnippet/wrapper >}}
         </div>
@@ -316,22 +445,63 @@ url: 'docs/grid/layout/custom-css/'
           {{< twsnippet/code active=true lang="html" >}}
           <div id="dd"></div>
           {{< /twsnippet/code >}}
+          <!-- prettier-ignore -->
           {{< twsnippet/code lang="js" >}}
-          import { DataDen, DataDenDefaultCellRenderer } from "data-den-core"; const rows = [ { car: 'Honda', model:
-          'Civic', year: '01/05/2013', price: 28000 }, { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price:
-          56000 }, { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 }, { car: 'Toyota', model:
-          'Celica', year: '16/12/2010', price: 18000 }, { car: 'Kia', model: 'Sportage', year: '14/09/2006', price:
-          28000 }, { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 }, { car: 'Ford', model: 'Focus',
-          year: '16/12/2010', price: 24000 }, { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 }, {
-          car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 }, { car: 'Kia', model: 'Sportage', year:
-          '01/05/2013', price: 24000 }, ]; const options = { columns: [ { field: "car", headerName: "Car", cellRenderer:
-          DataDenDefaultCellRenderer, }, { field: "model", headerName: "Model", cellRenderer:
-          DataDenDefaultCellRenderer, }, { field: "year", headerName: "Year", cellRenderer: DataDenDefaultCellRenderer,
-          }, { field: "price", headerName: "Price", cellRenderer: DataDenDefaultCellRenderer, }, ], rows: rows, }; const
-          ddEl = document.getElementById("dd"); const dataDen = new DataDen(ddEl, options);
+            import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+
+            const rows = [
+              { car: "Honda", model: "Civic", year: "01/05/2013", price: 28000 },
+              { car: "Mitsubishi", model: "Lancer", year: "01/05/2013", price: 56000 },
+              { car: "Porsche", model: "Boxster", year: "09/02/2020", price: 31000 },
+              { car: "Toyota", model: "Celica", year: "16/12/2010", price: 18000 },
+              { car: "Kia", model: "Sportage", year: "14/09/2006", price: 28000 },
+              { car: "Ford", model: "Focus", year: "04/07/2014", price: 24000 },
+              { car: "Ford", model: "Focus", year: "16/12/2010", price: 24000 },
+              { car: "Porsche", model: "Boxster", year: "24/01/2015", price: 31000 },
+              {
+                car: "Mitsubishi",
+                model: "Lancer",
+                year: "14/09/2006",
+                price: 18000,
+              },
+              { car: "Kia", model: "Sportage", year: "01/05/2013", price: 24000 },
+            ];
+
+            const options = {
+              columns: [
+                {
+                  field: "car",
+                  headerName: "Car",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "model",
+                  headerName: "Model",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "year",
+                  headerName: "Year",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "price",
+                  headerName: "Price",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+              ],
+              rows: rows,
+            };
+
+            const ddEl = document.getElementById("dd");
+            const dataDen = new DataDen(ddEl, options);
           {{< /twsnippet/code >}}
           {{< twsnippet/code lang="css" >}}
-          .data-den-header-cell, .data-den-cell { border-top: none; border-bottom: none; }
+            .data-den-header-cell,
+            .data-den-cell {
+              border-top: none;
+              border-bottom: none;
+            }
           {{< /twsnippet/code >}}
           {{< /twsnippet/wrapper >}}
         </div>
@@ -364,9 +534,8 @@ url: 'docs/grid/layout/custom-css/'
         <!--Section: Demo-->
 
         <div class="!visible hidden" data-te-collapse-item id="without-borders-example">
-          <!-- prettier-ignore -->
           {{< twsnippet/wrapper "index.html,main.js,index.css" "" "mobile" >}}
-            {{< twsnippet/code active=true lang="html" >}}
+          {{< twsnippet/code active=true lang="html" >}}
           <div id="dd"></div>
           {{< /twsnippet/code >}}
           <!-- prettier-ignore -->
@@ -596,12 +765,12 @@ url: 'docs/grid/layout/custom-css/'
               const dataDen = new DataDen(ddEl, options);
             {{< /twsnippet/code >}}
             {{< twsnippet/code lang="css" >}}
-            #dd {
-              font-size: 0.75rem;
-            }
-            .data-den-header {
-              height: 30px;
-            }
+              #dd {
+                font-size: 0.75rem;
+              }
+              .data-den-header {
+                height: 30px;
+              }
             {{< /twsnippet/code >}}
           {{< /twsnippet/wrapper >}}
         </div>

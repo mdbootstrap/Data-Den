@@ -26,14 +26,22 @@ url: 'docs/grid/layout/theme/'
     the dark theme in our documentation.
   </p>
 
+  <!-- prettier-ignore -->
   {{< twsnippet/wrapper "CSS" "" "mobile" >}}
   {{< twsnippet/code active=true lang="CSS" >}}
-  .dark .data-den-grid { --data-den-cell-border: solid var(--data-den-cell-border-width) rgb(82 82 82);
-  --data-den-cell-bg: rgb(64 64 64); --data-den-cell-hover-bg: rgb(82 82 82); --data-den-cell-active-bg: rgb(38 38 38);
-  --data-den-header-cell-bg: rgb(38 38 38); --data-den-header-menu-dropdown-bg: rgb(64 64 64);
-  --data-den-header-menu-dropdown-border: solid 1px rgb(82 82 82); --data-den-header-menu-dropdown-item-hover-bg: rgb(82
-  82 82); --data-den-header-menu-dropdown-item-color: rgb(229 229 229); --data-den-header-cell-active-bg: rgb(38 38 38);
-  --data-den-row-stripped-bg: rgb(38 38 38); }
+    .dark .data-den-grid {
+      --data-den-cell-border: solid var(--data-den-cell-border-width) rgb(82 82 82);
+      --data-den-cell-bg: rgb(64 64 64);
+      --data-den-cell-hover-bg: rgb(82 82 82);
+      --data-den-cell-active-bg: rgb(38 38 38);
+      --data-den-header-cell-bg: rgb(38 38 38);
+      --data-den-header-menu-dropdown-bg: rgb(64 64 64);
+      --data-den-header-menu-dropdown-border: solid 1px rgb(82 82 82);
+      --data-den-header-menu-dropdown-item-hover-bg: rgb(82 82 82);
+      --data-den-header-menu-dropdown-item-color: rgb(229 229 229);
+      --data-den-header-cell-active-bg: rgb(38 38 38);
+      --data-den-row-stripped-bg: rgb(38 38 38);
+    }
   {{< /twsnippet/code >}}
   {{< /twsnippet/wrapper >}}
 </section>

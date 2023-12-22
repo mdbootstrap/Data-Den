@@ -290,129 +290,132 @@ url: 'docs/grid/getting-started/examples/'
 
         <div class="!visible hidden" data-te-collapse-item id="search-column-example">
           <!-- prettier-ignore -->
+          <!-- {{/* prettier-ignore-start */}} -->
           {{< twsnippet/wrapper "index.html,main.js, index.css" "" "mobile" >}}
             {{< twsnippet/code active=true lang="html" >}}
-          <div id="dd"></div>
-          {{< /twsnippet/code >}}
-          <!-- prettier-ignore -->
-          {{< twsnippet/code lang="js" >}}
-              import { DataDen, DataDenDefaultCellRenderer } from 'data-den-core';
+              <div id="dd"></div>
+            {{< /twsnippet/code >}}
+            {{< twsnippet/code lang="js" >}}
+              import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
 
               class DataDenHeaderTextFilterRenderer {
-                
                 constructor(params) {
-                  
                   this.params = params;
                   this.cssPrefix = params.cssPrefix;
                   const template = `
-          <div class="${this.cssPrefix}header-filter">
-            <input type="text" class="${this.cssPrefix}header-filter-input" />
-          </div>
-          `;
-          <!-- prettier-ignore -->
-
-          this.element = this.createHtmlElement(template);
-                  this.input = this.element.querySelector(`.${this.cssPrefix}header-filter-input`);
-
+                    <div class="${this.cssPrefix}header-filter">
+                      <input type="text" class="${this.cssPrefix}header-filter-input" />
+                    </div>
+                  `;
+                  this.element = this.createHtmlElement(template);
+                  this.input = this.element.querySelector(
+                    `.${this.cssPrefix}header-filter-input`
+                  );
+              
                   this.attachUiEvents(params);
                 }
-
-                createHtmlElement(template, elementName = 'div') {
+              
+                createHtmlElement(template, elementName = "div") {
                   const placeholder = document.createElement(elementName);
                   placeholder.innerHTML = template;
-
+              
                   return placeholder.firstElementChild;
                 }
-
+              
                 debounce(callback, debounceTime) {
                   let timeout;
-
+              
                   return function (...args) {
                     const debounceFn = () => {
                       clearTimeout(timeout);
                       callback(...args);
                     };
-
+              
                     clearTimeout(timeout);
                     timeout = setTimeout(debounceFn, debounceTime);
                   };
                 }
-
+              
                 getGui() {
                   return this.element;
                 }
-
+              
                 getType() {
-                  return 'text';
+                  return "text";
                 }
-
+              
                 getState() {
                   const value = this.input ? this.input.value : null;
-
+              
                   return {
                     method: this.params.method,
                     searchTerm: value,
                   };
                 }
-
+              
                 isActive() {
                   const value = this.input ? this.input.value : null;
-
+              
                   return !!value;
                 }
-
+              
                 getFilterFn() {
                   const options = this.params.colDef.filterOptions;
-
+              
                   return (state, value) => {
                     let searchTerm = state.searchTerm;
                     const method = state.method;
                     const caseSensitive = options.caseSensitive;
                     value = caseSensitive ? value : value.toString().toLowerCase();
-                    searchTerm = caseSensitive ? searchTerm : searchTerm.toString().toLowerCase();
-
+                    searchTerm = caseSensitive
+                      ? searchTerm
+                      : searchTerm.toString().toLowerCase();
+              
                     switch (method) {
-                      case 'includes':
+                      case "includes":
                         return value.includes(searchTerm);
                       default:
                         return false;
                     }
                   };
                 }
-
+              
                 attachUiEvents(params) {
                   if (this.input) {
-                    const debounceFilter = this.debounce(() => params.filterChanged(), params.debounceTime);
-
-                    this.input.addEventListener('keyup', () => debounceFilter());
+                    const debounceFilter = this.debounce(
+                      () => params.filterChanged(),
+                      params.debounceTime
+                    );
+              
+                    this.input.addEventListener("keyup", () => debounceFilter());
                   }
                 }
-
+              
                 destroy() {}
               }
-
+              
               const rows = [
-                { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
-                { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
-                { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
-                { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
-                { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
-                { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
-                { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
-                { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
-                { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
-                { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+                { car: "Honda", model: "Civic", year: "01/05/2013", price: 28000 },
+                { car: "Mitsubishi", model: "Lancer", year: "01/05/2013", price: 56000 },
+                { car: "Porsche", model: "Boxster", year: "09/02/2020", price: 31000 },
+                { car: "Toyota", model: "Celica", year: "16/12/2010", price: 18000 },
+                { car: "Kia", model: "Sportage", year: "14/09/2006", price: 28000 },
+                { car: "Ford", model: "Focus", year: "04/07/2014", price: 24000 },
+                { car: "Ford", model: "Focus", year: "16/12/2010", price: 24000 },
+                { car: "Porsche", model: "Boxster", year: "24/01/2015", price: 31000 },
+                { car: "Mitsubishi", model: "Lancer", year: "14/09/2006", price: 18000 },
+                { car: "Kia", model: "Sportage", year: "01/05/2013", price: 24000 },
               ];
-
+              
               const options = {
                 columns: [
                   {
-                    field: 'car',
-                    headerName: 'Car',
+                    field: "car",
+                    headerName: "Car",
                     filter: true,
                     filterRenderer: DataDenHeaderTextFilterRenderer,
                     filterOptions: {
-                      method: 'includes',
+                      method: "includes",
                       debounceTime: 500,
                       caseSensitive: false,
                     },
@@ -420,12 +423,12 @@ url: 'docs/grid/getting-started/examples/'
                     width: 180,
                   },
                   {
-                    field: 'model',
-                    headerName: 'Model',
+                    field: "model",
+                    headerName: "Model",
                     filter: true,
                     filterRenderer: DataDenHeaderTextFilterRenderer,
                     filterOptions: {
-                      method: 'includes',
+                      method: "includes",
                       debounceTime: 500,
                       caseSensitive: false,
                     },
@@ -433,12 +436,12 @@ url: 'docs/grid/getting-started/examples/'
                     width: 180,
                   },
                   {
-                    field: 'year',
-                    headerName: 'Year',
+                    field: "year",
+                    headerName: "Year",
                     filter: true,
                     filterRenderer: DataDenHeaderTextFilterRenderer,
                     filterOptions: {
-                      method: 'includes',
+                      method: "includes",
                       debounceTime: 500,
                       caseSensitive: false,
                     },
@@ -446,12 +449,12 @@ url: 'docs/grid/getting-started/examples/'
                     width: 180,
                   },
                   {
-                    field: 'price',
-                    headerName: 'Price',
+                    field: "price",
+                    headerName: "Price",
                     filter: true,
                     filterRenderer: DataDenHeaderTextFilterRenderer,
                     filterOptions: {
-                      method: 'includes',
+                      method: "includes",
                       debounceTime: 500,
                       caseSensitive: false,
                     },
@@ -461,10 +464,9 @@ url: 'docs/grid/getting-started/examples/'
                 ],
                 rows: rows,
               };
-
-              const ddEl = document.getElementById('dd');
+              
+              const ddEl = document.getElementById("dd");
               const dataDen = new DataDen(ddEl, options);
-
             {{< /twsnippet/code >}}
             {{< twsnippet/code lang="css" >}}
               .data-den-header-filter-input {
@@ -474,6 +476,8 @@ url: 'docs/grid/getting-started/examples/'
               }
             {{< /twsnippet/code >}}
           {{< /twsnippet/wrapper >}}
+          <!-- prettier-ignore -->
+          <!-- {{/* prettier-ignore-end */}} -->
         </div>
       </div>
     </div>
@@ -516,83 +520,83 @@ url: 'docs/grid/getting-started/examples/'
           {{< /twsnippet/code >}}
           <!-- prettier-ignore -->
           {{< twsnippet/code lang="js" >}}
-              import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+            import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
 
-              const rows = [
-                { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
-                { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
-                { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
-                { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
-                { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
-                { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
-                { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
-                { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
-                { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
-                { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
-                { car: 'Porsche', model: 'Boxster', year: '28/08/2004', price: 28000 },
-                { car: 'Toyota', model: 'Celica', year: '28/08/2004', price: 12000 },
-                { car: 'Mitsubishi', model: 'Lancer', year: '16/12/2010', price: 34000 },
-                { car: 'Toyota', model: 'Celica', year: '28/08/2004', price: 18000 },
-                { car: 'Lamborghini', model: 'Aventador', year: '24/01/2015', price: 56000 },
-                { car: 'Nissan', model: 'X-Trail', year: '01/05/2013', price: 56000 },
-                { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 15000 },
-                { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 24000 },
-                { car: 'Ford', model: 'Focus', year: '14/09/2006', price: 15000 },
-                { car: 'Lamborghini', model: 'Aventador', year: '14/09/2006', price: 15000 },
-                { car: 'Ford', model: 'Focus', year: '09/02/2020', price: 12000 },
-                { car: 'Honda', model: 'Civic', year: '24/01/2015', price: 34000 },
-                { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 34000 },
-                { car: 'Honda', model: 'Civic', year: '09/02/2020', price: 12000 },
-                { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 15000 },
-                { car: 'Ford', model: 'Focus', year: '28/08/2004', price: 24000 },
-                { car: 'Nissan', model: 'X-Trail', year: '16/12/2010', price: 15000 },
-                { car: 'Toyota', model: 'Celica', year: '13/11/2021', price: 15000 },
-                { car: 'Toyota', model: 'Celica', year: '09/02/2020', price: 12000 },
-                { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 34000 },
-              ];
+            const rows = [
+              { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+              { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+              { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+              { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+              { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+              { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+              { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+              { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+              { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+              { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+              { car: 'Porsche', model: 'Boxster', year: '28/08/2004', price: 28000 },
+              { car: 'Toyota', model: 'Celica', year: '28/08/2004', price: 12000 },
+              { car: 'Mitsubishi', model: 'Lancer', year: '16/12/2010', price: 34000 },
+              { car: 'Toyota', model: 'Celica', year: '28/08/2004', price: 18000 },
+              { car: 'Lamborghini', model: 'Aventador', year: '24/01/2015', price: 56000 },
+              { car: 'Nissan', model: 'X-Trail', year: '01/05/2013', price: 56000 },
+              { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 15000 },
+              { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 24000 },
+              { car: 'Ford', model: 'Focus', year: '14/09/2006', price: 15000 },
+              { car: 'Lamborghini', model: 'Aventador', year: '14/09/2006', price: 15000 },
+              { car: 'Ford', model: 'Focus', year: '09/02/2020', price: 12000 },
+              { car: 'Honda', model: 'Civic', year: '24/01/2015', price: 34000 },
+              { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 34000 },
+              { car: 'Honda', model: 'Civic', year: '09/02/2020', price: 12000 },
+              { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 15000 },
+              { car: 'Ford', model: 'Focus', year: '28/08/2004', price: 24000 },
+              { car: 'Nissan', model: 'X-Trail', year: '16/12/2010', price: 15000 },
+              { car: 'Toyota', model: 'Celica', year: '13/11/2021', price: 15000 },
+              { car: 'Toyota', model: 'Celica', year: '09/02/2020', price: 12000 },
+              { car: 'Mitsubishi', model: 'Lancer', year: '09/02/2020', price: 34000 },
+            ];
 
-              const options = {
-                columns: [
-                  {
-                    field: "car",
-                    headerName: "Car",
-                    cellRenderer: DataDenDefaultCellRenderer,
-                  },
-                  {
-                    field: "model",
-                    headerName: "Model",
-                    cellRenderer: DataDenDefaultCellRenderer,
-                  },
-                  {
-                    field: "year",
-                    headerName: "Year",
-                    cellRenderer: DataDenDefaultCellRenderer,
-                  },
-                  {
-                    field: "price",
-                    headerName: "Price",
-                    cellRenderer: DataDenDefaultCellRenderer,
-                  },
-                ],
-                rows: rows, 
-                pagination: true,
-              };
+            const options = {
+              columns: [
+                {
+                  field: "car",
+                  headerName: "Car",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "model",
+                  headerName: "Model",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "year",
+                  headerName: "Year",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "price",
+                  headerName: "Price",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+              ],
+              rows: rows, 
+              pagination: true,
+            };
 
-              const ddEl = document.getElementById("dd");
-              const dataDen = new DataDen(ddEl, options);
-            {{< /twsnippet/code >}}
-            {{< twsnippet/code lang="css" >}}
-              .data-den-pagination-content > button {
-                border: 1px solid #ccc;
-                border-radius: 0.5rem;
-                padding: 0 0.5rem;
-                cursor: pointer;
-              }
-              .data-den-pagination-content > button:nth-child(2),
-              .data-den-pagination-content > button:last-of-type {
-                margin-left: 0.25rem;
-              }
-            {{< /twsnippet/code >}}
+            const ddEl = document.getElementById("dd");
+            const dataDen = new DataDen(ddEl, options);
+          {{< /twsnippet/code >}}
+          {{< twsnippet/code lang="css" >}}
+            .data-den-pagination-content > button {
+              border: 1px solid #ccc;
+              border-radius: 0.5rem;
+              padding: 0 0.5rem;
+              cursor: pointer;
+            }
+            .data-den-pagination-content > button:nth-child(2),
+            .data-den-pagination-content > button:last-of-type {
+              margin-left: 0.25rem;
+            }
+          {{< /twsnippet/code >}}
           {{< /twsnippet/wrapper >}}
         </div>
       </div>
@@ -629,90 +633,90 @@ url: 'docs/grid/getting-started/examples/'
           {{< /twsnippet/code >}}
           <!-- prettier-ignore -->
           {{< twsnippet/code lang="js" >}}
-              import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+            import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
 
-              const rows = [
-                { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
-                { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
-                { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
-                { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
-                { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
-                { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
-                { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
-                { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
-                { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
-                { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
-              ];
+            const rows = [
+              { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+              { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+              { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+              { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+              { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+              { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+              { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+              { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+              { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+              { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+            ];
 
-              const sortComparator = (fieldA, fieldB) => {
-                if (typeof fieldA === 'string') {
-                  fieldA = fieldA.toLowerCase();
-                }
+            const sortComparator = (fieldA, fieldB) => {
+              if (typeof fieldA === 'string') {
+                fieldA = fieldA.toLowerCase();
+              }
 
-                if (typeof fieldB === 'string') {
-                  fieldB = fieldB.toLowerCase();
-                }
+              if (typeof fieldB === 'string') {
+                fieldB = fieldB.toLowerCase();
+              }
 
-                if (fieldA === fieldB) {
-                  return 0;
-                }
+              if (fieldA === fieldB) {
+                return 0;
+              }
 
-                return fieldA > fieldB ? 1 : -1;
-              };
+              return fieldA > fieldB ? 1 : -1;
+            };
 
-              const options = {
-                columns: [
-                  {
-                    field: "car",
-                    headerName: "Car",
-                    sort: true,
-                    sortOptions: {
-                      comparator: sortComparator,
-                    },
-                    resize: true,
-                    width: 150,
-                    cellRenderer: DataDenDefaultCellRenderer,
+            const options = {
+              columns: [
+                {
+                  field: "car",
+                  headerName: "Car",
+                  sort: true,
+                  sortOptions: {
+                    comparator: sortComparator,
                   },
-                  {
-                    field: "model",
-                    headerName: "Model",
-                    sort: true,
-                    sortOptions: {
-                      comparator: sortComparator,
-                    },
-                    resize: true,
-                    width: 150,
-                    cellRenderer: DataDenDefaultCellRenderer,
+                  resize: true,
+                  width: 150,
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "model",
+                  headerName: "Model",
+                  sort: true,
+                  sortOptions: {
+                    comparator: sortComparator,
                   },
-                  {
-                    field: "year",
-                    headerName: "Year",
-                    sort: true,
-                    sortOptions: {
-                      comparator: sortComparator,
-                    },
-                    resize: true,
-                    width: 150,
-                    cellRenderer: DataDenDefaultCellRenderer,
+                  resize: true,
+                  width: 150,
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "year",
+                  headerName: "Year",
+                  sort: true,
+                  sortOptions: {
+                    comparator: sortComparator,
                   },
-                  {
-                    field: "price",
-                    headerName: "Price",
-                    sort: true,
-                    sortOptions: {
-                      comparator: sortComparator,
-                    },
-                    resize: true,
-                    width: 150,
-                    cellRenderer: DataDenDefaultCellRenderer,
+                  resize: true,
+                  width: 150,
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "price",
+                  headerName: "Price",
+                  sort: true,
+                  sortOptions: {
+                    comparator: sortComparator,
                   },
-                ],
-                rows: rows, 
-              };
+                  resize: true,
+                  width: 150,
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+              ],
+              rows: rows, 
+            };
 
-              const ddEl = document.getElementById("dd");
-              const dataDen = new DataDen(ddEl, options);
-            {{< /twsnippet/code >}}
+            const ddEl = document.getElementById("dd");
+            const dataDen = new DataDen(ddEl, options);
+          {{< /twsnippet/code >}}
           {{< /twsnippet/wrapper >}}
         </div>
       </div>
@@ -744,52 +748,52 @@ url: 'docs/grid/getting-started/examples/'
           {{< /twsnippet/code >}}
           <!-- prettier-ignore -->
           {{< twsnippet/code lang="js" >}}
-              import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+            import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
 
-              const rows = [
-                { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
-                { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
-                { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
-                { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
-                { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
-                { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
-                { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
-                { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
-                { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
-                { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
-              ];
+            const rows = [
+              { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+              { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+              { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+              { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+              { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+              { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+              { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+              { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+              { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+              { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+            ];
 
-              const options = {
-                columns: [
-                  {
-                    field: "car",
-                    headerName: "Car",
-                    cellRenderer: DataDenDefaultCellRenderer,
-                  },
-                  {
-                    field: "model",
-                    headerName: "Model",
-                    cellRenderer: DataDenDefaultCellRenderer,
-                  },
-                  {
-                    field: "year",
-                    headerName: "Year",
-                    cellRenderer: DataDenDefaultCellRenderer,
-                  },
-                  {
-                    field: "price",
-                    headerName: "Price",
-                    cellRenderer: DataDenDefaultCellRenderer,
-                  },
-                ],
-                rows: rows, 
-                draggable: true,
-              };
+            const options = {
+              columns: [
+                {
+                  field: "car",
+                  headerName: "Car",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "model",
+                  headerName: "Model",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "year",
+                  headerName: "Year",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "price",
+                  headerName: "Price",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+              ],
+              rows: rows, 
+              draggable: true,
+            };
 
-              const ddEl = document.getElementById("dd");
-              const dataDen = new DataDen(ddEl, options);
+            const ddEl = document.getElementById("dd");
+            const dataDen = new DataDen(ddEl, options);
 
-            {{< /twsnippet/code >}}
+          {{< /twsnippet/code >}}
           {{< /twsnippet/wrapper >}}
         </div>
       </div>
@@ -821,74 +825,74 @@ url: 'docs/grid/getting-started/examples/'
           {{< /twsnippet/code >}}
           <!-- prettier-ignore -->
           {{< twsnippet/code lang="js" >}}
-              import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
+            import { DataDen, DataDenDefaultCellRenderer } from "data-den-core";
 
-              class ExampleCellRenderer {
-                constructor(data) {
-                  this.value = data.value;
-                }
-                getGui() {
-                  const el = document.createElement("span");
-                  el.innerText = this.value;
-
-                  const wrapper = document.createElement("div");
-                  if (+this.value > 25000 && +this.value < 50000) {
-                    wrapper.classList.add("bg-warning");
-                  } else if (+this.value > 50000) {
-                    wrapper.classList.add("bg-danger");
-                  } else {
-                    wrapper.classList.add("bg-success");
-                  }
-
-                  wrapper.appendChild(el);
-
-                  return wrapper;
-                }
+            class ExampleCellRenderer {
+              constructor(data) {
+                this.value = data.value;
               }
+              getGui() {
+                const el = document.createElement("span");
+                el.innerText = this.value;
 
-              const rows = [
-                { car: "Honda", model: "Civic", year: "01/05/2013", price: 28000 },
-                { car: "Mitsubishi", model: "Lancer", year: "01/05/2013", price: 56000 },
-                { car: "Porsche", model: "Boxster", year: "09/02/2020", price: 31000 },
-                { car: "Toyota", model: "Celica", year: "16/12/2010", price: 18000 },
-                { car: "Kia", model: "Sportage", year: "14/09/2006", price: 28000 },
-                { car: "Ford", model: "Focus", year: "04/07/2014", price: 24000 },
-                { car: "Ford", model: "Focus", year: "16/12/2010", price: 24000 },
-                { car: "Porsche", model: "Boxster", year: "24/01/2015", price: 31000 },
-                { car: "Mitsubishi", model: "Lancer", year: "14/09/2006", price: 18000 },
-                { car: "Kia", model: "Sportage", year: "01/05/2013", price: 24000 },
-              ];
+                const wrapper = document.createElement("div");
+                if (+this.value > 25000 && +this.value < 50000) {
+                  wrapper.classList.add("bg-warning");
+                } else if (+this.value > 50000) {
+                  wrapper.classList.add("bg-danger");
+                } else {
+                  wrapper.classList.add("bg-success");
+                }
 
-              const options = {
-                columns: [
-                  {
-                    field: "car",
-                    headerName: "Car",
-                    cellRenderer: DataDenDefaultCellRenderer,
-                  },
-                  {
-                    field: "model",
-                    headerName: "Model",
-                    cellRenderer: DataDenDefaultCellRenderer,
-                  },
-                  {
-                    field: "year",
-                    headerName: "Year",
-                    cellRenderer: DataDenDefaultCellRenderer,
-                  },
-                  {
-                    field: "price",
-                    headerName: "Price",
-                    cellRenderer: ExampleCellRenderer,
-                  },
-                ],
-                rows: rows,
-              };
+                wrapper.appendChild(el);
 
-              const ddEl = document.getElementById("dd");
-              const dataDen = new DataDen(ddEl, options);
+                return wrapper;
+              }
+            }
 
-            {{< /twsnippet/code >}}
+            const rows = [
+              { car: "Honda", model: "Civic", year: "01/05/2013", price: 28000 },
+              { car: "Mitsubishi", model: "Lancer", year: "01/05/2013", price: 56000 },
+              { car: "Porsche", model: "Boxster", year: "09/02/2020", price: 31000 },
+              { car: "Toyota", model: "Celica", year: "16/12/2010", price: 18000 },
+              { car: "Kia", model: "Sportage", year: "14/09/2006", price: 28000 },
+              { car: "Ford", model: "Focus", year: "04/07/2014", price: 24000 },
+              { car: "Ford", model: "Focus", year: "16/12/2010", price: 24000 },
+              { car: "Porsche", model: "Boxster", year: "24/01/2015", price: 31000 },
+              { car: "Mitsubishi", model: "Lancer", year: "14/09/2006", price: 18000 },
+              { car: "Kia", model: "Sportage", year: "01/05/2013", price: 24000 },
+            ];
+
+            const options = {
+              columns: [
+                {
+                  field: "car",
+                  headerName: "Car",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "model",
+                  headerName: "Model",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "year",
+                  headerName: "Year",
+                  cellRenderer: DataDenDefaultCellRenderer,
+                },
+                {
+                  field: "price",
+                  headerName: "Price",
+                  cellRenderer: ExampleCellRenderer,
+                },
+              ],
+              rows: rows,
+            };
+
+            const ddEl = document.getElementById("dd");
+            const dataDen = new DataDen(ddEl, options);
+
+          {{< /twsnippet/code >}}
           {{< /twsnippet/wrapper >}}
         </div>
       </div>
