@@ -142,13 +142,19 @@
 .#{$prefix}header-cell-pinned-left {
   position: relative;
   float: left;
-  background-color: var(--#{$prefix}header-pinned-bg);
+}
+
+.#{$prefix}header-cell-pinned-left:last-child {
+  border-right: var(--#{$prefix}cell-pinned-border);
 }
 
 .#{$prefix}header-cell-pinned-right {
   position: relative;
   float: right;
-  background-color: var(--#{$prefix}header-pinned-bg);
+}
+
+.#{$prefix}header-cell-pinned-right:first-child {
+  border-left: var(--#{$prefix}cell-pinned-border);
 }
 
 .#{$prefix}header-menu-toggler {

@@ -1,7 +1,7 @@
 .data-den-grid {
-  --#{$prefix}cell-bg: #{$cell-bg};
   --#{$prefix}cell-active-bg: #{$cell-active-bg};
-  --#{$prefix}cell-pinned-bg: #{$cell-pinned-bg};
+  --#{$prefix}cell-pinned-border-color: #{$cell-pinned-border-color};
+  --#{$prefix}cell-pinned-border: #{$cell-pinned-border};
   --#{$prefix}cell-padding-x: #{$cell-padding-x};
   --#{$prefix}cell-border-width: #{$cell-border-width};
   --#{$prefix}cell-border-color: #{$cell-border-color};
@@ -9,14 +9,14 @@
 
   --#{$prefix}grid-row-cell-border: #{$row-cell-border};
 
-  --#{$prefix}row-cell-bg: #{$row-cell-bg};
-  --#{$prefix}row-stripped-bg: #{$row-scripped-bg};
+  --#{$prefix}row-stripped-bg: #{$row-stripped-bg};
 
+  --#{$prefix}row-cell-bg: #{$row-cell-bg};
+  --#{$prefix}row-cell-active-bg: #{$row-cell-active-bg};
   --#{$prefix}row-cell-border-width: #{$row-cell-border-width};
   --#{$prefix}row-cell-border: #{$row-cell-border};
   --#{$prefix}row-cell-active-border: #{$row-cell-active-border};
   --#{$prefix}row-cell-padding-x: #{$row-cell-padding-x};
-  --#{$prefix}row-cell-pinned-bg: #{$row-cell-pinned-bg};
 
   --#{$prefix}pagination-content-margin: #{$pagination-content-margin};
   --#{$prefix}pagination-info-margin: #{$pagination-info-margin};
@@ -36,7 +36,6 @@
   --#{$prefix}header-filter-input-width: #{$header-filter-input-width};
   --#{$prefix}header-resizer-bg: #{$header-resizer-bg};
   --#{$prefix}header-resizer-width: #{$header-resizer-width};
-  --#{$prefix}header-pinned-bg: #{$header-pinned-bg};
   --#{$prefix}header-menu-bg: #{$header-menu-bg};
   --#{$prefix}header-menu-border: #{$header-menu-border};
   --#{$prefix}header-menu-right: #{$header-menu-right};
