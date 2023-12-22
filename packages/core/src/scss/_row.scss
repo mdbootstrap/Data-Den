@@ -6,7 +6,7 @@
 }
 
 .#{$prefix}row:nth-child(even) .data-den-cell {
-  background-color: rgb(250, 250, 250);
+  background-color: var(--#{$prefix}row-stripped-bg);
 }
 
 .#{$prefix}row {
@@ -43,7 +43,7 @@
   background-color: var(--#{$prefix}row-cell-bg);
 
   &.#{$prefix}active {
-    background-color: #fafafa;
+    background-color: var(--#{$prefix}cell-active-bg);
     border: var(--#{$prefix}row-cell-active-border);
     border-right: none;
     z-index: 2;
@@ -60,11 +60,17 @@
 .#{$prefix}cell-pinned-left {
   position: relative;
   float: left;
-  background-color: var(--#{$prefix}row-cell-pinned-bg);
+}
+
+.#{$prefix}cell-pinned-left:last-child {
+  border-right: var(--#{$prefix}cell-pinned-border);
 }
 
 .#{$prefix}cell-pinned-right {
   position: relative;
   float: right;
-  background-color: var(--#{$prefix}row-cell-pinned-bg);
+}
+
+.#{$prefix}cell-pinned-right:first-child {
+  border-left: var(--#{$prefix}cell-pinned-border);
 }

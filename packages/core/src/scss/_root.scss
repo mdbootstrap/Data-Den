@@ -1,26 +1,31 @@
-:root {
+.data-den-grid {
+  --#{$prefix}cell-active-bg: #{$cell-active-bg};
+  --#{$prefix}cell-pinned-border-color: #{$cell-pinned-border-color};
+  --#{$prefix}cell-pinned-border: #{$cell-pinned-border};
   --#{$prefix}cell-padding-x: #{$cell-padding-x};
   --#{$prefix}cell-border-width: #{$cell-border-width};
-  --#{$prefix}cell-border: #{$cell-border};
   --#{$prefix}cell-border-color: #{$cell-border-color};
+  --#{$prefix}cell-border: #{$cell-border};
 
   --#{$prefix}grid-row-cell-border: #{$row-cell-border};
 
+  --#{$prefix}row-stripped-bg: #{$row-stripped-bg};
+
   --#{$prefix}row-cell-bg: #{$row-cell-bg};
+  --#{$prefix}row-cell-active-bg: #{$row-cell-active-bg};
   --#{$prefix}row-cell-border-width: #{$row-cell-border-width};
   --#{$prefix}row-cell-border: #{$row-cell-border};
   --#{$prefix}row-cell-active-border: #{$row-cell-active-border};
   --#{$prefix}row-cell-padding-x: #{$row-cell-padding-x};
-  --#{$prefix}row-cell-pinned-bg: #{$row-cell-pinned-bg};
 
-  --#{$prefix}pagination-content-marin: #{$pagination-content-marin};
+  --#{$prefix}pagination-content-margin: #{$pagination-content-margin};
   --#{$prefix}pagination-info-margin: #{$pagination-info-margin};
 
   --#{$prefix}header-height: #{$header-height};
   --#{$prefix}header-cell-border: #{$header-cell-border};
   --#{$prefix}header-cell-active-border: #{$header-cell-active-border};
   --#{$prefix}header-cell-bg: #{$header-cell-bg};
-  --#{$prefix}header-cell-border: #{$header-cell-border};
+  --#{$prefix}header-cell-active-bg: #{$header-cell-active-bg};
   --#{$prefix}header-cell-padding-x: #{$header-cell-padding-x};
   --#{$prefix}header-sorter-margin-left: #{$header-sorter-margin-left};
   --#{$prefix}header-sorter-arrow-sorted-color: #{$header-sorter-arrow-sorted-color};
@@ -31,7 +36,6 @@
   --#{$prefix}header-filter-input-width: #{$header-filter-input-width};
   --#{$prefix}header-resizer-bg: #{$header-resizer-bg};
   --#{$prefix}header-resizer-width: #{$header-resizer-width};
-  --#{$prefix}header-pinned-bg: #{$header-pinned-bg};
   --#{$prefix}header-menu-bg: #{$header-menu-bg};
   --#{$prefix}header-menu-border: #{$header-menu-border};
   --#{$prefix}header-menu-right: #{$header-menu-right};

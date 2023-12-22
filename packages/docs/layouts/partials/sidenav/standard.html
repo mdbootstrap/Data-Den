@@ -13,16 +13,18 @@
   <li class="relative">
     <span class="px-6 my-4 text-[0.8rem] font-bold uppercase text-gray-600 dark:text-gray-400"> Layout </span>
     <ul>
-      {{ partial "sidenav/sidenav-link" (dict "context" . "href" "/docs/grid/getting-started/custom-css/" "text" "Custom CSS") }}
+      {{ partial "sidenav/sidenav-link" (dict "context" . "href" "/docs/grid/layout/theme/" "text" "Theme") }}
+      {{ partial "sidenav/sidenav-link" (dict "context" . "href" "/docs/grid/layout/custom-css/" "text" "Custom CSS") }}
+      {{ partial "sidenav/sidenav-link" (dict "context" . "href" "/docs/grid/layout/css-and-scss-variables/" "text" "CSS & SCSS Variables") }}
     </ul>
   </li>
 
-  <!-- Placeholder for a future example of a collapsible section in the sidebar -->
-  <!-- <li class="relative pt-4">
+  <li class="relative pt-4">
     <span class="px-6 my-4 text-[0.8rem] font-bold uppercase text-gray-600 dark:text-gray-400"> Features </span>
     <ul>
       {{ partial "sidenav/sidenav-link" (dict "context" . "href" "/docs/grid/features/data-loader" "text" "Data Loader") }}
-      <li class="relative mx-1 first:mt-1">
+      <!-- Placeholder for a future example of a collapsible section in the sidebar -->
+      <!-- <li class="relative mx-1 first:mt-1">
         {{ partial "sidenav/sidenav-collapse" (dict "context" . "name" "Filter") }}
         <ul
           class="!visible relative m-0 hidden list-none p-0 data-[te-collapse-show]:block"
@@ -31,9 +33,9 @@
           {{ partial "sidenav/sidenav-collapse-link" (dict "context" . "href" "/docs/grid/features/filter" "text" "Filter") }}
           {{ partial "sidenav/sidenav-collapse-link" (dict "context" . "href" "/docs/grid/features/quick-filter" "text" "Quick filter") }}
         </ul>
-      </li>
+      </li> -->
     </ul>
-  </li> -->
+  </li>
 
   <li class="relative pt-4">
     <span class="px-6 my-4 text-[0.8rem] font-bold uppercase text-gray-600 dark:text-gray-400"> Api </span>
