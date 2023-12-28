@@ -84,7 +84,6 @@ export class DataDenResizingService {
   }
 
   #onMousedown(event: DataDenEvent) {
-    this.#container.children[0].classList.add(`${this.#options.cssPrefix}resizing`);
     this.#currentHeader = event.data.target.parentElement;
     this.#currentCol = this.#getColumnElements(this.#currentHeader);
     this.#isResizingPinnedRightColumn = event.data.isPinnedRight;
@@ -98,7 +97,6 @@ export class DataDenResizingService {
   }
 
   #onMouseup() {
-    this.#container.children[0].classList.remove(`${this.#options.cssPrefix}resizing`);
     if (!this.#isResizing) {
       return;
     }

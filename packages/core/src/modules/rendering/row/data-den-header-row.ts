@@ -13,7 +13,7 @@ export class DataDenHeaderRow extends DataDenRow {
     const template =
       /* HTML */
       `<div
-        class="${options.cssPrefix}header-row"
+        class="${options.cssPrefix}header-row ${options.draggable ? `${options.cssPrefix}header-row-draggable` : ''}"
         role="row"
         ref="headerRow"
         style="height: ${options.rowHeight}px"

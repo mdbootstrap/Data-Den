@@ -234,14 +234,12 @@ export class DataDenDraggingService {
   }
 
   #setActiveStyle() {
-    this.#container.children[0].classList.add(`${this.#options.cssPrefix}dragging`);
     this.#columns[this.#currentIndex].forEach((cell) => {
       cell.classList.add(`${this.#cssPrefix}active`);
     });
   }
 
   #unsetActiveStyle() {
-    this.#container.children[0].classList.remove(`${this.#options.cssPrefix}dragging`);
     this.#columns.forEach((column) => {
       column.forEach((cell) => {
         cell.classList.remove(`${this.#cssPrefix}active`);

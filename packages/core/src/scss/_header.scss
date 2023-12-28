@@ -11,12 +11,14 @@
   width: 100%;
 }
 
-.#{$prefix}header-cell-draggable {
-  cursor: pointer;
+.#{$prefix}header-row-draggable {
+  .#{$prefix}header-cell-draggable {
+    cursor: pointer;
 
-  &.#{$prefix}dragging {
-    transition: left 0.2s;
-    user-select: none;
+    &.#{$prefix}dragging {
+      transition: left 0.2s;
+      user-select: none;
+    }
   }
 }
 
