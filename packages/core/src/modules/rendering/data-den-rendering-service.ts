@@ -26,22 +26,26 @@ export class DataDenRenderingService {
   #headerRow: DataDenHeaderRow;
   #rows: DataDenRow[] = [];
   #paginationRenderer: DataDenPaginationRenderer | null = null;
-  #containerHeight: number;
   #header: HTMLElement;
   #body: HTMLElement;
   #gridMain: HTMLElement;
   #headerMainCellsWrapper: HTMLElement;
   #paginationContent: HTMLElement;
+  #containerHeight: number;
+  #containerWidth: number;
+  #borderWidth: number;
 
   constructor(container: HTMLElement, options: DataDenInternalOptions, private PubSub: DataDenPubSub) {
     this.#container = container;
-    this.#containerHeight = 0;
     this.#options = options;
     this.#header = null;
     this.#body = null;
     this.#gridMain = null;
     this.#headerMainCellsWrapper = null;
     this.#paginationContent = null;
+    this.#containerHeight = 0;
+    this.#containerWidth = 0;
+    this.#borderWidth = 0;
 
     if (options.pagination) {
       this.#paginationRenderer = new DataDenPaginationRenderer(options.paginationOptions, this.PubSub);
@@ -219,10 +223,22 @@ export class DataDenRenderingService {
     }
 
     this.#container.appendChild(grid);
+
     this.#containerHeight = this.#container.clientHeight;
+    this.#containerWidth = this.#container.clientWidth;
+    this.#borderWidth = parseInt(
+      window
+        .getComputedStyle(this.#container.children[0])
+        .getPropertyValue(`--${this.#options.cssPrefix}cell-border-width`)
+    );
 
     this.#setElements();
     this.#calculateGridSize();
+
+    window.addEventListener('resize', () => {
+      this.#containerWidth = this.#container.clientWidth;
+      this.#calculateGridWidth();
+    });
   }
 
   rerenderTable(): void {
@@ -259,11 +275,6 @@ export class DataDenRenderingService {
       return;
     }
 
-    const borderWidth = parseInt(
-      window
-        .getComputedStyle(this.#container.children[0])
-        .getPropertyValue(`--${this.#options.cssPrefix}cell-border-width`)
-    );
     const rowsHeight = this.#options.rowHeight * this.#rows.length;
 
     this.#body.style.height = `${rowsHeight}px`;
@@ -280,12 +291,12 @@ export class DataDenRenderingService {
             .getPropertyValue(`--${this.#options.cssPrefix}pagination-content-margin`)
         );
 
-    const scrollbarHeight = this.#gridMain.offsetHeight - this.#gridMain.clientHeight;
+    const scrollbarHeight = 18;
     const gridHeight = headerOuterHeight + rowsHeight + paginationOuterHeight + scrollbarHeight;
 
     // check if the container is big enough to fit the grid, else set the grid height to the container height
     if (this.#containerHeight > gridHeight) {
-      this.#gridMain.style.height = `${headerOuterHeight + rowsHeight + scrollbarHeight + 2 * borderWidth}px`;
+      this.#gridMain.style.height = `${headerOuterHeight + rowsHeight + scrollbarHeight + 2 * this.#borderWidth}px`;
     } else {
       this.#gridMain.style.height = `${this.#containerHeight - paginationOuterHeight}px`;
     }
@@ -307,6 +318,15 @@ export class DataDenRenderingService {
 
     this.#header.style.width = `${allColsWidth}px`;
     this.#body.style.width = `${allColsWidth}px`;
+
+    const scrollbarWidth = 18;
+
+    // check if the container is big enough to fit the grid, else set the grid width to the container width
+    if (this.#containerWidth > allColsWidth) {
+      this.#gridMain.style.width = `${allColsWidth + scrollbarWidth}px`;
+    } else {
+      this.#gridMain.style.width = `${this.#containerWidth}px`;
+    }
 
     if (rowMainCellsWrappers) {
       rowMainCellsWrappers.forEach((rowMainCellsWrapper: HTMLElement) => {
