@@ -4,6 +4,16 @@
 .data-den-grid {
   position: relative;
 }
+.data-den-grid.data-den-resizing > *,
+.data-den-grid.data-den-resizing .data-den-header-cell-draggable,
+.data-den-grid.data-den-resizing .data-den-header-menu-toggler {
+  cursor: col-resize;
+}
+.data-den-grid.data-den-dragging > *,
+.data-den-grid.data-den-dragging .data-den-header-resizer,
+.data-den-grid.data-den-dragging .data-den-header-cell {
+  cursor: pointer;
+}
 .data-den-grid-main {
   position: relative;
   width: 100%;
@@ -21,10 +31,10 @@
 .data-den-header-row {
   width: 100%;
 }
-.data-den-header-row-draggable .data-den-header-cell-draggable {
+.data-den-header-cell-draggable {
   cursor: pointer;
 }
-.data-den-header-row-draggable .data-den-header-cell-draggable.data-den-dragging {
+.data-den-header-cell-draggable.data-den-dragging {
   transition: left 0.2s;
   -webkit-user-select: none;
   user-select: none;
