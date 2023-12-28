@@ -4,11 +4,26 @@
 
 .#{$prefix}grid {
   position: relative;
+  &.#{$prefix}resizing {
+    & > *,
+    .#{$prefix}header-cell-draggable,
+    .#{$prefix}header-menu-toggler {
+      cursor: col-resize;
+      user-select: none;
+    }
+  }
+  &.#{$prefix}dragging {
+    & > *,
+    .#{$prefix}header-resizer,
+    .#{$prefix}header-cell {
+      cursor: pointer;
+    }
+  }
 }
 
 .#{$prefix}grid-main {
   position: relative;
   width: 100%;
-  height: auto;
+  height: 100%;
   overflow: auto;
 }

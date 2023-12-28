@@ -26,10 +26,26 @@ export class DataDenRenderingService {
   #headerRow: DataDenHeaderRow;
   #rows: DataDenRow[] = [];
   #paginationRenderer: DataDenPaginationRenderer | null = null;
+  #header: HTMLElement;
+  #body: HTMLElement;
+  #gridMain: HTMLElement;
+  #headerMainCellsWrapper: HTMLElement;
+  #paginationContent: HTMLElement;
+  #containerHeight: number;
+  #containerWidth: number;
+  #borderWidth: number;
 
   constructor(container: HTMLElement, options: DataDenInternalOptions, private PubSub: DataDenPubSub) {
     this.#container = container;
     this.#options = options;
+    this.#header = null;
+    this.#body = null;
+    this.#gridMain = null;
+    this.#headerMainCellsWrapper = null;
+    this.#paginationContent = null;
+    this.#containerHeight = 0;
+    this.#containerWidth = 0;
+    this.#borderWidth = 0;
 
     if (options.pagination) {
       this.#paginationRenderer = new DataDenPaginationRenderer(options.paginationOptions, this.PubSub);
@@ -194,20 +210,35 @@ export class DataDenRenderingService {
   renderTable(): void {
     const grid = this.#renderGrid();
 
-    const gridMain = document.createElement('div');
-    gridMain.setAttribute('ref', 'gridMain');
-    gridMain.classList.add(`${this.#options.cssPrefix}grid-main`);
+    this.#gridMain = document.createElement('div');
+    this.#gridMain.setAttribute('ref', 'gridMain');
+    this.#gridMain.classList.add(`${this.#options.cssPrefix}grid-main`);
 
-    gridMain.appendChild(this.#renderHeader());
-    gridMain.appendChild(this.#renderBody());
-    grid.appendChild(gridMain);
+    this.#gridMain.appendChild(this.#renderHeader());
+    this.#gridMain.appendChild(this.#renderBody());
+    grid.appendChild(this.#gridMain);
 
     if (this.#paginationRenderer) {
       grid.appendChild(this.#paginationRenderer.getGui());
     }
 
     this.#container.appendChild(grid);
+
+    this.#containerHeight = this.#container.clientHeight;
+    this.#containerWidth = this.#container.clientWidth;
+    this.#borderWidth = parseInt(
+      window
+        .getComputedStyle(this.#container.children[0])
+        .getPropertyValue(`--${this.#options.cssPrefix}cell-border-width`)
+    );
+
+    this.#setElements();
     this.#calculateGridSize();
+
+    window.addEventListener('resize', () => {
+      this.#containerWidth = this.#container.clientWidth;
+      this.#calculateGridWidth();
+    });
   }
 
   rerenderTable(): void {
@@ -226,10 +257,52 @@ export class DataDenRenderingService {
     });
   }
 
+  #setElements(): void {
+    this.#header = this.#container.querySelector(`.${this.#options.cssPrefix}header`);
+    this.#body = this.#container.querySelector(`.${this.#options.cssPrefix}grid-rows`);
+    this.#headerMainCellsWrapper = this.#container.querySelector('[ref=headerMainCellsWrapper]');
+    this.#paginationContent = this.#container.querySelector('[ref=paginationContent]');
+  }
+
   #calculateGridSize(): void {
-    const header = this.#container.querySelector(`.${this.#options.cssPrefix}header`) as HTMLElement;
-    const body = this.#container.querySelector(`.${this.#options.cssPrefix}grid-rows`) as HTMLElement;
-    const headerMainCellsWrapper = this.#container.querySelector('[ref=headerMainCellsWrapper]') as HTMLElement;
+    this.#calculateGridWidth();
+    this.#calculateGridHeight();
+  }
+
+  #calculateGridHeight(): void {
+    // do not calculate the grid size if there are no rows
+    if (!this.#rows.length) {
+      return;
+    }
+
+    const rowsHeight = this.#options.rowHeight * this.#rows.length;
+
+    this.#body.style.height = `${rowsHeight}px`;
+
+    const headerOuterHeight = parseInt(
+      window.getComputedStyle(this.#container.children[0]).getPropertyValue(`--${this.#options.cssPrefix}header-height`)
+    );
+    const paginationOuterHeight =
+      this.#paginationContent.clientHeight +
+      2 *
+        parseInt(
+          window
+            .getComputedStyle(this.#paginationContent)
+            .getPropertyValue(`--${this.#options.cssPrefix}pagination-content-margin`)
+        );
+
+    const scrollbarHeight = 18;
+    const gridHeight = headerOuterHeight + rowsHeight + paginationOuterHeight + scrollbarHeight;
+
+    // check if the container is big enough to fit the grid, else set the grid height to the container height
+    if (this.#containerHeight > gridHeight) {
+      this.#gridMain.style.height = `${headerOuterHeight + rowsHeight + scrollbarHeight + 2 * this.#borderWidth}px`;
+    } else {
+      this.#gridMain.style.height = `${this.#containerHeight - paginationOuterHeight}px`;
+    }
+  }
+
+  #calculateGridWidth(): void {
     const rowMainCellsWrappers = this.#container.querySelectorAll('[ref=rowMainCellsWrapper]');
 
     const allColsWidth = this.#options.columns.reduce((acc, curr) => acc + (curr.width || 120), 0);
@@ -239,13 +312,21 @@ export class DataDenRenderingService {
     const mainColsWidth = this.#options.columns
       .filter((col) => !col.pinned)
       .reduce((acc, curr) => acc + (curr.width || 120), 0);
-    const rowsHeight = this.#options.rowHeight * this.#rows.length + 2;
 
-    header.style.width = `${allColsWidth}px`;
-    body.style.width = `${allColsWidth}px`;
-    body.style.height = `${rowsHeight}px`;
-    headerMainCellsWrapper.style.left = `${leftPinnedColsWidth}px`;
-    headerMainCellsWrapper.style.width = `${mainColsWidth}px`;
+    this.#headerMainCellsWrapper.style.left = `${leftPinnedColsWidth}px`;
+    this.#headerMainCellsWrapper.style.width = `${mainColsWidth}px`;
+
+    this.#header.style.width = `${allColsWidth}px`;
+    this.#body.style.width = `${allColsWidth}px`;
+
+    const scrollbarWidth = 18;
+
+    // check if the container is big enough to fit the grid, else set the grid width to the container width
+    if (this.#containerWidth > allColsWidth) {
+      this.#gridMain.style.width = `${allColsWidth + scrollbarWidth}px`;
+    } else {
+      this.#gridMain.style.width = `${this.#containerWidth}px`;
+    }
 
     if (rowMainCellsWrappers) {
       rowMainCellsWrappers.forEach((rowMainCellsWrapper: HTMLElement) => {
@@ -293,7 +374,7 @@ export class DataDenRenderingService {
     this.PubSub.subscribe('info:resizing:start', (event: DataDenEvent) => {
       const currentColIndex = getAllColumnsOrder(this.#options.columns)[event.data.currentColIndex];
       this.#options.columns[currentColIndex].width = event.data.newCurrentColWidth;
-      this.#calculateGridSize();
+      this.#calculateGridWidth();
     });
     this.PubSub.subscribe('command:pin-column:start', (event: DataDenEvent) => {
       const pinningPreviousState = new DataDenPinningPreviousState({
@@ -338,6 +419,6 @@ export class DataDenRenderingService {
     const rowContainer = this.#container.querySelector(`.${this.#options.cssPrefix}grid-rows`)!;
     rowContainer.innerHTML = '';
     rowContainer.appendChild(rowsEl);
-    this.#calculateGridSize();
+    this.#calculateGridHeight();
   }
 }
