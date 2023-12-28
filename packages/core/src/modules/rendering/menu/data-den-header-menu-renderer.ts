@@ -61,7 +61,8 @@ export class DataDenHeaderMenuRenderer {
     const pinLeftTrigger = this.dropdown.querySelector('[ref="pinLeftPinColTrigger"]');
     const pinRightTrigger = this.dropdown.querySelector('[ref="pinRightPinColTrigger"]');
 
-    unPinTrigger?.addEventListener('click', () => {
+    unPinTrigger?.addEventListener('click', (event) => {
+      event.preventDefault();
       this.PubSub.publish('command:pin-column:start', {
         pin: false,
         colIndex: this.colIndex,
@@ -69,7 +70,8 @@ export class DataDenHeaderMenuRenderer {
       });
     });
 
-    pinLeftTrigger?.addEventListener('click', () => {
+    pinLeftTrigger?.addEventListener('click', (event) => {
+      event.preventDefault();
       this.PubSub.publish('command:pin-column:start', {
         pin: 'left',
         colIndex: this.colIndex,
@@ -77,7 +79,8 @@ export class DataDenHeaderMenuRenderer {
       });
     });
 
-    pinRightTrigger?.addEventListener('click', () => {
+    pinRightTrigger?.addEventListener('click', (event) => {
+      event.preventDefault();
       this.PubSub.publish('command:pin-column:start', {
         pin: 'right',
         colIndex: this.colIndex,
