@@ -48,6 +48,7 @@ export class DataDenFetchService {
         order: event.data.order,
         comparator: event.data.comparator,
         sortFn: event.data.sortFn,
+        activeSorters: event.data.activeSorters,
       };
       this.#getData(this.#fetchOptions).then((data: any[]) => {
         this.#publishFetchDone(event.context, data);
