@@ -14,7 +14,7 @@ export class DataDenPaginationRenderer {
     const template =
       /* HTML */
       `<div class="data-den-pagination">
-        <div class="data-den-pagination-content">
+        <div class="data-den-pagination-content" ref="paginationContent">
           <button class="data-den-pagination-first-button"><<</button>
           <button class="data-den-pagination-prev-button"><</button>
           <div class="data-den-pagination-info">1-10 ${this.options.ofText || 'of'} 100</div>
