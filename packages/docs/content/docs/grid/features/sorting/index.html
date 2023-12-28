@@ -1,0 +1,276 @@
+---
+title: 'Data Den'
+date: 2023-02-09T10:00:00+02:00
+draft: false
+main_title: 'Sorting'
+subheading: ''
+seo_title: 'Data Den Sorting'
+description: 'Sorting allows you to sort the data of a specific column. It is possible to apply multiple sorters at once by using multi sort feature.'
+image: ''
+video: ''
+url: 'docs/grid/features/sorting/'
+---
+
+<!--Section: Basic-->
+<section id="basic-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Basic example</h2>
+        <p>Add <code>sort: true</code> to column options to enable sorting for a given column.</p>
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="basic-sorting" >}}
+        <div id="dd-basic-sorting" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo >}}
+        <!--Section: Demo-->
+
+        <section class="!visible hidden" data-te-collapse-item id="basic-sorting">
+          <div class="pt-2">
+            <!-- prettier-ignore -->
+            {{< twsnippet/wrapper "HTML,javascript" "" "mobile" >}}
+              {{< twsnippet/code active=true lang="html" >}}
+            <div id="grid"></div>
+            {{< /twsnippet/code >}}
+            <!-- prettier-ignore -->
+            {{< twsnippet/code lang="js" >}}
+                import { DataDen } from "data-den-core";
+
+                const rows = [
+                  { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+                  { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+                  { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+                  { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+                  { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+                  { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+                  { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+                  { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+                  { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+                  { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+                ];
+
+                const options = {
+                  columns: [
+                    {
+                      field: "car",
+                      headerName: "Car",
+                      sort: true,
+                    },
+                    {
+                      field: "model",
+                      headerName: "Model",
+                      sort: true
+                    },
+                    {
+                      field: "year",
+                      headerName: "Year",
+                      sort: true
+                    },
+                    {
+                      field: "price",
+                      headerName: "Price",
+                      sort: true
+                    },
+                  ],
+                  rows: rows,
+                };
+
+                const gridEl = document.getElementById('grid');
+                const dataDen = new DataDen(gridEl, options);
+              {{< /twsnippet/code >}}
+            {{< /twsnippet/wrapper >}}
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Basic-->
+
+<hr class="my-10" />
+
+<!--Section: Multi sort -->
+<section id="multi-sort-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Multi sort</h2>
+        <p>
+          It is possible to sort data by multiple columns. To activate multi sort hold the <code>Shift</code> key while
+          clicking the column header. You can change the default multi sort key to <code>Ctrl</code> by using the
+          following option: <code>multiSortKey: 'ctrl'</code>
+        </p>
+
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="multi-sort-example" >}}
+        <div id="dd-multi-sort" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo >}}
+        <!--Section: Demo-->
+
+        <section class="!visible hidden" data-te-collapse-item id="multi-sort-example">
+          <div class="pt-2">
+            <!-- prettier-ignore -->
+            {{< twsnippet/wrapper "HTML,javascript" "" "mobile" >}}
+              {{< twsnippet/code active=true lang="html" >}}
+            <div id="grid"></div>
+            {{< /twsnippet/code >}}
+            <!-- prettier-ignore -->
+            {{< twsnippet/code lang="js" >}}
+              import { 
+                DataDen, 
+              } from "data-den-core";
+
+              const rows = [
+                { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+                { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+                { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+                { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+                { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+                { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+                { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+                { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+                { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+                { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+              ];
+
+              const options = {
+                columns: [
+                  {
+                    field: 'car',
+                    headerName: 'Car',
+                    sort: true
+                  },
+                  {
+                    field: 'model',
+                    headerName: 'Model',
+                    sort: true
+                  },
+                  {
+                    field: 'year',
+                    headerName: 'Year',
+                    sort: true
+                  },
+                  {
+                    field: 'price',
+                    headerName: 'Price',
+                    sort: true
+                  },
+                ],
+                rows: rows,
+                rowHeight: 32,
+              };
+
+              const gridEl = document.getElementById('grid');
+              const dataDen = new DataDen(gridEl, options);
+            {{< /twsnippet/code >}}
+            {{< /twsnippet/wrapper >}}
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Multi sort-->
+
+<hr class="my-10" />
+
+<!--Section: Multi sort -->
+<section id="multi-sort-section">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Custom sorting logic</h2>
+        <p>
+          It is possible to define custom sort comparator for a column by setting a new <code>comparator</code> function
+          in the <code>sortOptions</code>.
+        </p>
+
+        <p class="mt-2">
+          In the following example we use custom <code>dateComparator</code> for <strong>Year</strong> column to
+          transform dates from strings to JavaScript Date Objects before sorting.
+        </p>
+
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="custom-sorting-logic-example" >}}
+        <div id="dd-custom-sorting-logic" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo >}}
+        <!--Section: Demo-->
+
+        <section class="!visible hidden" data-te-collapse-item id="custom-sorting-logic-example">
+          <div class="pt-2">
+            <!-- prettier-ignore -->
+            {{< twsnippet/wrapper "HTML,javascript" "" "mobile" >}}
+              {{< twsnippet/code active=true lang="html" >}}
+            <div id="grid"></div>
+            {{< /twsnippet/code >}}
+            <!-- prettier-ignore -->
+            {{< twsnippet/code lang="js" >}}
+              import { 
+                DataDen, 
+              } from "data-den-core";
+
+              const rows = [
+                { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+                { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+                { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+                { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+                { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+                { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+                { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+                { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+                { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+                { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+              ];
+
+              function dateComparator(fieldA, fieldB) {
+                const dateA = new Date(fieldA.split('/').reverse().join('-'));
+                const dateB = new Date(fieldB.split('/').reverse().join('-'));
+              
+                if (dateA < dateB) {
+                  return -1;
+                } else if (dateA > dateB) {
+                  return 1;
+                } else {
+                  return 0;
+                }
+              }
+
+              const options = {
+                columns: [
+                  {
+                    field: 'car',
+                    headerName: 'Car',
+                    sort: true
+                  },
+                  {
+                    field: 'model',
+                    headerName: 'Model',
+                    sort: true
+                  },
+                  {
+                    field: 'year',
+                    headerName: 'Year',
+                    sort: true,
+                    sortOptions: {
+                        comparator: dateComparator
+                    }
+                  },
+                  {
+                    field: 'price',
+                    headerName: 'Price',
+                    sort: true
+                  },
+                ],
+                rows: rows,
+              };
+
+              const gridEl = document.getElementById('grid');
+              const dataDen = new DataDen(gridEl, options);
+            {{< /twsnippet/code >}}
+            {{< /twsnippet/wrapper >}}
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Custom sorting logic -->

@@ -3,6 +3,7 @@ import './scss/index.scss';
 import {
   DataDenHeaderDateFilterRenderer,
   DataDenHeaderNumberFilterRenderer,
+  DataDenHeaderSelectFilterRenderer,
   DataDenHeaderTextFilterRenderer,
   DataDenRenderingService,
 } from './modules/rendering';
@@ -122,6 +123,7 @@ export {
   DataDenDataLoaderStrategy,
   DataDenHeaderDateFilterRenderer,
   DataDenHeaderNumberFilterRenderer,
+  DataDenHeaderSelectFilterRenderer,
   DataDenHeaderTextFilterRenderer,
 };
 
