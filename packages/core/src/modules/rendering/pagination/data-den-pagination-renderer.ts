@@ -5,30 +5,82 @@ import { Context } from '../../../context';
 
 export class DataDenPaginationRenderer {
   element: HTMLElement;
+  #cssPrefix: string;
   options: DataDenPaginationOptions;
   buttons: Record<string, HTMLButtonElement>;
 
-  constructor(options: DataDenPaginationOptions, private PubSub: DataDenPubSub) {
+  constructor(options: DataDenPaginationOptions, cssPrefix: string, private PubSub: DataDenPubSub) {
     this.options = options;
+    this.#cssPrefix = cssPrefix;
 
     const template =
       /* HTML */
-      `<div class="data-den-pagination">
-        <div class="data-den-pagination-content">
-          <button class="data-den-pagination-first-button"><<</button>
-          <button class="data-den-pagination-prev-button"><</button>
-          <div class="data-den-pagination-info">1-10 ${this.options.ofText || 'of'} 100</div>
-          <button class="data-den-pagination-next-button">></button>
-          <button class="data-den-pagination-last-button">>></button>
+      `<div class="${this.#cssPrefix}pagination">
+        <div class="${this.#cssPrefix}pagination-content">
+          <button class="${this.#cssPrefix}pagination-button" ref="data-den-pagination-first-button">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="${this.#cssPrefix}pagination-button-svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5"
+              />
+            </svg>
+          </button>
+          <button class="${this.#cssPrefix}pagination-button" ref="data-den-pagination-prev-button">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="${this.#cssPrefix}pagination-button-svg"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+            </svg>
+          </button>
+          <div class="${this.#cssPrefix}pagination-info" ref="data-den-pagination-info">
+            1-10 ${this.options.ofText || 'of'} 100
+          </div>
+          <button class="${this.#cssPrefix}pagination-button" ref="data-den-pagination-next-button">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="${this.#cssPrefix}pagination-button-svg"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+          </button>
+          <button class="${this.#cssPrefix}pagination-button" ref="data-den-pagination-last-button">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="${this.#cssPrefix}pagination-button-svg"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
+            </svg>
+          </button>
         </div>
       </div>`;
 
     this.element = createHtmlElement(template);
     this.buttons = {
-      first: this.element.querySelector('.data-den-pagination-first-button') as HTMLButtonElement,
-      prev: this.element.querySelector('.data-den-pagination-prev-button') as HTMLButtonElement,
-      next: this.element.querySelector('.data-den-pagination-next-button') as HTMLButtonElement,
-      last: this.element.querySelector('.data-den-pagination-last-button') as HTMLButtonElement,
+      first: this.element.querySelector('[ref=data-den-pagination-first-button]') as HTMLButtonElement,
+      prev: this.element.querySelector('[ref=data-den-pagination-prev-button]') as HTMLButtonElement,
+      next: this.element.querySelector('[ref=data-den-pagination-next-button]') as HTMLButtonElement,
+      last: this.element.querySelector('[ref=data-den-pagination-last-button]') as HTMLButtonElement,
     };
     this.attachUiEvents();
     this.subscribeToEvents();
@@ -91,7 +143,7 @@ export class DataDenPaginationRenderer {
   }
 
   private updateInfo(firstRowIndex: number, lastRowIndex: number, allTotalRows: number): void {
-    const info = this.element.querySelector('.data-den-pagination-info');
+    const info = this.element.querySelector('[ref=data-den-pagination-info');
     info!.innerHTML = `${firstRowIndex + 1}-${lastRowIndex} ${this.options.ofText || 'of'} ${allTotalRows}`;
   }
 

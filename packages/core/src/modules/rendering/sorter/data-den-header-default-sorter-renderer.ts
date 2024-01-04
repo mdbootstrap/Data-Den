@@ -24,12 +24,25 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
     this.#cssPrefix = cssPrefix;
     const template = `
       <div class="${this.#cssPrefix}header-sorter">
-        <div ref="sorterIndex" class="${this.#cssPrefix}header-sorter-index"></div>
         <div
           ref="sorterArrow"
           class="${this.#cssPrefix}header-sorter-arrow ${this.#cssPrefix}header-sorter-arrow-${order}"
         >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            class="${this.#cssPrefix}header-sorter-arrow-svg"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M7.25 9.75 12 3m0 0 4.75 6.75M12 3v18"
+            />
+          </svg>
         </div>
+        <div ref="sorterIndex" class="${this.#cssPrefix}header-sorter-index"></div>
       </div>
     `;
     this.#field = field;
@@ -39,6 +52,9 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
     this.arrowElement = this.element.querySelector('[ref="sorterArrow"]')!;
     this.element.addEventListener('click', (event: any) => {
       const isMultiSort = this.#multiSortKey === 'shift' ? event.shiftKey : event.ctrlKey;
+
+      // Prevent text selection
+      window.getSelection().removeAllRanges();
 
       this.sort(isMultiSort);
     });

@@ -16,10 +16,10 @@ export class DataDenHeaderMenuRenderer {
     this.colIndex = colIndex;
 
     const template = `<button class="${this.#cssPrefix}header-menu-toggler">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="100%" viewBox="0 0 16 16" fill="#000000" class="${
+      <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="100%" viewBox="0 0 16 16" fill="currenColor" class="${
         this.#cssPrefix
-      }header-menu-icon">
-        <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+      }header-menu-toggler-icon">
+        <path stroke="currentColor" fill="currentColor" d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
       </svg>
     </button>
     `;
@@ -86,6 +86,18 @@ export class DataDenHeaderMenuRenderer {
         colIndex: this.colIndex,
         context: new Context('command:pin-column:start'),
       });
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!this.toggler.contains(event.target as Node)) {
+        this.dropdown.classList.remove('active');
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        this.dropdown.classList.remove('active');
+      }
     });
   }
 

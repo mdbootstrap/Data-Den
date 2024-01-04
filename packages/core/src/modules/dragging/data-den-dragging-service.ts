@@ -173,7 +173,12 @@ export class DataDenDraggingService {
     event.stopPropagation();
     const target = event.target as HTMLElement;
 
-    if (event.button !== 0 || target.getAttribute('ref') !== 'headerCell') {
+    if (
+      event.button !== 0 ||
+      (target.getAttribute('ref') !== 'headerCell' &&
+        target.getAttribute('ref') !== 'headerCellMain' &&
+        target.getAttribute('ref') !== 'headerValueAndSorter')
+    ) {
       return;
     }
 

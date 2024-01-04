@@ -22,17 +22,21 @@ p {
   @apply leading-[1.6];
 }
 
+input {
+  @apply font-normal;
+}
+
 .dark .data-den-grid {
+  --data-den-grid-border-color: rgb(82 82 82);
   --data-den-cell-hover-bg: rgb(82 82 82);
   --data-den-cell-active-bg: rgb(38 38 38);
-  --data-den-cell-border-color: rgb(82 82 82);
   --data-den-cell-pinned-border-color: rgb(229 229 229);
   --data-den-header-cell-bg: rgb(38 38 38);
   --data-den-header-menu-bg: rgb(64 64 64);
-  --data-den-header-menu-border: solid 1px rgb(82 82 82);
   --data-den-header-menu-item-hover-bg: rgb(82 82 82);
   --data-den-header-menu-item-color: rgb(229 229 229);
   --data-den-header-cell-active-bg: rgb(38 38 38);
   --data-den-row-cell-bg: rgb(64 64 64);
-  --data-den-row-stripped-bg: rgb(38 38 38);
+  --data-den-pagination-button-bg: rgb(38 38 38);
+  --data-den-header-filter-select-bg: rgb(38 38 38);
 }
