@@ -274,69 +274,33 @@ export class DataDenRenderingService {
   }
 
   #renderEditor(e: MouseEvent): HTMLElement {
-    // TODO
-    // const target = e.target as HTMLElement;
-    // if (target.tagName !== 'SPAN') return;
-
-    // const cellElement = target.parentElement;
-    // const rowIndex = Number(cellElement.getAttribute('rowIndex'));
-    // const colIndex = Number(cellElement.getAttribute('colIndex'));
-    // const cell = this.#rows[rowIndex].cells[colIndex] as DataDenCell;
-
-    // const cells: DataDenCell[] = [];
-    // let editable;
-
-    // if (this.#options.rowEditMode) {
-    //   this.#rows[rowIndex].cells.forEach((cell: DataDenCell) => {
-    //     cells.push(cell);
-    //   });
-    // } else {
-    //   cells.push(cell);
-    // }
-
-    // cells.forEach((cell: DataDenCell) => {
-    //   editable = this.#orderedColumns[colIndex].editable;
-    //   if ((typeof editable === `function` && !editable()) || editable === false) return;
-
-    //   cell.startEditMode();
-    // });
-
     const target = e.target as HTMLElement;
     if (target.tagName !== 'SPAN') return;
 
     const cellElement = target.parentElement;
     const rowIndex = Number(cellElement.getAttribute('rowIndex'));
-    const clickedColIdx = Number(cellElement.getAttribute('colIndex'));
+    const colIndex = Number(cellElement.getAttribute('colIndex'));
+    const cell = this.#rows[rowIndex].cells[colIndex] as DataDenCell;
 
-    const cols: Element[] = [];
+    const cells: DataDenCell[] = [];
+    let editable, isSelected;
 
     if (this.#options.rowEditMode) {
-      cols.push(...document.querySelectorAll(`[rowIndex="${rowIndex}"]`));
+      this.#rows[rowIndex].cells.forEach((cell: DataDenCell) => {
+        cells.push(cell);
+      });
     } else {
-      cols.push(cellElement);
+      cells.push(cell);
     }
-    cols.forEach((col: any) => {
-      const colIndex = Number(col.getAttribute('colIndex'));
-      const column = this.#rows[rowIndex].cells[colIndex];
-      const editable = this.#orderedColumns[colIndex].editable;
+
+    cells.forEach((cell: DataDenCell) => {
+      editable = this.#orderedColumns[cell.colIndex].editable;
+
       if ((typeof editable === `function` && !editable()) || editable === false) return;
 
-      col.replaceChildren(column.editor.getGui());
-      if (clickedColIdx === colIndex) {
-        const inputElement = col.children[0] as HTMLInputElement;
-        inputElement.select();
-      }
+      isSelected = cell === this.#rows[rowIndex].cells[colIndex];
 
-      col.addEventListener('keydown', (e: KeyboardEvent) => {
-        if (e.key === 'Enter' || e.key === 'Escape') {
-          cols.forEach((col: any) => {
-            if (col.children[0]?.value === undefined) return;
-            const span = document.createElement('span');
-            span.innerText = col.children[0].value;
-            col.replaceChildren(span);
-          });
-        }
-      });
+      cell.startEditMode(isSelected, cells);
     });
   }
 

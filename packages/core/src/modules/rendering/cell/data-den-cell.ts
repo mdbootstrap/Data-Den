@@ -10,10 +10,12 @@ export class DataDenCell {
   width: number;
   #value: any;
   #options: DataDenInternalOptions;
-  #renderer!: DataDenCellRenderer;
+  renderer!: DataDenCellRenderer;
   editor!: DataDenCellEditor;
   #left: string;
   pinned: string;
+  cellElement: HTMLElement;
+  cellElements: DataDenCell[] = [];
 
   constructor(
     value: any,
@@ -31,7 +33,6 @@ export class DataDenCell {
     this.#options = options;
     this.#left = pinned ? 'auto' : `${left}px`;
     this.pinned = pinned;
-
     this.#initRenderers();
   }
 
@@ -43,8 +44,8 @@ export class DataDenCell {
     const cellRendererParams = this.#getCellRendererParams();
     const cellEditorParams = this.#getCellEditorParams();
 
-    this.#renderer = new cellRenderer(cellRendererParams);
-    this.editor = new cellEditor(cellEditorParams);
+    this.renderer = new cellRenderer(cellRendererParams);
+    this.editor = new cellEditor(cellEditorParams, this.stopEditMode.bind(this), this.setValue.bind(this));
   }
 
   #getCellRendererParams(): DataDenCellRendererParams {
@@ -55,19 +56,38 @@ export class DataDenCell {
   }
 
   #getCellEditorParams(): DataDenCellEditorParams {
-    const valueParser = this.#options.columns[this.colIndex].valueParser;
+    const options = this.#options.columns[this.colIndex];
+    const valueParser = options.valueParser;
+    const valueSetter = options.valueSetter;
     return {
+      valueSetter: valueSetter,
       valueParser: valueParser,
       value: this.#value,
       cssPrefix: this.#options.cssPrefix,
     };
   }
 
-  // TODO
-  // startEditMode() {
-  //   const editor = this.editor.getGui();
-  //   console.log(editor);
-  // }
+  startEditMode(isSelected: boolean, cells: DataDenCell[]) {
+    this.cellElements = cells;
+    const editor = this.editor.getGui();
+    this.cellElement.replaceChildren(editor);
+
+    if (!isSelected) return;
+
+    const input = this.cellElement.children[0] as HTMLInputElement;
+    input.select();
+  }
+
+  stopEditMode() {
+    this.cellElements.forEach((cell) => {
+      const renderer = cell.renderer.getGui();
+      cell.cellElement.replaceChildren(renderer);
+    });
+  }
+
+  setValue(value: any) {
+    this.renderer.setValue(value);
+  }
 
   render(): HTMLElement {
     const template =
@@ -89,7 +109,9 @@ export class DataDenCell {
       `;
 
     const cellElement = createHtmlElement(template);
-    cellElement.appendChild(this.#renderer.getGui());
+    cellElement.appendChild(this.renderer.getGui());
+
+    this.cellElement = cellElement;
 
     return cellElement;
   }
