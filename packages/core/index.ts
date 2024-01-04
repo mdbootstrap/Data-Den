@@ -229,7 +229,7 @@ const options2: DataDenOptions = {
       cellEditor: DataDenDefaultCellEditor,
       valueParser: (value: string) => value,
       valueSetter: (value: string) => value,
-      editable: true,
+      editable: false,
     },
     {
       field: 'model',

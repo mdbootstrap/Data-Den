@@ -67,14 +67,15 @@ export class DataDenCell {
     };
   }
 
-  startEditMode(isSelected: boolean, cells: DataDenCell[]) {
+  startEditMode(isSelected: DataDenCell, cells: DataDenCell[]) {
     this.cellElements = cells;
     const editor = this.editor.getGui();
     this.cellElement.replaceChildren(editor);
 
-    if (!isSelected) return;
+    if (isSelected !== this) return;
 
     const input = this.cellElement.children[0] as HTMLInputElement;
+
     input.select();
   }
 

@@ -283,22 +283,26 @@ export class DataDenRenderingService {
     const cell = this.#rows[rowIndex].cells[colIndex] as DataDenCell;
 
     const cells: DataDenCell[] = [];
-    let editable, isSelected;
+    let editable, isSelected: any;
 
     if (this.#options.rowEditMode) {
       this.#rows[rowIndex].cells.forEach((cell: DataDenCell) => {
+        isSelected = cell === this.#rows[rowIndex].cells[colIndex];
         cells.push(cell);
       });
     } else {
+      isSelected = cell;
       cells.push(cell);
     }
 
     cells.forEach((cell: DataDenCell) => {
-      editable = this.#orderedColumns[cell.colIndex].editable;
+      editable = this.#options.columns[cell.colIndex].editable;
 
       if ((typeof editable === `function` && !editable()) || editable === false) return;
 
-      isSelected = cell === this.#rows[rowIndex].cells[colIndex];
+      if (!isSelected) {
+        isSelected = editable ? cell : false;
+      }
 
       cell.startEditMode(isSelected, cells);
     });
