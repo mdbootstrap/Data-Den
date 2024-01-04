@@ -1,4 +1,4 @@
-import { DataDenCellEditor, DataDenCellEditorParams, DataDenDefaultCellEditor } from '../editor';
+import { DataDenCellEditor, DataDenCellEditorParams } from '../editor';
 import { DataDenCellRenderer } from './data-den-cell-renderer.interface';
 import { DataDenCellRendererParams } from './data-den-cell-renderer-params.interface';
 import { createHtmlElement } from '../../../utils';
@@ -11,7 +11,7 @@ export class DataDenCell {
   #value: any;
   #options: DataDenInternalOptions;
   #renderer!: DataDenCellRenderer;
-  #editor!: DataDenCellEditor;
+  editor!: DataDenCellEditor;
   #left: string;
   pinned: string;
 
@@ -38,11 +38,13 @@ export class DataDenCell {
   #initRenderers() {
     const colDef = this.#options.columns[this.colIndex];
     const cellRenderer = colDef.cellRenderer!;
+    const cellEditor = colDef.cellEditor!;
+
     const cellRendererParams = this.#getCellRendererParams();
     const cellEditorParams = this.#getCellEditorParams();
 
     this.#renderer = new cellRenderer(cellRendererParams);
-    this.#editor = new DataDenDefaultCellEditor(cellEditorParams);
+    this.editor = new cellEditor(cellEditorParams);
   }
 
   #getCellRendererParams(): DataDenCellRendererParams {
@@ -53,11 +55,19 @@ export class DataDenCell {
   }
 
   #getCellEditorParams(): DataDenCellEditorParams {
+    const valueParser = this.#options.columns[this.colIndex].valueParser;
     return {
+      valueParser: valueParser,
       value: this.#value,
       cssPrefix: this.#options.cssPrefix,
     };
   }
+
+  // TODO
+  // startEditMode() {
+  //   const editor = this.editor.getGui();
+  //   console.log(editor);
+  // }
 
   render(): HTMLElement {
     const template =
@@ -70,6 +80,8 @@ export class DataDenCell {
           'right'
             ? `${this.#options.cssPrefix}cell-pinned-right`
             : ''}"
+          rowIndex="${this.rowIndex}"
+          colIndex="${this.colIndex}"
           role="gridcell"
           ref="cell"
           style="left: ${this.#left}; width: ${this.width}px;"

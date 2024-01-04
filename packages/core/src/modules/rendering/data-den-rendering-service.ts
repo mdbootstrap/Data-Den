@@ -246,10 +246,78 @@ export class DataDenRenderingService {
     return headerContainer;
   }
 
+  #renderEditor(e: MouseEvent): HTMLElement {
+    // TODO
+    // const target = e.target as HTMLElement;
+    // if (target.tagName !== 'SPAN') return;
+
+    // const cellElement = target.parentElement;
+    // const rowIndex = Number(cellElement.getAttribute('rowIndex'));
+    // const colIndex = Number(cellElement.getAttribute('colIndex'));
+    // const cell = this.#rows[rowIndex].cells[colIndex] as DataDenCell;
+
+    // const cells: DataDenCell[] = [];
+    // let editable;
+
+    // if (this.#options.rowEditMode) {
+    //   this.#rows[rowIndex].cells.forEach((cell: DataDenCell) => {
+    //     cells.push(cell);
+    //   });
+    // } else {
+    //   cells.push(cell);
+    // }
+
+    // cells.forEach((cell: DataDenCell) => {
+    //   editable = this.#orderedColumns[colIndex].editable;
+    //   if ((typeof editable === `function` && !editable()) || editable === false) return;
+
+    //   cell.startEditMode();
+    // });
+
+    const target = e.target as HTMLElement;
+    if (target.tagName !== 'SPAN') return;
+
+    const cellElement = target.parentElement;
+    const rowIndex = Number(cellElement.getAttribute('rowIndex'));
+    const clickedColIdx = Number(cellElement.getAttribute('colIndex'));
+
+    const cols: Element[] = [];
+
+    if (this.#options.rowEditMode) {
+      cols.push(...document.querySelectorAll(`[rowIndex="${rowIndex}"]`));
+    } else {
+      cols.push(cellElement);
+    }
+    cols.forEach((col: any) => {
+      const colIndex = Number(col.getAttribute('colIndex'));
+      const column = this.#rows[rowIndex].cells[colIndex];
+      const editable = this.#orderedColumns[colIndex].editable;
+      if ((typeof editable === `function` && !editable()) || editable === false) return;
+
+      col.replaceChildren(column.editor.getGui());
+      if (clickedColIdx === colIndex) {
+        const inputElement = col.children[0] as HTMLInputElement;
+        inputElement.select();
+      }
+
+      col.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === 'Escape') {
+          cols.forEach((col: any) => {
+            if (col.children[0]?.value === undefined) return;
+            const span = document.createElement('span');
+            span.innerText = col.children[0].value;
+            col.replaceChildren(span);
+          });
+        }
+      });
+    });
+  }
+
   #renderBody(): HTMLElement {
     const rowContainer = document.createElement('div');
     rowContainer.classList.add(`${this.#options.cssPrefix}grid-rows`);
     rowContainer.setAttribute('role', 'rowgroup');
+    rowContainer.addEventListener('dblclick', (e: MouseEvent) => this.#renderEditor(e));
 
     const rows = document.createDocumentFragment();
     this.#rows.forEach((row) => rows.appendChild(row.render()));
