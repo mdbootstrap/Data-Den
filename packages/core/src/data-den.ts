@@ -1,10 +1,9 @@
 import './scss/index.scss';
 
 import {
-  DataDenHeaderCell,
   DataDenHeaderDateFilterRenderer,
-  DataDenHeaderDefaultSorterRenderer,
   DataDenHeaderNumberFilterRenderer,
+  DataDenHeaderSelectFilterRenderer,
   DataDenHeaderTextFilterRenderer,
   DataDenRenderingService,
 } from './modules/rendering';
@@ -13,6 +12,7 @@ import { DataDenDraggingService } from './modules/dragging';
 import { DataDenResizingService } from './modules/resizing';
 import { DataDenFilteringService } from './modules/filtering';
 import { DataDenSortingService, DataDenSortingEvent } from './modules/sorting';
+import { DataDenPinningEvent } from './modules/pinning';
 import { DataDenFetchService } from './modules/fetch';
 import { DataDenDefaultCellRenderer } from './modules/rendering/cell/data-den-default-cell-renderer';
 import {
@@ -23,16 +23,11 @@ import {
 import { DataDenPubSub } from './data-den-pub-sub';
 import { DataDenEventEmitter } from './data-den-event-emitter';
 import { Context } from './context';
-import { DataDenInternalOptions, DataDenOptions } from './data-den-options.interface';
+import { DataDenColDef, DataDenInternalOptions, DataDenOptions } from './data-den-options.interface';
 import { defaultOptions } from './default-options.interface';
 import { deepMerge } from './utils/deep-merge';
 import { deepCopy } from './utils';
 import { DataDenQuickFilterChangeEvent } from './modules/rendering/filter/data-den-quick-filter-change-event.interface';
-import { inject } from './utils/inject';
-import { DataDenHeaderSelectFilterRenderer } from './modules/rendering/filter/data-den-header-select-filter-renderer';
-import { DataDenPaginationRenderer } from './modules/rendering/pagination';
-import { DataDenHeaderDefaultResizerRenderer } from './modules/rendering/resizer';
-import { DataDenHeaderMenuRenderer } from './modules/rendering/menu';
 
 export class DataDen {
   #rendering: DataDenRenderingService;
@@ -47,41 +42,20 @@ export class DataDen {
   private PubSub: DataDenPubSub = new DataDenPubSub();
 
   constructor(container: HTMLElement, options: DataDenOptions) {
-    [
-      DataDenHeaderCell,
-      DataDenFetchService,
-      DataDenRenderingService,
-      DataDenSortingService,
-      DataDenFilteringService,
-      DataDenPaginationService,
-      DataDenDraggingService,
-      DataDenResizingService,
-      DataDenHeaderDateFilterRenderer,
-      DataDenHeaderNumberFilterRenderer,
-      DataDenHeaderTextFilterRenderer,
-      DataDenHeaderSelectFilterRenderer,
-      DataDenPaginationRenderer,
-      DataDenHeaderDefaultResizerRenderer,
-      DataDenHeaderDefaultSorterRenderer,
-      DataDenHeaderMenuRenderer,
-    ].forEach((clazz) => {
-      inject(clazz, 'PubSub', this.PubSub);
-    });
-
     const gridOptions = this.#createOptions(defaultOptions, options);
     this.#dataLoaderStrategy = this.#getDataLoaderStrategy(gridOptions);
 
     if (this.#dataLoaderStrategy) {
-      this.#fetch = new DataDenFetchService(this.#dataLoaderStrategy);
+      this.#fetch = new DataDenFetchService(this.#dataLoaderStrategy, this.PubSub);
     }
 
-    this.#rendering = new DataDenRenderingService(container, gridOptions);
-    this.#sorting = new DataDenSortingService(gridOptions);
-    this.#filtering = new DataDenFilteringService(gridOptions);
-    this.#pagination = new DataDenPaginationService(gridOptions);
-    this.#dragging = options.draggable ? new DataDenDraggingService(container, gridOptions) : null;
+    this.#rendering = new DataDenRenderingService(container, gridOptions, this.PubSub);
+    this.#sorting = new DataDenSortingService(gridOptions, this.PubSub);
+    this.#filtering = new DataDenFilteringService(gridOptions, this.PubSub);
+    this.#pagination = new DataDenPaginationService(gridOptions, this.PubSub);
+    this.#dragging = options.draggable ? new DataDenDraggingService(container, gridOptions, this.PubSub) : null;
     this.#resizing = options.columns.some((column) => column.resize)
-      ? new DataDenResizingService(container, gridOptions)
+      ? new DataDenResizingService(container, gridOptions, this.PubSub)
       : null;
   }
 
@@ -90,7 +64,13 @@ export class DataDen {
   }
 
   #createOptions(defaultOptions: DataDenInternalOptions, userOptions: DataDenOptions): DataDenInternalOptions {
-    return deepMerge(deepCopy(defaultOptions), userOptions);
+    const options = deepMerge(deepCopy(defaultOptions), userOptions);
+
+    options.columns.forEach((colDef: DataDenColDef, index: number) => {
+      options.columns[index] = deepMerge(deepCopy(options.defaultColDef), colDef);
+    });
+
+    return options;
   }
 
   #getDataLoaderStrategy(options: DataDenOptions): DataDenDataLoaderStrategy | null {
@@ -125,6 +105,15 @@ export class DataDen {
 
     this.PubSub.publish('info:filtering:quick-filter-changed', event);
   }
+
+  pinColumn(pin: string | boolean, colIndex: number) {
+    const command = 'command:pin-column:start';
+    this.PubSub.publish(command, {
+      context: new Context(command),
+      pin,
+      colIndex,
+    });
+  }
 }
 
 export {
@@ -132,6 +121,10 @@ export {
   DataDenClientDataLoaderStrategy,
   DataDenServerDataLoaderStrategy,
   DataDenDataLoaderStrategy,
+  DataDenHeaderDateFilterRenderer,
+  DataDenHeaderNumberFilterRenderer,
+  DataDenHeaderSelectFilterRenderer,
+  DataDenHeaderTextFilterRenderer,
 };
 
-export type { DataDenOptions, DataDenSortingEvent };
+export type { DataDenOptions, DataDenSortingEvent, DataDenPinningEvent };

@@ -9,9 +9,8 @@ import { DataDenEventEmitter } from '../../data-den-event-emitter';
 export class DataDenFetchService {
   #loader: DataDenDataLoaderStrategy;
   #fetchOptions: DataDenFetchOptions;
-  private PubSub: DataDenPubSub;
 
-  constructor(loader: DataDenDataLoaderStrategy) {
+  constructor(loader: DataDenDataLoaderStrategy, private PubSub: DataDenPubSub) {
     this.#loader = loader;
     this.#fetchOptions = {};
     this.#subscribeFetchStart();
@@ -49,6 +48,7 @@ export class DataDenFetchService {
         order: event.data.order,
         comparator: event.data.comparator,
         sortFn: event.data.sortFn,
+        activeSorters: event.data.activeSorters,
       };
       this.#getData(this.#fetchOptions).then((data: any[]) => {
         this.#publishFetchDone(event.context, data);

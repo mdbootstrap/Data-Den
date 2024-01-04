@@ -7,10 +7,9 @@ import { DataDenColDef } from '../../../data-den-options.interface';
 export class DataDenHeaderDefaultResizerRenderer extends DataDenHeaderResizerRenderer {
   element: HTMLElement;
   #cssPrefix: string;
-  private PubSub: DataDenPubSub;
   #isPinnedRight: boolean;
 
-  constructor(cssPrefix: string, colDef: DataDenColDef) {
+  constructor(cssPrefix: string, colDef: DataDenColDef, private PubSub: DataDenPubSub) {
     super();
 
     this.#cssPrefix = cssPrefix;
@@ -22,8 +21,6 @@ export class DataDenHeaderDefaultResizerRenderer extends DataDenHeaderResizerRen
 
     this.element = createHtmlElement(template);
     this.element.addEventListener('mousedown', this.#onMouseDown.bind(this));
-    document.addEventListener('mousemove', this.#resize.bind(this));
-    document.addEventListener('mouseup', this.#onMouseUp.bind(this));
   }
 
   getGui(): HTMLElement {
@@ -39,19 +36,6 @@ export class DataDenHeaderDefaultResizerRenderer extends DataDenHeaderResizerRen
       target: event.target,
       isPinnedRight: this.#isPinnedRight,
       context: new Context('info:resizing:mousedown'),
-    });
-  }
-
-  #onMouseUp(): void {
-    this.PubSub.publish('info:resizing:mouseup', {
-      context: new Context('info:resizing:mouseup'),
-    });
-  }
-
-  #resize(event: MouseEvent): void {
-    this.PubSub.publish('command:resizing:start', {
-      event,
-      context: new Context('command:resizing:start'),
     });
   }
 }

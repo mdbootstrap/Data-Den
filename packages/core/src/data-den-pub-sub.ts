@@ -20,8 +20,6 @@ export class DataDenPubSub {
     'info:filtering:quick-filter-changed': [],
     'info:filtering:active-quick-filter-changed': [],
     'info:resizing:mousedown': [],
-    'info:resizing:mouseup': [],
-    'command:resizing:start': [],
     'info:resizing:start': [],
     'info:resizing:done': [],
     'command:fetch:start': [],

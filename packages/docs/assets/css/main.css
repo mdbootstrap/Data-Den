@@ -21,23 +21,18 @@ code {
 p {
   @apply leading-[1.6];
 }
-.data-den-cell {
-  @apply dark:bg-neutral-700;
-  @apply dark:border-neutral-600;
-}
 
-.data-den-row:nth-child(even) .data-den-cell,
-.data-den-header-cell {
-  @apply dark:bg-neutral-800;
-  @apply dark:border-neutral-600;
-}
-.data-den-left-cells-wrapper,
-.data-den-right-cells-wrapper,
-.data-den-header-left-cells-wrapper,
-.data-den-header-right-cells-wrapper {
-  @apply dark:border-neutral-600;
-}
-
-#hovereable-row-section .data-den-row:hover .data-den-cell {
-  @apply dark:bg-neutral-600;
+.dark .data-den-grid {
+  --data-den-cell-hover-bg: rgb(82 82 82);
+  --data-den-cell-active-bg: rgb(38 38 38);
+  --data-den-cell-border-color: rgb(82 82 82);
+  --data-den-cell-pinned-border-color: rgb(229 229 229);
+  --data-den-header-cell-bg: rgb(38 38 38);
+  --data-den-header-menu-bg: rgb(64 64 64);
+  --data-den-header-menu-border: solid 1px rgb(82 82 82);
+  --data-den-header-menu-item-hover-bg: rgb(82 82 82);
+  --data-den-header-menu-item-color: rgb(229 229 229);
+  --data-den-header-cell-active-bg: rgb(38 38 38);
+  --data-den-row-cell-bg: rgb(64 64 64);
+  --data-den-row-stripped-bg: rgb(38 38 38);
 }

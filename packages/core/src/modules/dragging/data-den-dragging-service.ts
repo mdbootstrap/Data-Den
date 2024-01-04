@@ -20,13 +20,12 @@ export class DataDenDraggingService {
   #mainColumnsOrder: number[];
   #defaultGridOffsetLeft: number;
   #cssPrefix: string;
-  private PubSub: DataDenPubSub;
 
   #handleGridMouseMove: (e: MouseEvent) => void;
   #handleDocumentMouseUp: (e: MouseEvent) => void;
   #handleHeaderMouseDown: (e: MouseEvent) => void;
 
-  constructor(container: HTMLElement, options: DataDenInternalOptions) {
+  constructor(container: HTMLElement, options: DataDenInternalOptions, private PubSub: DataDenPubSub) {
     this.#container = container;
     this.#gridMain = container.querySelector('[ref="gridMain"]')!;
     this.#options = options;
@@ -172,6 +171,12 @@ export class DataDenDraggingService {
 
   #onHeaderMouseDown(event: MouseEvent) {
     event.stopPropagation();
+    const target = event.target as HTMLElement;
+
+    if (event.button !== 0 || target.getAttribute('ref') !== 'headerCell') {
+      return;
+    }
+
     this.#onMouseDown(this.#getOffsetX(event.pageX));
   }
 
@@ -229,12 +234,14 @@ export class DataDenDraggingService {
   }
 
   #setActiveStyle() {
+    this.#container.children[0].classList.add(`${this.#options.cssPrefix}dragging`);
     this.#columns[this.#currentIndex].forEach((cell) => {
       cell.classList.add(`${this.#cssPrefix}active`);
     });
   }
 
   #unsetActiveStyle() {
+    this.#container.children[0].classList.remove(`${this.#options.cssPrefix}dragging`);
     this.#columns.forEach((column) => {
       column.forEach((cell) => {
         cell.classList.remove(`${this.#cssPrefix}active`);

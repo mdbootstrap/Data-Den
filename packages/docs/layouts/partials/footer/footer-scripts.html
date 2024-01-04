@@ -1,10 +1,93 @@
 <!-- TE -->
-<script type="module" src="{{.Site.Params.assetsDir}}/js/tw-elements.umd.min.js"></script>
+<script type="module" src="{{ .Site.Params.assetsDir }}/js/tw-elements.umd.min.js"></script>
 <!-- THEME SWITCHER -->
 <script type="text/javascript" src="/js/theme.js"></script>
 <!-- PRISM -->
 <script type="text/javascript" src="/js/new-prism.js"></script>
 <link rel="stylesheet" href="/css/new-prism.css" />
 <link rel="stylesheet" href="/css/data-den.min.css" />
-<link rel="stylesheet" href="/css/examples-page.css" />
-<script type="module"></script>
+<script type="module">
+  //Scrollspy
+  (() => {
+    const scrollspyClasses = [
+      'data-[te-spy-active]:border-l-2',
+      'data-[te-spy-active]:border-solid',
+      'data-[te-spy-active]:border-l-primary',
+      'data-[te-spy-active]:text-primary',
+      'dark:data-[te-spy-active]:border-l-primary-400',
+      'dark:data-[te-spy-active]:text-primary-400',
+    ];
+
+    const menuSection = document.querySelectorAll('menu li');
+
+    if (menuSection.length === 0) return;
+
+    const addScrollspyClasses = (sections) => {
+      sections.forEach((section) => {
+        section.classList.add(...scrollspyClasses);
+      });
+    };
+
+    const teScrollSpyTo = (event) => {
+      event.preventDefault();
+      const hash = event.target.getAttribute('href');
+      const target = document.getElementById(hash.substring(1));
+
+      window.scroll({
+        top: target.offsetTop - 75,
+        behavior: 'smooth',
+      });
+
+      if (history.pushState) {
+        history.pushState(null, null, hash);
+      } else {
+        location.hash = hash;
+      }
+    };
+
+    const deactivateAllMenuSections = (sections) => {
+      sections.forEach((section) => section.removeAttribute('data-te-spy-active'));
+    };
+
+    const activateMenuSection = (section) => {
+      section.setAttribute('data-te-spy-active', '');
+    };
+
+    const onWindowScroll = () => {
+      const SELECTOR_SCROLLSPY_ITEM = '[data-te-spy-item]';
+      const mainSections = [...document.querySelectorAll(SELECTOR_SCROLLSPY_ITEM)].filter(
+        (section) => section.getBoundingClientRect().y !== 0
+      );
+      const filteredMenuSections = [...document.querySelectorAll('menu li')].filter(
+        (section) => section.getBoundingClientRect().y !== 0
+      );
+
+      mainSections.forEach((header, i) => {
+        let rect = header.getBoundingClientRect().y;
+
+        if (rect <= 100) {
+          deactivateAllMenuSections(filteredMenuSections);
+          if (!filteredMenuSections[i]) {
+            return;
+          }
+          activateMenuSection(filteredMenuSections[i]);
+        }
+      });
+    };
+
+    addScrollspyClasses(menuSection);
+
+    menuSection.forEach((menuElement) => {
+      const href = menuElement.querySelector('a');
+      href.addEventListener('click', teScrollSpyTo, false);
+      href.addEventListener('click', () => {
+        setTimeout(() => {
+          deactivateAllMenuSections(menuSection);
+          activateMenuSection(menuElement);
+        }, 300);
+      });
+    });
+
+    window.addEventListener('scroll', onWindowScroll);
+  })();
+</script>

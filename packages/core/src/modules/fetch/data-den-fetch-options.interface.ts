@@ -1,12 +1,13 @@
 import { DataDenSortComparator } from '../../data-den-options.interface';
 import { DataDenActiveHeaderFilter } from '../filtering';
-import { DataDenSortOrder } from '../sorting';
+import { DataDenActiveSorter, DataDenSortOrder } from '../sorting';
 
 export interface DataDenSortOptions {
   field: string;
   order: DataDenSortOrder;
   comparator: DataDenSortComparator;
-  sortFn: (rows: any[], field: string, order: DataDenSortOrder, comparator: DataDenSortComparator) => any[];
+  sortFn: (rows: any[], activeSorters: DataDenActiveSorter[]) => any[];
+  activeSorters: DataDenActiveSorter[];
 }
 
 export interface DataDenQuickFilterOptions {

@@ -1,5 +1,8 @@
 $prefix: 'data-den-';
 
+$cell-active-bg: #fafafa;
+$cell-pinned-border-color: #636363;
+$cell-pinned-border: solid 1px var(--#{$prefix}cell-pinned-border-color);
 $cell-border-width: 1px;
 $cell-border-color: #e5e7eb;
 $cell-border: solid var(--#{$prefix}cell-border-width) var(--#{$prefix}cell-border-color);
@@ -12,10 +15,12 @@ $header-height: 35px;
 $header-filter-input-margin: 0 8px;
 $header-filter-input-width: 100%;
 
-$header-cell-border: $cell-border;
+$header-cell-bg: rgb(250, 250, 250);
+$header-cell-border: var(--#{$prefix}cell-border);
+$header-cell-active-border: var(--#{$prefix}cell-border);
 $header-cell-padding-x: var(--#{$prefix}cell-padding-x);
 $header-cell-width: $cell-width;
-$header-cell-bg: rgb(250, 250, 250);
+$header-cell-active-bg: var(--#{$prefix}cell-active-bg);
 
 $header-sorter-margin-left: 5px;
 $header-sorter-asc-transform: rotate(180deg);
@@ -23,10 +28,31 @@ $header-sorter-desc-transform: rotate(0deg);
 $header-sorter-arrow-sorted-color: unset;
 $header-sorter-arrow-unsorted-color: #a9a9a9;
 
-$pagination-info-margin: 0 5px;
-$pagination-content-marin: 10px 0;
+$header-resizer-bg: #ccc;
+$header-resizer-width: 6px;
 
+$header-menu-bg: #ffffff;
+$header-menu-border: var(--#{$prefix}cell-border);
+$header-menu-right: 5px;
+$header-menu-top: 5px;
+$header-menu-width: 150px;
+$header-menu-max-height: 200px;
+$header-menu-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+$header-menu-font-size: 12px;
+$header-menu-padding: 8px;
+$header-menu-border-radius: 4px;
+$header-menu-item-color: #333;
+$header-menu-item-hover-bg: #eee;
+$header-menu-item-padding: 4px 8px;
+
+$pagination-info-margin: 0 5px;
+$pagination-content-margin: 10px 0;
+
+$row-cell-bg: #ffffff;
+$row-cell-active-bg: var(--#{$prefix}cell-active-bg);
 $row-cell-border-width: 1px;
 $row-cell-border: solid var(--#{$prefix}row-cell-border-width) var(--#{$prefix}cell-border-color);
+$row-cell-active-border: $row-cell-border;
 $row-cell-padding-x: var(--#{$prefix}cell-padding-x);
 $row-cell-width: $cell-width;
+$row-stripped-bg: rgb(250, 250, 250);

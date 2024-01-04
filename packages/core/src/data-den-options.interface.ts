@@ -80,6 +80,7 @@ export interface DataDenOptions<TData = any> {
   paginationOptions?: DataDenPaginationOptions;
   quickFilterOptions?: DataDenQuickFilterOptions;
   rowHeight?: number;
+  multiSortKey?: 'shift' | 'ctrl';
 }
 
 export interface DataDenInternalOptions {
@@ -95,4 +96,5 @@ export interface DataDenInternalOptions {
   quickFilterOptions: Required<DataDenQuickFilterOptions>;
   resizable: boolean;
   rowHeight: number;
+  multiSortKey: 'shift' | 'ctrl';
 }

@@ -1,0 +1,619 @@
+---
+title: 'Data Den'
+date: 2023-02-09T10:00:00+02:00
+draft: false
+main_title: 'Options'
+subheading: ''
+seo_title: 'Data Den options'
+description: 'Data Den options'
+image: ''
+video: ''
+url: 'docs/grid/getting-started/options/'
+---
+
+<!--Section: Docs content-->
+<section>
+  <!--Section: Introduction-->
+  <section id="api-section-introduction">
+    <!-- Main title -->
+    <h2 class="text-4xl font-medium">{{< docs-title >}} - API</h2>
+  </section>
+  <!--Section: Introduction-->
+
+  <hr class="my-10" />
+
+  <!--Section: Options-->
+  <section id="DataDenOptions">
+    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+        <div class="overflow-hidden">
+          <h2 class="mb-4 text-4xl font-medium">Options</h2>
+
+          <table class="min-w-full table border">
+            <thead class="border-b">
+              <tr class="border-b">
+                <th class="border-r p-3">Name</th>
+                <th class="border-r p-3">Type</th>
+                <th class="border-r p-3">Default</th>
+                <th class="border-r p-3">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>cssPrefix</code>
+                </td>
+                <td class="border-r p-3"><i>string</i></td>
+                <td class="border-r p-3"><code>""</code></td>
+                <td class="border-r p-3">
+                  An optional property that allows you to specify a CSS prefix for styling the data table. It's a string
+                  representing the CSS class prefix.
+                </td>
+              </tr>
+              <tr class="border-b">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>mode</code>
+                </td>
+                <td class="border-r p-3"><i>'client' | 'server'</i></td>
+                <td class="border-r p-3"><code>'client'</code></td>
+                <td class="border-r p-3">
+                  An optional property that specifies the mode of DataDen, which can be either 'client' or 'server'. It
+                  determines whether data processing and filtering happen on the client side or server side.
+                </td>
+              </tr>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>columns</code>
+                </td>
+                <td class="border-r p-3">
+                  <a class="text-primary" href="#DataDenColDef"><i>DataDenColDef[]</i></a>
+                </td>
+                <td class="border-r p-3"></td>
+                <td class="border-r p-3">
+                  A required property that defines an array of column definitions (DataDenColDef) for the data table.
+                  Each column definition includes information about the field, header name, sorting, filtering,
+                  resizing, width, and cell renderer for a column.
+                </td>
+              </tr>
+              <tr class="border-b">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>defaultColDef</code>
+                </td>
+                <td class="border-r p-3">
+                  <a class="text-primary" href="#DataDenDefaultColDef">DataDenDefaultColDef</a>
+                </td>
+                <td class="border-r p-3"></td>
+                <td class="border-r p-3">
+                  An optional property that allows you to specify default column configuration options for all columns
+                  in the table. These options include sorting, filtering, resizing, width, and cell renderer.
+                </td>
+              </tr>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>rows</code>
+                </td>
+                <td class="border-r p-3"><i>TData</i></td>
+                <td class="border-r p-3"></td>
+                <td class="border-r p-3">
+                  An optional property that represents the data rows to be displayed in the table. The type TData is a
+                  generic type parameter that allows you to specify the data type for the rows.
+                </td>
+              </tr>
+              <tr class="border-b">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>draggable</code>
+                </td>
+                <td class="border-r p-3"><i>boolean</i></td>
+                <td class="border-r p-3"><code>false</code></td>
+                <td class="border-r p-3">
+                  An optional property that indicates whether columns in the table can be dragged and reordered by the
+                  user. If set to true, users can rearrange column positions.
+                </td>
+              </tr>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>pagination</code>
+                </td>
+                <td class="border-r p-3"><i>boolean</i></td>
+                <td class="border-r p-3"><code>false</code></td>
+                <td class="border-r p-3">
+                  An optional property that determines whether pagination is enabled for the table. If set to true,
+                  pagination controls will be displayed, allowing users to navigate through multiple pages of data.
+                </td>
+              </tr>
+              <tr class="border-b">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>paginationOptions</code>
+                </td>
+                <td class="border-r p-3">
+                  <a class="text-primary" href="#DataDenPaginationOptions">DataDenPaginationOptions</a>
+                </td>
+                <td class="border-r p-3"></td>
+                <td class="border-r p-3">
+                  An optional property that allows you to specify pagination-related options, such as page size, page
+                  size options, and custom text for the pagination display.
+                </td>
+              </tr>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>quickFilterOptions</code>
+                </td>
+                <td class="border-r p-3">
+                  <a class="text-primary" href="#DataDenQuickFilterOptions">DataDenQuickFilterOptions</a>
+                </td>
+                <td class="border-r p-3"></td>
+                <td class="border-r p-3">
+                  An optional property that provides options for configuring the quick filter, including debounce time
+                  and a custom filter function.
+                </td>
+              </tr>
+              <tr class="border-b">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>rowHeight</code>
+                </td>
+                <td class="border-r p-3"><i>number</i></td>
+                <td class="border-r p-3"></td>
+                <td class="border-r p-3">
+                  An optional property that allows you to specify the height of the rows in the table. It is a numeric
+                  value representing the row height in pixels.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--Section: Options-->
+
+  <hr class="my-10" />
+
+  <!--Section: DataDenColDef-->
+  <section id="DataDenColDef">
+    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+        <div class="overflow-hidden">
+          <h2 class="mb-4 text-4xl font-medium">Column Options (DataDenColDef)</h2>
+
+          <table class="min-w-full table border">
+            <thead class="border-b">
+              <tr class="border-b">
+                <th class="border-r p-3">Property</th>
+                <th class="border-r p-3">Type</th>
+                <th class="border-r p-3">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>field</code>
+                </td>
+                <td class="border-r p-3"><i>string</i></td>
+                <td class="p-3">The name of the field from the data source that should be displayed in this column.</td>
+              </tr>
+              <tr class="border-b">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>headerName</code>
+                </td>
+                <td class="border-r p-3"><i>string</i></td>
+                <td class="p-3">The text to be displayed as the column header.</td>
+              </tr>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>sort</code>
+                </td>
+                <td class="border-r p-3"><i>boolean</i></td>
+                <td class="p-3">Indicates whether sorting is enabled for this column.</td>
+              </tr>
+              <tr class="border-b">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>sortOptions</code>
+                </td>
+                <td class="border-r p-3">
+                  <a class="text-primary" href="#DataDenSortOptions">DataDenSortOptions</a>
+                </td>
+                <td class="p-3">Options for configuring sorting behavior for this column.</td>
+              </tr>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>pinned</code>
+                </td>
+                <td class="border-r p-3"><i>'left' | 'right'</i></td>
+                <td class="p-3">Indicates whether the column should be pinned to the left or right.</td>
+              </tr>
+              <tr class="border-b">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>filter</code>
+                </td>
+                <td class="border-r p-3"><i>boolean</i></td>
+                <td class="p-3">Indicates whether filtering is enabled for this column.</td>
+              </tr>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>filterOptions</code>
+                </td>
+                <td class="border-r p-3">
+                  <a class="text-primary" href="#DataDenHeaderFilterOptions">DataDenHeaderFilterOptions</a>
+                </td>
+                <td class="p-3">Options for configuring the column header filter.</td>
+              </tr>
+              <tr class="border-b">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>resize</code>
+                </td>
+                <td class="border-r p-3"><i>boolean</i></td>
+                <td class="p-3">Indicates whether column resizing is enabled for this column.</td>
+              </tr>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>width</code>
+                </td>
+                <td class="border-r p-3"><i>number</i></td>
+                <td class="p-3">The width of the column.</td>
+              </tr>
+              <tr class="border-b">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>cellRenderer</code>
+                </td>
+                <td class="border-r p-3"><i>Function</i></td>
+                <td class="p-3">
+                  A function that returns an HTMLElement for custom rendering of cell contents.Default cellRenderer:
+                  DataDenDefaultCellRenderer,
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--Section: DataDenColDef-->
+
+  <hr class="my-10" />
+
+  <!--Section: DataDenHeaderFilterOptions-->
+  <section id="DataDenHeaderFilterOptions">
+    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+        <div class="overflow-hidden">
+          <h2 class="mb-4 text-4xl font-medium">Header Filter Options (DataDenHeaderFilterOptions)</h2>
+
+          <table class="min-w-full table border">
+            <thead class="border-b">
+              <tr class="border-b">
+                <th class="border-r p-3">Property</th>
+                <th class="border-r p-3">Type</th>
+                <th class="border-r p-3">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>method</code>
+                </td>
+                <td class="border-r p-3">
+                  <i> 'includes' (for text), 'equals' (for number, date, and select) </i>
+                </td>
+                <td class="border-r p-3">
+                  The filtering method to apply (e.g., 'includes' for text, 'equals' for number, date, and select).
+                </td>
+              </tr>
+              <tr class="border-b">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>debounceTime</code>
+                </td>
+                <td class="border-r p-3"><i>number</i></td>
+                <td class="border-r p-3">
+                  The debounce time (in milliseconds) for filtering data when the user interacts with the filter input.
+                </td>
+              </tr>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>caseSensitive</code>
+                </td>
+                <td class="border-r p-3"><i>boolean</i></td>
+                <td class="border-r p-3">For text filters, indicates whether the filter should be case-sensitive.</td>
+              </tr>
+              <tr class="border-b">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>dateParserFn</code>
+                </td>
+                <td class="border-r p-3"><i>Function</i></td>
+                <td class="border-r p-3">
+                  For date filters, a function that parses the input value into a Date object.
+                </td>
+              </tr>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>listOptions</code>
+                </td>
+                <td class="border-r p-3"><i>{ label: string; value: any; }[]</i></td>
+                <td class="border-r p-3">
+                  For select filters, an array of list options to populate the select filter.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--Section: DataDenHeaderFilterOptions-->
+
+  <hr class="my-10" />
+
+  <!--Section: DataDenDefaultColDef-->
+  <section id="DataDenDefaultColDef">
+    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+        <div class="overflow-hidden">
+          <h2 class="mb-4 text-4xl font-medium">Default Column Definition (DataDenDefaultColDef)</h2>
+
+          <table class="min-w-full table border">
+            <thead class="border-b">
+              <tr class="border-b">
+                <th class="border-r p-3">Property</th>
+                <th class="border-r p-3">Type</th>
+                <th class="border-r p-3">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>sort</code>
+                </td>
+                <td class="border-r p-3"><i>boolean</i></td>
+                <td class="border-r p-3">Indicates whether sorting is enabled for this column.</td>
+              </tr>
+              <tr class="border-b">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>sortOptions</code>
+                </td>
+                <td class="border-r p-3"><a class="text-primary" href="#DataDenSortOptions">DataDenSortOptions</a></td>
+                <td class="border-r p-3">Options for customizing column sorting behavior.</td>
+              </tr>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>filter</code>
+                </td>
+                <td class="border-r p-3"><i>boolean</i></td>
+                <td class="border-r p-3">Indicates whether filtering is enabled for this column.</td>
+              </tr>
+              <tr class="border-b">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>filterRenderer</code>
+                </td>
+                <td class="border-r p-3">
+                  <a class="text-primary" href="#DataDenHeaderFilterRenderer">DataDenHeaderFilterOptions</a>
+                </td>
+                <td class="border-r p-3">
+                  A function that returns an HTMLElement for custom rendering of the column filter UI.
+                </td>
+              </tr>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>filterOptions</code>
+                </td>
+                <td class="border-r p-3">
+                  <a class="text-primary" href="#DataDenHeaderFilterOptions">DataDenHeaderFilterOptions</a>
+                </td>
+                <td class="border-r p-3">Options for customizing the header filter for this column.</td>
+              </tr>
+              <tr class="border-b">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>resize</code>
+                </td>
+                <td class="border-r p-3"><i>boolean</i></td>
+                <td class="border-r p-3">Indicates whether column resizing is enabled for this column.</td>
+              </tr>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>width</code>
+                </td>
+                <td class="border-r p-3"><i>number</i></td>
+                <td class="border-r p-3">The initial width of the column.</td>
+              </tr>
+              <tr class="border-b">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>cellRenderer</code>
+                </td>
+                <td class="border-r p-3"><i>Function</i></td>
+                <td class="border-r p-3">
+                  A function that returns an HTMLElement for custom rendering of cell contents.Default cellRenderer:
+                  DataDenDefaultCellRenderer,
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--Section: DataDenDefaultColDef-->
+
+  <hr class="my-10" />
+
+  <!--Section: DataDenPaginationOptions-->
+  <section id="DataDenPaginationOptions">
+    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+        <div class="overflow-hidden">
+          <h2 class="mb-4 text-4xl font-medium">Pagination Options (DataDenPaginationOptions)</h2>
+
+          <table class="min-w-full table border">
+            <thead class="border-b">
+              <tr class="border-b">
+                <th class="border-r p-3">Property</th>
+                <th class="border-r p-3">Type</th>
+                <th class="border-r p-3">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>pageSize</code>
+                </td>
+                <td class="border-r p-3"><i>number</i></td>
+                <td class="border-r p-3">The number of rows to display per page.</td>
+              </tr>
+
+              <tr class="border-b">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>ofText</code>
+                </td>
+                <td class="border-r p-3"><i>string</i></td>
+                <td class="border-r p-3">
+                  The text to display between the current page number and the total number of pages (e.g., "of").
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--Section: DataDenPaginationOptions-->
+
+  <hr class="my-10" />
+
+  <!--Section: DataDenQuickFilterOptions-->
+  <section id="DataDenQuickFilterOptions">
+    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+        <div class="overflow-hidden">
+          <h2 class="mb-4 text-4xl font-medium">Quick Filter Options (DataDenQuickFilterOptions)</h2>
+
+          <table class="min-w-full table border">
+            <thead class="border-b">
+              <tr class="border-b">
+                <th class="border-r p-3">Property</th>
+                <th class="border-r p-3">Type</th>
+                <th class="border-r p-3">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>filterFn</code>
+                </td>
+                <td class="border-r p-3"><i>(searchTerm: any, value: any) => boolean</i></td>
+                <td class="border-r p-3">
+                  A custom filter function that determines whether a row should be displayed based on the search term
+                  and row value.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--Section: DataDenQuickFilterOptions-->
+
+  <hr class="my-10" />
+
+  <!--Section: DataDenSortOptions-->
+  <section id="DataDenSortOptions">
+    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+        <div class="overflow-hidden">
+          <h2 class="mb-4 text-4xl font-medium">Sort Options (DataDenSortOptions)</h2>
+
+          <table class="min-w-full table border">
+            <thead class="border-b">
+              <tr class="border-b">
+                <th class="border-r p-3">Property</th>
+                <th class="border-r p-3">Type</th>
+                <th class="border-r p-3">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>comparator</code>
+                </td>
+                <td class="border-r p-3"><i>(valueFirst: any, valueSecond: any) => number</i></td>
+                <td class="border-r p-3">
+                  A function that compares two values for sorting purposes. It should accept two values, 'valueFirst'
+                  and 'valueSecond', and return a number. If 'valueFirst' is less than 'valueSecond', the function
+                  should return a negative number. If they are equal, it should return 0. If 'valueFirst' is greater
+                  than 'valueSecond', it should return a positive number. Must implement the DataDenSortComparator
+                  interface.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--Section: DataDenSortOptions-->
+
+  <hr class="my-10" />
+
+  <!--Section: DataDenHeaderFilterRenderer-->
+  <section id="DataDenHeaderFilterRenderer">
+    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+        <div class="overflow-hidden">
+          <h2 class="mb-4 text-4xl font-medium">Header Filter Renderer (DataDenHeaderFilterRenderer)</h2>
+
+          <table class="min-w-full table border">
+            <thead class="border-b">
+              <tr class="border-b">
+                <th class="border-r p-3">Method/Property</th>
+                <th class="border-r p-3">Return Type</th>
+                <th class="border-r p-3">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>getGui()</code>
+                </td>
+                <td class="border-r p-3"><i>HTMLElement</i></td>
+                <td class="border-r p-3">Returns the HTML element representing the header filter UI.</td>
+              </tr>
+              <tr class="border-b">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>destroy()</code>
+                </td>
+                <td class="border-r p-3"><i>void</i></td>
+                <td class="border-r p-3">Destroys any resources or components used by the header filter.</td>
+              </tr>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>getType()</code>
+                </td>
+                <td class="border-r p-3"><i>string</i></td>
+                <td class="border-r p-3">Returns the type identifier of the header filter.</td>
+              </tr>
+              <tr class="border-b">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>getState()</code>
+                </td>
+                <td class="border-r p-3"><i>any</i></td>
+                <td class="border-r p-3">Returns the current state/configuration of the header filter.</td>
+              </tr>
+              <tr class="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-600">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>isActive()</code>
+                </td>
+                <td class="border-r p-3"><i>boolean</i></td>
+                <td class="border-r p-3">Checks if the header filter is currently active/engaged.</td>
+              </tr>
+              <tr class="border-b">
+                <td class="whitespace-nowrap border-r p-3">
+                  <code>getFilterFn()</code>
+                </td>
+                <td class="border-r p-3"><i>(state: any, value: any) => boolean</i></td>
+                <td class="border-r p-3">Returns a filtering function based on the header filter's state.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--Section: DataDenHeaderFilterRenderer-->
+</section>

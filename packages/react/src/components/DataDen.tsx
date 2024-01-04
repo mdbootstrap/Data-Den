@@ -1,15 +1,19 @@
 import { useRef, forwardRef, useEffect, useImperativeHandle } from 'react';
-import { DataDen as DataDenCore, DataDenOptions, DataDenSortingEvent } from 'data-den-core';
+import { DataDen as DataDenCore, DataDenOptions, DataDenSortingEvent, DataDenPinningEvent } from 'data-den-core';
 
 const DataDen = forwardRef(function DataDen(
   {
     options,
     onSortingStart,
     onSortingDone,
+    onPinningStart,
+    onPinningDone,
   }: {
     options: DataDenOptions;
     onSortingStart?: (event: DataDenSortingEvent) => void;
     onSortingDone?: (event: DataDenSortingEvent) => void;
+    onPinningStart?: (event: DataDenPinningEvent) => void;
+    onPinningDone?: (event: DataDenPinningEvent) => void;
   },
   ref
 ) {
@@ -27,6 +31,12 @@ const DataDen = forwardRef(function DataDen(
       dataDen.on('sortingDone', (event: DataDenSortingEvent) => {
         onSortingDone(event);
       });
+      dataDen.on('pinningStart', (event: DataDenPinningEvent) => {
+        onPinningStart(event);
+      });
+      dataDen.on('pinningDone', (event: DataDenPinningEvent) => {
+        onPinningDone(event);
+      });
     }
   }, [dataDenWrapper]);
 
@@ -34,6 +44,16 @@ const DataDen = forwardRef(function DataDen(
     sort(field: string, order: string) {
       if (dataDen) {
         dataDen.sort(field, order);
+      }
+    },
+    quickFilter(searchTerm: string) {
+      if (dataDen) {
+        dataDen.quickFilter(searchTerm);
+      }
+    },
+    pinColumn(pin: string | boolean, colIndex: number) {
+      if (dataDen) {
+        dataDen.pinColumn(pin, colIndex);
       }
     },
   }));

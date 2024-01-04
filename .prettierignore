@@ -1,5 +1,9 @@
 node_modules/
 dist/
 dist-docs/
+site/static/
+site/public/
+site/resources/
+site/assets/
 package.json
 package-lock.json

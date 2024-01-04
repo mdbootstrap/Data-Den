@@ -9,9 +9,8 @@ export class DataDenHeaderMenuRenderer {
   #cssPrefix: string;
   colDef: DataDenColDef;
   colIndex: number;
-  private PubSub: DataDenPubSub;
 
-  constructor(cssPrefix: string, colDef: DataDenColDef, colIndex: number) {
+  constructor(cssPrefix: string, colDef: DataDenColDef, colIndex: number, private PubSub: DataDenPubSub) {
     this.#cssPrefix = cssPrefix;
     this.colDef = colDef;
     this.colIndex = colIndex;
@@ -26,9 +25,25 @@ export class DataDenHeaderMenuRenderer {
     `;
 
     const dropdownTemplate = `<div class="${this.#cssPrefix}header-menu-dropdown">
-      <a href="#" class="${this.#cssPrefix}header-menu-dropdown-item" ref="unPinColTrigger">Unpin</a>
-      <a href="#" class="${this.#cssPrefix}header-menu-dropdown-item" ref="pinLeftPinColTrigger">Pin to the left</a>
-      <a href="#" class="${this.#cssPrefix}header-menu-dropdown-item" ref="pinRightPinColTrigger">Pin to the right</a>
+      ${
+        this.colDef.pinned
+          ? `<a href="#" class="${this.#cssPrefix}header-menu-dropdown-item" ref="unPinColTrigger">Unpin</a>`
+          : ''
+      }
+      ${
+        this.colDef.pinned === 'right' || !this.colDef.pinned
+          ? `<a href="#" class="${
+              this.#cssPrefix
+            }header-menu-dropdown-item" ref="pinLeftPinColTrigger">Pin to the left</a>`
+          : ''
+      }
+      ${
+        this.colDef.pinned === 'left' || !this.colDef.pinned
+          ? `<a href="#" class="${
+              this.#cssPrefix
+            }header-menu-dropdown-item" ref="pinRightPinColTrigger">Pin to the right</a>`
+          : ''
+      }
     </div>`;
 
     this.toggler = createHtmlElement(template);
@@ -46,7 +61,8 @@ export class DataDenHeaderMenuRenderer {
     const pinLeftTrigger = this.dropdown.querySelector('[ref="pinLeftPinColTrigger"]');
     const pinRightTrigger = this.dropdown.querySelector('[ref="pinRightPinColTrigger"]');
 
-    unPinTrigger?.addEventListener('click', () => {
+    unPinTrigger?.addEventListener('click', (event) => {
+      event.preventDefault();
       this.PubSub.publish('command:pin-column:start', {
         pin: false,
         colIndex: this.colIndex,
@@ -54,7 +70,8 @@ export class DataDenHeaderMenuRenderer {
       });
     });
 
-    pinLeftTrigger?.addEventListener('click', () => {
+    pinLeftTrigger?.addEventListener('click', (event) => {
+      event.preventDefault();
       this.PubSub.publish('command:pin-column:start', {
         pin: 'left',
         colIndex: this.colIndex,
@@ -62,7 +79,8 @@ export class DataDenHeaderMenuRenderer {
       });
     });
 
-    pinRightTrigger?.addEventListener('click', () => {
+    pinRightTrigger?.addEventListener('click', (event) => {
+      event.preventDefault();
       this.PubSub.publish('command:pin-column:start', {
         pin: 'right',
         colIndex: this.colIndex,

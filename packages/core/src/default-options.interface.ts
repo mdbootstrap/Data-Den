@@ -80,4 +80,5 @@ export const defaultOptions: DataDenInternalOptions = {
   quickFilterOptions: defaultQuickFilterOptions,
   resizable: false,
   rowHeight: 26,
+  multiSortKey: 'shift',
 };
