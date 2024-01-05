@@ -26,7 +26,7 @@ export class DataDenDefaultCellEditor implements DataDenCellEditor {
     this.#valueParser = params.valueParser;
     this.value = this.parseValue(params.value);
 
-    const template = `<input class="${this.#cssPrefix}cell-editor-container" type="text" value="${this.value}" />`;
+    const template = `<input class="${this.#cssPrefix}cell-editor" type="text" value="${this.value}" />`;
 
     this.element = createHtmlElement(template);
     this.attachUiEvents();

@@ -42,6 +42,13 @@
   position: absolute;
   background-color: var(--#{$prefix}row-cell-bg);
 
+  .#{$prefix}cell-editor,
+  .#{$prefix}cell-content {
+    width: 100%;
+    display: inline-block;
+    min-height: 10px;
+  }
+
   &.#{$prefix}active {
     background-color: var(--#{$prefix}cell-active-bg);
     border: var(--#{$prefix}row-cell-active-border);
@@ -73,11 +80,4 @@
 
 .#{$prefix}cell-pinned-right:first-child {
   border-left: var(--#{$prefix}cell-pinned-border);
-}
-
-span,
-input {
-  width: 100%;
-  min-height: 10px;
-  display: inline-block;
 }
