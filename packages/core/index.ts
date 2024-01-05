@@ -10,7 +10,6 @@ import {
 import { DataDenDefaultCellEditor } from './src/modules/rendering/editor';
 import { DataDenSortingEvent } from './src/modules/sorting';
 import { DataDenPinningEvent } from './src/modules/pinning';
-import { truncate } from 'fs';
 
 const rows = [
   { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000, transmission: 'Manual', fuel: 'Gasoline' },
