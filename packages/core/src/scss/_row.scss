@@ -7,6 +7,7 @@
 
 .#{$prefix}row {
   width: 100%;
+
   &:hover .#{$prefix}cell {
     filter: brightness(0.95);
   }
@@ -45,6 +46,13 @@
   height: inherit;
   display: flex;
   align-items: center;
+
+  span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   &.#{$prefix}active {
     background-color: var(--#{$prefix}cell-active-bg);
     z-index: 2;

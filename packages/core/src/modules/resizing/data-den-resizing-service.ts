@@ -117,8 +117,13 @@ export class DataDenResizingService {
     }
 
     const movementX = this.#isResizingPinnedRightColumn ? -event.movementX : event.movementX;
+    const currentWidth = this.#currentHeader?.style.width;
+    const headerLeft = this.#currentHeader.querySelector(`.${this.#options.cssPrefix}header-resizer`);
+    const newWidth = parseInt(currentWidth || '0') + movementX;
 
-    this.#resizeCurrentColumn(movementX);
+    if ((movementX > 0 && event.clientX < headerLeft.getClientRects()[0].left) || newWidth < 45) return;
+
+    this.#resizeCurrentColumn(newWidth);
     this.#updateRemainingColumnsPosition(movementX);
     this.PubSub.publish('info:resizing:start', {
       currentColIndex: this.#headers.indexOf(this.#currentHeader),
@@ -127,10 +132,7 @@ export class DataDenResizingService {
     });
   }
 
-  #resizeCurrentColumn(movementX: number) {
-    const currentWidth = this.#currentHeader?.style.width;
-    const newWidth = parseInt(currentWidth || '0') + movementX;
-
+  #resizeCurrentColumn(newWidth: number) {
     this.#currentCol.forEach((cell) => (cell.style.width = `${newWidth}px`));
   }
 
