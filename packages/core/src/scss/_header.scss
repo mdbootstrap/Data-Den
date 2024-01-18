@@ -158,7 +158,9 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: flex; // INFO: we left it after merging conflicts; in case of any problems look here (#88, #90) 
     pointer-events: none;
+    align-items: center;
   }
 
   &:not(.#{$prefix}header-cell-filterable) {
@@ -205,8 +207,8 @@
 }
 
 .#{$prefix}header-menu-toggler {
-  width: 18px;
   display: none;
+  width: 18px;
   border: none;
   background: none;
   cursor: pointer;
