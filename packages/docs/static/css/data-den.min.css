@@ -45,6 +45,9 @@
   user-select: none;
 }
 .data-den-header-sorter {
+  width: 18px;
+  justify-content: center;
+  text-align: center;
   margin-left: var(--data-den-header-sorter-margin-left);
   display: flex;
 }
@@ -162,6 +165,9 @@
   border-bottom: var(--data-den-header-cell-border);
 }
 .data-den-header-cell .data-den-header-cell-value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: flex;
   pointer-events: none;
   align-items: center;
@@ -195,11 +201,13 @@
   border-left: var(--data-den-cell-pinned-border);
 }
 .data-den-header-value-and-sorter {
+  flex: 1;
+  overflow: hidden;
   display: flex;
 }
 .data-den-header-menu-toggler {
   display: none;
-  width: 16px;
+  width: 18px;
   border: none;
   background: none;
   cursor: pointer;
@@ -385,6 +393,11 @@ body {
   height: inherit;
   display: flex;
   align-items: center;
+}
+.data-den-cell span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .data-den-cell.data-den-active {
   background-color: var(--data-den-cell-active-bg);
