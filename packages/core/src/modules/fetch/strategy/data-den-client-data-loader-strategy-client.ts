@@ -72,10 +72,10 @@ export class DataDenClientDataLoaderStrategy extends DataDenDataLoaderStrategy {
       return Promise.resolve(rows);
     }
 
-    const { searchTerm, filterFn } = quickFilterOptions;
+    const { searchTerm, filterFn, columns } = quickFilterOptions;
 
     const filtered = rows.filter((row) => {
-      return filterFn(searchTerm, Object.values(row));
+      return filterFn(searchTerm, Object.values(row), columns);
     });
 
     return Promise.resolve(filtered);

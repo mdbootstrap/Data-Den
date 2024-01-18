@@ -2,10 +2,10 @@ import {
   DataDenDateFilterParserFn,
   DataDenInternalOptions,
   DataDenPaginationOptions,
-  DataDenQuickFilterOptions,
   DataDenSortComparator,
   DataDenSortOptions,
 } from './data-den-options.interface';
+import { defaultQuickFilterOptions } from './modules/filtering';
 import { DataDenHeaderTextFilterRenderer } from './modules/rendering';
 import { DataDenDefaultCellRenderer } from './modules/rendering/cell';
 
@@ -13,29 +13,6 @@ const defaultPaginationOptions: Required<DataDenPaginationOptions> = {
   pageSize: 10,
   pageSizeOptions: [5, 10, 25],
   ofText: 'of',
-};
-
-const defaultQuickFilterFn = (searchTerm: any, value: any) => {
-  searchTerm = searchTerm
-    .toString()
-    .toLowerCase()
-    .split(',')
-    .filter((term: string) => term !== '');
-
-  value = value.toString().toLowerCase();
-
-  let res = true;
-
-  searchTerm.forEach((term: string) => {
-    const someCellIncludeTerm = value.includes(term);
-    if (!someCellIncludeTerm) res = false;
-  });
-
-  return res;
-};
-
-const defaultQuickFilterOptions: Required<DataDenQuickFilterOptions> = {
-  filterFn: defaultQuickFilterFn,
 };
 
 const defaultDateParserFn: DataDenDateFilterParserFn = (dateString: string) => {
