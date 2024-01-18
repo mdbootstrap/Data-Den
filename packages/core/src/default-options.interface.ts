@@ -82,4 +82,5 @@ export const defaultOptions: DataDenInternalOptions = {
   rowHeight: 42,
   headerHeight: 42,
   multiSortKey: 'shift',
+  multiSort: true,
 };

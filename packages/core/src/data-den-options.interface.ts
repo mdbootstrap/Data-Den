@@ -72,6 +72,7 @@ export interface DataDenOptions<TData = any> {
   rowHeight?: number;
   headerHeight?: number;
   multiSortKey?: 'shift' | 'ctrl';
+  multiSort?: boolean;
 }
 
 export interface DataDenInternalOptions {
@@ -88,4 +89,5 @@ export interface DataDenInternalOptions {
   rowHeight: number;
   headerHeight: number;
   multiSortKey: 'shift' | 'ctrl';
+  multiSort: boolean;
 }

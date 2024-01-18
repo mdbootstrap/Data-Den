@@ -71,13 +71,7 @@ export class DataDenHeaderCell extends DataDenCell {
     }
 
     if (sort) {
-      this.#sorterRenderer = new DataDenHeaderDefaultSorterRenderer(
-        field,
-        order,
-        cssPrefix,
-        this.PubSub,
-        this.#options.multiSortKey
-      );
+      this.#sorterRenderer = new DataDenHeaderDefaultSorterRenderer(field, order, this.PubSub, this.#options);
     }
 
     if (resize) {

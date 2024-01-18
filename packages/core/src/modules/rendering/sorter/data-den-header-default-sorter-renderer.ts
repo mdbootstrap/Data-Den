@@ -5,6 +5,7 @@ import { Context } from '../../../context';
 import { DataDenSortOrder } from '../../sorting/data-den-sorting.interface';
 import { DataDenActiveSorter } from '../../sorting';
 import { DataDenEvent } from '../../../data-den-event';
+import { DataDenInternalOptions } from '../../../data-den-options.interface';
 
 export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRenderer {
   arrowElement: HTMLElement;
@@ -12,16 +13,11 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
   #field: string;
   #cssPrefix: string;
   #multiSortKey: 'shift' | 'ctrl';
+  #multiSortActive: boolean;
 
-  constructor(
-    field: string,
-    order: DataDenSortOrder,
-    cssPrefix: string,
-    private PubSub: DataDenPubSub,
-    multiSortKey: 'shift' | 'ctrl'
-  ) {
+  constructor(field: string, order: DataDenSortOrder, private PubSub: DataDenPubSub, options: DataDenInternalOptions) {
     super();
-    this.#cssPrefix = cssPrefix;
+    this.#cssPrefix = options.cssPrefix;
     const template = `
       <div class="${this.#cssPrefix}header-sorter">
         <div
@@ -47,11 +43,13 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
     `;
     this.#field = field;
 
-    this.#multiSortKey = multiSortKey;
+    this.#multiSortActive = options.multiSort;
+    this.#multiSortKey = options.multiSortKey;
     this.element = createHtmlElement(template);
     this.arrowElement = this.element.querySelector('[ref="sorterArrow"]')!;
     this.element.addEventListener('click', (event: any) => {
-      const isMultiSort = this.#multiSortKey === 'shift' ? event.shiftKey : event.ctrlKey;
+      const isMultiSortKeyPressed = this.#multiSortKey === 'shift' ? event.shiftKey : event.ctrlKey;
+      const isMultiSort = this.#multiSortActive && isMultiSortKeyPressed;
 
       // Prevent text selection
       window.getSelection().removeAllRanges();
