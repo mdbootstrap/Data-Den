@@ -1,20 +1,12 @@
 import './scss/index.scss';
 
-import {
-  DataDenHeaderDateFilterRenderer,
-  DataDenHeaderNumberFilterRenderer,
-  DataDenHeaderSelectFilterRenderer,
-  DataDenHeaderTextFilterRenderer,
-  DataDenRenderingService,
-} from './modules/rendering';
+import { DataDenRenderingService } from './modules/rendering';
 import { DataDenPaginationService } from './modules/pagination';
 import { DataDenDraggingService } from './modules/dragging';
 import { DataDenResizingService } from './modules/resizing';
 import { DataDenFilteringService } from './modules/filtering';
-import { DataDenSortingService, DataDenSortingEvent } from './modules/sorting';
-import { DataDenPinningEvent } from './modules/pinning';
+import { DataDenSortingService } from './modules/sorting';
 import { DataDenFetchService } from './modules/fetch';
-import { DataDenDefaultCellRenderer } from './modules/rendering/cell/data-den-default-cell-renderer';
 import {
   DataDenClientDataLoaderStrategy,
   DataDenServerDataLoaderStrategy,
@@ -115,16 +107,3 @@ export class DataDen {
     });
   }
 }
-
-export {
-  DataDenDefaultCellRenderer,
-  DataDenClientDataLoaderStrategy,
-  DataDenServerDataLoaderStrategy,
-  DataDenDataLoaderStrategy,
-  DataDenHeaderDateFilterRenderer,
-  DataDenHeaderNumberFilterRenderer,
-  DataDenHeaderSelectFilterRenderer,
-  DataDenHeaderTextFilterRenderer,
-};
-
-export type { DataDenOptions, DataDenSortingEvent, DataDenPinningEvent };

@@ -12,6 +12,7 @@
     "start:all": "nx run-many -t start",
     "build": "npm run build:core",
     "build:core": "nx build data-den-core",
+    "build:core-com": "nx build-com data-den-core",
     "build:angular": "nx build data-den-angular",
     "build:react": "nx build data-den-react",
     "build:vue": "nx build data-den-vue",

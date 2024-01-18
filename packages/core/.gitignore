@@ -4,6 +4,7 @@ node_modules
 
 # production
 /dist
+/dist-com
 
 # misc
 .DS_Store
