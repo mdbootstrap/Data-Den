@@ -17,6 +17,7 @@ export class DataDenResizingService {
   #headersOnTheRight: HTMLElement[];
   #columnsOrder: number[];
   #isResizingPinnedRightColumn: boolean;
+  readonly #columnMinWidth = 45;
 
   constructor(container: HTMLElement, options: DataDenInternalOptions, private PubSub: DataDenPubSub) {
     this.#container = container;
@@ -121,7 +122,7 @@ export class DataDenResizingService {
     const headerLeft = this.#currentHeader.querySelector(`.${this.#options.cssPrefix}header-resizer`);
     const newWidth = parseInt(currentWidth || '0') + movementX;
 
-    if ((movementX > 0 && event.clientX < headerLeft.getClientRects()[0].left) || newWidth < 45) return;
+    if ((movementX > 0 && event.clientX < headerLeft.getClientRects()[0].left) || this.#columnMinWidth) return;
 
     this.#resizeCurrentColumn(newWidth);
     this.#updateRemainingColumnsPosition(movementX);
