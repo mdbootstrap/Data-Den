@@ -16,10 +16,22 @@ const defaultPaginationOptions: Required<DataDenPaginationOptions> = {
 };
 
 const defaultQuickFilterFn = (searchTerm: any, value: any) => {
-  searchTerm = searchTerm.toString().toLowerCase();
+  searchTerm = searchTerm
+    .toString()
+    .toLowerCase()
+    .split(',')
+    .filter((term: string) => term !== '');
+
   value = value.toString().toLowerCase();
 
-  return value.includes(searchTerm);
+  let res = true;
+
+  searchTerm.forEach((term: string) => {
+    const someCellIncludeTerm = value.includes(term);
+    if (!someCellIncludeTerm) res = false;
+  });
+
+  return res;
 };
 
 const defaultQuickFilterOptions: Required<DataDenQuickFilterOptions> = {
