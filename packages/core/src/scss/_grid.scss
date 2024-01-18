@@ -3,7 +3,13 @@
 }
 
 .#{$prefix}grid {
+  border: var(--#{$prefix}grid-border);
   position: relative;
+  line-height: normal;
+  font-family: var(--#{$prefix}grid-font-family);
+  font-size: var(--#{$prefix}grid-font-size);
+  border-radius: var(--#{$prefix}grid-border-radius);
+  overflow: hidden;
   &.#{$prefix}resizing {
     & > *,
     .#{$prefix}header-cell-draggable,

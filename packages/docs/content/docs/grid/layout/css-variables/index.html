@@ -1,0 +1,109 @@
+---
+title: 'Data Den'
+date: 2023-02-09T10:00:00+02:00
+draft: false
+main_title: 'CSS & SCSS Variables'
+subheading: ''
+seo_title: 'Data Den CSS & SCSS Variables'
+description: 'Data Den CSS & SCSS Variables'
+image: ''
+video: ''
+url: 'docs/grid/layout/css-variables/'
+---
+
+<!-- Section: CSS Variables -->
+<section>
+  <!-- Title -->
+  <h2
+    class="mb-5 mt-0 text-3xl font-semibold leading-normal text-neutral-800 dark:text-neutral-200"
+    id="css-variables"
+    data-te-spy-item>
+    CSS Variables
+  </h2>
+  <!-- Description -->
+  <p class="mb-3">Below you will find a list of CSS variables that we use in the Data Grid.</p>
+
+  <!-- prettier-ignore -->
+  {{< twsnippet/wrapper "CSS" "" "mobile" >}}
+  {{< twsnippet/code active=true lang="CSS" >}}
+    .data-den-grid {
+      --#{$prefix}grid-font-family: Roboto, sans-serif;
+      --#{$prefix}grid-font-size: 14px;
+    
+      --#{$prefix}grid-border-width: 1px;
+      --#{$prefix}grid-border-color: #e5e7eb;
+      --#{$prefix}grid-border: solid var(--#{$prefix}grid-border-width) var(--#{$prefix}grid-border-color);
+      --#{$prefix}grid-border-radius: 0.25rem;
+    
+      --#{$prefix}grid-row-cell-border: solid var(--#{$prefix}row-cell-border-width) var(--#{$prefix}cell-border-color);
+    
+      --#{$prefix}cell-active-bg: #fafafa;
+      --#{$prefix}cell-padding-x: 12px;
+      --#{$prefix}cell-border-width: var(--#{$prefix}grid-border-width);
+      --#{$prefix}cell-border-color: var(--#{$prefix}grid-border-color);
+      --#{$prefix}cell-border: solid var(--#{$prefix}cell-border-width) var(--#{$prefix}cell-border-color);
+    
+      --#{$prefix}cell-pinned-border-color: #636363;
+      --#{$prefix}cell-pinned-border: solid 1px var(--#{$prefix}cell-pinned-border-color);
+    
+      --#{$prefix}row-cell-bg: #ffffff;
+      --#{$prefix}row-cell-active-bg: var(--#{$prefix}cell-active-bg);
+      --#{$prefix}row-cell-border-width: var(--#{$prefix}grid-border-width);
+      --#{$prefix}row-cell-border-color: var(--#{$prefix}grid-border-color);
+      --#{$prefix}row-cell-border: solid var(--#{$prefix}row-cell-border-width) var(--#{$prefix}row-cell-border-color);
+      --#{$prefix}row-cell-padding-x: var(--#{$prefix}cell-padding-x);
+    
+      --#{$prefix}pagination-content-margin: 10px 10px 10px 0;
+      --#{$prefix}pagination-info-margin: 0 0.5rem;
+      --#{$prefix}pagination-button-border: none;
+      --#{$prefix}pagination-button-border-radius: 0.25rem;
+      --#{$prefix}pagination-button-bg: #ffffff;
+      --#{$prefix}pagination-button-padding: 7px;
+    
+      --#{$prefix}header-cell-border: var(--#{$prefix}grid-border);
+      --#{$prefix}header-cell-font-weight: 500;
+      --#{$prefix}header-cell-bg: #fafafa;
+      --#{$prefix}header-cell-active-bg: var(--#{$prefix}cell-active-bg);
+      --#{$prefix}header-cell-padding: 6px 20px 6px 12px;
+    
+      --#{$prefix}header-sorter-margin-left: 5px;
+      --#{$prefix}header-sorter-arrow-sorted-color: unset;
+      --#{$prefix}header-sorter-arrow-unsorted-color: #a9a9a9;
+      --#{$prefix}header-sorter-asc-transform: rotate(0deg);
+      --#{$prefix}header-sorter-desc-transform: rotate(180deg);
+      --#{$prefix}header-sorter-index-font-size: 0.75rem;
+    
+      --#{$prefix}header-filter-input-margin: 8px 0 0 0;
+      --#{$prefix}header-filter-input-border-color: var(--#{$prefix}grid-border-color);
+      --#{$prefix}header-filter-input-border: 1px solid var(--#{$prefix}header-filter-input-border-color);
+      --#{$prefix}header-filter-input-border-radius: 0.25rem;
+      --#{$prefix}header-filter-input-padding: 0 4px;
+      --#{$prefix}header-filter-input-height: 20px;
+      --#{$prefix}header-filter-input-width: 100%;
+      --#{$prefix}header-filter-input-bg: transparent;
+    
+      --#{$prefix}header-resizer-bg: #ccc;
+      --#{$prefix}header-resizer-width: 2px;
+      --#{$prefix}header-resizer-padding-right: 6px;
+    
+      --#{$prefix}header-menu-bg: #ffffff;
+      --#{$prefix}header-menu-border: var(--#{$prefix}grid-border);
+      --#{$prefix}header-menu-right: 36px;
+      --#{$prefix}header-menu-top: 10px;
+      --#{$prefix}header-menu-width: 150px;
+      --#{$prefix}header-menu-max-height: 200px;
+      --#{$prefix}header-menu-box-shadow: 0 2px 4px #00000033;
+      --#{$prefix}header-menu-padding: 8px;
+      --#{$prefix}header-menu-font-size: 12px;
+      --#{$prefix}header-menu-border-radius: 4px;
+    
+      --#{$prefix}header-menu-item-color: #333;
+      --#{$prefix}header-menu-item-hover-bg: #eee;
+      --#{$prefix}header-menu-item-padding: 4px 8px;
+    
+      --#{$prefix}header-menu-toggler-icon-color: unset;
+    }
+  {{< /twsnippet/code >}}
+  {{< /twsnippet/wrapper >}}
+</section>
+<!-- Section: CSS Variables -->

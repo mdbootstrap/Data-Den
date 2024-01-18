@@ -5,47 +5,48 @@
   position: relative;
 }
 
-.#{$prefix}row:nth-child(even) .data-den-cell {
-  background-color: var(--#{$prefix}row-stripped-bg);
-}
-
 .#{$prefix}row {
   width: 100%;
+  &:hover .#{$prefix}cell {
+    filter: brightness(0.95);
+  }
+
+  &:not(:last-child) .#{$prefix}cell {
+    border-bottom: var(--#{$prefix}grid-row-cell-border);
+  }
 }
 
-.#{$prefix}left-cells-wrapper {
+.#{$prefix}pinned-cells-wrapper {
   display: flex;
   position: sticky;
+  z-index: 5;
+  height: inherit;
+}
+
+.#{$prefix}pinned-cells-wrapper-left {
   left: 0;
   float: left;
-  z-index: 5;
-  border-right: var(--#{$prefix}row-cell-border);
+}
+
+.#{$prefix}pinned-cells-wrapper-right {
+  right: 0;
+  float: right;
 }
 
 .#{$prefix}main-cells-wrapper {
   position: absolute;
-}
-
-.#{$prefix}right-cells-wrapper {
-  display: flex;
-  position: sticky;
-  right: 0;
-  float: right;
-  z-index: 5;
-  border-right: var(--#{$prefix}row-cell-border);
+  height: inherit;
 }
 
 .#{$prefix}cell {
-  border: var(--#{$prefix}row-cell-border);
-  border-right: $cell-border-transparent;
-  padding: 4px var(--#{$prefix}row-cell-padding-x);
+  padding: 0 var(--#{$prefix}row-cell-padding-x);
   position: absolute;
   background-color: var(--#{$prefix}row-cell-bg);
-
+  height: inherit;
+  display: flex;
+  align-items: center;
   &.#{$prefix}active {
     background-color: var(--#{$prefix}cell-active-bg);
-    border: var(--#{$prefix}row-cell-active-border);
-    border-right: none;
     z-index: 2;
   }
 }
