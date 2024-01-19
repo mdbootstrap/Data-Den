@@ -122,7 +122,8 @@ export class DataDenResizingService {
     const headerLeft = this.#currentHeader.querySelector(`.${this.#options.cssPrefix}header-resizer`);
     const newWidth = parseInt(currentWidth || '0') + movementX;
 
-    if ((movementX > 0 && event.clientX < headerLeft.getClientRects()[0].left) || this.#columnMinWidth) return;
+    if ((movementX > 0 && event.clientX < headerLeft.getClientRects()[0].left) || newWidth < this.#columnMinWidth)
+      return;
 
     this.#resizeCurrentColumn(newWidth);
     this.#updateRemainingColumnsPosition(movementX);
