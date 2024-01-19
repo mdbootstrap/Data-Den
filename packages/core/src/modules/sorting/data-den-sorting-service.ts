@@ -4,6 +4,7 @@ import { DataDenEvent } from '../../data-den-event';
 import { DataDenEventEmitter } from '../../data-den-event-emitter';
 import { DataDenSortingPreviousState } from './data-den-sorting-previous-state';
 import { DataDenInternalOptions, DataDenSortComparator } from '../../data-den-options.interface';
+import { Context } from '../../context';
 
 export interface DataDenActiveSorter {
   field: string;
@@ -88,6 +89,19 @@ export class DataDenSortingService {
         activeSorters: this.getActiveSortersArray(),
         isMultiSort,
       });
+    });
+
+    this.#options.columns.forEach((colDef) => {
+      const order = colDef.defaultSort;
+      if (order) {
+        this.PubSub.publish('command:sorting:start', {
+          caller: this,
+          context: new Context('command:sorting:start'),
+          field: colDef.field,
+          order: order,
+          multiSort: options.multiSort,
+        });
+      }
     });
   }
 
