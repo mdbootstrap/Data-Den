@@ -18,11 +18,16 @@ export class DataDenSortingService {
   #order: DataDenSortOrder;
   #options: DataDenInternalOptions;
   activeSortersMap: Map<string, DataDenActiveSorter>;
+  #sortOptions: (string | null)[];
 
   constructor(options: DataDenInternalOptions, private PubSub: DataDenPubSub) {
     this.#field = '';
     this.#order = 'asc';
     this.#options = options;
+
+    const sortOptions = options.sortOptions || [];
+
+    this.#sortOptions = (sortOptions.length > 3) ? sortOptions.slice(3) : sortOptions;
 
     this.activeSortersMap = new Map();
 
@@ -31,28 +36,15 @@ export class DataDenSortingService {
 
       const { field, isMultiSort } = event.data;
       const isCurrentSorterActive = this.activeSortersMap.has(field);
-      const currentSorterOrder = isCurrentSorterActive ? this.activeSortersMap.get(field).order : '';
+      const currentSorterOrder = isCurrentSorterActive ? this.activeSortersMap.get(field).order : null;
 
       let nextOrder: DataDenSortOrder;
 
-      if (isCurrentSorterActive) {
-        switch (currentSorterOrder) {
-          case 'asc':
-            nextOrder = 'desc';
-            break;
-          case 'desc':
-            nextOrder = '';
-            break;
-          default:
-            nextOrder = 'asc';
-            break;
-        }
-      } else {
-        nextOrder = 'asc';
-      }
-
       if (event.data.order) {
         nextOrder = event.data.order;
+      } else {
+        const currentSorterOrderIdx = this.#sortOptions.indexOf(currentSorterOrder);
+        nextOrder = this.#sortOptions[currentSorterOrderIdx + 1 % this.#sortOptions.length] as DataDenSortOrder;
       }
 
       this.#field = event.data.field;
@@ -93,7 +85,7 @@ export class DataDenSortingService {
 
     this.#options.columns.forEach((colDef) => {
       const order = colDef.defaultSort;
-      if (order) {
+      if (order && this.#options.sortOptions.includes(order)) {
         this.PubSub.publish('command:sorting:start', {
           caller: this,
           context: new Context('command:sorting:start'),

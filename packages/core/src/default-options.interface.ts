@@ -60,6 +60,7 @@ export const defaultOptions: DataDenInternalOptions = {
   defaultColDef: {
     sort: false,
     sortOptions: defaultSortOptions,
+    defaultSort: null,
     filter: false,
     filterRenderer: DataDenHeaderTextFilterRenderer,
     filterOptions: {
@@ -78,6 +79,7 @@ export const defaultOptions: DataDenInternalOptions = {
   pagination: false,
   paginationOptions: defaultPaginationOptions,
   quickFilterOptions: defaultQuickFilterOptions,
+  sortOptions: ['asc', 'desc', null],
   resizable: false,
   rowHeight: 42,
   headerHeight: 42,
