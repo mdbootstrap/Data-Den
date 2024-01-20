@@ -89,3 +89,9 @@
     window.addEventListener('scroll', onWindowScroll);
   })();
 </script>
+<script>
+  const CONFIG = {
+    docsApiUrl: {{.Site.Params.apiUrl}}
+  };
+</script>
+<script type="module" src="{{ .Site.Params.assetsDir }}/js/load-user-data.js"></script>
