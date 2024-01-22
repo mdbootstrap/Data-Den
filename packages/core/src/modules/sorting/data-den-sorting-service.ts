@@ -41,7 +41,7 @@ export class DataDenSortingService {
         nextOrder = event.data.order;
       } else {
         const currentSorterOrderIdx = this.#sortOptions.indexOf(currentSorterOrder);
-        nextOrder = this.#sortOptions[currentSorterOrderIdx + (1 % this.#sortOptions.length)] as DataDenSortOrder;
+        nextOrder = this.#sortOptions[(currentSorterOrderIdx + 1) % this.#sortOptions.length] as DataDenSortOrder;
       }
 
       this.#field = event.data.field;

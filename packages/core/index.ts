@@ -177,7 +177,7 @@ const options: DataDenOptions = {
     },
   ],
   rows: rows,
-  sortOptions: ['asc', null, 'desc'],
+  sortOptions: [null, 'asc', 'desc'],
   draggable: true,
   pagination: true,
   paginationOptions: {
