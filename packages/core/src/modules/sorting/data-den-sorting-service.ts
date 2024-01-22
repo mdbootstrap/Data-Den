@@ -24,10 +24,7 @@ export class DataDenSortingService {
     this.#field = '';
     this.#order = 'asc';
     this.#options = options;
-
-    const sortOptions = options.sortOptions || [];
-
-    this.#sortOptions = (sortOptions.length > 3) ? sortOptions.slice(3) : sortOptions;
+    this.#sortOptions = options.sortOptions || [];
 
     this.activeSortersMap = new Map();
 
@@ -44,7 +41,7 @@ export class DataDenSortingService {
         nextOrder = event.data.order;
       } else {
         const currentSorterOrderIdx = this.#sortOptions.indexOf(currentSorterOrder);
-        nextOrder = this.#sortOptions[currentSorterOrderIdx + 1 % this.#sortOptions.length] as DataDenSortOrder;
+        nextOrder = this.#sortOptions[currentSorterOrderIdx + (1 % this.#sortOptions.length)] as DataDenSortOrder;
       }
 
       this.#field = event.data.field;
@@ -83,6 +80,10 @@ export class DataDenSortingService {
       });
     });
 
+    this.#setColumnDefaultSort(options);
+  }
+
+  #setColumnDefaultSort(options: DataDenInternalOptions) {
     this.#options.columns.forEach((colDef) => {
       const order = colDef.defaultSort;
       if (order && this.#options.sortOptions.includes(order)) {
