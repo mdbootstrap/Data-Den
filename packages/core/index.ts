@@ -177,7 +177,6 @@ const options: DataDenOptions = {
     },
   ],
   rows: rows,
-  sortOptions: [null, 'asc', 'desc'],
   draggable: true,
   pagination: true,
   paginationOptions: {
@@ -298,7 +297,7 @@ const ddEl = document.getElementById('dd');
 const dataDen = new DataDen(ddEl as HTMLElement, options);
 
 const ddEl2 = document.getElementById('dd2');
-const dataDen2 = new DataDen(ddEl2 as HTMLElement, options2);
+// const dataDen2 = new DataDen(ddEl2 as HTMLElement, options2);
 
 const quickFilterInput: HTMLInputElement = document.querySelector('.data-den-quick-filter-input')!;
 quickFilterInput.addEventListener('keyup', () => {

@@ -49,7 +49,7 @@ export class DataDenRenderingService {
     this.#orderedColumns = getMainOrderedColumns(this.#options.columns);
     this.#defaultOrderedColumns = getMainOrderedColumns(this.#options.columns);
     this.#columnsOrder = getMainColumnIndexes(this.#options.columns);
-    this.#headerRow = this.#createHeaderRow(this.#options.columns, '');
+    this.#headerRow = this.#createHeaderRow(this.#options.columns, null);
 
     this.renderTable();
   }

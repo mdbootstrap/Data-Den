@@ -14,20 +14,26 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
   #cssPrefix: string;
   #multiSortKey: 'shift' | 'ctrl';
   #multiSortActive: boolean;
+  #arrowDirection: 'up' | 'down';
+  #sortSequence: DataDenSortOrder[];
 
   constructor(field: string, order: DataDenSortOrder, private PubSub: DataDenPubSub, options: DataDenInternalOptions) {
     super();
     this.#cssPrefix = options.cssPrefix;
+    this.#sortSequence = options.sortOptions;
+    this.#arrowDirection = this.#getArrowDirection(order);
+
     const template = `
       <div class="${this.#cssPrefix}header-sorter">
         <div
           ref="sorterArrow"
-          class="${this.#cssPrefix}header-sorter-arrow ${this.#cssPrefix}header-sorter-arrow-${order}"
+          class="${this.#cssPrefix}header-sorter-arrow ${this.#cssPrefix}header-sorter-arrow-${this.#arrowDirection}"
         >
           <svg 
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             stroke-width="1.5"
+            style="transform: rotate(${this.#arrowDirection === 'up' ? '0' : '180'}deg);"
             class="${this.#cssPrefix}header-sorter-arrow-svg"
           >
             <path
@@ -89,26 +95,39 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
     });
   }
 
-  #updateArrowDirectionAfterSort(order: string, isMultiSort: boolean): void {
-    if (!isMultiSort) {
-      const arrowElements = document.querySelectorAll('[ref="sorterArrow"]');
+  #updateArrowDirectionAfterSort(order: DataDenSortOrder, isMultiSort: boolean): void {
+    let arrowElements: Element[] = [];
 
-      arrowElements.forEach((arrowElement) => {
-        arrowElement.classList.remove(
-          `${this.#cssPrefix}header-sorter-arrow-asc`,
-          `${this.#cssPrefix}header-sorter-arrow-desc`
-        );
-      });
+    if (!isMultiSort) {
+      arrowElements = [...document.querySelectorAll('[ref="sorterArrow"]')];
+    } else {
+      arrowElements.push(this.arrowElement);
     }
 
-    if (order === '' && isMultiSort) {
-      this.arrowElement.classList.remove(
-        `${this.#cssPrefix}header-sorter-arrow-asc`,
-        `${this.#cssPrefix}header-sorter-arrow-desc`
+    arrowElements.forEach((arrowElement) => {
+      arrowElement.classList.remove(
+        `${this.#cssPrefix}header-sorter-arrow-active`,
+        `${this.#cssPrefix}header-sorter-arrow-up`,
+        `${this.#cssPrefix}header-sorter-arrow-down`,
+      );
+    })
+
+    if (order) {
+      this.arrowElement.classList.add(
+        `${this.#cssPrefix}header-sorter-arrow-active`,
       );
     }
 
-    this.arrowElement.classList.add(`${this.#cssPrefix}header-sorter-arrow-${order}`);
+    this.arrowElement.classList.add(
+      `${this.#cssPrefix}header-sorter-arrow-${this.#getArrowDirection(order)}`
+    );
+  }
+
+  #getArrowDirection(order: DataDenSortOrder): 'up' | 'down' {
+    const nextOrderIdx = this.#sortSequence.indexOf(order) + (order === null ? 1 : 0) % this.#sortSequence.length;
+    const nextOrder = this.#sortSequence[nextOrderIdx];
+
+    return nextOrder === 'asc' ? 'up' : 'down';
   }
 
   #updateSortIndexOrder(activeSorters: DataDenActiveSorter[]) {

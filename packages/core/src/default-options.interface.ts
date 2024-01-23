@@ -79,7 +79,7 @@ export const defaultOptions: DataDenInternalOptions = {
   pagination: false,
   paginationOptions: defaultPaginationOptions,
   quickFilterOptions: defaultQuickFilterOptions,
-  sortOptions: ['asc', 'desc', null],
+  sortOptions: [null, 'asc', 'desc'],
   resizable: false,
   rowHeight: 42,
   headerHeight: 42,
