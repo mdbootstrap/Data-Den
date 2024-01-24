@@ -7,7 +7,6 @@ import {
   DataDenHeaderNumberFilterRenderer,
   DataDenHeaderTextFilterRenderer,
 } from './src/modules/rendering';
-import { DataDenCellTextEditor } from './src/modules/rendering/editor';
 import { DataDenSortingEvent } from './src/modules/sorting';
 import { DataDenPinningEvent } from './src/modules/pinning';
 
@@ -99,7 +98,6 @@ const options: DataDenOptions = {
       resize: true,
       width: 200,
       cellRenderer: DataDenDefaultCellRenderer,
-      editable: true,
     },
     {
       field: 'year',
@@ -123,7 +121,6 @@ const options: DataDenOptions = {
       resize: true,
       width: 210,
       cellRenderer: DataDenDefaultCellRenderer,
-      editable: true,
     },
     {
       field: 'price',
@@ -141,7 +138,6 @@ const options: DataDenOptions = {
       resize: false,
       width: 180,
       cellRenderer: DataDenDefaultCellRenderer,
-      editable: true,
     },
     {
       field: 'transmission',
@@ -160,7 +156,6 @@ const options: DataDenOptions = {
       resize: true,
       width: 220,
       cellRenderer: DataDenDefaultCellRenderer,
-      editable: true,
     },
     {
       field: 'fuel',
@@ -179,7 +174,6 @@ const options: DataDenOptions = {
       resize: true,
       width: 180,
       cellRenderer: DataDenDefaultCellRenderer,
-      editable: true,
     },
   ],
   rows: rows,
@@ -223,7 +217,6 @@ const options2: DataDenOptions = {
       resize: true,
       width: 200,
       cellRenderer: DataDenDefaultCellRenderer,
-      editable: true,
     },
     {
       field: 'year',
@@ -244,7 +237,6 @@ const options2: DataDenOptions = {
       resize: true,
       width: 210,
       cellRenderer: DataDenDefaultCellRenderer,
-      editable: true,
     },
     {
       field: 'price',
@@ -256,7 +248,6 @@ const options2: DataDenOptions = {
       resize: false,
       width: 180,
       cellRenderer: DataDenDefaultCellRenderer,
-      editable: true,
     },
     {
       field: 'transmission',
@@ -275,7 +266,6 @@ const options2: DataDenOptions = {
       resize: true,
       width: 220,
       cellRenderer: DataDenDefaultCellRenderer,
-      editable: true,
     },
     {
       field: 'fuel',
@@ -294,7 +284,6 @@ const options2: DataDenOptions = {
       resize: true,
       width: 180,
       cellRenderer: DataDenDefaultCellRenderer,
-      editable: true,
     },
   ],
   rows: rows,
