@@ -39,7 +39,7 @@ export class DataDenCellTextEditor implements DataDenCellEditor {
 
       this.setValue(value);
 
-      if (!this.isBlurByKey && currentTarget?.classList.contains(`${this.#cssPrefix}cell-editor-container`)) {
+      if (!this.isBlurByKey && currentTarget?.classList.contains(`${this.#cssPrefix}cell-editor`)) {
         return;
       }
 
