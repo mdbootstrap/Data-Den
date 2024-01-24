@@ -7,7 +7,7 @@ import {
   DataDenHeaderNumberFilterRenderer,
   DataDenHeaderTextFilterRenderer,
 } from './src/modules/rendering';
-import { DataDenDefaultCellEditor } from './src/modules/rendering/editor';
+import { DataDenCellTextEditor } from './src/modules/rendering/editor';
 import { DataDenSortingEvent } from './src/modules/sorting';
 import { DataDenPinningEvent } from './src/modules/pinning';
 
@@ -80,9 +80,6 @@ const options: DataDenOptions = {
       width: 180,
       pinned: 'left',
       cellRenderer: DataDenDefaultCellRenderer,
-      cellEditor: DataDenDefaultCellEditor,
-      valueParser: (value: string) => value,
-      valueSetter: (value: string) => value,
       editable: false,
     },
     {
@@ -102,9 +99,6 @@ const options: DataDenOptions = {
       resize: true,
       width: 200,
       cellRenderer: DataDenDefaultCellRenderer,
-      cellEditor: DataDenDefaultCellEditor,
-      valueParser: (value: string) => value,
-      valueSetter: (value: string) => value,
       editable: true,
     },
     {
@@ -129,9 +123,6 @@ const options: DataDenOptions = {
       resize: true,
       width: 210,
       cellRenderer: DataDenDefaultCellRenderer,
-      cellEditor: DataDenDefaultCellEditor,
-      valueParser: (value: string) => value,
-      valueSetter: (value: string) => value,
       editable: true,
     },
     {
@@ -150,9 +141,6 @@ const options: DataDenOptions = {
       resize: false,
       width: 180,
       cellRenderer: DataDenDefaultCellRenderer,
-      cellEditor: DataDenDefaultCellEditor,
-      valueParser: (value: string) => value,
-      valueSetter: (value: string) => value,
       editable: true,
     },
     {
@@ -172,9 +160,6 @@ const options: DataDenOptions = {
       resize: true,
       width: 220,
       cellRenderer: DataDenDefaultCellRenderer,
-      cellEditor: DataDenDefaultCellEditor,
-      valueParser: (value: string) => value,
-      valueSetter: (value: string) => value,
       editable: true,
     },
     {
@@ -194,9 +179,6 @@ const options: DataDenOptions = {
       resize: true,
       width: 180,
       cellRenderer: DataDenDefaultCellRenderer,
-      cellEditor: DataDenDefaultCellEditor,
-      valueParser: (value: string) => value,
-      valueSetter: (value: string) => value,
       editable: true,
     },
   ],
@@ -225,9 +207,6 @@ const options2: DataDenOptions = {
       resize: true,
       width: 260,
       cellRenderer: DataDenDefaultCellRenderer,
-      cellEditor: DataDenDefaultCellEditor,
-      valueParser: (value: string) => value,
-      valueSetter: (value: string) => value,
       editable: false,
     },
     {
@@ -244,9 +223,6 @@ const options2: DataDenOptions = {
       resize: true,
       width: 200,
       cellRenderer: DataDenDefaultCellRenderer,
-      cellEditor: DataDenDefaultCellEditor,
-      valueParser: (value: string) => value,
-      valueSetter: (value: string) => value,
       editable: true,
     },
     {
@@ -268,9 +244,6 @@ const options2: DataDenOptions = {
       resize: true,
       width: 210,
       cellRenderer: DataDenDefaultCellRenderer,
-      cellEditor: DataDenDefaultCellEditor,
-      valueParser: (value: string) => value,
-      valueSetter: (value: string) => value,
       editable: true,
     },
     {
@@ -283,9 +256,6 @@ const options2: DataDenOptions = {
       resize: false,
       width: 180,
       cellRenderer: DataDenDefaultCellRenderer,
-      cellEditor: DataDenDefaultCellEditor,
-      valueParser: (value: string) => value,
-      valueSetter: (value: string) => value,
       editable: true,
     },
     {
@@ -305,9 +275,6 @@ const options2: DataDenOptions = {
       resize: true,
       width: 220,
       cellRenderer: DataDenDefaultCellRenderer,
-      cellEditor: DataDenDefaultCellEditor,
-      valueParser: (value: string) => value,
-      valueSetter: (value: string) => value,
       editable: true,
     },
     {
@@ -327,9 +294,6 @@ const options2: DataDenOptions = {
       resize: true,
       width: 180,
       cellRenderer: DataDenDefaultCellRenderer,
-      cellEditor: DataDenDefaultCellEditor,
-      valueParser: (value: string) => value,
-      valueSetter: (value: string) => value,
       editable: true,
     },
   ],

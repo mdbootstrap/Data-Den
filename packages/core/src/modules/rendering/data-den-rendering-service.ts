@@ -283,17 +283,17 @@ export class DataDenRenderingService {
     const cell = this.#rows[rowIndex].cells[colIndex] as DataDenCell;
 
     const cells: DataDenCell[] = [];
-    let editable, isSelected: DataDenCell;
+    let editable, selectedCell: DataDenCell;
 
     if (this.#options.rowEditMode) {
       this.#rows[rowIndex].cells.forEach((cell: DataDenCell) => {
         cells.push(cell);
-        if (isSelected) return;
-        isSelected =
+        if (selectedCell) return;
+        selectedCell =
           cell === this.#rows[rowIndex].cells[colIndex] && this.#options.columns[cell.colIndex].editable ? cell : null;
       });
     } else {
-      isSelected = cell;
+      selectedCell = cell;
       cells.push(cell);
     }
 
@@ -302,11 +302,11 @@ export class DataDenRenderingService {
 
       if ((typeof editable === `function` && !editable()) || editable === false) return;
 
-      if (!isSelected) {
-        isSelected = editable ? cell : null;
+      if (!selectedCell) {
+        selectedCell = editable ? cell : null;
       }
 
-      cell.startEditMode(isSelected, cells);
+      cell.startEditMode(selectedCell, cells);
     });
   }
 

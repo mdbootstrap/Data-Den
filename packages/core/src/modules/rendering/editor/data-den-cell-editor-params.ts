@@ -1,6 +1,6 @@
 export interface DataDenCellEditorParams {
-  valueSetter: (value: string) => any;
-  valueParser: (value: string) => any;
   value: any;
   cssPrefix: string;
+  stopEditMode: (value: string) => void;
+  setValue: (value: string) => void;
 }

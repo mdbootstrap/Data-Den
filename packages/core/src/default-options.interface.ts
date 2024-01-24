@@ -8,6 +8,7 @@ import {
 } from './data-den-options.interface';
 import { DataDenHeaderTextFilterRenderer } from './modules/rendering';
 import { DataDenDefaultCellRenderer } from './modules/rendering/cell';
+import { DataDenCellTextEditor } from './modules/rendering/editor';
 
 const defaultPaginationOptions: Required<DataDenPaginationOptions> = {
   pageSize: 10,
@@ -72,6 +73,8 @@ export const defaultOptions: DataDenInternalOptions = {
     resize: false,
     width: 200,
     cellRenderer: DataDenDefaultCellRenderer,
+    cellEditor: DataDenCellTextEditor,
+    editable: true,
   },
   rows: [],
   draggable: false,
@@ -81,4 +84,5 @@ export const defaultOptions: DataDenInternalOptions = {
   resizable: false,
   rowHeight: 26,
   multiSortKey: 'shift',
+  rowEditMode: false
 };

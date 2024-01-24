@@ -16,8 +16,4 @@ export class DataDenDefaultCellRenderer implements DataDenCellRenderer {
   getGui(): HTMLElement {
     return this.element;
   }
-
-  setValue(value: string): void {
-    this.element = createHtmlElement(`<span class="${this.cssPrefix}cell-content">${value}&nbsp;</span>`);
-  }
 }

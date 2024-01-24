@@ -39,8 +39,6 @@ export interface DataDenColDef {
   width?: number;
   cellRenderer?: ClassType<DataDenCellRenderer>;
   cellEditor?: ClassType<DataDenCellEditor>;
-  valueParser?: (value: string) => any;
-  valueSetter?: (value: string) => any;
   editable?: boolean | ((...args: any[]) => boolean);
 }
 
@@ -54,8 +52,6 @@ export interface DataDenDefaultColDef {
   width?: number;
   cellRenderer?: ClassType<DataDenCellRenderer>;
   cellEditor?: ClassType<DataDenCellEditor>;
-  valueParser?: (value: string) => any;
-  valueSetter?: (value: string) => any;
   editable?: boolean | ((...args: any[]) => boolean);
 }
 
