@@ -11,6 +11,7 @@
     "dev": "vite",
     "start": "vite --open",
     "build": "vite build",
+    "build-com": "vite build --config vite.config.com.ts",
     "test": "jest test/ --coverage",
     "test:watch": "jest test/ --coverage --watchAll",
     "preview": "vite preview"

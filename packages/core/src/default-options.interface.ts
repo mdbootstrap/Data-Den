@@ -82,7 +82,9 @@ export const defaultOptions: DataDenInternalOptions = {
   paginationOptions: defaultPaginationOptions,
   quickFilterOptions: defaultQuickFilterOptions,
   resizable: false,
-  rowHeight: 26,
+  rowHeight: 42,
+  headerHeight: 42,
   multiSortKey: 'shift',
-  rowEditMode: false
+  rowEditMode: false,
+  multiSort: true,
 };

@@ -9,15 +9,11 @@ export class DataDenHeaderRow extends DataDenRow {
   constructor(public index: number, public cells: DataDenHeaderCell[], options: DataDenInternalOptions) {
     super(index, cells, options);
     this.#options = options;
+    const height = this.#options.columns.some((el) => el.filter) ? options.headerHeight + 15 : options.headerHeight;
 
     const template =
       /* HTML */
-      `<div
-        class="${options.cssPrefix}header-row"
-        role="row"
-        ref="headerRow"
-        style="height: ${options.rowHeight}px"
-      ></div>`;
+      `<div class="${options.cssPrefix}header-row" role="row" ref="headerRow" style="height: ${height}px"></div>`;
 
     this.element = createHtmlElement(template);
   }

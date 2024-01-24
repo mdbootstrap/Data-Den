@@ -28,24 +28,21 @@ export class DataDenRow {
     const leftCellsWrapper = createHtmlElement(
       /* HTML */
       `<div
-        class="${this.#options.cssPrefix}left-cells-wrapper"
-        style="height: ${this.#options.rowHeight + 2}px;"
+        class="${this.#options.cssPrefix}pinned-cells-wrapper ${this.#options.cssPrefix}pinned-cells-wrapper-left"
       ></div>`
     );
     const centerCellsWrapper = createHtmlElement(
       /* HTML */
       `<div
         class="${this.#options.cssPrefix}main-cells-wrapper"
-        style="left: ${leftCellsWidth}px; width: calc(100% - ${leftCellsWidth + rightCellsWidth}px); height: ${this
-          .#options.rowHeight}px;"
+        style="left: ${leftCellsWidth}px; width: calc(100% - ${leftCellsWidth + rightCellsWidth}px);"
         ref="rowMainCellsWrapper"
       ></div>`
     );
     const rightCellsWrapper = createHtmlElement(
       /* HTML */
       `<div
-        class="${this.#options.cssPrefix}right-cells-wrapper"
-        style="height: ${this.#options.rowHeight + 2}px"
+        class="${this.#options.cssPrefix}pinned-cells-wrapper ${this.#options.cssPrefix}pinned-cells-wrapper-right"
       ></div>`
     );
 

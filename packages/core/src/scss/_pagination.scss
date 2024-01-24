@@ -1,8 +1,32 @@
+.#{$prefix}pagination {
+  display: flex;
+  justify-content: end;
+  border-top: var(--#{$prefix}grid-border);
+}
+
 .#{$prefix}pagination-content {
   display: flex;
   align-items: center;
   margin: var(--#{$prefix}pagination-content-margin);
 }
+
 .#{$prefix}pagination-info {
   margin: var(--#{$prefix}pagination-info-margin);
+}
+
+.#{$prefix}pagination-button {
+  border: var(--#{$prefix}pagination-button-border);
+  border-radius: var(--#{$prefix}pagination-button-border-radius);
+  background-color: var(--#{$prefix}pagination-button-bg);
+  padding: var(--#{$prefix}pagination-button-padding);
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(0.95);
+  }
+
+  .#{$prefix}pagination-button-svg {
+    height: 1rem;
+    width: auto;
+  }
 }

@@ -71,13 +71,7 @@ export class DataDenHeaderCell extends DataDenCell {
     }
 
     if (sort) {
-      this.#sorterRenderer = new DataDenHeaderDefaultSorterRenderer(
-        field,
-        order,
-        cssPrefix,
-        this.PubSub,
-        this.#options.multiSortKey
-      );
+      this.#sorterRenderer = new DataDenHeaderDefaultSorterRenderer(field, order, this.PubSub, this.#options);
     }
 
     if (resize) {
@@ -133,6 +127,7 @@ export class DataDenHeaderCell extends DataDenCell {
   }
 
   render(): HTMLElement {
+    const isSomeFilterableCol = this.#options.columns.some((col) => col.filter);
     const template =
       /* HTML */
       `<div
@@ -141,24 +136,31 @@ export class DataDenHeaderCell extends DataDenCell {
           : ''} ${this.pinned === 'left' ? `${this.#options.cssPrefix}header-cell-pinned-left` : ''} ${this.pinned ===
         'right'
           ? `${this.#options.cssPrefix}header-cell-pinned-right`
-          : ''}"
+          : ''} ${isSomeFilterableCol ? `${this.#options.cssPrefix}header-cell-filterable` : ''}"
         role="columnheader"
         ref="headerCell"
         style="left: ${this.#left}; width: ${this.width}px;"
-      ></div>`;
+      >
+        <div ref="headerCellMain" class="${this.#options.cssPrefix}header-cell-main">
+          <div ref="headerValueAndSorter" class="${this.#options.cssPrefix}header-value-and-sorter"></div>
+        </div>
+      </div>`;
 
     const cellElement = createHtmlElement(template);
-    cellElement.appendChild(this.#renderer.getGui());
+    const cellElementMain = cellElement.querySelector('[ref="headerCellMain"]') as HTMLElement;
+    const cellElementValueAndSorter = cellElement.querySelector('[ref="headerValueAndSorter"]') as HTMLElement;
+
+    cellElementValueAndSorter.appendChild(this.#renderer.getGui());
 
     if (this.#sorterRenderer) {
-      cellElement.appendChild(this.#sorterRenderer.getGui());
+      cellElementValueAndSorter.appendChild(this.#sorterRenderer.getGui());
     }
 
     if (this.#filterRenderer) {
       cellElement.appendChild(this.#filterRenderer.getGui());
     }
 
-    cellElement.appendChild(this.#headerMenuRenderer.getGui());
+    cellElementMain.appendChild(this.#headerMenuRenderer.getGui());
     this.#renderDropdown(cellElement);
 
     if (this.#resizerRenderer) {

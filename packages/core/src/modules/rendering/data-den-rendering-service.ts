@@ -32,7 +32,11 @@ export class DataDenRenderingService {
     this.#options = options;
 
     if (options.pagination) {
-      this.#paginationRenderer = new DataDenPaginationRenderer(options.paginationOptions, this.PubSub);
+      this.#paginationRenderer = new DataDenPaginationRenderer(
+        options.paginationOptions,
+        options.cssPrefix,
+        this.PubSub
+      );
     }
 
     this.#init();
@@ -239,7 +243,7 @@ export class DataDenRenderingService {
     const mainColsWidth = this.#options.columns
       .filter((col) => !col.pinned)
       .reduce((acc, curr) => acc + (curr.width || 120), 0);
-    const rowsHeight = this.#options.rowHeight * this.#rows.length + 2;
+    const rowsHeight = this.#options.rowHeight * this.#rows.length;
 
     header.style.width = `${allColsWidth}px`;
     body.style.width = `${allColsWidth}px`;

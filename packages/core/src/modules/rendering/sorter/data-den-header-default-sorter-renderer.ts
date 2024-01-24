@@ -5,6 +5,7 @@ import { Context } from '../../../context';
 import { DataDenSortOrder } from '../../sorting/data-den-sorting.interface';
 import { DataDenActiveSorter } from '../../sorting';
 import { DataDenEvent } from '../../../data-den-event';
+import { DataDenInternalOptions } from '../../../data-den-options.interface';
 
 export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRenderer {
   arrowElement: HTMLElement;
@@ -12,33 +13,46 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
   #field: string;
   #cssPrefix: string;
   #multiSortKey: 'shift' | 'ctrl';
+  #multiSortActive: boolean;
 
-  constructor(
-    field: string,
-    order: DataDenSortOrder,
-    cssPrefix: string,
-    private PubSub: DataDenPubSub,
-    multiSortKey: 'shift' | 'ctrl'
-  ) {
+  constructor(field: string, order: DataDenSortOrder, private PubSub: DataDenPubSub, options: DataDenInternalOptions) {
     super();
-    this.#cssPrefix = cssPrefix;
+    this.#cssPrefix = options.cssPrefix;
     const template = `
       <div class="${this.#cssPrefix}header-sorter">
-        <div ref="sorterIndex" class="${this.#cssPrefix}header-sorter-index"></div>
         <div
           ref="sorterArrow"
           class="${this.#cssPrefix}header-sorter-arrow ${this.#cssPrefix}header-sorter-arrow-${order}"
         >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            class="${this.#cssPrefix}header-sorter-arrow-svg"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M7.25 9.75 12 3m0 0 4.75 6.75M12 3v18"
+            />
+          </svg>
         </div>
+        <div ref="sorterIndex" class="${this.#cssPrefix}header-sorter-index"></div>
       </div>
     `;
     this.#field = field;
 
-    this.#multiSortKey = multiSortKey;
+    this.#multiSortActive = options.multiSort;
+    this.#multiSortKey = options.multiSortKey;
     this.element = createHtmlElement(template);
     this.arrowElement = this.element.querySelector('[ref="sorterArrow"]')!;
     this.element.addEventListener('click', (event: any) => {
-      const isMultiSort = this.#multiSortKey === 'shift' ? event.shiftKey : event.ctrlKey;
+      const isMultiSortKeyPressed = this.#multiSortKey === 'shift' ? event.shiftKey : event.ctrlKey;
+      const isMultiSort = this.#multiSortActive && isMultiSortKeyPressed;
+
+      // Prevent text selection
+      window.getSelection().removeAllRanges();
 
       this.sort(isMultiSort);
     });
