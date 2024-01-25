@@ -100,13 +100,14 @@ export class DataDenCell {
   }
 
   startEditMode(selectedCell: DataDenCell, cells: DataDenCell[]) {
-    document.addEventListener('click', this.documentListener);
     this.prevValue = this.#value;
     this.cellElements = cells;
     const editor = this.#editor.getGui();
     this.cellElement.replaceChildren(editor);
 
     if (selectedCell !== this) return;
+
+    document.addEventListener('click', this.documentListener);
 
     this.#editor.afterUiRender();
   }
@@ -116,7 +117,7 @@ export class DataDenCell {
       const cellRenderer = this.#options.columns[cell.colIndex].cellRenderer!;
       const cellEditor = this.#options.columns[cell.colIndex].cellEditor!;
       if (!this.save) {
-        cell.#value = cell.prevValue;
+        cell.#value = cell.prevValue ?? cell.#value;
         cell.#editor = new cellEditor(cell.#getCellEditorParams());
       }
 
