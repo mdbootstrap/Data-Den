@@ -4,5 +4,4 @@ export interface DataDenCellEditor extends DataDenCellRenderer {
   getGui(): HTMLElement;
   destroy?(): void;
   afterUiRender?(): void;
-  getValue(): any;
 }

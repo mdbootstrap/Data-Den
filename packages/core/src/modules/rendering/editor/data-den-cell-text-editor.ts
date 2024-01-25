@@ -36,8 +36,4 @@ export class DataDenCellTextEditor implements DataDenCellEditor {
   getGui(): HTMLElement {
     return this.element;
   }
-
-  getValue() {
-    return this.input.value;
-  }
 }
