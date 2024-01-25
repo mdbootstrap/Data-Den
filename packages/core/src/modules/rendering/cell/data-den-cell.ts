@@ -17,6 +17,8 @@ export class DataDenCell {
   cellElement: HTMLElement;
   cellElements: DataDenCell[] = [];
   isBlurByKey: boolean = false;
+  prevValue: any;
+  save: boolean = true;
 
   constructor(
     value: any,
@@ -60,36 +62,46 @@ export class DataDenCell {
     return {
       value: this.#value,
       cssPrefix: this.#options.cssPrefix,
-      onKeyDown: this.#onKeyDown.bind(this),
-      onBlur: this.#onBlur.bind(this),
+      onKeyUp: this.#onKeyUp.bind(this),
       stopEditMode: this.#stopEditMode.bind(this),
     };
   }
 
-  #onBlur(e: FocusEvent): void {
-    const currentTarget = e.relatedTarget as HTMLElement;
-    const value = (e.target as HTMLInputElement).value;
+  #onBlur(e: KeyboardEvent | MouseEvent): void {
+    const target = e.target as HTMLElement;
 
-    this.setValue(value);
-
-    if (!this.isBlurByKey && currentTarget?.classList.contains(`${this.#options.cssPrefix}cell-editor`)) {
+    if (!this.isBlurByKey && target.classList.contains(`${this.#options.cssPrefix}cell-editor`)) {
       return;
     }
 
     this.#stopEditMode();
-    this.isBlurByKey = false;
   }
 
-  #onKeyDown(e: KeyboardEvent): void {
-    if (e.key === 'Enter' || e.key === 'Escape') {
-      this.isBlurByKey = true;
+  #onKeyUp(e: KeyboardEvent): void {
+    this.#value = (e.target as HTMLInputElement).value;
 
-      const element = e.target as HTMLElement;
-      element.blur();
+    if (e.key === 'Enter' || e.key === 'Escape') {
+
+      this.isBlurByKey = true;
+      this.save = e.key !== 'Escape';
+
+      this.#onBlur(e);
     }
   }
 
+  documentListener = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+
+    if (target.classList.contains(`${this.#options.cssPrefix}cell-editor`)) return;
+
+    this.#onBlur(e);
+
+    document.removeEventListener('click', this.documentListener);
+  }
+
   startEditMode(selectedCell: DataDenCell, cells: DataDenCell[]) {
+    document.addEventListener('click', this.documentListener);
+    this.prevValue = this.#value;
     this.cellElements = cells;
     const editor = this.#editor.getGui();
     this.cellElement.replaceChildren(editor);
@@ -102,6 +114,12 @@ export class DataDenCell {
   #stopEditMode() {
     this.cellElements.forEach((cell) => {
       const cellRenderer = this.#options.columns[cell.colIndex].cellRenderer!;
+      const cellEditor = this.#options.columns[cell.colIndex].cellEditor!;
+      if (!this.save) {
+        cell.#value = cell.prevValue;
+        cell.#editor = new cellEditor(cell.#getCellEditorParams());
+      }
+
       const cellRendererParams = cell.#getCellRendererParams();
 
       this.#renderer = new cellRenderer(cellRendererParams);

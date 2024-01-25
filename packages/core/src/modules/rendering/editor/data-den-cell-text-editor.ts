@@ -24,8 +24,7 @@ export class DataDenCellTextEditor implements DataDenCellEditor {
 
   attachUiEvents() {
     if (this.input) {
-      this.input.addEventListener('keydown', (e) => this.params.onKeyDown(e))
-      this.input.addEventListener('blur', (e) => this.params.onBlur(e))
+      this.input.addEventListener('keyup', (e) => this.params.onKeyUp(e))
     }
   }
 
