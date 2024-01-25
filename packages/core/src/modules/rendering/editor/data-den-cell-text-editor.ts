@@ -4,9 +4,9 @@ import { DataDenCellEditorParams } from './data-den-cell-editor-params';
 
 export class DataDenCellTextEditor implements DataDenCellEditor {
   element: HTMLElement;
+  input: HTMLInputElement;
   params: DataDenCellEditorParams;
   #cssPrefix: string;
-  value: any;
   stopEditMode: (value: string) => void;
   setValue: (value: string) => void;
   isBlurByKey: boolean = false;
@@ -22,40 +22,27 @@ export class DataDenCellTextEditor implements DataDenCellEditor {
     const template = `<input class="${this.#cssPrefix}cell-editor" type="text" value="${params.value}" />`;
 
     this.element = createHtmlElement(template);
+    this.input = this.element as HTMLInputElement;
+
     this.attachUiEvents();
   }
 
   attachUiEvents() {
-    this.element.addEventListener('keyup', (e) => {
-      if (e.key === 'Enter' || e.key === 'Escape') {
-        this.isBlurByKey = true;
-        this.element.blur();
-      }
-    });
-
-    this.element.addEventListener('blur', (e) => {
-      const currentTarget = e.relatedTarget as HTMLElement;
-      const value = (e.target as HTMLInputElement).value;
-
-      this.setValue(value);
-
-      if (!this.isBlurByKey && currentTarget?.classList.contains(`${this.#cssPrefix}cell-editor`)) {
-        return;
-      }
-
-      this.stopEditMode(value);
-      this.isBlurByKey = false;
-    });
+    if (this.input) {
+      this.input.addEventListener('keydown', (e) => this.params.onKeyDown(e))
+      this.input.addEventListener('blur', (e) => this.params.onBlur(e))
+    }
   }
 
-  getGui(focus: boolean): HTMLElement {
-    if (focus) {
-      setTimeout(() => {
-        const input = this.element as HTMLInputElement;
-        input.select();
-      }, 0)
-    }
+  afterUiAttached(): void {
+    this.input.select();
+  }
 
+  getGui(): HTMLElement {
     return this.element;
+  }
+
+  getValue() {
+    return this.input.value;
   }
 }

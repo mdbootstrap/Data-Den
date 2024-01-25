@@ -16,6 +16,7 @@ export class DataDenCell {
   pinned: string;
   cellElement: HTMLElement;
   cellElements: DataDenCell[] = [];
+  isBlurByKey: boolean = false;
 
   constructor(
     value: any,
@@ -59,16 +60,44 @@ export class DataDenCell {
     return {
       value: this.#value,
       cssPrefix: this.#options.cssPrefix,
+      onKeyDown: this.#onKeyDown.bind(this),
+      onBlur: this.#onBlur.bind(this),
       stopEditMode: this.stopEditMode.bind(this),
       setValue: this.setValue.bind(this)
     };
   }
 
+  #onBlur(e: FocusEvent): void {
+    const currentTarget = e.relatedTarget as HTMLElement;
+    const value = (e.target as HTMLInputElement).value;
+
+    this.setValue(value);
+
+    if (!this.isBlurByKey && currentTarget?.classList.contains(`${this.#options.cssPrefix}cell-editor`)) {
+      return;
+    }
+
+    this.stopEditMode();
+    this.isBlurByKey = false;
+  }
+
+  #onKeyDown(e: KeyboardEvent): void {
+    if (e.key === 'Enter' || e.key === 'Escape') {
+      this.isBlurByKey = true;
+
+      const element = e.target as HTMLElement;
+      element.blur();
+    }
+  }
+
   startEditMode(selectedCell: DataDenCell, cells: DataDenCell[]) {
-    const focus = selectedCell === this ? true : false;
     this.cellElements = cells;
-    const editor = this.#editor.getGui(focus);
+    const editor = this.#editor.getGui();
     this.cellElement.replaceChildren(editor);
+
+    if (selectedCell !== this) return;
+
+    this.#editor.afterUiAttached();
   }
 
   stopEditMode() {
