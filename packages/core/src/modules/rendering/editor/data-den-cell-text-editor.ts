@@ -29,7 +29,7 @@ export class DataDenCellTextEditor implements DataDenCellEditor {
     }
   }
 
-  afterUiAttached(): void {
+  afterUiRender(): void {
     this.input.select();
   }
 

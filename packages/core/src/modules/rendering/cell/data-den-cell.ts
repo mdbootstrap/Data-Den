@@ -61,7 +61,8 @@ export class DataDenCell {
       value: this.#value,
       cssPrefix: this.#options.cssPrefix,
       onKeyDown: this.#onKeyDown.bind(this),
-      onBlur: this.#onBlur.bind(this)
+      onBlur: this.#onBlur.bind(this),
+      stopEditMode: this.#stopEditMode.bind(this),
     };
   }
 
@@ -95,7 +96,7 @@ export class DataDenCell {
 
     if (selectedCell !== this) return;
 
-    this.#editor.afterUiAttached();
+    this.#editor.afterUiRender();
   }
 
   #stopEditMode() {
