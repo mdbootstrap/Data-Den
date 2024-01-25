@@ -75,7 +75,7 @@ export class DataDenCell {
       return;
     }
 
-    this.stopEditMode();
+    this.#stopEditMode();
     this.isBlurByKey = false;
   }
 
@@ -98,7 +98,7 @@ export class DataDenCell {
     this.#editor.afterUiAttached();
   }
 
-  stopEditMode() {
+  #stopEditMode() {
     this.cellElements.forEach((cell) => {
       const cellRenderer = this.#options.columns[cell.colIndex].cellRenderer!;
       const cellRendererParams = cell.#getCellRendererParams();

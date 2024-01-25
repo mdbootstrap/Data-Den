@@ -1,4 +1,4 @@
 export interface DataDenCellRenderer {
-  getGui(focus?: boolean): HTMLElement;
+  getGui(): HTMLElement;
   destroy?(): void;
 }

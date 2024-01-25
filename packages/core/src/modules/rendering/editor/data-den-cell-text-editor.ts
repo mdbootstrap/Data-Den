@@ -7,7 +7,6 @@ export class DataDenCellTextEditor implements DataDenCellEditor {
   input: HTMLInputElement;
   params: DataDenCellEditorParams;
   #cssPrefix: string;
-  isBlurByKey: boolean = false;
 
   constructor(
     params: DataDenCellEditorParams,
