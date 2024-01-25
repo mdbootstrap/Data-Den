@@ -7,16 +7,12 @@ export class DataDenCellTextEditor implements DataDenCellEditor {
   input: HTMLInputElement;
   params: DataDenCellEditorParams;
   #cssPrefix: string;
-  stopEditMode: (value: string) => void;
-  setValue: (value: string) => void;
   isBlurByKey: boolean = false;
 
   constructor(
     params: DataDenCellEditorParams,
   ) {
     this.#cssPrefix = params.cssPrefix;
-    this.stopEditMode = params.stopEditMode;
-    this.setValue = params.setValue;
     this.params = params;
 
     const template = `<input class="${this.#cssPrefix}cell-editor" type="text" value="${params.value}" />`;
