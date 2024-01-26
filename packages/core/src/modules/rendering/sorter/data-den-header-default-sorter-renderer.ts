@@ -20,7 +20,8 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
   constructor(field: string, order: DataDenSortOrder, private PubSub: DataDenPubSub, options: DataDenInternalOptions) {
     super();
     this.#cssPrefix = options.cssPrefix;
-    this.#sortSequence = options.sortOptions;
+    this.#sortSequence = options.columns.find((x) => x.field === field).sortOrder;
+
     this.#arrowDirection = this.#getArrowDirection(order);
 
     const template = `
@@ -124,7 +125,7 @@ export class DataDenHeaderDefaultSorterRenderer extends DataDenHeaderSorterRende
   }
 
   #getArrowDirection(order: DataDenSortOrder): 'up' | 'down' {
-    const nextOrderIdx = this.#sortSequence.indexOf(order) + (order === null ? 1 : 0) % this.#sortSequence.length;
+    const nextOrderIdx = (this.#sortSequence.indexOf(order) + (order === null ? 1 : 0)) % this.#sortSequence.length;
     const nextOrder = this.#sortSequence[nextOrderIdx];
 
     return nextOrder === 'asc' ? 'up' : 'down';

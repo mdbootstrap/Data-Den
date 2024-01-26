@@ -80,6 +80,7 @@ const options: DataDenOptions = {
       pinned: 'left',
       cellRenderer: DataDenDefaultCellRenderer,
       defaultSort: 'asc',
+      sortOrder: ['asc', null, 'desc'],
     },
     {
       field: 'model',

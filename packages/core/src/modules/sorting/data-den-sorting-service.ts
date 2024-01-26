@@ -24,11 +24,11 @@ export class DataDenSortingService {
     this.#field = '';
     this.#order = null;
     this.#options = options;
-    this.#sortOptions = options.sortOptions || [];
 
     this.activeSortersMap = new Map();
 
     this.PubSub.subscribe('command:sorting:start', (event: DataDenEvent) => {
+      this.#sortOptions = options.columns.find((x) => x.field === event.data.field).sortOrder;
       const sortingPreviousState = new DataDenSortingPreviousState({ field: this.#field, order: this.#order });
 
       const { field, isMultiSort } = event.data;
@@ -86,7 +86,8 @@ export class DataDenSortingService {
   #setColumnDefaultSort(options: DataDenInternalOptions) {
     this.#options.columns.forEach((colDef) => {
       const order = colDef.defaultSort;
-      if (order && this.#options.sortOptions.includes(order)) {
+
+      if (order && colDef.sortOrder.includes(order)) {
         this.PubSub.publish('command:sorting:start', {
           caller: this,
           context: new Context('command:sorting:start'),

@@ -1,15 +1,5 @@
 import { isObject } from './object';
 
-const getSortOptions = (arr: string[]) => {
-  const distinctElements: string[] = [];
-  for (let i = arr.length - 1; i >= 0; i--) {
-    if (!distinctElements.includes(arr[i])) {
-      distinctElements.unshift(arr[i]);
-    }
-  }
-  return distinctElements;
-};
-
 export const deepMerge = (object: any, source: any) => {
   if (!isObject(object) || !isObject(source)) {
     return source;
@@ -20,10 +10,7 @@ export const deepMerge = (object: any, source: any) => {
     const srcValue = source[key];
 
     if (Array.isArray(objValue) && Array.isArray(srcValue)) {
-      object[key] = objValue.concat(srcValue);
-      if (key !== 'sortOptions') return;
-
-      object[key] = getSortOptions(objValue.concat(srcValue));
+      object[key] = (srcValue) ? srcValue : objValue;
     } else if (isObject(objValue) && isObject(srcValue)) {
       object[key] = deepMerge(Object.assign({}, objValue), srcValue);
     } else {

@@ -38,6 +38,7 @@ export interface DataDenColDef {
   width?: number;
   cellRenderer?: ClassType<DataDenCellRenderer>;
   defaultSort?: 'asc' | 'desc' | null;
+  sortOrder?: ('asc' | 'desc' | null)[];
 }
 
 export interface DataDenDefaultColDef {
@@ -50,6 +51,7 @@ export interface DataDenDefaultColDef {
   width?: number;
   cellRenderer?: ClassType<DataDenCellRenderer>;
   defaultSort?: 'asc' | 'desc' | null;
+  sortOrder?: ('asc' | 'desc' | null)[];
 }
 
 export interface DataDenPaginationOptions {
@@ -75,7 +77,6 @@ export interface DataDenOptions<TData = any> {
   headerHeight?: number;
   multiSortKey?: 'shift' | 'ctrl';
   multiSort?: boolean;
-  sortOptions?: ('asc' | 'desc' | null)[];
 }
 
 export interface DataDenInternalOptions {
@@ -93,5 +94,4 @@ export interface DataDenInternalOptions {
   headerHeight: number;
   multiSortKey: 'shift' | 'ctrl';
   multiSort: boolean;
-  sortOptions?: ('asc' | 'desc' | null)[];
 }
