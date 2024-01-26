@@ -1,4 +1,5 @@
 import { createHtmlElement } from '../../../utils';
+import { escapeHtml } from '../../../utils/stringUtils';
 import { DataDenCellRendererParams } from './data-den-cell-renderer-params.interface';
 import { DataDenCellRenderer } from './data-den-cell-renderer.interface';
 
@@ -10,7 +11,7 @@ export class DataDenDefaultCellRenderer implements DataDenCellRenderer {
   constructor(params: DataDenCellRendererParams) {
     this.value = params.value;
     this.cssPrefix = params.cssPrefix;
-    this.element = createHtmlElement(`<span class="${this.cssPrefix}cell-content">${this.value}</span>`);
+    this.element = createHtmlElement(`<span class="${this.cssPrefix}cell-content">${escapeHtml(this.value)}</span>`);
   }
 
   getGui(): HTMLElement {
