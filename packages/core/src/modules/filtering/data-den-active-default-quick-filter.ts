@@ -1,8 +1,6 @@
 import { DataDenActiveFilterParams, DataDenQuickFilterOptions } from '../../data-den-options.interface';
 
 const defaultQuickFilterFn = (params: DataDenActiveFilterParams) => {
-  console.log(params);
-
   const searchTerm = params.searchTerm
     .toString()
     .toLowerCase()
