@@ -56,7 +56,13 @@ export interface DataDenPaginationOptions {
 }
 
 export interface DataDenQuickFilterOptions {
-  filterFn?: (searchTerm: any, value: any, columns: DataDenColDef[], ...args: any) => boolean;
+  filterFn?: (params: DataDenActiveFilterParams) => boolean;
+}
+
+export interface DataDenActiveFilterParams {
+  searchTerm: any;
+  value: any;
+  columns: DataDenColDef[];
 }
 
 export interface DataDenOptions<TData = any> {

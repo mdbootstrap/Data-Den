@@ -1,13 +1,15 @@
-import { DataDenColDef, DataDenQuickFilterOptions } from "../../data-den-options.interface";
+import { DataDenActiveFilterParams, DataDenQuickFilterOptions } from '../../data-den-options.interface';
 
-const defaultQuickFilterFn = (searchTerm: any, value: any, columns: DataDenColDef[]) => {
-  searchTerm = searchTerm
+const defaultQuickFilterFn = (params: DataDenActiveFilterParams) => {
+  console.log(params);
+
+  const searchTerm = params.searchTerm
     .toString()
     .toLowerCase()
     .split(',')
     .filter((term: string) => term !== '');
 
-  value = value.toString().toLowerCase();
+  const value = params.value.toString().toLowerCase();
 
   let res = true;
 

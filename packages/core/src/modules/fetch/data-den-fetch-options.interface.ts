@@ -1,4 +1,4 @@
-import { DataDenColDef, DataDenSortComparator } from '../../data-den-options.interface';
+import { DataDenActiveFilterParams, DataDenColDef, DataDenSortComparator } from '../../data-den-options.interface';
 import { DataDenActiveHeaderFilter } from '../filtering';
 import { DataDenActiveSorter, DataDenSortOrder } from '../sorting';
 
@@ -13,7 +13,7 @@ export interface DataDenSortOptions {
 export interface DataDenQuickFilterOptions {
   searchTerm: string;
   columns: DataDenColDef[];
-  filterFn: (searchTerm: any, value: any, columns: DataDenColDef[]) => boolean;
+  filterFn: (params: DataDenActiveFilterParams) => boolean;
 }
 
 export interface DataDenFiltersOptions {
