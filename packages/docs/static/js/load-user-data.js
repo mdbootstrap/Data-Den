@@ -8,6 +8,7 @@ import { isUserSubProGlobal } from './dynamic-parts-loader/components/mdb4/is-us
 window.addEventListener('DOMContentLoaded', () => {
   const xhr = new XMLHttpRequest();
   xhr.open('GET', `${CONFIG.docsApiUrl}/user`, true);
+  xhr.withCredentials = true;
 
   xhr.setRequestHeader('Content-Type', 'application/json');
 

@@ -9,6 +9,7 @@ description: 'Header filters allows you to apply filtering for the data of a spe
 image: ''
 video: ''
 url: 'docs/grid/features/filtering/header-filters/'
+docs_content_pro: false
 ---
 
 <hr class="my-10" />
@@ -18,7 +19,10 @@ url: 'docs/grid/features/filtering/header-filters/'
   <div class="sm:-mx-6 lg:-mx-8">
     <div class="min-w-full py-2 sm:px-6 lg:px-8">
       <div class="overflow-hidden">
-        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Basic example</h2>
+        <h2 class="flex items-center mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>
+          Basic example
+          <span class="dpl-newmdb-pro-component-marker"></span>
+        </h2>
         <p>
           Use <code>filter: true</code> option to enable header filter in a column. By default all columns will use Text
           Filter.
@@ -32,7 +36,7 @@ url: 'docs/grid/features/filtering/header-filters/'
         <section class="!visible hidden" data-te-collapse-item id="basic-header-filters">
           <div class="pt-2">
             <!-- prettier-ignore -->
-            {{< twsnippet/wrapper "HTML,javascript" "" "mobile" >}}
+            {{< twsnippet/wrapper "HTML,javascript" true "mobile" >}}
               {{< twsnippet/code active=true lang="html" >}}
             <div id="grid"></div>
             {{< /twsnippet/code >}}
@@ -138,12 +142,12 @@ url: 'docs/grid/features/filtering/header-filters/'
             {{< /twsnippet/code >}}
             <!-- prettier-ignore -->
             {{< twsnippet/code lang="js" >}}
-              import { 
-                DataDen, 
-                DataDenHeaderDateFilterRenderer, 
-                DataDenHeaderNumberFilterRenderer, 
-                DataDenHeaderSelectFilterRenderer, 
-                DataDenHeaderTextFilterRenderer 
+              import {
+                DataDen,
+                DataDenHeaderDateFilterRenderer,
+                DataDenHeaderNumberFilterRenderer,
+                DataDenHeaderSelectFilterRenderer,
+                DataDenHeaderTextFilterRenderer
               } from "data-den-core";
 
               const rows = [
