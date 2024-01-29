@@ -61,6 +61,7 @@ export class DataDenFetchService {
     this.PubSub.subscribe('info:filtering:active-quick-filter-changed', (event: DataDenEvent) => {
       this.#fetchOptions.quickFilterOptions = {
         searchTerm: event.data.filter.searchTerm,
+        columns: event.data.filter.columns,
         filterFn: event.data.filter.filterFn,
       };
       this.#getData(this.#fetchOptions).then((data: any[]) => {
