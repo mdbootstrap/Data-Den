@@ -39,4 +39,5 @@ input {
   --data-den-row-cell-bg: rgb(64 64 64);
   --data-den-pagination-button-bg: rgb(38 38 38);
   --data-den-header-filter-select-bg: rgb(38 38 38);
+  --data-den-header-filter-input-bg: transparent;
 }

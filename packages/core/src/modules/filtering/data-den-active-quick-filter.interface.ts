@@ -1,4 +1,7 @@
+import { DataDenActiveFilterParams, DataDenColDef } from '../../data-den-options.interface';
+
 export interface DataDenActiveQuickFilter {
   searchTerm: any;
-  filterFn: (searchTerm: any, value: any) => boolean;
+  columns: DataDenColDef[];
+  filterFn: (params: DataDenActiveFilterParams) => boolean;
 }

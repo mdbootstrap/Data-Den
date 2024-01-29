@@ -37,9 +37,11 @@ export interface DataDenColDef {
   resize?: boolean;
   pinned?: 'left' | 'right';
   width?: number;
-  cellRenderer?: ClassType<DataDenCellRenderer>;
+  cellRenderer?: ClassType<DataDenCellRenderer;
   cellEditor?: ClassType<DataDenCellEditor>;
   editable?: boolean | ((...args: any[]) => boolean);
+  defaultSort?: 'asc' | 'desc' | null;
+  sortOrder?: ('asc' | 'desc' | null)[];
 }
 
 export interface DataDenDefaultColDef {
@@ -53,6 +55,8 @@ export interface DataDenDefaultColDef {
   cellRenderer?: ClassType<DataDenCellRenderer>;
   cellEditor?: ClassType<DataDenCellEditor>;
   editable?: boolean | ((...args: any[]) => boolean);
+  defaultSort?: 'asc' | 'desc' | null;
+  sortOrder?: ('asc' | 'desc' | null)[];
 }
 
 export interface DataDenPaginationOptions {
@@ -61,7 +65,13 @@ export interface DataDenPaginationOptions {
 }
 
 export interface DataDenQuickFilterOptions {
-  filterFn?: (searchTerm: any, value: any) => boolean;
+  filterFn?: (params: DataDenActiveFilterParams) => boolean;
+}
+
+export interface DataDenActiveFilterParams {
+  searchTerm: any;
+  value: any;
+  columns: DataDenColDef[];
 }
 
 export interface DataDenOptions<TData = any> {

@@ -79,6 +79,8 @@ const options: DataDenOptions = {
       width: 180,
       pinned: 'left',
       cellRenderer: DataDenDefaultCellRenderer,
+      defaultSort: 'asc',
+      sortOrder: ['asc', null, 'desc'],
     },
     {
       field: 'model',

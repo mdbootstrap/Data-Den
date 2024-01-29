@@ -50,7 +50,6 @@ export class DataDenHeaderCell extends DataDenCell {
     this.rowIndex = rowIndex;
     this.#options = options;
     this.#order = order;
-    this.#isDropdownInitiated = false;
 
     this.#initRenderers();
   }
@@ -132,9 +131,9 @@ export class DataDenHeaderCell extends DataDenCell {
       /* HTML */
       `<div
         class="${this.#options.cssPrefix}header-cell ${this.#options.draggable && !this.pinned
-          ? `${this.#options.cssPrefix}header-cell-draggable`
-          : ''} ${this.pinned === 'left' ? `${this.#options.cssPrefix}header-cell-pinned-left` : ''} ${this.pinned ===
-        'right'
+        ? `${this.#options.cssPrefix}header-cell-draggable`
+        : ''} ${this.pinned === 'left' ? `${this.#options.cssPrefix}header-cell-pinned-left` : ''} ${this.pinned ===
+          'right'
           ? `${this.#options.cssPrefix}header-cell-pinned-right`
           : ''} ${isSomeFilterableCol ? `${this.#options.cssPrefix}header-cell-filterable` : ''}"
         role="columnheader"
