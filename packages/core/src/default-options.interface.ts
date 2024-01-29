@@ -49,6 +49,8 @@ export const defaultOptions: DataDenInternalOptions = {
   defaultColDef: {
     sort: false,
     sortOptions: defaultSortOptions,
+    defaultSort: null,
+    sortOrder: ['asc', 'desc', null],
     filter: false,
     filterRenderer: DataDenHeaderTextFilterRenderer,
     filterOptions: {

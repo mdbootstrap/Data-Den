@@ -37,6 +37,8 @@ export interface DataDenColDef {
   pinned?: 'left' | 'right';
   width?: number;
   cellRenderer?: ClassType<DataDenCellRenderer>;
+  defaultSort?: 'asc' | 'desc' | null;
+  sortOrder?: ('asc' | 'desc' | null)[];
 }
 
 export interface DataDenDefaultColDef {
@@ -48,6 +50,8 @@ export interface DataDenDefaultColDef {
   resize?: boolean;
   width?: number;
   cellRenderer?: ClassType<DataDenCellRenderer>;
+  defaultSort?: 'asc' | 'desc' | null;
+  sortOrder?: ('asc' | 'desc' | null)[];
 }
 
 export interface DataDenPaginationOptions {

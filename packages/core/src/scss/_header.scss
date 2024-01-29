@@ -41,16 +41,17 @@
     align-items: center;
     cursor: pointer;
 
-    &.#{$prefix}header-sorter-arrow-asc .#{$prefix}header-sorter-arrow-svg {
-      color: var(--#{$prefix}header-sorter-arrow-sorted-color);
-      transform: var(--#{$prefix}header-sorter-asc-transform);
+    &.#{$prefix}header-sorter-arrow-active .#{$prefix}header-sorter-arrow-svg {
       opacity: 1;
+      color: var(--#{$prefix}header-sorter-arrow-sorted-color);
     }
 
-    &.#{$prefix}header-sorter-arrow-desc .#{$prefix}header-sorter-arrow-svg {
-      color: var(--#{$prefix}header-sorter-arrow-sorted-color);
-      transform: var(--#{$prefix}header-sorter-desc-transform);
-      opacity: 1;
+    &.#{$prefix}header-sorter-arrow-up .#{$prefix}header-sorter-arrow-svg {
+      transform: var(--#{$prefix}header-sorter-asc-transform) !important;
+    }
+
+    &.#{$prefix}header-sorter-arrow-down .#{$prefix}header-sorter-arrow-svg {
+      transform: var(--#{$prefix}header-sorter-desc-transform) !important;
     }
 
     .#{$prefix}header-sorter-arrow-svg {
@@ -172,7 +173,7 @@
     border-bottom: none;
     z-index: 2;
 
-    & > * {
+    &>* {
       pointer-events: none;
     }
   }
