@@ -48,5 +48,8 @@
     "hooks": {
       "pre-commit": "lint-staged && pretty-quick --staged && npm run test:all"
     }
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8"
   }
 }

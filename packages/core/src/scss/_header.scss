@@ -159,7 +159,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: flex; // INFO: we left it after merging conflicts; in case of any problems look here (#88, #90) 
+    display: flex; // INFO: we left it after merging conflicts; in case of any problems look here (#88, #90)
     pointer-events: none;
     align-items: center;
   }
@@ -208,7 +208,8 @@
 }
 
 .#{$prefix}header-menu-toggler {
-  display: none;
+  display: block;
+  opacity: 0;
   width: 18px;
   border: none;
   background: none;
@@ -223,7 +224,7 @@
 
 .#{$prefix}header-cell:hover {
   .#{$prefix}header-menu-toggler {
-    display: block;
+    opacity: 1;
   }
 }
 
@@ -235,7 +236,7 @@
   position: absolute;
   right: var(--#{$prefix}header-menu-right);
   top: var(--#{$prefix}header-menu-top);
-  z-index: 3;
+  z-index: 4;
   width: var(--#{$prefix}header-menu-width);
   background-color: var(--#{$prefix}header-menu-bg);
   border: var(--#{$prefix}header-menu-border);

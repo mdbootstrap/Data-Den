@@ -50,7 +50,6 @@ export class DataDenHeaderCell extends DataDenCell {
     this.rowIndex = rowIndex;
     this.#options = options;
     this.#order = order;
-    this.#isDropdownInitiated = false;
 
     this.#initRenderers();
   }
