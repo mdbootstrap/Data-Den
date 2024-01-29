@@ -156,11 +156,20 @@ ${userData.isLoggedIn ? navbarDropdown : loginButton}
       if (docsAlertPlaceholder) docsAlertPlaceholder.forEach((e) => e.remove());
 
       const loginButton = document.querySelector('.auth-modal-toggle');
-      loginButton.addEventListener('click', () => {
-        const authModal = document.getElementById('navbarLogin');
-        const teModal = new te.Modal(authModal);
-        teModal.show();
-      });
+      const authModal = document.getElementById('navbarLogin');
+      const authModalInstance = te.Modal.getOrCreateInstance(authModal);
+
+      if (loginButton) {
+        loginButton.addEventListener('click', (e) => {
+          if (!authModalInstance) return;
+          const allReadyOpen = document.querySelector("[data-te-open='true']");
+          if (allReadyOpen && allReadyOpen !== e.target) {
+            te.Modal.getInstance(allReadyOpen).hide();
+          }
+
+          authModalInstance.toggle();
+        });
+      }
     });
   },
 });

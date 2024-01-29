@@ -1,5 +1,6 @@
 {{ $hidden_sidenav := .Params.hidden_sidenav }}
 
+
 <footer
   class="{{ if or (eq .IsHome true) (eq $hidden_sidenav false) }}
     xl:pl-60
@@ -9,8 +10,7 @@
   {{ else }}
     mt-16
   {{ end }}
-   bg-slate-100 text-center text-neutral-600 transition-colors duration-500 dark:bg-neutral-900 dark:text-neutral-100 lg:text-left"
->
+   bg-slate-100 text-center text-neutral-600 transition-colors duration-500 dark:bg-neutral-900 dark:text-neutral-100 lg:text-left">
   <!-- Section: Design Block -->
   <div class="flex items-center justify-center px-6" mr-12 lg:block>
     <!-- Section: Design Block -->
@@ -23,8 +23,7 @@
       <div class="flex justify-center space-x-2">
         <a
           href="/newsletter"
-          class="flex items-center justify-center rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-        >
+          class="flex items-center justify-center rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
           Join our mailing list now
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -32,8 +31,7 @@
             viewBox="0 0 24 24"
             stroke-width="3"
             stroke="currentColor"
-            class="ml-2 h-3 w-3"
-          >
+            class="ml-2 h-3 w-3">
             <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
           </svg>
         </a>
@@ -45,5 +43,68 @@
     <a class="font-semibold text-primary dark:text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
   </div>
 </footer>
-
-{{ partial "footer/footer-scripts.html" . }} {{ with .Resources.GetMatch "index-js.html" }} {{ .Content }} {{ end }}
+<div id="dpl-auth-modal"></div>
+<div
+  data-te-modal-init
+  class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+  id="apiRestrictedModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalFirstLabel"
+  aria-hidden="true">
+  <div
+    data-te-modal-dialog-ref
+    class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px]">
+    <div
+      class="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-4 outline-none dark:bg-surface-dark">
+      <div class="flex flex-shrink-0 items-center justify-between rounded-t-md p-4 text-center">
+        <span class="w-full">
+          <h4
+            class="border border-primary px-5 py-3 text-center text-2xl font-semibold leading-normal text-surface dark:text-white"
+            id="exampleModalFirstLabel">
+            Access restricted
+          </h4>
+        </span>
+      </div>
+      <div class="relative flex-auto px-4 pb-4 text-center text-surface dark:text-white" data-te-modal-body-ref>
+        <h5 class="text-xl font-semibold leading-normal">To view this section you must have an active PRO account</h5>
+        <p class="my-3 text-base">
+          <strong>Log in</strong> to your account or <strong>purchase an Data Den subscription</strong> if you don't
+          have one.
+        </p>
+        <div class="space-x-1">
+          <span data-te-modal-dismiss>
+            <button
+              type="button"
+              class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+              data-te-ripple-init
+              data-te-ripple-color="light"
+              data-te-toggle="modal"
+              data-te-target="#navbarLogin">
+              Login
+            </button>
+          </span>
+          <a
+            type="button"
+            href="/docs/grid/pro"
+            class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400"
+            data-te-ripple-init
+            data-te-ripple-color="light">
+            Buy Data Den PRO
+          </a>
+        </div>
+      </div>
+      <div
+        class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 p-4 dark:border-white/10">
+        <button
+          type="button"
+          class="ml-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+          data-te-ripple-init
+          data-te-ripple-color="light"
+          data-te-modal-dismiss>
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{{ partial "footer/footer-scripts.html" . }} {{ with .Resources.GetMatch "index-js.html" }}{{ .Content }}{{ end }}
