@@ -2,6 +2,7 @@ import { createHtmlElement } from '../../../utils';
 import { DataDenColDef } from '../../../data-den-options.interface';
 import { DataDenPubSub } from '../../../data-den-pub-sub';
 import { Context } from '../../../context';
+import { createPopper } from '@popperjs/core';
 
 export class DataDenHeaderMenuRenderer {
   toggler: HTMLElement;
@@ -9,6 +10,8 @@ export class DataDenHeaderMenuRenderer {
   #cssPrefix: string;
   colDef: DataDenColDef;
   colIndex: number;
+  popper: any = null;
+  isDropdownOpen = false;
 
   constructor(cssPrefix: string, colDef: DataDenColDef, colIndex: number, private PubSub: DataDenPubSub) {
     this.#cssPrefix = cssPrefix;
@@ -52,9 +55,36 @@ export class DataDenHeaderMenuRenderer {
     this.#initDropdown();
   }
 
+  #toggleDropdown() {
+    if (this.isDropdownOpen) {
+      this.#closeDropdown();
+    } else {
+      this.#openDropdown();
+    }
+  }
+
+  #openDropdown() {
+    if (!this.isDropdownOpen) {
+      this.popper = createPopper(this.toggler, this.dropdown, {
+        placement: 'bottom-end',
+      });
+      this.dropdown.classList.toggle('active');
+      this.isDropdownOpen = true;
+    }
+  }
+
+  #closeDropdown() {
+    if (this.isDropdownOpen) {
+      this.popper.destroy();
+      this.popper = null;
+      this.dropdown.classList.toggle('active');
+      this.isDropdownOpen = false;
+    }
+  }
+
   #initDropdown() {
     this.toggler.addEventListener('click', () => {
-      this.dropdown.classList.toggle('active');
+      this.#toggleDropdown();
     });
 
     const unPinTrigger = this.dropdown.querySelector('[ref="unPinColTrigger"]');
@@ -90,7 +120,7 @@ export class DataDenHeaderMenuRenderer {
 
     document.addEventListener('click', (event) => {
       if (!this.toggler.contains(event.target as Node)) {
-        this.dropdown.classList.remove('active');
+        this.#closeDropdown();
       }
     });
 

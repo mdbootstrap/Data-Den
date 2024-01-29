@@ -79,6 +79,8 @@ const options: DataDenOptions = {
       width: 180,
       pinned: 'left',
       cellRenderer: DataDenDefaultCellRenderer,
+      defaultSort: 'asc',
+      sortOrder: ['asc', null, 'desc'],
     },
     {
       field: 'model',
@@ -296,7 +298,7 @@ const ddEl = document.getElementById('dd');
 const dataDen = new DataDen(ddEl as HTMLElement, options);
 
 const ddEl2 = document.getElementById('dd2');
-const dataDen2 = new DataDen(ddEl2 as HTMLElement, options2);
+// const dataDen2 = new DataDen(ddEl2 as HTMLElement, options2);
 
 const quickFilterInput: HTMLInputElement = document.querySelector('.data-den-quick-filter-input')!;
 quickFilterInput.addEventListener('keyup', () => {

@@ -14,7 +14,11 @@ export class DataDenFilteringService {
 
   constructor(options: DataDenInternalOptions, private PubSub: DataDenPubSub) {
     this.options = options;
-    this.activeQuickFilter = { searchTerm: '', filterFn: options.quickFilterOptions.filterFn };
+    this.activeQuickFilter = {
+      searchTerm: '',
+      filterFn: options.quickFilterOptions.filterFn,
+      columns: options.columns,
+    };
 
     this.PubSub.subscribe('info:filtering:header-filter-changed', this.#handleHeaderFilterChange.bind(this));
     this.PubSub.subscribe('info:filtering:quick-filter-changed', this.#handleQuickFilterChange.bind(this));
@@ -46,6 +50,7 @@ export class DataDenFilteringService {
     const { searchTerm } = event.data;
 
     this.activeQuickFilter.searchTerm = searchTerm;
+    this.activeQuickFilter.columns = this.options.columns;
 
     const activeQuickFilterChangeEvent: DataDenActiveQuickFilterChangeEvent = {
       context: new Context('info:filtering:active-quick-filter-changed'),
