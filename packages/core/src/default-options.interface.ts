@@ -74,7 +74,7 @@ export const defaultOptions: DataDenInternalOptions = {
     width: 200,
     cellRenderer: DataDenDefaultCellRenderer,
     cellEditor: DataDenCellTextEditor,
-    editable: true,
+    editable: false,
   },
   rows: [],
   draggable: false,

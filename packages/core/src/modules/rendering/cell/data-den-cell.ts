@@ -18,7 +18,6 @@ export class DataDenCell {
   cellElements: DataDenCell[] = [];
   isBlurByKey: boolean = false;
   prevValue: any;
-  save: boolean = true;
 
   constructor(
     value: any,
@@ -78,14 +77,14 @@ export class DataDenCell {
   }
 
   #onKeyUp(e: KeyboardEvent): void {
-    this.#value = (e.target as HTMLInputElement).value;
+    this.#value = this.#editor.getValue();
 
-    if (e.key === 'Enter' || e.key === 'Escape') {
-
+    if (e.key === 'Enter') {
       this.isBlurByKey = true;
-      this.save = e.key !== 'Escape';
 
       this.#onBlur(e);
+    } else if (e.key === 'Escape') {
+      this.#cancelEditMode();
     }
   }
 
@@ -97,7 +96,7 @@ export class DataDenCell {
     this.#onBlur(e);
 
     document.removeEventListener('click', this.documentListener);
-  }
+  };
 
   startEditMode(selectedCell: DataDenCell, cells: DataDenCell[]) {
     this.prevValue = this.#value;
@@ -112,15 +111,24 @@ export class DataDenCell {
     this.#editor.afterUiRender();
   }
 
-  #stopEditMode() {
+  #cancelEditMode() {
     this.cellElements.forEach((cell) => {
       const cellRenderer = this.#options.columns[cell.colIndex].cellRenderer!;
       const cellEditor = this.#options.columns[cell.colIndex].cellEditor!;
-      if (!this.save) {
-        cell.#value = cell.prevValue ?? cell.#value;
-        cell.#editor = new cellEditor(cell.#getCellEditorParams());
-      }
 
+      cell.#value = cell.prevValue ?? cell.#value;
+      cell.#editor = new cellEditor(cell.#getCellEditorParams());
+
+      const cellRendererParams = cell.#getCellRendererParams();
+
+      this.#renderer = new cellRenderer(cellRendererParams);
+      cell.cellElement.replaceChildren(this.#renderer.getGui());
+    });
+  }
+
+  #stopEditMode() {
+    this.cellElements.forEach((cell) => {
+      const cellRenderer = this.#options.columns[cell.colIndex].cellRenderer!;
       const cellRendererParams = cell.#getCellRendererParams();
 
       this.#renderer = new cellRenderer(cellRendererParams);
@@ -138,11 +146,11 @@ export class DataDenCell {
       `
         <div
           class="${this.#options.cssPrefix}cell ${this.#options.draggable && !this.pinned
-        ? `${this.#options.cssPrefix}cell-draggable`
-        : ''} ${this.pinned === 'left' ? `${this.#options.cssPrefix}cell-pinned-left` : ''} ${this.pinned ===
+            ? `${this.#options.cssPrefix}cell-draggable`
+            : ''} ${this.pinned === 'left' ? `${this.#options.cssPrefix}cell-pinned-left` : ''} ${this.pinned ===
           'right'
-          ? `${this.#options.cssPrefix}cell-pinned-right`
-          : ''}"
+            ? `${this.#options.cssPrefix}cell-pinned-right`
+            : ''}"
           rowIndex="${this.rowIndex}"
           colIndex="${this.colIndex}"
           role="gridcell"

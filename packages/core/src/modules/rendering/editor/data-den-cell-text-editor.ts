@@ -8,9 +8,7 @@ export class DataDenCellTextEditor implements DataDenCellEditor {
   params: DataDenCellEditorParams;
   #cssPrefix: string;
 
-  constructor(
-    params: DataDenCellEditorParams,
-  ) {
+  constructor(params: DataDenCellEditorParams) {
     this.#cssPrefix = params.cssPrefix;
     this.params = params;
 
@@ -24,7 +22,7 @@ export class DataDenCellTextEditor implements DataDenCellEditor {
 
   attachUiEvents() {
     if (this.input) {
-      this.input.addEventListener('keyup', (e) => this.params.onKeyUp(e))
+      this.input.addEventListener('keyup', (e) => this.params.onKeyUp(e));
     }
   }
 
@@ -34,5 +32,9 @@ export class DataDenCellTextEditor implements DataDenCellEditor {
 
   getGui(): HTMLElement {
     return this.element;
+  }
+
+  getValue(): any {
+    return this.input.value;
   }
 }
