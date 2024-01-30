@@ -1,4 +1,5 @@
 import { DataDenCellRenderer, DataDenHeaderFilterRenderer } from './modules/rendering';
+import { DataDenCellEditor } from './modules/rendering/editor';
 
 export type ClassType<T> = new (...args: any[]) => T;
 
@@ -36,7 +37,9 @@ export interface DataDenColDef {
   resize?: boolean;
   pinned?: 'left' | 'right';
   width?: number;
-  cellRenderer?: ClassType<DataDenCellRenderer>;
+  cellRenderer?: ClassType<DataDenCellRenderer;
+  cellEditor?: ClassType<DataDenCellEditor>;
+  editable?: boolean | ((...args: any[]) => boolean);
   defaultSort?: 'asc' | 'desc' | null;
   sortOrder?: ('asc' | 'desc' | null)[];
 }
@@ -50,6 +53,8 @@ export interface DataDenDefaultColDef {
   resize?: boolean;
   width?: number;
   cellRenderer?: ClassType<DataDenCellRenderer>;
+  cellEditor?: ClassType<DataDenCellEditor>;
+  editable?: boolean | ((...args: any[]) => boolean);
   defaultSort?: 'asc' | 'desc' | null;
   sortOrder?: ('asc' | 'desc' | null)[];
 }
@@ -76,6 +81,7 @@ export interface DataDenOptions<TData = any> {
   defaultColDef?: DataDenDefaultColDef;
   rows?: TData;
   draggable?: boolean;
+  rowEditMode: boolean;
   pagination?: boolean;
   paginationOptions?: DataDenPaginationOptions;
   quickFilterOptions?: DataDenQuickFilterOptions;
@@ -92,6 +98,7 @@ export interface DataDenInternalOptions {
   defaultColDef: Required<DataDenDefaultColDef>;
   rows?: any;
   draggable: boolean;
+  rowEditMode: boolean;
   pagination: boolean;
   paginationOptions: Required<DataDenPaginationOptions>;
   quickFilterOptions: Required<DataDenQuickFilterOptions>;

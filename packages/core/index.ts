@@ -99,6 +99,7 @@ const options: DataDenOptions = {
       resize: true,
       width: 200,
       cellRenderer: DataDenDefaultCellRenderer,
+      editable: true,
     },
     {
       field: 'year',
@@ -122,6 +123,7 @@ const options: DataDenOptions = {
       resize: true,
       width: 210,
       cellRenderer: DataDenDefaultCellRenderer,
+      editable: true,
     },
     {
       field: 'price',
@@ -139,6 +141,7 @@ const options: DataDenOptions = {
       resize: false,
       width: 180,
       cellRenderer: DataDenDefaultCellRenderer,
+      editable: true,
     },
     {
       field: 'transmission',
@@ -157,6 +160,7 @@ const options: DataDenOptions = {
       resize: true,
       width: 220,
       cellRenderer: DataDenDefaultCellRenderer,
+      editable: true,
     },
     {
       field: 'fuel',
@@ -175,10 +179,12 @@ const options: DataDenOptions = {
       resize: true,
       width: 180,
       cellRenderer: DataDenDefaultCellRenderer,
+      editable: true,
     },
   ],
   rows: rows,
   draggable: true,
+  rowEditMode: false,
   pagination: true,
   paginationOptions: {
     pageSize: 10,
@@ -216,6 +222,7 @@ const options2: DataDenOptions = {
       resize: true,
       width: 200,
       cellRenderer: DataDenDefaultCellRenderer,
+      editable: true,
     },
     {
       field: 'year',
@@ -236,6 +243,7 @@ const options2: DataDenOptions = {
       resize: true,
       width: 210,
       cellRenderer: DataDenDefaultCellRenderer,
+      editable: true,
     },
     {
       field: 'price',
@@ -247,6 +255,7 @@ const options2: DataDenOptions = {
       resize: false,
       width: 180,
       cellRenderer: DataDenDefaultCellRenderer,
+      editable: true,
     },
     {
       field: 'transmission',
@@ -265,6 +274,7 @@ const options2: DataDenOptions = {
       resize: true,
       width: 220,
       cellRenderer: DataDenDefaultCellRenderer,
+      editable: true,
     },
     {
       field: 'fuel',
@@ -283,10 +293,12 @@ const options2: DataDenOptions = {
       resize: true,
       width: 180,
       cellRenderer: DataDenDefaultCellRenderer,
+      editable: true,
     },
   ],
   rows: rows,
   draggable: true,
+  rowEditMode: true,
   pagination: true,
   paginationOptions: {
     pageSize: 10,
@@ -298,7 +310,8 @@ const ddEl = document.getElementById('dd');
 const dataDen = new DataDen(ddEl as HTMLElement, options);
 
 const ddEl2 = document.getElementById('dd2');
-// const dataDen2 = new DataDen(ddEl2 as HTMLElement, options2);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const dataDen2 = new DataDen(ddEl2 as HTMLElement, options2);
 
 const quickFilterInput: HTMLInputElement = document.querySelector('.data-den-quick-filter-input')!;
 quickFilterInput.addEventListener('keyup', () => {
