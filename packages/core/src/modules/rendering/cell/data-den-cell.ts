@@ -1,4 +1,4 @@
-import { DataDenCellEditor, DataDenCellEditorParams, DataDenDefaultCellEditor } from '../editor';
+import { DataDenCellEditor, DataDenCellEditorParams } from '../editor';
 import { DataDenCellRenderer } from './data-den-cell-renderer.interface';
 import { DataDenCellRendererParams } from './data-den-cell-renderer-params.interface';
 import { createHtmlElement } from '../../../utils';
@@ -14,6 +14,10 @@ export class DataDenCell {
   #editor!: DataDenCellEditor;
   #left: string;
   pinned: string;
+  cellElement: HTMLElement;
+  cellElements: DataDenCell[] = [];
+  isBlurByKey: boolean = false;
+  prevValue: any;
 
   constructor(
     value: any,
@@ -31,18 +35,19 @@ export class DataDenCell {
     this.#options = options;
     this.#left = pinned ? 'auto' : `${left}px`;
     this.pinned = pinned;
-
     this.#initRenderers();
   }
 
   #initRenderers() {
     const colDef = this.#options.columns[this.colIndex];
     const cellRenderer = colDef.cellRenderer!;
+    const cellEditor = colDef.cellEditor!;
+
     const cellRendererParams = this.#getCellRendererParams();
     const cellEditorParams = this.#getCellEditorParams();
 
     this.#renderer = new cellRenderer(cellRendererParams);
-    this.#editor = new DataDenDefaultCellEditor(cellEditorParams);
+    this.#editor = new cellEditor(cellEditorParams);
   }
 
   #getCellRendererParams(): DataDenCellRendererParams {
@@ -56,7 +61,83 @@ export class DataDenCell {
     return {
       value: this.#value,
       cssPrefix: this.#options.cssPrefix,
+      onKeyUp: this.#onKeyUp.bind(this),
+      stopEditMode: this.#stopEditMode.bind(this),
     };
+  }
+
+  #onBlur(e: KeyboardEvent | MouseEvent): void {
+    const target = e.target as HTMLElement;
+
+    if (!this.isBlurByKey && target.classList.contains(`${this.#options.cssPrefix}cell-editor`)) {
+      return;
+    }
+
+    this.#stopEditMode();
+  }
+
+  #onKeyUp(e: KeyboardEvent): void {
+    this.#value = this.#editor.getValue();
+
+    if (e.key === 'Enter') {
+      this.isBlurByKey = true;
+
+      this.#onBlur(e);
+    } else if (e.key === 'Escape') {
+      this.#cancelEditMode();
+    }
+  }
+
+  documentListener = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+
+    if (target.classList.contains(`${this.#options.cssPrefix}cell-editor`)) return;
+
+    this.#onBlur(e);
+
+    document.removeEventListener('click', this.documentListener);
+  };
+
+  startEditMode(selectedCell: DataDenCell, cells: DataDenCell[]) {
+    this.prevValue = this.#value;
+    this.cellElements = cells;
+    const editor = this.#editor.getGui();
+    this.cellElement.replaceChildren(editor);
+
+    if (selectedCell !== this) return;
+
+    document.addEventListener('click', this.documentListener);
+
+    this.#editor.afterUiRender();
+  }
+
+  #cancelEditMode() {
+    this.cellElements.forEach((cell) => {
+      const cellRenderer = this.#options.columns[cell.colIndex].cellRenderer!;
+      const cellEditor = this.#options.columns[cell.colIndex].cellEditor!;
+
+      cell.#value = cell.prevValue ?? cell.#value;
+      cell.#editor = new cellEditor(cell.#getCellEditorParams());
+
+      const cellRendererParams = cell.#getCellRendererParams();
+
+      this.#renderer = new cellRenderer(cellRendererParams);
+      cell.cellElement.replaceChildren(this.#renderer.getGui());
+    });
+  }
+
+  #stopEditMode() {
+    this.cellElements.forEach((cell) => {
+      const cellRenderer = this.#options.columns[cell.colIndex].cellRenderer!;
+      const cellRendererParams = cell.#getCellRendererParams();
+
+      this.#renderer = new cellRenderer(cellRendererParams);
+      cell.cellElement.replaceChildren(this.#renderer.getGui());
+    });
+  }
+
+  setValue(value: any) {
+    this.#value = value;
   }
 
   render(): HTMLElement {
@@ -70,6 +151,8 @@ export class DataDenCell {
           'right'
             ? `${this.#options.cssPrefix}cell-pinned-right`
             : ''}"
+          rowIndex="${this.rowIndex}"
+          colIndex="${this.colIndex}"
           role="gridcell"
           ref="cell"
           style="left: ${this.#left}; width: ${this.width}px;"
@@ -78,6 +161,8 @@ export class DataDenCell {
 
     const cellElement = createHtmlElement(template);
     cellElement.appendChild(this.#renderer.getGui());
+
+    this.cellElement = cellElement;
 
     return cellElement;
   }

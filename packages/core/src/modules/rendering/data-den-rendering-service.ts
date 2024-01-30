@@ -277,10 +277,48 @@ export class DataDenRenderingService {
     return headerContainer;
   }
 
+  #renderEditor(e: MouseEvent): HTMLElement {
+    const target = e.target as HTMLElement;
+    if (target.tagName !== 'SPAN') return;
+
+    const cellElement = target.parentElement;
+    const rowIndex = Number(cellElement.getAttribute('rowIndex'));
+    const colIndex = Number(cellElement.getAttribute('colIndex'));
+    const cell = this.#rows[rowIndex].cells[colIndex] as DataDenCell;
+
+    const cells: DataDenCell[] = [];
+    let editable, selectedCell: DataDenCell;
+
+    if (this.#options.rowEditMode) {
+      this.#rows[rowIndex].cells.forEach((cell: DataDenCell) => {
+        cells.push(cell);
+        if (selectedCell) return;
+        selectedCell =
+          cell === this.#rows[rowIndex].cells[colIndex] && this.#options.columns[cell.colIndex].editable ? cell : null;
+      });
+    } else {
+      selectedCell = cell;
+      cells.push(cell);
+    }
+
+    cells.forEach((cell: DataDenCell) => {
+      editable = this.#options.columns[cell.colIndex].editable;
+
+      if ((typeof editable === `function` && !editable()) || editable === false) return;
+
+      if (!selectedCell) {
+        selectedCell = editable ? cell : null;
+      }
+
+      cell.startEditMode(selectedCell, cells);
+    });
+  }
+
   #renderBody(): HTMLElement {
     const rowContainer = document.createElement('div');
     rowContainer.classList.add(`${this.#options.cssPrefix}grid-rows`);
     rowContainer.setAttribute('role', 'rowgroup');
+    rowContainer.addEventListener('dblclick', (e: MouseEvent) => this.#renderEditor(e));
 
     const rows = document.createDocumentFragment();
     this.#rows.forEach((row) => rows.appendChild(row.render()));
