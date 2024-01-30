@@ -38,6 +38,7 @@ describe('data-den-sorting-service', () => {
           sortOptions: {
             comparator: sortComparator,
           },
+          sortOrder: ['asc', 'desc', null],
         },
         {
           field: 'model',
@@ -46,6 +47,7 @@ describe('data-den-sorting-service', () => {
           sortOptions: {
             comparator: sortComparator,
           },
+          sortOrder: ['asc', 'desc', null],
         },
       ],
     };
@@ -130,7 +132,7 @@ describe('data-den-sorting-service', () => {
         rows: exampleData,
       });
 
-      expect(mockFn).toHaveBeenCalledWith(expectSortingObjectContaining(''));
+      expect(mockFn).toHaveBeenCalledWith(expectSortingObjectContaining(null));
 
       DataDenPubSub.publish(COMMAND_SORTING_START, {
         caller,
