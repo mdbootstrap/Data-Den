@@ -5,4 +5,4 @@ theme = "ga-hugo-theme"
 enableInlineShortcodes = "true"
 
 [params]
-apiUrl = "https://getdataden.com/api/docs"
+apiUrl = "http://localhost:3030"

@@ -10,7 +10,7 @@
     formLogin = document.querySelector('form#login');
     formRegister = document.querySelector('form#register');
 
-    logoutButton = document.querySelector('.mdb-logout-button');
+    logoutButton = document.querySelector('[data-logout-button-ref]');
 
     bindAuthModalEvents();
 
@@ -77,6 +77,7 @@
 
     const xhr = new XMLHttpRequest();
     xhr.open('POST', `${CONFIG.docsApiUrl}/user/logout`, true);
+    xhr.withCredentials = true;
     xhr.onreadystatechange = function () {
       if (this.readyState === XMLHttpRequest.DONE && this.status >= 200 && this.status < 300) {
         location.reload();
