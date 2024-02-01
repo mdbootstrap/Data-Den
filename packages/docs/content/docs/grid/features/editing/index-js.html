@@ -1,0 +1,171 @@
+---
+---
+
+<script type="module">
+  import { DataDen, DataDenDefaultCellRenderer } from '/js/data-den.es.min.js';
+
+  const rows = [
+    { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+    { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+    { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+    { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+    { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+    { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+    { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+    { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+    { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+    { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+  ];
+
+  (() => {
+    const options = {
+      columns: [
+        {
+          field: 'car',
+          headerName: 'Car',
+          cellRenderer: DataDenDefaultCellRenderer,
+          sort: true,
+          editable: true,
+        },
+        {
+          field: 'model',
+          headerName: 'Model',
+          cellRenderer: DataDenDefaultCellRenderer,
+          sort: true,
+          editable: true,
+        },
+        {
+          field: 'year',
+          headerName: 'Year',
+          cellRenderer: DataDenDefaultCellRenderer,
+          sort: true,
+          editable: true,
+        },
+        {
+          field: 'price',
+          headerName: 'Price',
+          cellRenderer: DataDenDefaultCellRenderer,
+          sort: true,
+          editable: true,
+        },
+      ],
+      rows: rows,
+      rowHeight: 32,
+    };
+
+    //basic example
+    const ddElBasicSorting = document.getElementById('dd-basic-sorting');
+    const dataDenBasicSorting = new DataDen(ddElBasicSorting, options);
+    //basic example
+  })();
+
+  (() => {
+    const options = {
+      columns: [
+        {
+          field: 'car',
+          headerName: 'Car',
+          cellRenderer: DataDenDefaultCellRenderer,
+          sort: true,
+          editable: true,
+        },
+        {
+          field: 'model',
+          headerName: 'Model',
+          cellRenderer: DataDenDefaultCellRenderer,
+          sort: true,
+          editable: true,
+        },
+        {
+          field: 'year',
+          headerName: 'Year',
+          cellRenderer: DataDenDefaultCellRenderer,
+          sort: true,
+          editable: true,
+        },
+        {
+          field: 'price',
+          headerName: 'Price',
+          cellRenderer: DataDenDefaultCellRenderer,
+          sort: true,
+          editable: true,
+        },
+      ],
+      rows: rows,
+      rowHeight: 32,
+      rowEditMode: true,
+    };
+
+    //row edit mode
+    const ddElMultiSort = document.getElementById('dd-row-edit-mode');
+    const dataDenMultiSort = new DataDen(ddElMultiSort, options);
+    //row edit mode
+  })();
+
+  (() => {
+    //custom sorting logic
+    const rows = [
+      { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+      { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+      { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+      { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+      { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+      { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+      { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+      { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+      { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+      { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+    ];
+
+    function dateComparator(fieldA, fieldB) {
+      const dateA = new Date(fieldA.split('/').reverse().join('-'));
+      const dateB = new Date(fieldB.split('/').reverse().join('-'));
+
+      if (dateA < dateB) {
+        return -1;
+      } else if (dateA > dateB) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+
+    const options = {
+      columns: [
+        {
+          field: 'car',
+          headerName: 'Car',
+          cellRenderer: DataDenDefaultCellRenderer,
+          sort: true,
+        },
+        {
+          field: 'model',
+          headerName: 'Model',
+          cellRenderer: DataDenDefaultCellRenderer,
+          sort: true,
+        },
+        {
+          field: 'year',
+          headerName: 'Year',
+          cellRenderer: DataDenDefaultCellRenderer,
+          sort: true,
+          sortOptions: {
+            comparator: dateComparator,
+          },
+        },
+        {
+          field: 'price',
+          headerName: 'Price',
+          cellRenderer: DataDenDefaultCellRenderer,
+          sort: true,
+        },
+      ],
+      rows: rows,
+      rowHeight: 32,
+    };
+
+    const ddElCustomSortingLogic = document.getElementById('dd-custom-sorting-logic');
+    const dataDenCustomSortingLogic = new DataDen(ddElCustomSortingLogic, options);
+    //custom sorting logic
+  })();
+</script>
