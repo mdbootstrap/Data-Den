@@ -64,18 +64,20 @@
   cursor: pointer;
 }
 .data-den-header-sorter
-  .data-den-header-sorter-arrow.data-den-header-sorter-arrow-asc
+  .data-den-header-sorter-arrow.data-den-header-sorter-arrow-active
   .data-den-header-sorter-arrow-svg {
-  color: var(--data-den-header-sorter-arrow-sorted-color);
-  transform: var(--data-den-header-sorter-asc-transform);
   opacity: 1;
+  color: var(--data-den-header-sorter-arrow-sorted-color);
 }
 .data-den-header-sorter
-  .data-den-header-sorter-arrow.data-den-header-sorter-arrow-desc
+  .data-den-header-sorter-arrow.data-den-header-sorter-arrow-up
   .data-den-header-sorter-arrow-svg {
-  color: var(--data-den-header-sorter-arrow-sorted-color);
-  transform: var(--data-den-header-sorter-desc-transform);
-  opacity: 1;
+  transform: var(--data-den-header-sorter-asc-transform) !important;
+}
+.data-den-header-sorter
+  .data-den-header-sorter-arrow.data-den-header-sorter-arrow-down
+  .data-den-header-sorter-arrow-svg {
+  transform: var(--data-den-header-sorter-desc-transform) !important;
 }
 .data-den-header-sorter .data-den-header-sorter-arrow .data-den-header-sorter-arrow-svg {
   color: var(--data-den-header-sorter-arrow-unsorted-color);
@@ -206,7 +208,8 @@
   display: flex;
 }
 .data-den-header-menu-toggler {
-  display: none;
+  display: block;
+  opacity: 0;
   width: 18px;
   border: none;
   background: none;
@@ -218,7 +221,7 @@
   outline: none;
 }
 .data-den-header-cell:hover .data-den-header-menu-toggler {
-  display: block;
+  opacity: 1;
 }
 .data-den-header-menu-toggler-icon {
   color: var(--data-den-header-menu-toggler-icon-color);
@@ -227,7 +230,7 @@
   position: absolute;
   right: var(--data-den-header-menu-right);
   top: var(--data-den-header-menu-top);
-  z-index: 3;
+  z-index: 4;
   width: var(--data-den-header-menu-width);
   background-color: var(--data-den-header-menu-bg);
   border: var(--data-den-header-menu-border);
@@ -334,7 +337,7 @@ body {
   --data-den-header-filter-input-padding: 0 4px;
   --data-den-header-filter-input-height: 20px;
   --data-den-header-filter-input-width: 100%;
-  --data-den-header-filter-input-bg: transparent;
+  --data-den-header-filter-input-bg: #fff;
   --data-den-header-resizer-bg: #ccc;
   --data-den-header-resizer-width: 2px;
   --data-den-header-resizer-padding-right: 6px;
@@ -387,7 +390,6 @@ body {
   height: inherit;
 }
 .data-den-cell {
-  padding: 0 var(--data-den-row-cell-padding-x);
   position: absolute;
   background-color: var(--data-den-row-cell-bg);
   height: inherit;
@@ -398,6 +400,17 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.data-den-cell .data-den-cell-editor,
+.data-den-cell .data-den-cell-content {
+  padding: 0 var(--data-den-row-cell-padding-x) !important;
+  height: 100% !important;
+  padding-left: 5px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 10px;
+  outline: none;
 }
 .data-den-cell.data-den-active {
   background-color: var(--data-den-cell-active-bg);

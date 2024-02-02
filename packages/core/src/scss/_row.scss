@@ -40,7 +40,6 @@
 }
 
 .#{$prefix}cell {
-  padding: 0 var(--#{$prefix}row-cell-padding-x);
   position: absolute;
   background-color: var(--#{$prefix}row-cell-bg);
   height: inherit;
@@ -48,6 +47,7 @@
   align-items: center;
 
   span {
+    background-color: orange;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -55,6 +55,7 @@
 
   .#{$prefix}cell-editor,
   .#{$prefix}cell-content {
+    padding: 0 var(--#{$prefix}row-cell-padding-x) !important;
     height: 100% !important;
     padding-left: 5px;
     display: flex;
