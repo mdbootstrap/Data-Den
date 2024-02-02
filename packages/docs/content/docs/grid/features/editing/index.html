@@ -20,12 +20,12 @@ url: 'docs/grid/features/editing/'
         <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Basic example</h2>
         <p>Add <code>editable: true</code> to column options to enable editing for a given column.</p>
         <!--Section: Demo-->
-        {{< twsnippet/demo id="basic-sorting" >}}
+        {{< twsnippet/demo id="custom-cell" >}}
         <div id="dd-basic-sorting" class="flex justify-center items-center"></div>
         {{< /twsnippet/demo >}}
         <!--Section: Demo-->
 
-        <section class="!visible hidden" data-te-collapse-item id="basic-sorting">
+        <section class="!visible hidden" data-te-collapse-item id="custom-cell">
           <div class="pt-2">
             <!-- prettier-ignore -->
             {{< twsnippet/wrapper "HTML,javascript" "" "mobile">}}
@@ -183,16 +183,10 @@ url: 'docs/grid/features/editing/'
   <div class="sm:-mx-6 lg:-mx-8">
     <div class="min-w-full py-2 sm:px-6 lg:px-8">
       <div class="overflow-hidden">
-        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Custom sorting logic</h2>
-        <p>
-          It is possible to define custom sort comparator for a column by setting a new <code>comparator</code> function
-          in the <code>sortOptions</code>.
-        </p>
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Custom editing cell</h2>
+        <p>It is possible to define custom edit cell by setting a new class for the <code>cellEditor</code>.</p>
 
-        <p class="mt-2">
-          In the following example we use custom <code>dateComparator</code> for <strong>Year</strong> column to
-          transform dates from strings to JavaScript Date Objects before sorting.
-        </p>
+        <p class="mt-2">In the following example we use custom <code>cellEditor</code> for <strong>Price</strong></p>
 
         <!--Section: Demo-->
         {{< twsnippet/demo id="custom-sorting-logic-example" >}}
@@ -226,50 +220,36 @@ url: 'docs/grid/features/editing/'
                         { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
                         ];
 
-                        function dateComparator(fieldA, fieldB) {
-                        const dateA = new Date(fieldA.split('/').reverse().join('-'));
-                        const dateB = new Date(fieldB.split('/').reverse().join('-'));
+                        function createHtmlElement(template, elementName = 'div') {
+                        const placeholder = document.createElement(elementName);
+                        placeholder.innerHTML = template;
 
-                        if (dateA < dateB) { return -1; } else if (dateA> dateB) {
-                          return 1;
-                          } else {
-                          return 0;
-                          }
-                          }
+                        return placeholder.firstElementChild;
+                        }
 
-                          const options = {
-                          columns: [
-                          {
-                          field: 'car',
-                          headerName: 'Car',
-                          sort: true
-                          },
-                          {
-                          field: 'model',
-                          headerName: 'Model',
-                          sort: true
-                          },
-                          {
-                          field: 'year',
-                          headerName: 'Year',
-                          sort: true,
-                          sortOptions: {
-                          comparator: dateComparator
-                          }
-                          },
-                          {
-                          field: 'price',
-                          headerName: 'Price',
-                          sort: true
-                          },
-                          ],
-                          rows: rows,
-                          };
+                        class DataDenCustomEditor {
+                        element;
+                        input;
+                        params;
+                        #cssPrefix;
 
-                          const gridEl = document.getElementById('grid');
-                          const dataDen = new DataDen(gridEl, options);
-                          {{< /twsnippet/code >}}
-                            {{< /twsnippet/wrapper >}}
+                        constructor(params) {
+                        this.#cssPrefix = params.cssPrefix;
+                        this.params = params;
+
+                        const template = `<input
+              class="${this.#cssPrefix}cell-editor"
+              type="number"
+              value="${params.value}" />`; this.element = createHtmlElement(template); this.input = this.element;
+            this.attachUiEvents(); } attachUiEvents() { if (this.input) { this.input.addEventListener('keyup', (e) =>
+            this.params.onKeyUp(e)); } } afterUiRender() { this.input.select(); } getGui() { return this.element; }
+            getValue() { return this.input.value; } } const options = { columns: [ { field: 'car', headerName: 'Car',
+            sort: true }, { field: 'model', headerName: 'Model', sort: true }, { field: 'year', headerName: 'Year',
+            sort: true, editable: true, }, { field: 'price', headerName: 'Price', sort: true, editable: true,
+            cellEditor: DataDenCustomEditor }, ], rows: rows, }; const gridEl = document.getElementById('grid'); const
+            dataDen = new DataDen(gridEl, options);
+            {{< /twsnippet/code >}}
+            {{< /twsnippet/wrapper >}}
           </div>
         </section>
       </div>

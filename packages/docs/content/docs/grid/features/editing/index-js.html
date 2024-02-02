@@ -103,7 +103,7 @@
   })();
 
   (() => {
-    //custom sorting logic
+    //custom editing cell
     const rows = [
       { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
       { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
@@ -117,16 +117,47 @@
       { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
     ];
 
-    function dateComparator(fieldA, fieldB) {
-      const dateA = new Date(fieldA.split('/').reverse().join('-'));
-      const dateB = new Date(fieldB.split('/').reverse().join('-'));
+    function createHtmlElement(template, elementName = 'div') {
+      const placeholder = document.createElement(elementName);
+      placeholder.innerHTML = template;
 
-      if (dateA < dateB) {
-        return -1;
-      } else if (dateA > dateB) {
-        return 1;
-      } else {
-        return 0;
+      return placeholder.firstElementChild;
+    }
+
+    class DataDenCustomEditor {
+      element;
+      input;
+      params;
+      #cssPrefix;
+
+      constructor(params) {
+        this.#cssPrefix = params.cssPrefix;
+        this.params = params;
+
+        const template = `<input class="${this.#cssPrefix}cell-editor" type="number" value="${params.value}" />`;
+
+        this.element = createHtmlElement(template);
+        this.input = this.element;
+
+        this.attachUiEvents();
+      }
+
+      attachUiEvents() {
+        if (this.input) {
+          this.input.addEventListener('keyup', (e) => this.params.onKeyUp(e));
+        }
+      }
+
+      afterUiRender() {
+        this.input.select();
+      }
+
+      getGui() {
+        return this.element;
+      }
+
+      getValue() {
+        return this.input.value;
       }
     }
 
@@ -149,15 +180,14 @@
           headerName: 'Year',
           cellRenderer: DataDenDefaultCellRenderer,
           sort: true,
-          sortOptions: {
-            comparator: dateComparator,
-          },
         },
         {
           field: 'price',
           headerName: 'Price',
           cellRenderer: DataDenDefaultCellRenderer,
           sort: true,
+          editable: true,
+          cellEditor: DataDenCustomEditor,
         },
       ],
       rows: rows,
