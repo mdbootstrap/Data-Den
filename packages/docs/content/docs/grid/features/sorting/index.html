@@ -173,8 +173,8 @@ url: 'docs/grid/features/sorting/'
 
 <hr class="my-10" />
 
-<!--Section: Multi sort -->
-<section id="multi-sort-section">
+<!--Section: Custom sorting logic -->
+<section id="custom-sorting-logic-section">
   <div class="sm:-mx-6 lg:-mx-8">
     <div class="min-w-full py-2 sm:px-6 lg:px-8">
       <div class="overflow-hidden">
@@ -274,3 +274,191 @@ url: 'docs/grid/features/sorting/'
   </div>
 </section>
 <!--Section: Custom sorting logic -->
+
+<!--Section: Sorting order -->
+<section id="sorting-order-section">
+  <div class="sm:-mx-6 lg:-mx-8">
+    <div class="min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Sorting order</h2>
+        <p>The default sorting order is:</p>
+
+        <p class="mt-4"><strong>ascending -> descending -> none</strong> (<code>['asc', 'desc', null]</code>)</p>
+
+        <p class="mt-4">
+          That means when you first time use sorting on a column that is not sorted, it will sort ascending
+          (<code>asc</code>). The next click will make it sort descending (<code>desc</code>) and another click will
+          remove the sort (<code>null</code>), reverting to the original data order.
+        </p>
+
+        <p class="mt-4">
+          Use <code>sortOrder</code> option to modify the default sorting order. In the following example we use
+          different, custom order for each column:
+        </p>
+
+        <ul class="mt-4 list-disc list-inside pl-2">
+          <li><strong>Column car: </strong> descending -> ascending -> none</li>
+          <li><strong>Column model: </strong> ascending -> descending</li>
+          <li><strong>Column car: </strong> descending -> ascending</li>
+          <li><strong>Column car: </strong> ascending -> none</li>
+        </ul>
+
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="sorting-order-example" >}}
+        <div id="dd-sorting-order" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo >}}
+        <!--Section: Demo-->
+
+        <section class="!visible hidden" data-te-collapse-item id="sorting-order-example">
+          <div class="pt-2">
+            <!-- prettier-ignore -->
+            {{< twsnippet/wrapper "HTML,javascript" "" "mobile" >}}
+              {{< twsnippet/code active=true lang="html" >}}
+            <div id="grid"></div>
+            {{< /twsnippet/code >}}
+            <!-- prettier-ignore -->
+            {{< twsnippet/code lang="js" >}}
+              import { 
+                DataDen, 
+              } from "data-den-core";
+
+              const rows = [
+                { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+                { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+                { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+                { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+                { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+                { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+                { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+                { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+                { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+                { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+              ];
+
+              const options = {
+                columns: [
+                  {
+                    field: 'car',
+                    headerName: 'Car',
+                    sort: true,
+                    sortOrder: ['desc', 'asc', null]
+                  },
+                  {
+                    field: 'model',
+                    headerName: 'Model',
+                    sort: true,
+                    sortOrder: ['asc', 'desc']
+                  },
+                  {
+                    field: 'year',
+                    headerName: 'Year',
+                    sort: true,
+                    sortOrder: ['desc', 'asc']
+                  },
+                  {
+                    field: 'price',
+                    headerName: 'Price',
+                    sort: true,
+                    sortOrder: ['asc', null]
+                  },
+                ],
+                rows: rows,
+              };
+
+              const gridEl = document.getElementById('grid');
+              const dataDen = new DataDen(gridEl, options);
+            {{< /twsnippet/code >}}
+            {{< /twsnippet/wrapper >}}
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Sorting order -->
+
+<!--Section: Default sorting state -->
+<section id="default-sorting-state-section">
+  <div class="sm:-mx-6 lg:-mx-8">
+    <div class="min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Sorting order</h2>
+        <p>
+          Use <code>defaultSort</code> option to specify the default sorting state for a column. By default this option
+          is set to <code>null</code>.
+        </p>
+
+        <p class="mt-4">
+          In the following example we apply default descending sort to the <strong>Car</strong> column.
+        </p>
+
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="default-sorting-state-example" >}}
+        <div id="dd-default-sorting-state" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo >}}
+        <!--Section: Demo-->
+
+        <section class="!visible hidden" data-te-collapse-item id="default-sorting-state-example">
+          <div class="pt-2">
+            <!-- prettier-ignore -->
+            {{< twsnippet/wrapper "HTML,javascript" "" "mobile" >}}
+              {{< twsnippet/code active=true lang="html" >}}
+            <div id="grid"></div>
+            {{< /twsnippet/code >}}
+            <!-- prettier-ignore -->
+            {{< twsnippet/code lang="js" >}}
+              import { 
+                DataDen, 
+              } from "data-den-core";
+
+              const rows = [
+                { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+                { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+                { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+                { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+                { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+                { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+                { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+                { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+                { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+                { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+              ];
+
+              const options = {
+                columns: [
+                  {
+                    field: 'car',
+                    headerName: 'Car',
+                    sort: true,
+                    defaultSort: 'desc'
+                  },
+                  {
+                    field: 'model',
+                    headerName: 'Model',
+                    sort: true
+                  },
+                  {
+                    field: 'year',
+                    headerName: 'Year',
+                    sort: true
+                  },
+                  {
+                    field: 'price',
+                    headerName: 'Price',
+                    sort: true
+                  },
+                ],
+                rows: rows,
+              };
+
+              const gridEl = document.getElementById('grid');
+              const dataDen = new DataDen(gridEl, options);
+            {{< /twsnippet/code >}}
+            {{< /twsnippet/wrapper >}}
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Default sorting state -->
