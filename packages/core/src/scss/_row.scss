@@ -58,6 +58,11 @@
     height: 100%;
   }
 
+  .#{$prefix}cell-editor:focus {
+    border: 1.5px solid lightskyblue;
+    box-sizing: border-box;
+  }
+
   .#{$prefix}cell-editor,
   .#{$prefix}cell-content {
     padding: 0 var(--#{$prefix}row-cell-padding-x) !important;
