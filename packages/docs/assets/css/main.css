@@ -40,4 +40,5 @@ input {
   --data-den-pagination-button-bg: rgb(38 38 38);
   --data-den-header-filter-select-bg: rgb(38 38 38);
   --data-den-header-filter-input-bg: transparent;
+  --data-den-editing-active-color: rgb(82 82 82);
 }

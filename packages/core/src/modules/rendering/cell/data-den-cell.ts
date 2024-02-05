@@ -77,8 +77,6 @@ export class DataDenCell {
   }
 
   #onKeyUp(e: KeyboardEvent): void {
-    this.#value = this.#editor.getValue();
-
     if (e.key === 'Enter') {
       this.isBlurByKey = true;
 
@@ -128,6 +126,7 @@ export class DataDenCell {
 
   #stopEditMode() {
     this.cellElements.forEach((cell) => {
+      cell.#value = cell.#editor.getValue();
       const cellRenderer = this.#options.columns[cell.colIndex].cellRenderer!;
       const cellRendererParams = cell.#getCellRendererParams();
 

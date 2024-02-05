@@ -134,7 +134,9 @@
         this.#cssPrefix = params.cssPrefix;
         this.params = params;
 
-        const template = `<input class="${this.#cssPrefix}cell-editor" type="number" value="${params.value}" />`;
+        const template = `<input class="${this.#cssPrefix}cell-editor" step="1000" type="number" value="${
+          params.value
+        }" />`;
 
         this.element = createHtmlElement(template);
         this.input = this.element;

@@ -5,8 +5,8 @@ draft: false
 main_title: 'Editing'
 subheading: ''
 seo_title: 'Data Den Editing'
-description: 'Editing allows you to edit the data of a specific column. It is possible to edit multiple columns at once
-by using row edit mode feature.'
+description: 'Editing allows you to edit individual columns or entire rows at once. It is also possible to create custom
+cell editors and have unique solution'
 image: ''
 video: ''
 url: 'docs/grid/features/editing/'
@@ -93,7 +93,7 @@ url: 'docs/grid/features/editing/'
 
 <hr class="my-10" />
 
-<!--Section: Multi sort -->
+<!--Section: Row edit mode -->
 <section id="row-edit-mode-section">
   <div class="sm:-mx-6 lg:-mx-8">
     <div class="min-w-full py-2 sm:px-6 lg:px-8">
@@ -141,22 +141,26 @@ url: 'docs/grid/features/editing/'
                         {
                         field: 'car',
                         headerName: 'Car',
-                        sort: true
+                        sort: true,
+                        editable: true
                         },
                         {
                         field: 'model',
                         headerName: 'Model',
-                        sort: true
+                        sort: true,
+                        editable: true
                         },
                         {
                         field: 'year',
                         headerName: 'Year',
-                        sort: true
+                        sort: true,
+                        editable: true
                         },
                         {
                         field: 'price',
                         headerName: 'Price',
-                        sort: true
+                        sort: true,
+                        editable: true
                         },
                         ],
                         rows: rows,
@@ -174,7 +178,7 @@ url: 'docs/grid/features/editing/'
     </div>
   </div>
 </section>
-<!--Section: Multi sort-->
+<!--Section: Row edit mode -->
 
 <hr class="my-10" />
 
@@ -184,9 +188,11 @@ url: 'docs/grid/features/editing/'
     <div class="min-w-full py-2 sm:px-6 lg:px-8">
       <div class="overflow-hidden">
         <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Custom editing cell</h2>
-        <p>It is possible to define custom edit cell by setting a new class for the <code>cellEditor</code>.</p>
+        <p>It is possible to define custom editing cell by setting a new class for the <code>cellEditor</code>.</p>
 
-        <p class="mt-2">In the following example we use custom <code>cellEditor</code> for <strong>Price</strong></p>
+        <p class="mt-2">
+          In the following example we use custom <code>cellEditor</code> for <strong>Price</strong> column .
+        </p>
 
         <!--Section: Demo-->
         {{< twsnippet/demo id="custom-sorting-logic-example" >}}
@@ -240,6 +246,7 @@ url: 'docs/grid/features/editing/'
                         const template = `<input
               class="${this.#cssPrefix}cell-editor"
               type="number"
+              step="1000"
               value="${params.value}" />`; this.element = createHtmlElement(template); this.input = this.element;
             this.attachUiEvents(); } attachUiEvents() { if (this.input) { this.input.addEventListener('keyup', (e) =>
             this.params.onKeyUp(e)); } } afterUiRender() { this.input.select(); } getGui() { return this.element; }
