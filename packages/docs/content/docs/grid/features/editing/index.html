@@ -1,0 +1,266 @@
+---
+title: 'Data Den'
+date: 2023-02-09T10:00:00+02:00
+draft: false
+main_title: 'Editing'
+subheading: ''
+seo_title: 'Data Den Editing'
+description: 'Editing allows you to edit individual columns or entire rows at once. It is also possible to create custom
+cell editors and have unique solution'
+image: ''
+video: ''
+url: 'docs/grid/features/editing/'
+---
+
+<!--Section: Basic-->
+<section id="basic-section">
+  <div class="sm:-mx-6 lg:-mx-8">
+    <div class="min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Basic example</h2>
+        <p>Add <code>editable: true</code> to column options to enable editing for a given column.</p>
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="custom-cell" >}}
+        <div id="dd-basic-sorting" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo >}}
+        <!--Section: Demo-->
+
+        <section class="!visible hidden" data-te-collapse-item id="custom-cell">
+          <div class="pt-2">
+            <!-- prettier-ignore -->
+            {{< twsnippet/wrapper "HTML,javascript" "" "mobile">}}
+                  {{< twsnippet/code active=true lang="html" >}}
+            <div id="grid"></div>
+            {{< /twsnippet/code >}}
+            <!-- prettier-ignore -->
+            {{< twsnippet/code lang="js">}}
+                        import { DataDen } from "data-den-core";
+
+                        const rows = [
+                        { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+                        { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+                        { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+                        { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+                        { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+                        { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+                        { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+                        { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+                        { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+                        { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+                        ];
+
+                        const options = {
+                        columns: [
+                        {
+                        field: "car",
+                        headerName: "Car",
+                        sort: true,
+                        editable: true
+                        },
+                        {
+                        field: "model",
+                        headerName: "Model",
+                        sort: true,
+                        editable: true
+                        },
+                        {
+                        field: "year",
+                        headerName: "Year",
+                        sort: true,
+                        editable: true
+                        },
+                        {
+                        field: "price",
+                        headerName: "Price",
+                        sort: true,
+                        editable: true
+                        },
+                        ],
+                        rows: rows,
+                        };
+
+                        const gridEl = document.getElementById('grid');
+                        const dataDen = new DataDen(gridEl, options);
+                        {{< /twsnippet/code >}}
+                          {{< /twsnippet/wrapper >}}
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Basic-->
+
+<hr class="my-10" />
+
+<!--Section: Row edit mode -->
+<section id="row-edit-mode-section">
+  <div class="sm:-mx-6 lg:-mx-8">
+    <div class="min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Row edit mode</h2>
+        <p>
+          It is possible to edit multiple columns at once. To activate row edit mode add the following option:
+          <code>rowEditMode: true</code>
+        </p>
+
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="row-edit-mode" >}}
+        <div id="dd-row-edit-mode" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo >}}
+        <!--Section: Demo-->
+
+        <section class="!visible hidden" data-te-collapse-item id="row-edit-mode">
+          <div class="pt-2">
+            <!-- prettier-ignore -->
+            {{< twsnippet/wrapper "HTML,javascript" "" "mobile">}}
+                  {{< twsnippet/code active=true lang="html" >}}
+            <div id="grid"></div>
+            {{< /twsnippet/code >}}
+            <!-- prettier-ignore -->
+            {{< twsnippet/code lang="js">}}
+                        import {
+                        DataDen,
+                        } from "data-den-core";
+
+                        const rows = [
+                        { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+                        { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+                        { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+                        { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+                        { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+                        { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+                        { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+                        { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+                        { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+                        { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+                        ];
+
+                        const options = {
+                        columns: [
+                        {
+                        field: 'car',
+                        headerName: 'Car',
+                        sort: true,
+                        editable: true
+                        },
+                        {
+                        field: 'model',
+                        headerName: 'Model',
+                        sort: true,
+                        editable: true
+                        },
+                        {
+                        field: 'year',
+                        headerName: 'Year',
+                        sort: true,
+                        editable: true
+                        },
+                        {
+                        field: 'price',
+                        headerName: 'Price',
+                        sort: true,
+                        editable: true
+                        },
+                        ],
+                        rows: rows,
+                        rowHeight: 32,
+                        rowEditMode: true,
+                        };
+
+                        const gridEl = document.getElementById('grid');
+                        const dataDen = new DataDen(gridEl, options);
+                        {{< /twsnippet/code >}}
+                          {{< /twsnippet/wrapper >}}
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Row edit mode -->
+
+<hr class="my-10" />
+
+<!--Section: Custom edit cell -->
+<section id="custom-editing-cell-section">
+  <div class="sm:-mx-6 lg:-mx-8">
+    <div class="min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal" id="go" data-te-spy-item>Custom editing cell</h2>
+        <p>It is possible to define custom editing cell by setting a new class for the <code>cellEditor</code>.</p>
+
+        <p class="mt-2">
+          In the following example we use custom <code>cellEditor</code> for <strong>Price</strong> column .
+        </p>
+
+        <!--Section: Demo-->
+        {{< twsnippet/demo id="custom-sorting-logic-example" >}}
+        <div id="dd-custom-sorting-logic" class="flex justify-center items-center"></div>
+        {{< /twsnippet/demo >}}
+        <!--Section: Demo-->
+
+        <section class="!visible hidden" data-te-collapse-item id="custom-sorting-logic-example">
+          <div class="pt-2">
+            <!-- prettier-ignore -->
+            {{< twsnippet/wrapper "HTML,javascript" "" "mobile">}}
+                  {{< twsnippet/code active=true lang="html" >}}
+            <div id="grid"></div>
+            {{< /twsnippet/code >}}
+            <!-- prettier-ignore -->
+            {{< twsnippet/code lang="js">}}
+                        import {
+                        DataDen,
+                        } from "data-den-core";
+
+                        const rows = [
+                        { car: 'Honda', model: 'Civic', year: '01/05/2013', price: 28000 },
+                        { car: 'Mitsubishi', model: 'Lancer', year: '01/05/2013', price: 56000 },
+                        { car: 'Porsche', model: 'Boxster', year: '09/02/2020', price: 31000 },
+                        { car: 'Toyota', model: 'Celica', year: '16/12/2010', price: 18000 },
+                        { car: 'Kia', model: 'Sportage', year: '14/09/2006', price: 28000 },
+                        { car: 'Ford', model: 'Focus', year: '04/07/2014', price: 24000 },
+                        { car: 'Ford', model: 'Focus', year: '16/12/2010', price: 24000 },
+                        { car: 'Porsche', model: 'Boxster', year: '24/01/2015', price: 31000 },
+                        { car: 'Mitsubishi', model: 'Lancer', year: '14/09/2006', price: 18000 },
+                        { car: 'Kia', model: 'Sportage', year: '01/05/2013', price: 24000 },
+                        ];
+
+                        function createHtmlElement(template, elementName = 'div') {
+                        const placeholder = document.createElement(elementName);
+                        placeholder.innerHTML = template;
+
+                        return placeholder.firstElementChild;
+                        }
+
+                        class DataDenCustomEditor {
+                        element;
+                        input;
+                        params;
+                        #cssPrefix;
+
+                        constructor(params) {
+                        this.#cssPrefix = params.cssPrefix;
+                        this.params = params;
+
+                        const template = `<input
+              class="${this.#cssPrefix}cell-editor"
+              type="number"
+              step="1000"
+              value="${params.value}" />`; this.element = createHtmlElement(template); this.input = this.element;
+            this.attachUiEvents(); } attachUiEvents() { if (this.input) { this.input.addEventListener('keyup', (e) =>
+            this.params.onKeyUp(e)); } } afterUiRender() { this.input.select(); } getGui() { return this.element; }
+            getValue() { return this.input.value; } } const options = { columns: [ { field: 'car', headerName: 'Car',
+            sort: true }, { field: 'model', headerName: 'Model', sort: true }, { field: 'year', headerName: 'Year',
+            sort: true, editable: true, }, { field: 'price', headerName: 'Price', sort: true, editable: true,
+            cellEditor: DataDenCustomEditor }, ], rows: rows, }; const gridEl = document.getElementById('grid'); const
+            dataDen = new DataDen(gridEl, options);
+            {{< /twsnippet/code >}}
+            {{< /twsnippet/wrapper >}}
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+<!--Section: Custom edit cell -->
