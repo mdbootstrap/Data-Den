@@ -37,7 +37,7 @@ export interface DataDenColDef {
   resize?: boolean;
   pinned?: 'left' | 'right';
   width?: number;
-  cellRenderer?: ClassType<DataDenCellRenderer;
+  cellRenderer?: ClassType<DataDenCellRenderer>;
   cellEditor?: ClassType<DataDenCellEditor>;
   editable?: boolean | ((...args: any[]) => boolean);
   defaultSort?: 'asc' | 'desc' | null;
@@ -81,7 +81,7 @@ export interface DataDenOptions<TData = any> {
   defaultColDef?: DataDenDefaultColDef;
   rows?: TData;
   draggable?: boolean;
-  rowEditMode: boolean;
+  rowEditMode?: boolean;
   pagination?: boolean;
   paginationOptions?: DataDenPaginationOptions;
   quickFilterOptions?: DataDenQuickFilterOptions;
