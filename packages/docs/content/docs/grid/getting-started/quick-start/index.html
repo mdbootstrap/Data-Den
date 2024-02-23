@@ -63,9 +63,12 @@ url: 'docs/grid/getting-started/quick-start/'
   </p>
 
   <div class="pt-2" id="download-vite-step-1">
+    <!-- prettier-ignore -->
     {{< twsnippet/wrapper "terminal" "" "mobile" >}}
     {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}}
-    npm create vite@latest my-project cd my-project npm install
+      npm create vite@latest my-project 
+      cd my-project
+      npm install
     {{< /twsnippet/code >}}
     {{< /twsnippet/wrapper >}}
   </div>
@@ -79,27 +82,58 @@ url: 'docs/grid/getting-started/quick-start/'
     below.
   </p>
   <div class="pt-2" id="download-vite-step-4">
+    <!-- prettier-ignore -->
+    {{/* prettier-ignore-start */}}
     {{< twsnippet/wrapper "main.js" "" "mobile" >}}
     {{< twsnippet/code active=true lang="js" >}}
-    import './style.css' import { DataDen } from './data-den/js/data-den.es.min.js'
-    document.querySelector('#app').innerHTML = `
-    <div style="margin-top: 100px; display: flex; justify-content: center;">
-      <div id="dd"></div>
-    </div>
-    ` const rows = [ { car: 'Honda', year: '01/05/2013', price: 28000 }, { car: 'Mitsubishi', year: '01/05/2013', price:
-    56000 }, { car: 'Porsche', year: '09/02/2020', price: 31000 } ]; (() => { const options = { columns: [ { field:
-    'car', headerName: 'Car', }, { field: 'year', headerName: 'Year', }, { field: 'price', headerName: 'Price', }, ],
-    rows: rows, }; const dd = document.getElementById('dd'); const dataDenBasicSorting = new DataDen(dd, options); })();
+      import './style.css'
+      import { DataDen } from './data-den/js/data-den.es.min.js'
+      
+      document.querySelector('#app').innerHTML = `
+      <div style="margin-top: 100px; display: flex; justify-content: center;">
+        <div id="dd"></div>
+      </div>
+      `
+      const rows = [
+        { car: 'Honda', year: '01/05/2013', price: 28000 },
+        { car: 'Mitsubishi', year: '01/05/2013', price: 56000 },
+        { car: 'Porsche', year: '09/02/2020', price: 31000 }
+      ];
+      
+      (() => {
+        const options = {
+          columns: [
+            {
+              field: 'car',
+              headerName: 'Car',
+            },
+            {
+              field: 'year',
+              headerName: 'Year',
+            },
+            {
+              field: 'price',
+              headerName: 'Price',
+            },
+          ],
+          rows: rows,
+        };
+      
+        const dd = document.getElementById('dd');
+        const dataDenBasicSorting = new DataDen(dd, options);
+      })();
     {{< /twsnippet/code >}}
     {{< /twsnippet/wrapper >}}
+    {{/* prettier-ignore-end */}}
   </div>
 
   <p class="font-bold mt-4">Step 4</p>
   <p>Remove the default content of the <code>style.css</code> file and import Data Den stylesheets.</p>
   <div class="pt-2" id="download-vite-step-4">
+    <!-- prettier-ignore -->
     {{< twsnippet/wrapper "style.css" "" "mobile" >}}
     {{< twsnippet/code active=true lang="scss" >}}
-    @import 'data-den/css/data-den.min.css';
+      @import 'data-den/css/data-den.min.css';
     {{< /twsnippet/code >}}
     {{< /twsnippet/wrapper >}}
   </div>
@@ -110,9 +144,10 @@ url: 'docs/grid/getting-started/quick-start/'
   </p>
 
   <div class="pt-2" id="download-vite-step-6">
+    <!-- prettier-ignore -->
     {{< twsnippet/wrapper "terminal" "" "mobile" >}}
     {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}}
-    npm run dev
+      npm run dev
     {{< /twsnippet/code >}}
     {{< /twsnippet/wrapper >}}
   </div>
