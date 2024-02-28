@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "ng serve --project demo",
     "build": "ng build",
+    "copy-deploy-files": "cp deploy/package.json dist/demo",
+    "demo:deploy": "ng build --project demo --base-href='' && npm run copy-deploy-files && cd dist/demo && mdb publish",
     "watch": "ng build --watch --configuration development",
     "test": "jest",
     "lint": "eslint projects/data-den-angular"
@@ -19,6 +21,7 @@
     "@angular/platform-browser": "^16.2.0",
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
+    "@fortawesome/fontawesome-free": "^6.5.1",
     "husky": "^7.0.1",
     "lint-staged": "^11.1.2",
     "rxjs": "~7.8.0",

@@ -1,1 +1,11 @@
-<data-den-angular [options]="options" (sortingStart)="onSortingStart($event)"></data-den-angular>
+<div class="card-wrapper">
+  <div className="data-den-quick-filter">
+    <input type="text" class="data-den-quick-filter-input" (keyup)="handleQuickFilterKeyup($event)" />
+  </div>
+
+  <div id="dd" class="data-den-wrapper">
+    <data-den-angular #dataDen [options]="options" (sortingStart)="onSortingStart($event)"></data-den-angular>
+  </div>
+
+  <div id="dd-details-table" style="margin-top: 40px"></div>
+</div>
