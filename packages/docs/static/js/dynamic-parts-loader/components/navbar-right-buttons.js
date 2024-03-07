@@ -31,7 +31,7 @@ export const navbarNewRightButtons = DPL.defineComponent({
       .map(
         (n) => `<li>
   <a
-    class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-white/30"
+    class="block bg-transparent px-4 max-w-[300px] sm:max-w-md py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-white/30"
     href="${n.link}"
     ${n.link.indexOf('getdataden.com') === -1 ? 'target="_blank" rel="nofollow"' : ''}
     data-notification-date="${n.date}"
