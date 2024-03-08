@@ -66,11 +66,14 @@ layout: blank-page
               <th scope="col" class="px-6 py-5 text-center">
                 Single use
                 <h3 class="text-5xl text-primary-500 font-bold leading-tight mt-12">
-                  $15<span class="text-base">/month</span>
+                  <span class="currency-symbol"></span>15<span class="text-base">/month</span>
                 </h3>
                 <div>
-                  <p class="font-light text-sm mt-10 mb-1">Billed annually at $179</p>
-                  <a href="https://mdbootstrap.com/?add-to-cart=148003"
+                  <p class="font-light text-sm mt-10 mb-1">
+                    Billed annually at <span class="currency-symbol"></span>179
+                  </p>
+                  <a
+                    href="https://mdbootstrap.com/?add-to-cart=148003"
                     type="button"
                     class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
                     BUY NOW
@@ -80,11 +83,14 @@ layout: blank-page
               <th scope="col" class="px-6 py-5 text-center bg-neutral-100 dark:bg-neutral-800">
                 Unlimited Projects
                 <h3 class="text-5xl text-primary-500 font-bold leading-tight mt-12">
-                  $19<span class="text-base">/month</span>
+                  <span class="currency-symbol"></span>18<span class="text-base">/month</span>
                 </h3>
                 <div>
-                  <p class="font-light text-sm mt-10 mb-1">Billed annually at $219</p>
-                  <a href="147991"
+                  <p class="font-light text-sm mt-10 mb-1">
+                    Billed annually at <span class="currency-symbol"></span>219
+                  </p>
+                  <a
+                    href="https://mdbootstrap.com/?add-to-cart=147991"
                     type="button"
                     class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
                     BUY NOW
@@ -94,28 +100,36 @@ layout: blank-page
               <th scope="col" class="px-6 py-5 text-center">
                 Team
                 <h3 class="text-5xl text-primary-500 font-bold leading-tight pt-5">
-                  $38<span class="text-base">/month</span>
+                  <span class="currency-symbol"></span><span class="monthlyPrice">36</span
+                  ><span class="text-base">/month</span>
                 </h3>
 
-                <p class="font-light mb-5">
-                  <small>Choose your team size:</small>
-                  <select data-te-select-init data-te-select-size="sm">
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="2">7</option>
-                    <option value="3">8</option>
-                    <option value="4">9</option>
-                    <option value="5">10</option>
-                  </select>
-                </p>
+                <div class="flex flex-col justify-center items-center">
+                  <p class="font-light">
+                    <small>Choose your team size:</small>
+                  </p>
+                  <div class="mb-5">
+                    <select data-te-select-init data-te-select-size="sm">
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                    </select>
+                  </div>
+                </div>
                 <div>
-                  <p class="font-light text-sm mb-1">Billed annually at $438</p>
-                  <a href="https://mdbootstrap.com/?add-to-cart=148019"
+                  <p class="font-light text-sm mb-1">
+                    Billed annually at <span class="currency-symbol"></span><span class="teamPrice">434</span>
+                  </p>
+                  <a
+                    href="https://mdbootstrap.com/?add-to-cart=148019"
                     type="button"
-                    class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+                    class="buyNowLink inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
                     BUY NOW
                   </a>
                 </div>
@@ -125,7 +139,6 @@ layout: blank-page
 
           <!-- Table body -->
           <tbody>
-
             <tr class="border-b dark:border-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-800">
               <th scope="row" class="px-4 py-5 uppercase">
                 <p class="text-xl">Licensing conditions</p>
@@ -975,7 +988,6 @@ layout: blank-page
                 </svg>
               </td>
             </tr>
-
           </tbody>
         </table>
       </div>
@@ -1005,11 +1017,11 @@ layout: blank-page
           data-te-clipboard-target="#copy-button"
           data-te-ripple-init
           data-te-ripple-color="light"
-          data-te-clipboard-text="contact@getdataden.com"
+          data-te-clipboard-text="dataden@mdbootstrap.com"
           class="inline-block rounded pb-2 pt-2.5 text-xl font-medium leading-normal text-primary-800 transition duration-150 ease-in-out dark:text-primary-400 sm:px-6
                 sm:text-2xl ">
           <span class="flex items-center">
-            contact@getdataden.com
+            dataden@mdbootstrap.com
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -1277,75 +1289,6 @@ layout: blank-page
     <!-- Section: Design Block -->
   </div>
   <!-- Container for demo purpose -->
-
-  <hr
-    class="my-12 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" />
-
-  <!-- Section: FULL LICENSE -->
-  <div class="container mx-auto my-24 md:px-6">
-    <!-- Section: Design Block -->
-    <section id="commercial-license" class="mb-12 text-center sm:mb-32">
-      <h2 class="mb-16 text-3xl font-bold">Full License</h2>
-
-      <div class="mx-auto mb-[64px] mt-24 grid grid-cols-1  lg:grid-cols-12">
-        <div class="relative mx-3 mb-4 flex items-center lg:col-span-6 lg:mb-0">
-          <picture>
-            <source srcset="https://tecdn.b-cdn.net/img/home/design-system.webp" type="image/webp">
-            <img src="https://tecdn.b-cdn.net/img/home/design-system.png" class="absolute left-0 top-0 w-full px-4 transition-opacity duration-500 dark:opacity-0" alt="TE light design-system components preview">
-          </picture>
-          <picture>
-            <source srcset="
-                https://tecdn.b-cdn.net/img/homepage/design-system-dark.webp
-              " type="image/webp">
-            <img src="https://tecdn.b-cdn.net/img/homepage/design-system-dark.png" class="w-full px-4 opacity-0 transition-opacity duration-500 dark:opacity-100" alt="TE dark design-system components preview">
-          </picture>
-        </div>
-        <div class="relative mx-3 mb-6 flex items-center justify-center lg:col-span-6 lg:mb-0">
-          <div class="text-center lg:text-left">
-            <h3 class="font-bold text-secondary">Highlights:</h3>
-            <div class="my-4 flex h-full items-center text-left">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-4 h-10 w-10">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"></path>
-              </svg>
-              <p class="text-lg text-primary dark:text-primary-400 md:text-xl">
-                You can use Data Den for any commercial project
-              </p>
-            </div>
-
-            <div class="my-4 flex h-full items-center text-left">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-4 h-10 w-10">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"></path>
-              </svg>
-              <p class="text-lg text-primary dark:text-primary-400 md:text-xl">
-                You can use Data Den in unlimited number of projects
-              </p>
-            </div>
-
-            <div class="my-4 mb-10 flex h-full items-center text-left sm:mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-4 h-10 w-10">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"></path>
-              </svg>
-              <p class="text-lg text-primary dark:text-primary-400 md:text-xl">
-                You are bound by the EULA license
-              </p>
-            </div>
-
-            <!-- Button trigger modal -->
-            <a href="#pricing" type="button" class="mx-1 my-1 inline-block rounded bg-primary px-8 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]" data-te-ripple-init="" data-te-ripple-color="light">
-              purchase now
-            </a>
-
-            <!-- Button trigger modal -->
-            <a href="/general/license/"type="button" class="mx-1 my-1 inline-block rounded bg-primary-100 px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200" data-te-toggle="modal" data-te-target="#licenseModal" data-te-ripple-init="" data-te-ripple-color="light">
-              READ FULL LICENSE
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Section: Design Block -->
-  </div>
-  <!-- //Section: FULL LICENSE -->
 </div>
 
 <!-- //MAIN CONTENT -->

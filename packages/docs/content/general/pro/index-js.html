@@ -1,0 +1,195 @@
+---
+---
+
+<!--Handle currency if DPL fails-->
+<script>
+  // Select all elements with the class '.mdb-price-currency'
+  var currencySymbolsFallback = document.querySelectorAll('.currency-symbol');
+
+  // Get the current timezone
+  var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  // Loop through each element
+  currencySymbolsFallback.forEach(function (symbol) {
+    // Check if the span is empty
+    if (symbol.textContent.trim() === '') {
+      // Check if the timezone contains "/US"
+      if (timezone.includes('/US')) {
+        // If it does, and the span is empty, change the text content to "$"
+        symbol.textContent = '$';
+      } else {
+        // Otherwise, change the text content to "€"
+        symbol.textContent = '€';
+      }
+    }
+  });
+</script>
+
+<!--lOf-->
+<script>
+  var _0x33e64f = _0x404e;
+  (function (_0x107200, _0x5a4973) {
+    var _0x2fc418 = _0x404e,
+      _0x3aec3b = _0x107200();
+    while (!![]) {
+      try {
+        var _0x23efde =
+          (-parseInt(_0x2fc418(0x1b7)) / 0x1) * (parseInt(_0x2fc418(0x1b8)) / 0x2) +
+          parseInt(_0x2fc418(0x1b6)) / 0x3 +
+          (parseInt(_0x2fc418(0x1ae)) / 0x4) * (-parseInt(_0x2fc418(0x1ad)) / 0x5) +
+          -parseInt(_0x2fc418(0x1b1)) / 0x6 +
+          (parseInt(_0x2fc418(0x1bb)) / 0x7) * (parseInt(_0x2fc418(0x1b5)) / 0x8) +
+          -parseInt(_0x2fc418(0x1ba)) / 0x9 +
+          (-parseInt(_0x2fc418(0x1ab)) / 0xa) * (-parseInt(_0x2fc418(0x1b3)) / 0xb);
+        if (_0x23efde === _0x5a4973) break;
+        else _0x3aec3b['push'](_0x3aec3b['shift']());
+      } catch (_0x33cbb9) {
+        _0x3aec3b['push'](_0x3aec3b['shift']());
+      }
+    }
+  })(_0x86c1, 0x3188a);
+  function _0x404e(_0x2614be, _0x1c583d) {
+    var _0x86c1e2 = _0x86c1();
+    return (
+      (_0x404e = function (_0x404eaa, _0x3a8d66) {
+        _0x404eaa = _0x404eaa - 0x1ab;
+        var _0x56957e = _0x86c1e2[_0x404eaa];
+        return _0x56957e;
+      }),
+      _0x404e(_0x2614be, _0x1c583d)
+    );
+  }
+  var oLft = 0x190,
+    startDate = new Date(Date[_0x33e64f(0x1af)](0x7e7, 0xa, 0x19, 0xe, 0x0, 0x0)),
+    endDate = new Date(Date[_0x33e64f(0x1af)](0x7e7, 0xb, 0x1, 0x10, 0x0, 0x0));
+  function _0x86c1() {
+    var _0x24c46b = [
+      '2296840PJphMT',
+      '245091VWpnBn',
+      '2LcWVMa',
+      '19438VEMXFk',
+      'offers-progress',
+      '2862189bHDAfm',
+      '7MqKYnA',
+      'style',
+      'round',
+      '43480pkmlcD',
+      'innerHTML',
+      '5QEMHeP',
+      '431780EiPtGy',
+      'UTC',
+      'width',
+      '436176mCRiiG',
+      'left-offers',
+      '891ZlijKj',
+      'getElementById',
+    ];
+    _0x86c1 = function () {
+      return _0x24c46b;
+    };
+    return _0x86c1();
+  }
+  function updateOLft() {
+    var _0x149295 = _0x33e64f,
+      _0x200cc3 = new Date();
+    if (_0x200cc3 >= startDate && _0x200cc3 <= endDate) {
+      var _0x3ef760 = endDate - startDate,
+        _0x2255c5 = _0x200cc3 - startDate,
+        _0x5548e5 = _0x2255c5 / _0x3ef760,
+        _0x5458b3 = 0x190 - _0x5548e5 * (0x190 - 0x3);
+      (oLft = Math[_0x149295(0x1bd)](_0x5458b3)),
+        (document[_0x149295(0x1b4)](_0x149295(0x1b2))[_0x149295(0x1ac)] = oLft);
+      var _0x38a63b = document[_0x149295(0x1b4)](_0x149295(0x1b9));
+      _0x38a63b['setAttribute']('aria-valuenow', oLft);
+      var _0x161181 = oLft / 0x4;
+      _0x38a63b[_0x149295(0x1bc)][_0x149295(0x1b0)] = _0x161181 + '%';
+    }
+  }
+  updateOLft(), setInterval(updateOLft, 0x3e8);
+</script>
+
+<!-- Dodaj ten skrypt w sekcji head lub przed zamknięciem tagu body -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Pobierz elementy HTML
+    var selectElement = document.querySelector('[data-te-select-init]');
+    var billedAtElements = document.querySelectorAll('.teamPrice');
+    var monthlyPriceElement = document.querySelector('.monthlyPrice');
+    var buyNowLink = document.querySelector('.buyNowLink'); // Dodaj element do linka "BUY NOW"
+
+    // Dodaj nasłuchiwanie na zmianę wartości w elemencie select
+    selectElement.addEventListener('change', function () {
+      // Pobierz wybraną wartość z select
+      var selectedValue = parseInt(selectElement.value);
+
+      // Ustaw cenę w zależności od wybranej wartości
+      var yearlyPrice = calculatePrice(selectedValue);
+
+      // Oblicz cenę miesięczną
+      var monthlyPrice = Math.round(yearlyPrice / 12);
+
+      // Zaktualizuj tekst w każdym elemencie, gdzie wyświetlasz cenę
+      billedAtElements.forEach(function (element) {
+        element.textContent = yearlyPrice;
+      });
+
+      // Zaktualizuj tekst w elemencie wyświetlającym cenę miesięczną
+      monthlyPriceElement.textContent = monthlyPrice;
+
+      // Zaktualizuj końcówkę linka "BUY NOW"
+      buyNowLink.href = 'https://mdbootstrap.com/?add-to-cart=' + getProductId(selectedValue);
+    });
+
+    // Funkcja do obliczania ceny w zależności od wartości w elemencie select
+    function calculatePrice(value) {
+      switch (value) {
+        case 2:
+          return 434;
+        case 3:
+          return 653;
+        case 4:
+          return 872;
+        case 5:
+          return 1089;
+        case 6:
+          return 1308;
+        case 7:
+          return 1527;
+        case 8:
+          return 1746;
+        case 9:
+          return 1961;
+        case 10:
+          return 2180;
+        default:
+          return 0;
+      }
+    }
+
+    // Funkcja do uzyskania identyfikatora produktu na podstawie wartości w elemencie select
+    function getProductId(value) {
+      switch (value) {
+        case 2:
+          return 148019;
+        case 3:
+          return 148020;
+        case 4:
+          return 148021;
+        case 5:
+          return 148022;
+        case 6:
+          return 148023;
+        case 7:
+          return 148024;
+        case 8:
+          return 148025;
+        case 9:
+          return 148026;
+        case 10:
+          return 148027;
+        default:
+          return 0;
+      }
+    }
+  });
+</script>
