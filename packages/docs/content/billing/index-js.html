@@ -1,0 +1,102 @@
+---
+---
+
+<script src="https://js.stripe.com/v3/"></script>
+<script type="module">
+  const customDatatable = document.getElementById('yourSubscription');
+
+  customDatatable.addEventListener('render.te.datatable', () => {
+    const cancelButton = document.querySelector('.cancel-subscription-btn');
+
+    if (!cancelButton || cancelButton.getAttribute('data-event-attached') === 'true') {
+      return;
+    }
+
+    cancelButton.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      const subscriptionId = e.target.getAttribute('data-subscription-id');
+      fetch(`${CONFIG.docsApiUrl}/payments/stripe/dd/subscription/${subscriptionId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          _showToast('success', 'Subscription canceled');
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          _showToast('error', 'Error canceling subscription');
+        });
+    });
+
+    cancelButton.setAttribute('data-event-attached', 'true');
+  });
+
+  fetch(`${CONFIG.docsApiUrl}/payments/stripe/dd/subscription`, {
+    method: 'GET',
+    credentials: 'include',
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const subscriptionStatusElement = document.querySelector('.subscription-status');
+      const subscriptionActive = data.length > 0 && data[0].activeDue > Math.floor(Date.now() / 1000);
+
+      subscriptionStatusElement.textContent = subscriptionActive ? 'Active' : 'Inactive';
+      subscriptionStatusElement.classList.remove(subscriptionActive ? 'bg-red-100' : 'bg-green-100');
+      subscriptionStatusElement.classList.add(subscriptionActive ? 'bg-green-100' : 'bg-red-100');
+      subscriptionStatusElement.classList.remove(subscriptionActive ? 'text-red-800' : 'text-green-800');
+      subscriptionStatusElement.classList.add(subscriptionActive ? 'text-green-800' : 'text-red-800');
+
+      new te.Datatable(
+        customDatatable,
+        {
+          columns: [
+            { label: 'Name', field: 'name' },
+            { label: 'File', field: 'file' },
+            { label: 'Active due', field: 'activeDue' },
+            { label: 'Action', field: 'action' },
+          ],
+          rows: data.map((row) => {
+            const downloadableFile = row.downloadableFiles[0];
+            const downloadLink = `https://mdbootstrap.com/?download_file=${downloadableFile.productId}&order=${downloadableFile.orderKey}&email=${downloadableFile.userEmail}&key=${downloadableFile.latestDownloadableFiles[0].downloadId}`;
+            return {
+              name: row.title,
+              file: `<dvi>
+        <a href="${downloadLink}" class="text-primary-500 underline" target="_blank">${downloadableFile.latestDownloadableFiles[0].name}</a>
+</dvi>`,
+              activeDue: Intl.DateTimeFormat('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              }).format(new Date(row.activeDue * 1000)),
+              action: `<div>
+        <button type="button"
+          data-subscription-id="${row.id}"
+          class="cancel-subscription-btn inline-block rounded-full bg-red-500 py-1.5 px-3 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]">
+          Cancel
+        </button>
+          </div>`,
+            };
+          }),
+        },
+        { hover: true, pagination: false }
+      );
+    });
+
+  function _showToast(color, body) {
+    const toastId =
+      color === 'success'
+        ? 'toast-success'
+        : color === 'warning'
+        ? 'toast-warning'
+        : color === 'error'
+        ? 'toast-danger'
+        : '';
+    const toastEl = document.getElementById(toastId);
+    toastEl.querySelector('.toast-body').innerText = body;
+    const toast = te.Toast.getOrCreateInstance(toastEl);
+    toast.show();
+  }
+</script>

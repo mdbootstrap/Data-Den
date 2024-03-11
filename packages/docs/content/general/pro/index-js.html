@@ -1,63 +1,42 @@
 ---
 ---
 
-<!--Handle currency if DPL fails-->
-<script>
-  // Select all elements with the class '.mdb-price-currency'
-  var currencySymbolsFallback = document.querySelectorAll('.currency-symbol');
-
-  // Get the current timezone
-  var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-  // Loop through each element
-  currencySymbolsFallback.forEach(function (symbol) {
-    // Check if the span is empty
-    if (symbol.textContent.trim() === '') {
-      // Check if the timezone contains "/US"
-      if (timezone.includes('/US')) {
-        // If it does, and the span is empty, change the text content to "$"
-        symbol.textContent = '$';
-      } else {
-        // Otherwise, change the text content to "€"
-        symbol.textContent = '€';
-      }
-    }
-  });
-</script>
-
-<!-- Zmiana cen przy Select -->
+<!-- change prices on select -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    // Pobierz elementy HTML
     var selectElement = document.querySelector('[data-te-select-init]');
     var billedAtElements = document.querySelectorAll('.teamPrice');
     var monthlyPriceElement = document.querySelector('.monthlyPrice');
-    var buyNowLink = document.querySelector('.buyNowLink'); // Dodaj element do linka "BUY NOW"
+    var buyNowLink = document.querySelector('.buyNowLink');
 
-    // Dodaj nasłuchiwanie na zmianę wartości w elemencie select
-    selectElement.addEventListener('change', function () {
-      // Pobierz wybraną wartość z select
+    selectElement.addEventListener('change', updateInfo);
+    updateInfo();
+
+    function updateInfo() {
       var selectedValue = parseInt(selectElement.value);
 
-      // Ustaw cenę w zależności od wybranej wartości
       var yearlyPrice = calculatePrice(selectedValue);
 
-      // Oblicz cenę miesięczną
       var monthlyPrice = Math.round(yearlyPrice / 12);
 
-      // Zaktualizuj tekst w każdym elemencie, gdzie wyświetlasz cenę
       billedAtElements.forEach(function (element) {
         element.textContent = yearlyPrice;
       });
 
-      // Zaktualizuj tekst w elemencie wyświetlającym cenę miesięczną
       monthlyPriceElement.textContent = monthlyPrice;
 
-      // Zaktualizuj końcówkę linka "BUY NOW"
-      buyNowLink.href = 'https://mdbootstrap.com/?add-to-cart=' + getProductId(selectedValue);
-    });
+      buyNowLink.setAttribute('data-dd-variation', getProductId(selectedValue));
+      buyNowLink.setAttribute('data-dd-plan-title', `DataDen Team License - ${selectedValue} developers`);
 
-    // Funkcja do obliczania ceny w zależności od wartości w elemencie select
+      const id = buyNowLink.getAttribute('data-dd-plan-id');
+      const variation = buyNowLink.getAttribute('data-dd-variation');
+      const title = buyNowLink.getAttribute('data-dd-plan-title');
+      const qty = buyNowLink.getAttribute('data-dd-plan-qty');
+
+      const product = encodeURIComponent(JSON.stringify({ id, variation, title, qty }));
+      buyNowLink.setAttribute('href', `/checkout?product=${product}`);
+    }
+
     function calculatePrice(value) {
       switch (value) {
         case 2:
@@ -83,7 +62,6 @@
       }
     }
 
-    // Funkcja do uzyskania identyfikatora produktu na podstawie wartości w elemencie select
     function getProductId(value) {
       switch (value) {
         case 2:
@@ -108,5 +86,73 @@
           return 0;
       }
     }
+  });
+</script>
+
+<script type="module">
+  class DataDenPricing {
+    run() {
+      this._loadGeodata();
+
+      document.querySelectorAll('.buy-btn').forEach((el) => {
+        const id = el.getAttribute('data-dd-plan-id');
+        const variation = el.getAttribute('data-dd-variation');
+        const title = el.getAttribute('data-dd-plan-title');
+        const qty = el.getAttribute('data-dd-plan-qty');
+
+        const product = encodeURIComponent(JSON.stringify({ id, variation, title, qty }));
+        el.setAttribute('href', `/checkout?product=${product}`);
+      });
+    }
+
+    _loadGeodata() {
+      const symbols = {
+        USD: '$',
+        EUR: '€',
+        GBP: '£',
+        // 'INR': '₹'
+      };
+
+      document.querySelectorAll('.dd-plan-card').forEach((card) => {
+        const buyBtns = card.querySelectorAll('.buy-btn');
+        buyBtns.forEach((buyBtn) => {
+          const variationId = buyBtn.getAttribute('data-dd-variation');
+
+          fetch(`${CONFIG.docsApiUrl}/payments/stripe/geodata/?variationId=${variationId}`, {
+            credentials: 'include',
+          })
+            .then((response) => response.json())
+            .then((response) => {
+              const additionalPriceSelector = buyBtn.classList.contains('single')
+                ? '.single'
+                : buyBtn.classList.contains('multi')
+                ? '.multi'
+                : '';
+              card.querySelector(`.dd-plan-price${additionalPriceSelector}`).innerText =
+                response.price.sale || response.price.regular;
+              card
+                .querySelectorAll('.currency-symbol')
+                .forEach((el) => (el.innerText = symbols[response.currency.toUpperCase()]));
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+
+              const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+              card.querySelectorAll('.currency-symbol').forEach((el) => {
+                if (timezone.includes('/US/')) {
+                  el.innerText = symbols['USD'];
+                } else {
+                  el.innerText = symbols['EUR'];
+                }
+              });
+            });
+        });
+      });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const p = new DataDenPricing();
+    p.run();
   });
 </script>

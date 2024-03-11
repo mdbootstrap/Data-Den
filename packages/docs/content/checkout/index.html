@@ -1,0 +1,599 @@
+---
+title: 'Checkout'
+date: 2021-04-29T16:00:58+02:00
+draft: false
+main_title: 'Checkout'
+subheading: ''
+seo_title: 'Checkout'
+description: 'Checkout'
+image: 'https://tecdn.b-cdn.net/img/components-big.jpg'
+video: 'https://www.youtube.com/watch?v=-GmnyjgI4Jc&ab_channel=Keepcoding'
+hidden_sidenav: true
+layout: checkout
+---
+
+<!-- Start your project here-->
+<nav class="fixed top-0 h-[58px] w-full bg-black"></nav>
+<div class="h-[58px]"></div>
+<!-- NAV -->
+<!-- START -->
+<div class="text-center">
+  <h1 class="bg-[#f0f2f5] py-10 text-2xl font-bold dark:bg-surface-dark">Checkout</h1>
+  <div class="flex flex-col justify-center gap-10 lg:mx-12 lg:flex-row">
+    <div class="flex max-w-4xl flex-1 flex-col rounded-lg text-left">
+      <div class="p-6">
+        <ul
+          class="mb-10 flex list-none flex-col pl-0 text-center sm:flex-row"
+          id="pills-tab"
+          role="tablist"
+          data-te-nav-ref>
+          <li role="presentation" class="flex-1">
+            <a
+              href="#pills-billing"
+              class="my-2 block rounded bg-neutral-100 px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 data-[te-nav-active]:!bg-primary data-[te-nav-active]:text-white md:mr-4"
+              id="pills-billing-tab"
+              data-te-toggle="pill"
+              data-te-target="#pills-billing"
+              data-te-nav-active
+              role="tab"
+              aria-controls="pills-billing"
+              aria-selected="true"
+              >1. Billing</a
+            >
+          </li>
+          <li role="presentation" class="flex-1">
+            <a
+              href="#pills-payment"
+              class="my-2 block rounded bg-neutral-100 px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 data-[te-nav-active]:!bg-primary data-[te-nav-active]:text-white md:mr-4"
+              id="pills-payment-tab"
+              data-te-toggle="pill"
+              data-te-target="#pills-payment"
+              role="tab"
+              aria-controls="pills-payment"
+              aria-selected="false"
+              >2. Payment</a
+            >
+          </li>
+        </ul>
+
+        <div>
+          <div
+            class="hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+            id="pills-billing"
+            role="tabpanel"
+            aria-labelledby="pills-billing-tab"
+            data-te-tab-active>
+            <div class="flex flex-col items-center justify-center lg:justify-start">
+              <div class="flex w-full flex-col gap-5 lg:flex-row" id="billing-fields">
+                <div class="relative w-full lg:mb-5" data-te-input-wrapper-init>
+                  <input
+                    type="text"
+                    class="required-field peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                    id="billing-email"
+                    placeholder="Email address" />
+                  <label
+                    for="billing-email"
+                    class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none">
+                    Email address
+                  </label>
+                </div>
+                <div class="mb-5 w-full">
+                  <select
+                    id="billing-country"
+                    class="required-field"
+                    data-te-class-select-fake-value="!transform-none pt-[0.37rem] hidden data-[te-input-state-active]:block"
+                    data-te-select-init>
+                    <option value="">Select a country / region&hellip;</option>
+                    <option value="AF">Afghanistan</option>
+                    <option value="AX">Åland Islands</option>
+                    <option value="AL">Albania</option>
+                    <option value="DZ">Algeria</option>
+                    <option value="AS">American Samoa</option>
+                    <option value="AD">Andorra</option>
+                    <option value="AO">Angola</option>
+                    <option value="AI">Anguilla</option>
+                    <option value="AQ">Antarctica</option>
+                    <option value="AG">Antigua and Barbuda</option>
+                    <option value="AR">Argentina</option>
+                    <option value="AM">Armenia</option>
+                    <option value="AW">Aruba</option>
+                    <option value="AU">Australia</option>
+                    <option value="AT">Austria</option>
+                    <option value="AZ">Azerbaijan</option>
+                    <option value="BS">Bahamas</option>
+                    <option value="BH">Bahrain</option>
+                    <option value="BD">Bangladesh</option>
+                    <option value="BB">Barbados</option>
+                    <option value="BY">Belarus</option>
+                    <option value="PW">Belau</option>
+                    <option value="BE">Belgium</option>
+                    <option value="BZ">Belize</option>
+                    <option value="BJ">Benin</option>
+                    <option value="BM">Bermuda</option>
+                    <option value="BT">Bhutan</option>
+                    <option value="BO">Bolivia</option>
+                    <option value="BQ">Bonaire, Saint Eustatius and Saba</option>
+                    <option value="BA">Bosnia and Herzegovina</option>
+                    <option value="BW">Botswana</option>
+                    <option value="BV">Bouvet Island</option>
+                    <option value="BR">Brazil</option>
+                    <option value="IO">British Indian Ocean Territory</option>
+                    <option value="BN">Brunei</option>
+                    <option value="BG">Bulgaria</option>
+                    <option value="BF">Burkina Faso</option>
+                    <option value="BI">Burundi</option>
+                    <option value="KH">Cambodia</option>
+                    <option value="CM">Cameroon</option>
+                    <option value="CA">Canada</option>
+                    <option value="CV">Cape Verde</option>
+                    <option value="KY">Cayman Islands</option>
+                    <option value="CF">Central African Republic</option>
+                    <option value="TD">Chad</option>
+                    <option value="CL">Chile</option>
+                    <option value="CN">China</option>
+                    <option value="CX">Christmas Island</option>
+                    <option value="CC">Cocos (Keeling) Islands</option>
+                    <option value="CO">Colombia</option>
+                    <option value="KM">Comoros</option>
+                    <option value="CG">Congo (Brazzaville)</option>
+                    <option value="CD">Congo (Kinshasa)</option>
+                    <option value="CK">Cook Islands</option>
+                    <option value="CR">Costa Rica</option>
+                    <option value="HR">Croatia</option>
+                    <option value="CU">Cuba</option>
+                    <option value="CW">Cura&ccedil;ao</option>
+                    <option value="CY">Cyprus</option>
+                    <option value="CZ">Czech Republic</option>
+                    <option value="DK">Denmark</option>
+                    <option value="DJ">Djibouti</option>
+                    <option value="DM">Dominica</option>
+                    <option value="DO">Dominican Republic</option>
+                    <option value="EC">Ecuador</option>
+                    <option value="EG">Egypt</option>
+                    <option value="SV">El Salvador</option>
+                    <option value="GQ">Equatorial Guinea</option>
+                    <option value="ER">Eritrea</option>
+                    <option value="EE">Estonia</option>
+                    <option value="ET">Ethiopia</option>
+                    <option value="FK">Falkland Islands</option>
+                    <option value="FO">Faroe Islands</option>
+                    <option value="FJ">Fiji</option>
+                    <option value="FI">Finland</option>
+                    <option value="FR">France</option>
+                    <option value="GF">French Guiana</option>
+                    <option value="PF">French Polynesia</option>
+                    <option value="TF">French Southern Territories</option>
+                    <option value="GA">Gabon</option>
+                    <option value="GM">Gambia</option>
+                    <option value="GE">Georgia</option>
+                    <option value="DE">Germany</option>
+                    <option value="GH">Ghana</option>
+                    <option value="GI">Gibraltar</option>
+                    <option value="GR">Greece</option>
+                    <option value="GL">Greenland</option>
+                    <option value="GD">Grenada</option>
+                    <option value="GP">Guadeloupe</option>
+                    <option value="GU">Guam</option>
+                    <option value="GT">Guatemala</option>
+                    <option value="GG">Guernsey</option>
+                    <option value="GN">Guinea</option>
+                    <option value="GW">Guinea-Bissau</option>
+                    <option value="GY">Guyana</option>
+                    <option value="HT">Haiti</option>
+                    <option value="HM">Heard Island and McDonald Islands</option>
+                    <option value="HN">Honduras</option>
+                    <option value="HK">Hong Kong</option>
+                    <option value="HU">Hungary</option>
+                    <option value="IS">Iceland</option>
+                    <option value="IN">India</option>
+                    <option value="ID">Indonesia</option>
+                    <option value="IR">Iran</option>
+                    <option value="IQ">Iraq</option>
+                    <option value="IE">Ireland</option>
+                    <option value="IM">Isle of Man</option>
+                    <option value="IL">Israel</option>
+                    <option value="IT">Italy</option>
+                    <option value="CI">Ivory Coast</option>
+                    <option value="JM">Jamaica</option>
+                    <option value="JP">Japan</option>
+                    <option value="JE">Jersey</option>
+                    <option value="JO">Jordan</option>
+                    <option value="KZ">Kazakhstan</option>
+                    <option value="KE">Kenya</option>
+                    <option value="KI">Kiribati</option>
+                    <option value="KW">Kuwait</option>
+                    <option value="KG">Kyrgyzstan</option>
+                    <option value="LA">Laos</option>
+                    <option value="LV">Latvia</option>
+                    <option value="LB">Lebanon</option>
+                    <option value="LS">Lesotho</option>
+                    <option value="LR">Liberia</option>
+                    <option value="LY">Libya</option>
+                    <option value="LI">Liechtenstein</option>
+                    <option value="LT">Lithuania</option>
+                    <option value="LU">Luxembourg</option>
+                    <option value="MO">Macao</option>
+                    <option value="MG">Madagascar</option>
+                    <option value="MW">Malawi</option>
+                    <option value="MY">Malaysia</option>
+                    <option value="MV">Maldives</option>
+                    <option value="ML">Mali</option>
+                    <option value="MT">Malta</option>
+                    <option value="MH">Marshall Islands</option>
+                    <option value="MQ">Martinique</option>
+                    <option value="MR">Mauritania</option>
+                    <option value="MU">Mauritius</option>
+                    <option value="YT">Mayotte</option>
+                    <option value="MX">Mexico</option>
+                    <option value="FM">Micronesia</option>
+                    <option value="MD">Moldova</option>
+                    <option value="MC">Monaco</option>
+                    <option value="MN">Mongolia</option>
+                    <option value="ME">Montenegro</option>
+                    <option value="MS">Montserrat</option>
+                    <option value="MA">Morocco</option>
+                    <option value="MZ">Mozambique</option>
+                    <option value="MM">Myanmar</option>
+                    <option value="NA">Namibia</option>
+                    <option value="NR">Nauru</option>
+                    <option value="NP">Nepal</option>
+                    <option value="NL">Netherlands</option>
+                    <option value="NC">New Caledonia</option>
+                    <option value="NZ">New Zealand</option>
+                    <option value="NI">Nicaragua</option>
+                    <option value="NE">Niger</option>
+                    <option value="NG">Nigeria</option>
+                    <option value="NU">Niue</option>
+                    <option value="NF">Norfolk Island</option>
+                    <option value="KP">North Korea</option>
+                    <option value="MK">North Macedonia</option>
+                    <option value="XI">Northern Ireland</option>
+                    <option value="MP">Northern Mariana Islands</option>
+                    <option value="NO">Norway</option>
+                    <option value="OM">Oman</option>
+                    <option value="PK">Pakistan</option>
+                    <option value="PS">Palestinian Territory</option>
+                    <option value="PA">Panama</option>
+                    <option value="PG">Papua New Guinea</option>
+                    <option value="PY">Paraguay</option>
+                    <option value="PE">Peru</option>
+                    <option value="PH">Philippines</option>
+                    <option value="PN">Pitcairn</option>
+                    <option value="PL">Poland</option>
+                    <option value="PT">Portugal</option>
+                    <option value="PR">Puerto Rico</option>
+                    <option value="QA">Qatar</option>
+                    <option value="RE">Reunion</option>
+                    <option value="RO">Romania</option>
+                    <option value="RU">Russia</option>
+                    <option value="RW">Rwanda</option>
+                    <option value="ST">S&atilde;o Tom&eacute; and Pr&iacute;ncipe</option>
+                    <option value="BL">Saint Barth&eacute;lemy</option>
+                    <option value="SH">Saint Helena</option>
+                    <option value="KN">Saint Kitts and Nevis</option>
+                    <option value="LC">Saint Lucia</option>
+                    <option value="SX">Saint Martin (Dutch part)</option>
+                    <option value="MF">Saint Martin (French part)</option>
+                    <option value="PM">Saint Pierre and Miquelon</option>
+                    <option value="VC">Saint Vincent and the Grenadines</option>
+                    <option value="WS">Samoa</option>
+                    <option value="SM">San Marino</option>
+                    <option value="SA">Saudi Arabia</option>
+                    <option value="SN">Senegal</option>
+                    <option value="RS">Serbia</option>
+                    <option value="SC">Seychelles</option>
+                    <option value="SL">Sierra Leone</option>
+                    <option value="SG">Singapore</option>
+                    <option value="SK">Slovakia</option>
+                    <option value="SI">Slovenia</option>
+                    <option value="SB">Solomon Islands</option>
+                    <option value="SO">Somalia</option>
+                    <option value="ZA">South Africa</option>
+                    <option value="GS">South Georgia/Sandwich Islands</option>
+                    <option value="KR">South Korea</option>
+                    <option value="SS">South Sudan</option>
+                    <option value="ES">Spain</option>
+                    <option value="LK">Sri Lanka</option>
+                    <option value="SD">Sudan</option>
+                    <option value="SR">Suriname</option>
+                    <option value="SJ">Svalbard and Jan Mayen</option>
+                    <option value="SZ">Swaziland</option>
+                    <option value="SE">Sweden</option>
+                    <option value="CH">Switzerland</option>
+                    <option value="SY">Syria</option>
+                    <option value="TW">Taiwan</option>
+                    <option value="TJ">Tajikistan</option>
+                    <option value="TZ">Tanzania</option>
+                    <option value="TH">Thailand</option>
+                    <option value="TL">Timor-Leste</option>
+                    <option value="TG">Togo</option>
+                    <option value="TK">Tokelau</option>
+                    <option value="TO">Tonga</option>
+                    <option value="TT">Trinidad and Tobago</option>
+                    <option value="TN">Tunisia</option>
+                    <option value="TR">Turkey</option>
+                    <option value="TM">Turkmenistan</option>
+                    <option value="TC">Turks and Caicos Islands</option>
+                    <option value="TV">Tuvalu</option>
+                    <option value="UG">Uganda</option>
+                    <option value="UA">Ukraine</option>
+                    <option value="AE">United Arab Emirates</option>
+                    <option value="GB">United Kingdom (UK)</option>
+                    <option value="US">United States (US)</option>
+                    <option value="UM">United States (US) Minor Outlying Islands</option>
+                    <option value="UY">Uruguay</option>
+                    <option value="UZ">Uzbekistan</option>
+                    <option value="VU">Vanuatu</option>
+                    <option value="VA">Vatican</option>
+                    <option value="VE">Venezuela</option>
+                    <option value="VN">Vietnam</option>
+                    <option value="VG">Virgin Islands (British)</option>
+                    <option value="VI">Virgin Islands (US)</option>
+                    <option value="WF">Wallis and Futuna</option>
+                    <option value="EH">Western Sahara</option>
+                    <option value="YE">Yemen</option>
+                    <option value="ZM">Zambia</option>
+                    <option value="ZW">Zimbabwe</option>
+                  </select>
+                  <label data-te-select-label-ref>Country / Region</label>
+                </div>
+              </div>
+              <div class="w-full" id="account-fields">
+                <div class="relative mb-5 w-full" data-te-input-wrapper-init>
+                  <input
+                    type="text"
+                    class="required-field peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:autofill:shadow-autofill [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                    id="account-first-name"
+                    placeholder="First name" />
+                  <label
+                    for="account-first-name"
+                    class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none">
+                    First name
+                  </label>
+                </div>
+                <div class="relative mb-5 w-full" data-te-input-wrapper-init>
+                  <input
+                    type="text"
+                    class="required-field peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:autofill:shadow-autofill [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                    id="account-username"
+                    placeholder="Username" />
+                  <label
+                    for="account-username"
+                    class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none">
+                    Username
+                  </label>
+                </div>
+                <div class="relative mb-5 w-full" data-te-input-wrapper-init>
+                  <input
+                    type="password"
+                    class="required-field peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:autofill:shadow-autofill [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                    id="account-password"
+                    placeholder="Password" />
+                  <label
+                    for="account-password"
+                    class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none">
+                    Password
+                  </label>
+                </div>
+                <div class="relative mb-5 w-full" data-te-input-wrapper-init>
+                  <input
+                    type="password"
+                    class="required-field peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:autofill:shadow-autofill [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                    id="account-repeat-password"
+                    placeholder="Repeat Password" />
+                  <label
+                    for="account-repeat-password"
+                    class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none">
+                    Repeat Password
+                  </label>
+                </div>
+              </div>
+              <div class="mb-5 h-[1px] w-full bg-gray-200"></div>
+              <button
+                type="button"
+                id="validate-billing-btn"
+                data-switch-to="#pills-payment"
+                class="block w-full rounded bg-primary px-6 py-3 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] md:text-[15px]">
+                NEXT STEP
+              </button>
+            </div>
+          </div>
+          <div
+            class="hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+            id="pills-payment"
+            role="tabpanel"
+            aria-labelledby="pills-payment-tab">
+            <form id="payment-form">
+              <div class="card-header pb-4">
+                <p class="card-text">Pay with your credit card via Stripe.</p>
+                <div class="my w-100 flex items-center gap-2">
+                  <img
+                    alt="Visa"
+                    class="svg-icon h-9 w-9"
+                    src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg" />
+                  <img
+                    alt="American Express"
+                    class="svg-icon h-9 w-9"
+                    src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg" />
+                  <img
+                    alt="Mastercard"
+                    class="svg-icon h-9  w-9"
+                    src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg" />
+                  <img
+                    alt="UnionPay"
+                    class="svg-icon h-5 w-9"
+                    src="https://mdbootstrap.com/wp-content/themes/mdbootstrap4/img/unionpay.png" />
+                </div>
+              </div>
+              <div class="mb-5 h-[1px] w-full bg-gray-200"></div>
+              <!--  -->
+              <div class="card-body py-y position-relative">
+                <small class="card-text mb-3">Credit or debit card</small>
+                <div class="mt-2" id="payment-element" style="border:1px solid #b2b2b2;padding:1rem .6rem"></div>
+              </div>
+              <!--  -->
+              <div class="my-5 h-[1px] w-full bg-gray-200"></div>
+              <p class="mb-0 mb-5 cursor-pointer text-left text-base">
+                Your personal data will be used to process your order, support your experience throughout this website,
+                and for other purposes described in our
+                <span class="cursor-pointer text-primary">privacy policy</span>. By placing the order you agree to the
+                terms of our <span class="cursor-pointer text-primary">licensing and refund policy</span>.
+              </p>
+              <button
+                type="submit"
+                id="submit"
+                class="block w-full rounded bg-success px-6 py-3 text-xs font-medium uppercase leading-normal text-white shadow-success-3 transition duration-150 ease-in-out hover:bg-success-accent-300 hover:shadow-success-2 focus:bg-success-accent-300 focus:shadow-success-2 focus:outline-none focus:ring-0 active:bg-success-600 active:shadow-success-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong md:text-[15px]">
+                PLACE ORDER
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="mb-16 mt-8 flex h-fit flex-1 flex-col rounded-lg text-left shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]
+        lg:max-w-sm">
+      <div class="p-6">
+        <section class="rounded-lg bg-white dark:bg-surface-dark lg:p-5" id="order-summary">
+          <h5 class="mb-5 text-xl font-bold">Summary</h5>
+          <ul class="list-group list-group-flush" id="summary-items-list">
+            <div class="mb-5 h-[2px] w-full bg-gray-200"></div>
+            <li class="align-center flex justify-between border-0 px-0 pb-0 pb-3">
+              Subtotal
+              <bdi id="summary-subtotal">
+                <span class="currency-symbol"></span>
+                <span class="product-price"></span>
+                <small class="text-muted product-billing" style="font-size:16px">/ annual</small>
+              </bdi>
+            </li>
+            <div class="mb-5 h-[2px] w-full bg-gray-200"></div>
+            <li
+              id="summary-coupon-code"
+              class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+              <p class="form-row form-row-wide account-field" id="coupon_code_field" data-priority="">
+                <span id="coupon_code_wrapper" class="woocommerce-input-wrapper d-flex w-100"> </span>
+              </p>
+              <!--              <div class="mb-5 flex gap-2">-->
+              <!--                <div class="relative flex-1" data-te-input-wrapper-init>-->
+              <!--                  <input-->
+              <!--                    type="text"-->
+              <!--                    class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"-->
+              <!--                    id="billing-coupon-code"-->
+              <!--                    placeholder="Username" />-->
+              <!--                  <label-->
+              <!--                    for="billing-coupon-code"-->
+              <!--                    class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none">-->
+              <!--                    Coupon code-->
+              <!--                  </label>-->
+              <!--                </div>-->
+              <!--                <button-->
+              <!--                  type="button"-->
+              <!--                  id="apply-coupon-btn"-->
+              <!--                  class="rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]">-->
+              <!--                  apply-->
+              <!--                </button>-->
+              <!--              </div>-->
+
+              <p></p>
+            </li>
+            <!--            <div class="mb-5 h-[2px] w-full bg-gray-200"></div>-->
+            <li class="order-total mb-3 flex justify-between border-0 px-0 font-bold" id="summary-total">
+              <span>Total</span>
+              <strong>
+                <bdi>
+                  <span class="currency-symbol">€</span>
+                  <span class="product-price">19</span>&nbsp;<small
+                    class="text-muted product-billing"
+                    style="font-size:16px"
+                    >/ annual</small
+                  >
+                </bdi>
+              </strong>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="pointer-events-auto mx-auto hidden w-96 max-w-full rounded-lg bg-success-100 bg-clip-padding text-sm text-success-700 shadow-lg  dark:bg-green-950 dark:text-success-500/80"
+  id="toast-success"
+  role="alert"
+  aria-live="assertive"
+  aria-atomic="true"
+  data-te-toast-init
+  data-te-position="top-right"
+  data-te-autohide="true"
+  data-te-delay="2000">
+  <div
+    class="flex items-center justify-between rounded-t-lg border-b-2 border-[#a1dbb8] bg-clip-padding px-4 py-[0.65rem]  dark:border-[#0c622e]">
+    <div class="flex items-center">
+      <span class="me-2 py-1 [&>svg]:h-6 [&>svg]:w-6">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            fill-rule="evenodd"
+            d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+            clip-rule="evenodd" />
+        </svg>
+      </span>
+      <p class="font-bold">Success</p>
+    </div>
+  </div>
+  <div class="toast-body break-words rounded-b-lg p-4 text-center"></div>
+</div>
+<div
+  class="pointer-events-auto mx-auto hidden w-96 max-w-full rounded-lg bg-danger-100 bg-clip-padding text-sm text-danger-700 shadow-lg  dark:bg-[#2c0f14] dark:text-danger-500"
+  id="toast-danger"
+  role="alert"
+  aria-live="assertive"
+  aria-atomic="true"
+  data-te-toast-init
+  data-te-position="top-right"
+  data-te-autohide="true"
+  data-te-delay="2000">
+  <div
+    class="flex items-center justify-between rounded-t-lg border-b-2 border-[#f1b7c1] bg-clip-padding px-4 py-[0.65rem]  dark:border-[#842e3c]">
+    <div class="flex items-center">
+      <span class="me-2 py-1 [&>svg]:h-6 [&>svg]:w-6">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            fill-rule="evenodd"
+            d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+            clip-rule="evenodd" />
+        </svg>
+      </span>
+      <p class="font-bold">Error</p>
+    </div>
+  </div>
+  <div class="toast-body break-words rounded-b-lg p-4 text-center"></div>
+</div>
+
+<div
+  class="pointer-events-auto mx-auto hidden w-96 max-w-full rounded-lg bg-warning-100 bg-clip-padding text-sm text-warning-800 shadow-lg  dark:bg-[#2e2005] dark:text-warning-500"
+  id="toast-warning"
+  role="alert"
+  aria-live="assertive"
+  aria-atomic="true"
+  data-te-toast-init
+  data-te-position="top-right"
+  data-te-autohide="true"
+  data-te-delay="2000">
+  <div
+    class="flex items-center justify-between rounded-t-lg border-b-2 border-[#f4d9a4] bg-clip-padding px-4 py-[0.65rem]  dark:border-[#896110]">
+    <div class="flex items-center">
+      <span class="me-2 py-1 [&>svg]:h-6 [&>svg]:w-6">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            fill-rule="evenodd"
+            d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+            clip-rule="evenodd" />
+        </svg>
+      </span>
+      <p class="font-bold">Warning</p>
+    </div>
+  </div>
+  <div class="toast-body break-words rounded-b-lg p-4 text-center"></div>
+</div>
+<!-- END -->
+<!-- End your project here-->

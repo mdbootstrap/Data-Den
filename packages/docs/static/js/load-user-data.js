@@ -23,9 +23,21 @@ window.addEventListener('DOMContentLoaded', () => {
 
     if (this.readyState === XMLHttpRequest.DONE && this.status >= 200 && this.status < 300) {
       const { user, notifications } = JSON.parse(xhr.response);
-      hideProDocs({ ...user, notifications, isLoggedIn: true });
+      hideProDocs({
+        ...user,
+        notifications,
+        isLoggedIn: true,
+        isPro: user.isDatadenPro,
+        isProSubscription: user.isDatadenProSubscription,
+      });
       DPL.run({
-        userData: { ...user, notifications, isLoggedIn: true },
+        userData: {
+          ...user,
+          notifications,
+          isLoggedIn: true,
+          isPro: user.isDatadenPro,
+          isProSubscription: user.isDatadenProSubscription,
+        },
         components: [...mdb5Components],
       });
     } else if (this.readyState === XMLHttpRequest.DONE && this.status === 401) {
