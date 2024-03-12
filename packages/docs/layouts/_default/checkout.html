@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="{{ .Language.Lang }}">
+  <head>
+    {{ partial "head/head.html" . }}
+  </head>
+  <body class="bg-red transition-colors duration-500 dark:bg-neutral-800">
+    {{ partial "header/header.html" . }}
+    {{ .Content }}
+    {{ partial "footer/footer.html" . }}
+  </body>
+  {{ with .Resources.GetMatch "index-js.html" }}
+    {{ .Content }}
+  {{ end }}
+</html>

@@ -1,0 +1,377 @@
+---
+---
+
+<script src="https://js.stripe.com/v3/"></script>
+<script type="module">
+  class TweVariationParamsParser {
+    static parse() {
+      const queryParams = new URLSearchParams(location.search);
+      const rawParams = queryParams.get('product');
+      if (!rawParams) {
+        throw new Error('MISSING_VARIATION_PARAMS');
+      }
+
+      try {
+        const { id, variation, title, qty } = JSON.parse(decodeURIComponent(rawParams));
+        return { id, variation, title, qty };
+      } catch (e) {
+        console.error(e);
+        throw new Error('INVALID_VARIATION_PARAMS');
+      }
+    }
+  }
+
+  class TweCheckout {
+    constructor() {
+      this.stripeCard = null;
+      this.stripe = Stripe('pk_test_BbH2R0Osif0rDXChYTgUfWhy00enpAgTGb');
+      this.elements = this.stripe.elements();
+
+      this.user = null;
+      this.userGeoData = {
+        currency: '',
+        price: '',
+      };
+
+      this.variationParams = TweVariationParamsParser.parse();
+    }
+
+    run() {
+      this.stripeCard = this.elements.create('card', { hidePostalCode: true });
+      this.stripeCard.mount('#payment-element');
+
+      this.initEvents();
+      this.buildSummary();
+
+      const event = new CustomEvent('checkout_initialized', {
+        bubbles: true,
+        cancelable: true,
+      });
+      document.dispatchEvent(event);
+    }
+
+    initEvents() {
+      document.getElementById('payment-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        this.submit();
+      });
+
+      document.addEventListener('dpl_loaded', (e) => {
+        this._loadGeodata();
+
+        this.user = e.detail;
+        if (this.user === null || !this.user.isLoggedIn) return;
+
+        document.getElementById('account-fields').remove();
+        document.getElementById('billing-email').value = this.user.email;
+      });
+
+      document.getElementById('validate-billing-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        const valid = this.validateBillingFields();
+        if (valid) {
+          const switchTargetSelector = e.target.getAttribute('data-switch-to');
+          this._switchTabTo(switchTargetSelector);
+        } else {
+          this._showToast('warning', 'Please correct the billing information.');
+        }
+      });
+
+      document.querySelectorAll('[data-switch-to]').forEach((el) => {
+        el.addEventListener('click', (e) => {
+          const switchTargetSelector = el.getAttribute('data-switch-to');
+          this._switchTabTo(switchTargetSelector);
+        });
+      });
+
+      // document.getElementById('apply-coupon-btn').addEventListener('click', (e) => {
+      // this._applyCoupon();
+      // });
+    }
+
+    _loadGeodata() {
+      const symbols = {
+        USD: '$',
+        EUR: '€',
+        GBP: '£',
+        // 'INR': '₹'
+      };
+
+      fetch(`${CONFIG.docsApiUrl}/payments/stripe/geodata/?variationId=${this.variationParams.variation}`, {
+        method: 'GET',
+        credentials: 'include',
+      })
+        .then((response) => response.json())
+        .then((response) => {
+          this.userGeoData.currency = symbols[response.currency];
+          this.userGeoData.price = response.price.sale || response.price.regular;
+          document
+            .querySelectorAll('.currency-symbol')
+            .forEach((el) => (el.innerText = symbols[response.currency.toUpperCase()]));
+          document
+            .querySelectorAll('.product-price')
+            .forEach((el) => (el.innerText = (this.userGeoData.price * this.variationParams.qty).toFixed(2)));
+          document.getElementById('billing-country').value = response.countryCode.toUpperCase();
+        });
+    }
+
+    _switchTabTo(switchTargetSelector) {
+      const tabEl = document.querySelector(`[data-te-target="${switchTargetSelector}"]`);
+      const tab = new te.Tab(tabEl);
+      tab.show();
+    }
+
+    validateBillingFields() {
+      let valid = true;
+      document
+        .getElementById('pills-billing')
+        .querySelectorAll('input.required-field, select.required-field')
+        .forEach((input) => {
+          if (!input.value) {
+            valid = false;
+            input.parentElement.querySelectorAll('[data-te-input-notch-ref] div').forEach((el) => {
+              const style = el.getAttribute('style') || '';
+              el.setAttribute('style', style + 'border-color: #dc3545 !important;');
+            });
+          } else {
+            input.parentElement.querySelectorAll('[data-te-input-notch-ref] div').forEach((el) => {
+              const style = el.getAttribute('style') || '';
+              el.setAttribute('style', style.replace('border-color: #dc3545 !important;', ''));
+            });
+          }
+        });
+
+      return valid;
+    }
+
+    buildSummary() {
+      const itemsList = document.getElementById('summary-items-list');
+      const summarySubtotal = document.getElementById('summary-subtotal');
+      const summaryTotal = document.getElementById('summary-total');
+
+      const itemTemplate = document.createElement('template');
+      itemTemplate.innerHTML = `<li class="align-center flex justify-between border-0 px-0 pb-0">
+          <div class="product-name py-3">
+            ${this.variationParams.title}
+            <strong class="product-quantity">&times;&nbsp;${this.variationParams.qty}</strong>
+          </div>
+          <span class="flex items-center product-total">
+            <bdi>
+              <span class="currency-symbol">${this.userGeoData.currency}</span>
+              <span class="product-price">${Number(this.userGeoData.price * this.variationParams.qty).toFixed(
+                2
+              )}</span>&nbsp
+              <small class="text-muted product-billing" style="font-size: 16px">/ annual</small>
+            </bdi>
+          </span>
+        </li>`;
+
+      itemsList.prepend(itemTemplate.content);
+
+      summarySubtotal.querySelector('.product-price').innerHTML = Number(
+        this.userGeoData.price * this.variationParams.qty
+      ).toFixed(2);
+      summaryTotal.querySelector('.product-price').innerHTML = Number(this.userGeoData.price).toFixed(2);
+    }
+
+    submit() {
+      const valid = this.validateBillingFields();
+      if (!valid) {
+        this._showToast('warning', 'Please correct the billing information.');
+        return this._switchTabTo('#pills-billing');
+      }
+
+      this._showLoader();
+      return this._createPaymentMethod()
+        .then((response) => this._createSubscription(response))
+        .then((response) => this._confirmCardPayment(response))
+        .then((result) => {
+          if (result.error) {
+            this._showToast('error', 'Something went wrong. Please try again.');
+            return console.error('result.error', result.error);
+          }
+
+          if (result.paymentIntent.status === 'succeeded') {
+            this._showToast('success', 'Your payment has succeeded. You will be now redirected.');
+            location.href = '/billing/';
+          } else {
+            this._showToast('warning', 'There might be some error. Please check your console for more info.');
+          }
+          console.log('success', result.paymentIntent.status);
+        })
+        .catch((err) => {
+          console.error('err', err);
+          this._showToast('error', err || 'Something went wrong. Please try again.');
+        })
+        .finally(() => this._hideLoader());
+    }
+
+    _showLoader() {
+      this.stripeCard.update({ disabled: true });
+
+      const icon = document.createElement('template');
+      icon.innerHTML = '<i class="spinner-border-sm spinner-border loading-icon ms-2 place-order-loader"></i>';
+
+      const placeOrderBtn = document.getElementById('submit');
+      placeOrderBtn.classList.add('disabled');
+      placeOrderBtn.setAttribute('disabled', 'disabled');
+      placeOrderBtn.appendChild(icon.content);
+
+      document
+        .getElementById('pills-billing')
+        .querySelectorAll('input, select')
+        .forEach((input) => {
+          input.classList.add('disabled');
+          input.setAttribute('disabled', 'disabled');
+        });
+    }
+
+    _hideLoader() {
+      this.stripeCard.update({ disabled: false });
+
+      document.querySelector('i.place-order-loader').remove();
+
+      const placeOrderBtn = document.getElementById('submit');
+      placeOrderBtn.classList.remove('disabled');
+      placeOrderBtn.removeAttribute('disabled');
+
+      document
+        .getElementById('pills-billing')
+        .querySelectorAll('input, select')
+        .forEach((input) => {
+          input.classList.remove('disabled');
+          input.removeAttribute('disabled');
+        });
+    }
+
+    _showToast(color, body) {
+      const toastId =
+        color === 'success'
+          ? 'toast-success'
+          : color === 'warning'
+          ? 'toast-warning'
+          : color === 'error'
+          ? 'toast-danger'
+          : '';
+      const toastEl = document.getElementById(toastId);
+      toastEl.querySelector('.toast-body').innerText = body;
+      const toast = te.Toast.getOrCreateInstance(toastEl);
+      toast.show();
+    }
+
+    _createPaymentMethod() {
+      return this.stripe.createPaymentMethod({
+        type: 'card',
+        card: this.stripeCard,
+      });
+    }
+
+    _createSubscription(paymentMethodResponse) {
+      const response = paymentMethodResponse;
+      return new Promise((resolve, reject) => {
+        this.paymentMethodId = response.paymentMethod.id;
+
+        const billing = {
+          email: document.getElementById('billing-email').value,
+          country: document.getElementById('billing-country').value,
+        };
+
+        let account;
+        if (!this.user) {
+          account = {
+            firstName: document.getElementById('account-first-name').value,
+            username: document.getElementById('account-username').value,
+            password: document.getElementById('account-password').value,
+            repeatPassword: document.getElementById('account-repeat-password').value,
+          };
+        }
+
+        // const coupon = document.getElementById('billing-coupon-code').value;
+
+        fetch(`${CONFIG.docsApiUrl}/payments/stripe/dd/subscription`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            productId: this.variationParams.id,
+            variationId: this.variationParams.variation,
+            paymentMethodId: this.paymentMethodId,
+            billing,
+            account,
+            // ...!!coupon && { coupon }
+          }),
+          credentials: 'include',
+        })
+          .then((response) => response.json())
+          .then((response) => resolve(response))
+          .catch((error) => reject(error));
+      });
+    }
+
+    _confirmCardPayment(response) {
+      const clientSecret = response.clientSecret;
+      return this.stripe.confirmCardPayment(clientSecret, {
+        payment_method: this.paymentMethodId,
+      });
+    }
+
+    _applyCoupon() {
+      const couponCode = document.getElementById('coupon_code').value;
+      if (!couponCode) {
+        return;
+      }
+
+      fetch(
+        `${CONFIG.appsApiUrl}/payments/stripe/coupon/${couponCode}/${this.variationParams.id}/${this.variationParams.variation}`,
+        {
+          method: 'GET',
+          credentials: 'include',
+        }
+      )
+        .then((response) => response.json())
+        .then((response) => {
+          const coupon = response.coupon;
+          if (
+            coupon &&
+            coupon.metadata &&
+            coupon.metadata.product_id === this.variationParams.id &&
+            coupon.metadata.variation_id === this.variationParams.variation
+          ) {
+            this._calculateDiscountAndShow(coupon);
+          } else {
+            this._showToast('error', response.message);
+          }
+        })
+        .catch((error) => this._showToast('error', error));
+    }
+
+    _calculateDiscountAndShow(coupon) {
+      const percentOff = coupon.percent_off / 100;
+      const couponAmount = (Number(this.userGeoData.price) * percentOff).toFixed(2);
+      const newPrice = (Number(this.userGeoData.price) - Number(this.userGeoData.price) * percentOff).toFixed(2);
+      const couponCodeField = document.getElementById('summary-coupon-code');
+      const summarySubtotal = document.getElementById('summary-subtotal');
+      const summaryTotal = document.getElementById('summary-total');
+      const couponHTML = `<li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+          <div class="coupon-applied">
+            Coupon: <strong class="coupon-id">${coupon.id}</strong>
+          </div>
+          <span class="product-coupon">
+            <bdi><span class="currency-symbol">- ${this.userGeoData.currency}</span><span class="product-price">${couponAmount}</span></bdi>
+          </span>
+        </li>`;
+
+      couponCodeField.insertAdjacentHTML('beforebegin', couponHTML);
+      couponCodeField.classList.add('d-none');
+
+      summarySubtotal.querySelector('.product-price').innerHTML = newPrice;
+      summaryTotal.querySelector('.product-price').innerHTML = newPrice;
+    }
+  }
+
+  const p = new TweCheckout();
+  p.run();
+</script>

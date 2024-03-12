@@ -1,0 +1,99 @@
+---
+title: 'Billing information'
+date: 2021-04-29T16:00:58+02:00
+draft: false
+main_title: 'Billing information'
+subheading: ''
+seo_title: 'Billing information'
+description: 'Billing information'
+image: 'https://tecdn.b-cdn.net/img/components-big.jpg'
+video: 'https://www.youtube.com/watch?v=-GmnyjgI4Jc&ab_channel=Keepcoding'
+hidden_sidenav: true
+layout: checkout
+modules: 'datatable'
+---
+
+<!-- Start your project here-->
+<nav class="fixed top-0 h-[58px] w-full bg-black"></nav>
+<div class="h-[58px]"></div>
+<!--  -->
+<div class="top-[45px] w-full items-center justify-center text-center lg:justify-between">
+  <div class="bg-gradient-to-r from-[#80a7cb] to-[#c9d9e9] py-3 ">
+    <div class="mx-auto flex max-w-lg flex-col items-center justify-between gap-5 md:max-w-5xl lg:flex-row">
+      <div
+        class="w-[calc(100%-40px)] rounded-lg bg-white px-10 py-5 text-2xl font-bold shadow-secondary-1 dark:bg-surface-dark sm:w-full md:w-[calc(100%-40px)] lg:w-auto">
+        Billling
+      </div>
+      <div
+        class="w-[calc(100%-40px)] max-w-lg rounded-lg bg-white px-7 py-5  text-xl font-bold shadow-secondary-1 dark:bg-surface-dark sm:w-full md:w-[calc(100%-40px)] md:max-w-5xl lg:w-auto">
+        <span>Subscription status:</span>
+        <span class="subscription-status me-2 rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-bold text-green-800"
+          >-</span
+        >
+      </div>
+    </div>
+  </div>
+  <div
+    class="mx-auto mt-5 w-[calc(100%-40px)] max-w-lg rounded-lg bg-white shadow-secondary-1 dark:bg-surface-dark md:max-w-3xl md:max-w-5xl">
+    <div class="flex items-center justify-between px-5 py-3">
+      <div class="pb-1 text-left text-lg">Your products</div>
+    </div>
+    <div class="mb-5 h-[1px] w-full bg-gray-200"></div>
+    <div id="yourSubscription"></div>
+    <div class="mb-5 h-[1px] w-full bg-gray-200"></div>
+  </div>
+</div>
+<div
+  class="pointer-events-auto mx-auto hidden w-96 max-w-full rounded-lg bg-success-100 bg-clip-padding text-sm text-success-700 shadow-lg  dark:bg-green-950 dark:text-success-500/80"
+  id="toast-success"
+  role="alert"
+  aria-live="assertive"
+  aria-atomic="true"
+  data-te-toast-init
+  data-te-position="top-right"
+  data-te-autohide="true"
+  data-te-delay="2000">
+  <div
+    class="flex items-center justify-between rounded-t-lg border-b-2 border-[#a1dbb8] bg-clip-padding px-4 py-[0.65rem]  dark:border-[#0c622e]">
+    <div class="flex items-center">
+      <span class="me-2 py-1 [&>svg]:h-6 [&>svg]:w-6">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            fill-rule="evenodd"
+            d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+            clip-rule="evenodd" />
+        </svg>
+      </span>
+      <p class="font-bold">Success</p>
+    </div>
+  </div>
+  <div class="toast-body break-words rounded-b-lg p-4 text-center"></div>
+</div>
+<div
+  class="pointer-events-auto mx-auto hidden w-96 max-w-full rounded-lg bg-danger-100 bg-clip-padding text-sm text-danger-700 shadow-lg  dark:bg-[#2c0f14] dark:text-danger-500"
+  id="toast-danger"
+  role="alert"
+  aria-live="assertive"
+  aria-atomic="true"
+  data-te-toast-init
+  data-te-position="top-right"
+  data-te-autohide="true"
+  data-te-delay="2000">
+  <div
+    class="flex items-center justify-between rounded-t-lg border-b-2 border-[#f1b7c1] bg-clip-padding px-4 py-[0.65rem]  dark:border-[#842e3c]">
+    <div class="flex items-center">
+      <span class="me-2 py-1 [&>svg]:h-6 [&>svg]:w-6">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            fill-rule="evenodd"
+            d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+            clip-rule="evenodd" />
+        </svg>
+      </span>
+      <p class="font-bold">Error</p>
+    </div>
+  </div>
+  <div class="toast-body break-words rounded-b-lg p-4 text-center"></div>
+</div>
+<!-- END -->
+<!-- End your project here-->
