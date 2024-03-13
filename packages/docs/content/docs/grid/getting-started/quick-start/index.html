@@ -18,7 +18,7 @@ url: 'docs/grid/getting-started/quick-start/'
     <p class="font-bold mt-4">Step 1</p>
     <p>1. Download the package</p>
     <div>
-      <a href="https://mdbootstrap.com/download/data-den/ZdMmf9LEVY8uSDQ4PCBT/Data-Den-Pro-Early-Access-1.0.0.zip" id="download-zip-step-1">
+      <a href="/billing" target="_blank" id="download-zip-step-1">
         <button
           class="mb-3 mr-1 mt-3 rounded border border-solid border-purple-500 bg-transparent px-6 py-3 text-sm font-bold uppercase text-purple-500 outline-none transition-all duration-150 ease-linear hover:bg-purple-500 hover:text-white focus:outline-none active:bg-purple-600"
           type="button">
@@ -66,7 +66,7 @@ url: 'docs/grid/getting-started/quick-start/'
     <!-- prettier-ignore -->
     {{< twsnippet/wrapper "terminal" "" "mobile" >}}
     {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}}
-      npm create vite@latest my-project 
+      npm create vite@latest my-project
       cd my-project
       npm install
     {{< /twsnippet/code >}}
@@ -88,7 +88,7 @@ url: 'docs/grid/getting-started/quick-start/'
     {{< twsnippet/code active=true lang="js" >}}
       import './style.css'
       import { DataDen } from './data-den/js/data-den.es.min.js'
-      
+
       document.querySelector('#app').innerHTML = `
       <div style="margin-top: 100px; display: flex; justify-content: center;">
         <div id="dd"></div>
@@ -99,7 +99,7 @@ url: 'docs/grid/getting-started/quick-start/'
         { car: 'Mitsubishi', year: '01/05/2013', price: 56000 },
         { car: 'Porsche', year: '09/02/2020', price: 31000 }
       ];
-      
+
       (() => {
         const options = {
           columns: [
@@ -118,7 +118,7 @@ url: 'docs/grid/getting-started/quick-start/'
           ],
           rows: rows,
         };
-      
+
         const dd = document.getElementById('dd');
         const dataDenBasicSorting = new DataDen(dd, options);
       })();
@@ -183,9 +183,9 @@ url: 'docs/grid/getting-started/quick-start/'
 <p class="mb-2">3. Import the entire library or just individual modules:</p>
 <div class="pt-2" id="download-npm-step-2">
   {{< twsnippet/wrapper "JAVASCRIPT" "" "mobile" >}}
-  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}} 
+  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}}
     import * as mdb from 'data-den-core'; // lib
-    import { DataDen } from 'data-den-core'; // module 
+    import { DataDen } from 'data-den-core'; // module
   {{< /twsnippet/code >}}
   {{< /twsnippet/wrapper >}}
 </div>
@@ -194,7 +194,7 @@ url: 'docs/grid/getting-started/quick-start/'
 <p class="font-semibold">CSS</p>
 <div class="pt-2" id="download-npm-step-2">
   {{< twsnippet/wrapper "SCSS" "" "mobile" >}}
-  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}} 
+  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}}
     @import 'data-den-core/dist/css/data-den.min.css';
   {{< /twsnippet/code >}}
   {{< /twsnippet/wrapper >}}
@@ -226,7 +226,7 @@ url: 'docs/grid/getting-started/quick-start/'
 <p class="mb-2 mt-4">1. To start using MDB GO / CLI install it with one command:</p>
 <div class="pt-2" id="download-mdbgo-step-1">
   {{< twsnippet/wrapper "terminal" "!bg-[#BB2E3E] !text-white dark:!bg-rose-300 dark:!text-rose-900" "mobile" >}}
-  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}} 
+  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}}
     npm install -g mdb-cli
   {{< /twsnippet/code >}}
   {{< /twsnippet/wrapper >}}
@@ -236,7 +236,7 @@ url: 'docs/grid/getting-started/quick-start/'
 <div class="pt-2" id="download-mdbgo-step-2">
   {{< twsnippet/wrapper "terminal" "!bg-[#4A24AA] !text-white dark:!bg-violet-300 dark:!text-violet-900" "mobile" >}}
   {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}}
-    mdb login 
+    mdb login
   {{< /twsnippet/code >}}
   {{< /twsnippet/wrapper >}}
 </div>
@@ -244,8 +244,8 @@ url: 'docs/grid/getting-started/quick-start/'
 <p class="mb-2 mt-4">3. Initialize a project and choose <strong>Data Den</strong> from the list:</p>
 <div class="pt-2" id="download-mdbgo-step-3">
   {{< twsnippet/wrapper "terminal" "!bg-[#4A24AA] !text-white dark:!bg-violet-300 dark:!text-violet-900" "mobile" >}}
-  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}} 
-    mdb init data-den-core 
+  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}}
+    mdb init data-den-core
   {{< /twsnippet/code >}}
   {{< /twsnippet/wrapper >}}
 </div>
@@ -253,7 +253,7 @@ url: 'docs/grid/getting-started/quick-start/'
 <p class="mb-2 mt-4">4. Install the dependencies (inside the project directory):</p>
 <div class="pt-2" id="download-mdbgo-step-4">
   {{< twsnippet/wrapper "terminal" "!bg-[#BB2E3E] !text-white dark:!bg-rose-300 dark:!text-rose-900" "mobile" >}}
-  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}} 
+  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}}
     npm install
   {{< /twsnippet/code >}}
   {{< /twsnippet/wrapper >}}
@@ -262,8 +262,8 @@ url: 'docs/grid/getting-started/quick-start/'
 <p class="mb-2 mt-4">5. Run the app:</p>
 <div class="pt-2" id="download-mdbgo-step-5">
   {{< twsnippet/wrapper "terminal" "!bg-[#BB2E3E] !text-white dark:!bg-rose-300 dark:!text-rose-900" "mobile" >}}
-  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}} 
-    npm start 
+  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}}
+    npm start
   {{< /twsnippet/code >}}
   {{< /twsnippet/wrapper >}}
 </div>
@@ -271,8 +271,8 @@ url: 'docs/grid/getting-started/quick-start/'
 <p class="mb-2 mt-4">6. Publish when you're ready:</p>
 <div class="pt-2" id="download-mdbgo-step-6">
   {{< twsnippet/wrapper "terminal" "!bg-[#4A24AA] !text-white dark:!bg-violet-300 dark:!text-violet-900" "mobile" >}}
-  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}} 
-    mdb publish 
+  {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}}
+    mdb publish
   {{< /twsnippet/code >}}
   {{< /twsnippet/wrapper >}}
 </div> -->
