@@ -25,7 +25,7 @@ export const navbarNewRightButtons = DPL.defineComponent({
       )
       .join('\n');
 
-    const loginButton = `<a class="auth-modal-toggle inline-block rounded bg-primary-100 px-6 px-4 pb-[5px] pt-[6px] text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 motion-reduce:transition-none dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400" data-auth-modal-tab="sign-in">Login</a>`;
+    const loginButton = `<a class="auth-modal-toggle inline-block rounded bg-primary-100 px-4 pb-[5px] pt-[7px] text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 motion-reduce:transition-none dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400" data-auth-modal-tab="sign-in">Login</a>`;
 
     const navbarDropdown = `<a class="hidden-arrow flex items-center whitespace-nowrap transition duration-150 ease-in-out motion-reduce:transition-none" href="#" id="dropdownMenuButton2" role="button" data-te-dropdown-toggle-ref aria-expanded="false">
   <img src="${userData.avatar}&s=24" class="rounded-full" style="height: 25px; width: 25px" alt="" loading="lazy" />
