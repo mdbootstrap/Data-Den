@@ -19,13 +19,18 @@ export const navbarNewRightButtons = DPL.defineComponent({
     ${n.link.indexOf('getdataden.com') === -1 ? 'target="_blank" rel="nofollow"' : ''}
     data-notification-date="${n.date}"
     data-te-dropdown-item-ref
-  >${n.value}</a
-  >
+  >${n.value}</a>
 </li>`
       )
       .join('\n');
 
     const loginButton = `<a class="auth-modal-toggle inline-block rounded bg-primary-100 px-4 pb-[5px] pt-[7px] text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 motion-reduce:transition-none dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400" data-auth-modal-tab="sign-in">Login</a>`;
+
+    // New early access button with conditions
+    const getEarlyAccessButton =
+      (!userData.isPro && !userData.isLoggedIn) || (userData.isLoggedIn && !userData.isPro)
+        ? `<a href="/general/pro/" type="button" class="ms-2 inline-block rounded bg-primary px-4 pb-[6px] pt-[7px] text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">Get Early Access</a>`
+        : '';
 
     const navbarDropdown = `<a class="hidden-arrow flex items-center whitespace-nowrap transition duration-150 ease-in-out motion-reduce:transition-none" href="#" id="dropdownMenuButton2" role="button" data-te-dropdown-toggle-ref aria-expanded="false">
   <img src="${userData.avatar}&s=24" class="rounded-full" style="height: 25px; width: 25px" alt="" loading="lazy" />
@@ -153,10 +158,10 @@ ${
     : ``
 }
 </div>
-</div>
-
 <div class="relative" data-te-dropdown-ref data-te-dropdown-alignment="end">
 ${userData.isLoggedIn ? navbarDropdown : loginButton}
+${getEarlyAccessButton}
+</div>
 </div>`;
   },
   mounted() {
@@ -181,9 +186,9 @@ ${userData.isLoggedIn ? navbarDropdown : loginButton}
       if (loginButton) {
         loginButton.addEventListener('click', (e) => {
           if (!authModalInstance) return;
-          const allReadyOpen = document.querySelector("[data-te-open='true']");
-          if (allReadyOpen && allReadyOpen !== e.target) {
-            te.Modal.getInstance(allReadyOpen).hide();
+          const alreadyOpen = document.querySelector("[data-te-open='true']");
+          if (alreadyOpen && alreadyOpen !== e.target) {
+            te.Modal.getInstance(alreadyOpen).hide();
           }
 
           authModalInstance.toggle();
