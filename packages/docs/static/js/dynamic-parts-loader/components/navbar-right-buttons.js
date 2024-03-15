@@ -114,16 +114,6 @@ export const navbarNewRightButtons = DPL.defineComponent({
   </li>
 </ul>`;
 
-    const earlyAccessButton =
-      !userData.isLoggedIn || (userData.isLoggedIn && !userData.isProUser)
-        ? `<a
-    href="/general/pro/"
-    type="button"
-    class="ms-2 inline-block rounded bg-primary px-4 pb-[6px] pt-[7px] text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
-    Get Early Access
-</a>`
-        : ``;
-
     return `<div class="relative flex items-center">
 <div class="relative" data-te-dropdown-ref data-te-dropdown-alignment="end">
 ${
@@ -163,9 +153,6 @@ ${
     : ``
 }
 </div>
-${earlyAccessButton}  <!-- Tutaj dodajesz przycisk -->
-<div class="relative" data-te-dropdown-ref data-te-dropdown-alignment="end">
-${userData.isLoggedIn ? navbarDropdown : loginButton}
 </div>
 
 <div class="relative" data-te-dropdown-ref data-te-dropdown-alignment="end">
