@@ -19,18 +19,13 @@ export const navbarNewRightButtons = DPL.defineComponent({
     ${n.link.indexOf('getdataden.com') === -1 ? 'target="_blank" rel="nofollow"' : ''}
     data-notification-date="${n.date}"
     data-te-dropdown-item-ref
-  >${n.value}</a>
+  >${n.value}</a
+  >
 </li>`
       )
       .join('\n');
 
-    const loginButton = `<a class="auth-modal-toggle inline-block rounded bg-primary-100 px-4 pb-[5px] pt-[7px] text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 motion-reduce:transition-none dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400" data-auth-modal-tab="sign-in">Logowanie</a>`;
-
-    // Nowy przycisk dostępu wczesnego
-    const getEarlyAccessButton =
-      (!userData.isPro && !userData.isLoggedIn) || (userData.isLoggedIn && !userData.isPro)
-        ? `<a href="/general/pro/" type="button" class="ms-2 inline-block rounded bg-primary px-4 pb-[6px] pt-[7px] text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">Zdobądź wczesny dostęp</a>`
-        : '';
+    const loginButton = `<a class="auth-modal-toggle inline-block rounded bg-primary-100 px-4 pb-[5px] pt-[7px] text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 motion-reduce:transition-none dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400" data-auth-modal-tab="sign-in">Login</a>`;
 
     const navbarDropdown = `<a class="hidden-arrow flex items-center whitespace-nowrap transition duration-150 ease-in-out motion-reduce:transition-none" href="#" id="dropdownMenuButton2" role="button" data-te-dropdown-toggle-ref aria-expanded="false">
   <img src="${userData.avatar}&s=24" class="rounded-full" style="height: 25px; width: 25px" alt="" loading="lazy" />
@@ -45,7 +40,7 @@ export const navbarNewRightButtons = DPL.defineComponent({
       href="https://mdbootstrap.com/profile/settings"
       target="_blank"
       data-te-dropdown-item-ref
-    >Ustawienia konta</a>
+    >Account Settings</a>
   </li>
   <li>
     <a
@@ -53,7 +48,7 @@ export const navbarNewRightButtons = DPL.defineComponent({
       href="/billing"
       target="_blank"
       data-te-dropdown-item-ref
-    >Moje zamówienia</a>
+    >My Orders</a>
   </li>
   <li>
     <a
@@ -61,7 +56,7 @@ export const navbarNewRightButtons = DPL.defineComponent({
       href="https://mdbootstrap.com/support/?user=${userData.id}"
       target="_blank"
       data-te-dropdown-item-ref
-    >Moje pytania</a>
+    >My Questions</a>
   </li>
   <li>
     <a
@@ -69,7 +64,7 @@ export const navbarNewRightButtons = DPL.defineComponent({
       href="https://dashboard.mdbgo.com/#/projects"
       target="_blank"
       data-te-dropdown-item-ref
-    >Projekty</a>
+    >Projects</a>
   </li>
   <hr class="m-0">
   <li>
@@ -78,7 +73,7 @@ export const navbarNewRightButtons = DPL.defineComponent({
       href="https://mdbootstrap.com/snippets?user=${userData.id}&status=1&top=all"
       target="_blank"
       data-te-dropdown-item-ref
-    >Publiczne fragmenty</a>
+    >Public snippets</a>
   </li>
   <li>
     <a
@@ -86,7 +81,7 @@ export const navbarNewRightButtons = DPL.defineComponent({
       href="https://mdbootstrap.com/snippets?user=${userData.id}&status=4&top=all"
       target="_blank"
       data-te-dropdown-item-ref
-    >Prywatne fragmenty</a>
+    >Private snippets</a>
   </li>
   <li>
     <a
@@ -94,20 +89,20 @@ export const navbarNewRightButtons = DPL.defineComponent({
       href="https://mdbootstrap.com/snippets?user=${userData.id}&status=2&top=all"
       target="_blank"
       data-te-dropdown-item-ref
-    >Fragmenty szkiców</a>
+    >Draft snippets</a>
   </li>
-  ${
-    (userData.groups || []).includes('Administrator')
-      ? `<li>
+        ${
+          (userData.groups || []).includes('Administrator')
+            ? `<li>
     <a
       class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-white/30"
       href="https://mdbootstrap.com/snippets?status=4&top=all"
       target="_blank"
       data-te-dropdown-item-ref
-    >Wszystkie prywatne fragmenty</a>
+    >All private snippets</a>
   </li>`
-      : ''
-  }
+            : ''
+        }
   <hr class="m-0">
   <li>
     <a
@@ -115,7 +110,7 @@ export const navbarNewRightButtons = DPL.defineComponent({
       href="#"
       data-logout-button-ref
       data-te-dropdown-item-ref
-    >Wyloguj się</a>
+    >Log Out</a>
   </li>
 </ul>`;
 
@@ -158,10 +153,10 @@ ${
     : ``
 }
 </div>
+</div>
+
 <div class="relative" data-te-dropdown-ref data-te-dropdown-alignment="end">
 ${userData.isLoggedIn ? navbarDropdown : loginButton}
-${getEarlyAccessButton}
-</div>
 </div>`;
   },
   mounted() {
