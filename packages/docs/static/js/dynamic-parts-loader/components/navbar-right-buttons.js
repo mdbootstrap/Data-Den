@@ -120,7 +120,7 @@ export const navbarNewRightButtons = DPL.defineComponent({
 </ul>`;
 
     return `<div class="relative flex items-center">
-<div class="relative" data-te-dropdown-ref data-te-dropdown-alignment="end">
+<div class="flex flex-row items-center" data-te-dropdown-ref data-te-dropdown-alignment="end">
 ${
   userNotifications.length > 0
     ? `<a class="hidden-arrow mr-4 flex items-center text-neutral-600 transition duration-200 hover:text-neutral-700 hover:ease-in-out focus:text-neutral-700 disabled:text-black/30 motion-reduce:transition-none dark:text-neutral-200 dark:hover:text-neutral-300 dark:focus:text-neutral-300 [&.active]:text-black/90 dark:[&.active]:text-neutral-400"
@@ -158,7 +158,7 @@ ${
     : ``
 }
 </div>
-<div class="relative" data-te-dropdown-ref data-te-dropdown-alignment="end">
+<div class="flex flex-row items-center" data-te-dropdown-ref data-te-dropdown-alignment="end">
 ${userData.isLoggedIn ? navbarDropdown : loginButton}
 ${getEarlyAccessButton}
 </div>
