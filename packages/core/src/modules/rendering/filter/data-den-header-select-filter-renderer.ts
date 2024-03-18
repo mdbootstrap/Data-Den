@@ -18,7 +18,7 @@ export class DataDenHeaderSelectFilterRenderer extends DataDenHeaderFilterRender
       `
         <div class="${this.#cssPrefix}header-filter">
           <select class="${this.#cssPrefix}header-filter-select">
-            <option disabled selected value></option>
+            <option selected value></option>
           </select>
         </div>
       `;
@@ -91,5 +91,5 @@ export class DataDenHeaderSelectFilterRenderer extends DataDenHeaderFilterRender
     }
   }
 
-  destroy() {}
+  destroy() { }
 }
