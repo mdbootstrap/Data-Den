@@ -2,6 +2,7 @@ import { DataDenInternalOptions } from '../../data-den-options.interface';
 import { DataDenPubSub } from '../../data-den-pub-sub';
 import { Context } from '../../context';
 import { getMainColumnsOrder } from '../../utils/columns-order';
+import { DataDenEvent } from '../../data-den-event';
 
 export class DataDenDraggingService {
   #container: HTMLElement;
@@ -20,6 +21,7 @@ export class DataDenDraggingService {
   #mainColumnsOrder: number[];
   #defaultGridOffsetLeft: number;
   #cssPrefix: string;
+  #groupedColumns: string[] = [];
 
   #handleGridMouseMove: (e: MouseEvent) => void;
   #handleDocumentMouseUp: (e: MouseEvent) => void;
@@ -40,15 +42,17 @@ export class DataDenDraggingService {
     this.#columnPositions = [];
     this.#breakpoints = [];
     this.#mainColumnsOrder = [];
+    this.#groupedColumns = [];
     this.#defaultGridOffsetLeft = 0;
     this.#cssPrefix = options.cssPrefix;
 
-    this.#handleGridMouseMove = () => {};
-    this.#handleDocumentMouseUp = () => {};
-    this.#handleHeaderMouseDown = () => {};
+    this.#handleGridMouseMove = () => { };
+    this.#handleDocumentMouseUp = () => { };
+    this.#handleHeaderMouseDown = () => { };
 
     this.#subscribeFetchDone();
     this.#subscribeRerenderingDone();
+    this.#subscribeGroupUpdate();
   }
 
   init() {
@@ -271,6 +275,41 @@ export class DataDenDraggingService {
     return array.length - 1;
   }
 
+  #subscribeGroupUpdate() {
+    this.PubSub.subscribe('command:group-column:start', (event: DataDenEvent) => {
+      // const offsetX = this.#getOffsetX(event.data.pageX);
+      // this.#prevTargetIndex = this.#getMinBreakpointIndex(this.#breakpoints, offsetX);
+
+      // if (this.#prevTargetIndex === 0) return;
+
+      // console.log('NEEDS');
+
+
+      // this.#targetIndex = this.#groupedColumns.length;
+
+      // const currentOrderedIndex = 0; // TODO
+
+
+      // const gap = this.#getColumnsGap(currentOrderedIndex);
+
+      // if (direction === 'right') {
+      //   this.#breakpoints[this.#targetIndex] = this.#breakpoints[this.#targetIndex] + gap;
+      // } else {
+      //   this.#breakpoints[this.#targetIndex + 1] = this.#breakpoints[this.#targetIndex + 1] - gap;
+      // }
+
+      // this.#swapArrayElements(this.#columnPositions, currentOrderedIndex, this.#targetIndex);
+      // this.#swapArrayElements(this.#columns, currentOrderedIndex, this.#targetIndex);
+      // this.#swapArrayElements(this.#mainColumnsOrder, currentOrderedIndex, this.#targetIndex);
+
+      // this.#columns.forEach((column, index) => {
+      //   column.forEach((cell) => {
+      //     cell.style.left = `${this.#breakpoints[index]}px`;
+      //   });
+      // });
+    });
+  }
+
   #updateColumnPositions() {
     if (this.#currentIndex === this.#targetIndex && this.#prevTargetIndex === -1) {
       return;
@@ -295,8 +334,6 @@ export class DataDenDraggingService {
         cell.style.left = `${this.#breakpoints[index]}px`;
       });
     });
-
-    this.#publishColumnsOrder();
   }
 
   #getDirection() {

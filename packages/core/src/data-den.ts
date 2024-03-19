@@ -20,12 +20,14 @@ import { defaultOptions } from './default-options.interface';
 import { deepMerge } from './utils/deep-merge';
 import { deepCopy } from './utils';
 import { DataDenQuickFilterChangeEvent } from './modules/rendering/filter/data-den-quick-filter-change-event.interface';
+import { DataDenGroupingService } from './modules/grouping';
 
 export class DataDen {
   #rendering: DataDenRenderingService;
   #sorting: DataDenSortingService;
   #filtering: DataDenFilteringService;
   #pagination: DataDenPaginationService;
+  #grouping: DataDenGroupingService;
   #dragging: DataDenDraggingService | null;
   #resizing: DataDenResizingService | null;
   #dataLoaderStrategy: DataDenDataLoaderStrategy | null = null;
@@ -40,7 +42,7 @@ export class DataDen {
     if (this.#dataLoaderStrategy) {
       this.#fetch = new DataDenFetchService(this.#dataLoaderStrategy, this.PubSub);
     }
-
+    this.#grouping = new DataDenGroupingService(container, gridOptions, this.PubSub);
     this.#rendering = new DataDenRenderingService(container, gridOptions, this.PubSub);
     this.#sorting = new DataDenSortingService(gridOptions, this.PubSub);
     this.#filtering = new DataDenFilteringService(gridOptions, this.PubSub);

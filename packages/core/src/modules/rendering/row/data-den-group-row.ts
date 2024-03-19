@@ -2,26 +2,57 @@ import { DataDenCell } from '../cell/data-den-cell';
 import { createHtmlElement } from '../../../utils/dom';
 import { DataDenInternalOptions } from '../../../data-den-options.interface';
 
-export class DataDenRow {
+export class DataDenGroupRow {
   element: HTMLElement;
   #options: DataDenInternalOptions;
-  #isGrouped: boolean;
-
-  constructor(public index: number, public cells: DataDenCell[], options: DataDenInternalOptions, activeGroups: string[]) {
+  #parents: string[];
+  #isExpanded: boolean = false;
+  constructor(public index: number, public cells: DataDenCell[], options: DataDenInternalOptions, _group: string, _parents: string[], _numOfLevels: number) {
     this.#options = options;
-    this.#isGrouped = activeGroups && activeGroups.length > 0;
+    this.#parents = _parents.slice(0, _parents.length - 1).reverse();
+    this.#isExpanded = _parents.length === 1;
 
-    const groupIdentity = this.#isGrouped ? activeGroups.map((group, i) => {
+    const groupIdentity = this.#parents.reverse().map((group) => {
       return `${group.toLowerCase().replace(/\//g, '_')}`;
-    }).join('-') : '';
+    }).join('-');
 
+    const isSubGroup = this.#parents.length > 0;
 
     const template =
       /* HTML */
-      `<div class="${options.cssPrefix}row ${this.#isGrouped ? `${options.cssPrefix}group-${groupIdentity}` : ''}"
-        role="row" ref="row" style="height: ${this.#isGrouped ? '0' : `${options.rowHeight}px;`}"></div>`;
+      `<div class="${options.cssPrefix}row ${isSubGroup ? `${options.cssPrefix}group-${groupIdentity}` : ''}
+      "role="row" ref="row" style="height: ${this.#isExpanded ? `${options.rowHeight}px` : '0px'}"></div>`;
 
     this.element = createHtmlElement(template);
+    this.element.addEventListener('click', (e) => {
+      // handle arrow rotation
+      const groupRow = (e.target as HTMLElement).parentElement.parentElement;
+      const arrow = groupRow.querySelector(`.${this.#options.cssPrefix}cell-icon`);
+      arrow && arrow.classList.toggle(`${this.#options.cssPrefix}cell-icon-rotated`);
+      // handle arrow rotation
+
+      // handle group expansion
+      const selector = _parents.map((group) => {
+        return `${group.toLowerCase().replace(/\//g, '_')}`;
+      }).join('-');
+
+      const elems: HTMLElement[] = Array.from(document.querySelectorAll(`[class*=${options.cssPrefix}group-${selector}]`));
+
+      elems.forEach((elem: HTMLElement) => {
+        const height = elem.style.height;
+        const isGroup = elem.classList.contains(`${options.cssPrefix}group-${selector}`);
+        if (height === '0px') {
+          elem.style.height = isGroup ? `${options.rowHeight}px` : height;
+        } else {
+          const arrows = [...elem.querySelectorAll(`.${this.#options.cssPrefix}cell-icon`)];
+          arrows.forEach((arrow) => {
+            arrow.classList.remove(`${this.#options.cssPrefix}cell-icon-rotated`);
+          });
+          elem.style.height = '0px';
+        }
+      });
+      // handle group expansion
+    })
   }
 
   render(): HTMLElement {

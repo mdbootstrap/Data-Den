@@ -42,6 +42,7 @@ export interface DataDenColDef {
   editable?: boolean | ((...args: any[]) => boolean);
   defaultSort?: 'asc' | 'desc' | null;
   sortOrder?: ('asc' | 'desc' | null)[];
+  grouped?: boolean;
 }
 
 export interface DataDenDefaultColDef {
