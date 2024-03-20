@@ -22,12 +22,6 @@ export class DataDenDefaultCellRenderer implements DataDenCellRenderer {
     </div>` : ''}
     ${escapeHtml(this.value)}
     </span>`);
-
-
-    // this.isGroupCell && this.element.addEventListener('click', (e) => {
-    //   const arrow = e.target as HTMLElement;
-    //   arrow.parentElement.classList.toggle(`${this.cssPrefix}cell-icon-rotated`);
-    // });
   }
 
   getGui(): HTMLElement {

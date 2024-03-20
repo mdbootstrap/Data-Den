@@ -277,36 +277,7 @@ export class DataDenDraggingService {
 
   #subscribeGroupUpdate() {
     this.PubSub.subscribe('command:group-column:start', (event: DataDenEvent) => {
-      // const offsetX = this.#getOffsetX(event.data.pageX);
-      // this.#prevTargetIndex = this.#getMinBreakpointIndex(this.#breakpoints, offsetX);
-
-      // if (this.#prevTargetIndex === 0) return;
-
-      // console.log('NEEDS');
-
-
-      // this.#targetIndex = this.#groupedColumns.length;
-
-      // const currentOrderedIndex = 0; // TODO
-
-
-      // const gap = this.#getColumnsGap(currentOrderedIndex);
-
-      // if (direction === 'right') {
-      //   this.#breakpoints[this.#targetIndex] = this.#breakpoints[this.#targetIndex] + gap;
-      // } else {
-      //   this.#breakpoints[this.#targetIndex + 1] = this.#breakpoints[this.#targetIndex + 1] - gap;
-      // }
-
-      // this.#swapArrayElements(this.#columnPositions, currentOrderedIndex, this.#targetIndex);
-      // this.#swapArrayElements(this.#columns, currentOrderedIndex, this.#targetIndex);
-      // this.#swapArrayElements(this.#mainColumnsOrder, currentOrderedIndex, this.#targetIndex);
-
-      // this.#columns.forEach((column, index) => {
-      //   column.forEach((cell) => {
-      //     cell.style.left = `${this.#breakpoints[index]}px`;
-      //   });
-      // });
+      // @TODO
     });
   }
 

@@ -1,4 +1,4 @@
-export interface DataDenPinnedParams {
+export interface DataDenPinnedCellParams {
   key: string,
   value: any,
   colIndex: number,

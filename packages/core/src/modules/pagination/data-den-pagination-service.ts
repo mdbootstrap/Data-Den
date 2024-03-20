@@ -33,6 +33,7 @@ export class DataDenPaginationService {
       this.#loadLastPage();
     });
     this.PubSub.subscribe('command:group:update', () => {
+      this.#currentPage = 0;
       this.#allTotalRows = 0;
     });
     this.PubSub.subscribe('info:pagination:page-size-change:done', (event: { data: { pageSize: number } }) => {

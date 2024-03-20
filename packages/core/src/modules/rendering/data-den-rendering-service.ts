@@ -17,7 +17,7 @@ import {
 import { DataDenPinningPreviousState } from '../pinning/data-den-pinning-previous-state';
 import { DataDenEventEmitter } from '../../data-den-event-emitter';
 import { countNumOfLevels, createHtmlElement, transformGroupedData } from '../../utils';
-import { DataDenPinnedParams } from './row/data-den-pinned.interface';
+import { DataDenPinnedCellParams } from './row/data-den-pinned.interface';
 
 export class DataDenRenderingService {
   #container: HTMLElement;
@@ -123,14 +123,14 @@ export class DataDenRenderingService {
     return new DataDenHeaderRow(rowIndex, headerCells, this.#options);
   }
 
-  #createPinnedCellsLeft({ colIndex, value, rowIndex, colDef, icon, isGroupCell }: DataDenPinnedParams): DataDenCell | undefined {
+  #createPinnedCellsLeft({ colIndex, value, rowIndex, colDef, icon, isGroupCell }: DataDenPinnedCellParams): DataDenCell | undefined {
     const left = 0;
     const width = this.#options.columns[colIndex].width || 120;
 
     return new DataDenCell(value, colIndex, rowIndex, left, width, colDef.pinned, this.#options, icon, isGroupCell);
   }
 
-  #createMainCells({ key, colIndex, value, rowIndex, colDef, icon, isGroupCell }: DataDenPinnedParams): DataDenCell | undefined {
+  #createMainCells({ key, colIndex, value, rowIndex, colDef, icon, isGroupCell }: DataDenPinnedCellParams): DataDenCell | undefined {
     const orderedColIndex = this.#orderedColumns.findIndex((col) => col.field === key);
     const left = this.#orderedColumns.slice(0, orderedColIndex).reduce((acc, curr) => acc + (curr.width || 120), 0);
     const width = this.#orderedColumns[orderedColIndex].width || 120;
@@ -138,7 +138,7 @@ export class DataDenRenderingService {
     return new DataDenCell(value, colIndex, rowIndex, left, width, colDef.pinned, this.#options, icon, isGroupCell);
   }
 
-  #createPinnedCellsRight({ key, colIndex, value, rowIndex, colDef, icon, isGroupCell }: DataDenPinnedParams): DataDenCell | undefined {
+  #createPinnedCellsRight({ key, colIndex, value, rowIndex, colDef, icon, isGroupCell }: DataDenPinnedCellParams): DataDenCell | undefined {
     const pinnedColIndex = this.#options.columns
       .filter((col) => col.pinned === 'right')
       .map((defaultColumn) => defaultColumn.field)
