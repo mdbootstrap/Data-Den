@@ -24,6 +24,7 @@ export class DataDenRenderingService {
   #options: DataDenInternalOptions;
   #orderedColumns: DataDenColDef[];
   #defaultOrderedColumns: DataDenColDef[];
+  #mainOrderedColumns: DataDenColDef[];
   #columnsOrder: number[];
   #headerRow: DataDenHeaderRow;
   #rows: DataDenRow[] = [];
@@ -33,6 +34,7 @@ export class DataDenRenderingService {
   constructor(container: HTMLElement, options: DataDenInternalOptions, private PubSub: DataDenPubSub) {
     this.#container = container;
     this.#options = options;
+    this.#mainOrderedColumns = options.columns;
 
     if (options.pagination) {
       this.#paginationRenderer = new DataDenPaginationRenderer(
@@ -49,10 +51,10 @@ export class DataDenRenderingService {
   }
 
   #init() {
-    this.#orderedColumns = getMainOrderedColumns(this.#options.columns);
-    this.#defaultOrderedColumns = getMainOrderedColumns(this.#options.columns);
-    this.#columnsOrder = getMainColumnIndexes(this.#options.columns);
-    this.#headerRow = this.#createHeaderRow(this.#options.columns, null);
+    this.#orderedColumns = getMainOrderedColumns(this.#mainOrderedColumns);
+    this.#defaultOrderedColumns = getMainOrderedColumns(this.#mainOrderedColumns);
+    this.#columnsOrder = getMainColumnIndexes(this.#mainOrderedColumns);
+    this.#headerRow = this.#createHeaderRow(this.#mainOrderedColumns, null);
 
     this.renderTable();
   }
@@ -421,8 +423,14 @@ export class DataDenRenderingService {
       const level = this.#groupedColumns.length;
 
       this.#groupedColumns.push({ colIndex: colIndex, group: group, level: level });
-      this.#options.columns[colIndex].grouped = true;
 
+      const groupedColumns = this.#groupedColumns.map((column: any) => {
+        return this.#options.columns[column.colIndex];
+      });
+
+      this.#mainOrderedColumns = [...new Set<DataDenColDef>(groupedColumns.concat(this.#mainOrderedColumns))];
+
+      this.#options.columns[colIndex].grouped = true;
       this.#updateGroups();
       this.rerenderTable();
 
