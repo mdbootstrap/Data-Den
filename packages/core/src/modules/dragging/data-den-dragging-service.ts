@@ -1,6 +1,5 @@
-import { DataDenInternalOptions } from '../../data-den-options.interface';
+import { DataDenColDef, DataDenInternalOptions } from '../../data-den-options.interface';
 import { DataDenPubSub } from '../../data-den-pub-sub';
-import { Context } from '../../context';
 import { getMainColumnsOrder } from '../../utils/columns-order';
 import { DataDenEvent } from '../../data-den-event';
 
@@ -22,6 +21,8 @@ export class DataDenDraggingService {
   #defaultGridOffsetLeft: number;
   #cssPrefix: string;
   #groupedColumns: string[] = [];
+  #mainOrderedColumns: DataDenColDef[];
+  #columnsOrder: number[] = [];
 
   #handleGridMouseMove: (e: MouseEvent) => void;
   #handleDocumentMouseUp: (e: MouseEvent) => void;
@@ -45,6 +46,7 @@ export class DataDenDraggingService {
     this.#groupedColumns = [];
     this.#defaultGridOffsetLeft = 0;
     this.#cssPrefix = options.cssPrefix;
+    this.#mainOrderedColumns = options.columns;
 
     this.#handleGridMouseMove = () => { };
     this.#handleDocumentMouseUp = () => { };
@@ -73,7 +75,9 @@ export class DataDenDraggingService {
 
   update() {
     const tempColumns = [...this.#getAllColumnElements()];
-    this.#columns = this.#mainColumnsOrder.map((columnIndex) => tempColumns[columnIndex]);
+    this.#columns = this.#mainColumnsOrder.map((columnIndex) => {
+      return tempColumns[columnIndex]
+    });
   }
 
   #subscribeFetchDone() {
@@ -106,7 +110,7 @@ export class DataDenDraggingService {
   }
 
   #setColumnParams() {
-    this.#columnPositions = [...this.#getAllColumnPositions()];
+    this.#columnPositions = this.#columnPositions.length === 0 ? [...this.#getAllColumnPositions()] : this.#columnPositions;
     this.#setBreakpoints();
     this.#defaultGridOffsetLeft =
       this.#gridMain!.getBoundingClientRect().left + parseFloat(this.#headerMainCellsWrapper!.style.left);
@@ -143,7 +147,7 @@ export class DataDenDraggingService {
     const colHeader = this.#headers[index];
     const rows = this.#container.querySelectorAll('[ref="row"]');
     const cells = Array.from(rows).map(
-      (row) => row.querySelectorAll('.data-den-main-cells-wrapper [ref="cell"]')[index] as HTMLElement
+      (row) => row.querySelectorAll('.data-den-main-cells-wrapper [ref="cell"]')[this.#mainColumnsOrder[index]] as HTMLElement
     );
 
     return [colHeader, ...cells];
@@ -160,7 +164,7 @@ export class DataDenDraggingService {
   }
 
   #setDefaultColumnsOrder() {
-    this.#mainColumnsOrder = getMainColumnsOrder(this.#options.columns);
+    this.#mainColumnsOrder = this.#mainColumnsOrder.length ? this.#mainColumnsOrder : getMainColumnsOrder(this.#mainOrderedColumns);
   }
 
   #subscribeResizingDone() {
@@ -209,7 +213,7 @@ export class DataDenDraggingService {
     this.#targetIndex = this.#getMinBreakpointIndex(this.#breakpoints, offsetX);
 
     const currentColumnWidth = this.#columnPositions[this.#currentIndex].width;
-    const gap = this.#getColumnsGap(this.#currentIndex);
+    const gap = this.#getColumnsGap(this.#currentIndex, this.#targetIndex);
 
     // prevent swapping if there is no space for it (current column is wider than target column)
     if (
@@ -276,8 +280,37 @@ export class DataDenDraggingService {
   }
 
   #subscribeGroupUpdate() {
-    this.PubSub.subscribe('command:group-column:start', (event: DataDenEvent) => {
-      // @TODO
+    this.PubSub.subscribe('command:group:update', (event: DataDenEvent) => {
+      this.#currentIndex = this.#getMinBreakpointIndex(this.#breakpoints, event.data.pageX);
+      const len = event.data.groupedColumns.length;
+
+      // handle main columns order
+      const columnPositionsBefore = this.#mainColumnsOrder.splice(len - 1, this.#currentIndex - len + 1);
+      this.#mainColumnsOrder.splice(len, 0, ...columnPositionsBefore)
+      // handle main columns order
+
+      // handle column positions
+      const colsBefore = this.#columnPositions.splice(len - 1, this.#currentIndex - len + 1);
+      this.#columnPositions.splice(len, 0, ...colsBefore);
+      // handle column positions
+
+
+      // @TODO update columns
+
+      setTimeout(() => {
+        console.log(this.#columns);
+
+        const columnsBefore = this.#columns.splice(len - 1, this.#currentIndex - len + 1);
+        this.#columns.splice(len, 0, ...columnsBefore);
+        console.log(this.#columns);
+      }, 0);
+
+      // setTimeout(() => {
+      //   console.log(this.#columns);
+      // }, 0);
+
+      // @TODO update breakpoints positions
+
     });
   }
 
@@ -288,7 +321,8 @@ export class DataDenDraggingService {
 
     const direction = this.#getDirection();
     const currentOrderedIndex = direction === 'right' ? this.#targetIndex - 1 : this.#targetIndex + 1;
-    const gap = this.#getColumnsGap(currentOrderedIndex);
+
+    const gap = this.#getColumnsGap(currentOrderedIndex, this.#targetIndex);
 
     if (direction === 'right') {
       this.#breakpoints[this.#targetIndex] = this.#breakpoints[this.#targetIndex] + gap;
@@ -307,16 +341,6 @@ export class DataDenDraggingService {
     });
   }
 
-  #getDirection() {
-    return this.#prevTargetIndex > this.#targetIndex ? 'left' : 'right';
-  }
-
-  #getColumnsGap(sourceIndex: number) {
-    const sourceColumnWidth = this.#columnPositions[sourceIndex].width;
-    const targetColumnWidth = this.#columnPositions[this.#targetIndex].width;
-    return targetColumnWidth - sourceColumnWidth;
-  }
-
   #swapArrayElements(array: HTMLElement[][] | any[], sourceIndex: number, targetIndex: number) {
     if (sourceIndex === -1) {
       return;
@@ -325,6 +349,16 @@ export class DataDenDraggingService {
     const temp = array[sourceIndex];
     array[sourceIndex] = array[targetIndex];
     array[targetIndex] = temp;
+  }
+
+  #getDirection() {
+    return this.#prevTargetIndex > this.#targetIndex ? 'left' : 'right';
+  }
+
+  #getColumnsGap(sourceIndex: number, targetIndex: number) {
+    const sourceColumnWidth = this.#columnPositions[sourceIndex].width;
+    const targetColumnWidth = this.#columnPositions[targetIndex].width;
+    return targetColumnWidth - sourceColumnWidth;
   }
 
   #finalizeDragging() {
@@ -350,12 +384,5 @@ export class DataDenDraggingService {
     this.#headerMainCellsWrapper!.removeEventListener('mousedown', this.#handleHeaderMouseDown);
     this.#container.removeEventListener('mousemove', this.#handleGridMouseMove);
     document.removeEventListener('mouseup', this.#handleDocumentMouseUp);
-  }
-
-  #publishColumnsOrder() {
-    this.PubSub.publish('info:dragging:columns-reorder:done', {
-      columnsOrder: this.#mainColumnsOrder,
-      context: new Context('info:dragging:columns-reorder:done'),
-    });
   }
 }

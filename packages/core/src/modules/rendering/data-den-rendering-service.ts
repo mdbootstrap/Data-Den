@@ -35,6 +35,7 @@ export class DataDenRenderingService {
     this.#container = container;
     this.#options = options;
     this.#mainOrderedColumns = options.columns;
+    this.#columnsOrder = getMainColumnIndexes(this.#mainOrderedColumns);
 
     if (options.pagination) {
       this.#paginationRenderer = new DataDenPaginationRenderer(
@@ -53,7 +54,6 @@ export class DataDenRenderingService {
   #init() {
     this.#orderedColumns = getMainOrderedColumns(this.#mainOrderedColumns);
     this.#defaultOrderedColumns = getMainOrderedColumns(this.#mainOrderedColumns);
-    this.#columnsOrder = getMainColumnIndexes(this.#mainOrderedColumns);
     this.#headerRow = this.#createHeaderRow(this.#mainOrderedColumns, null);
 
     this.renderTable();
@@ -374,8 +374,11 @@ export class DataDenRenderingService {
     return rowContainer;
   }
 
-  #updateGroups() {
+  #updateGroups(pageX: number) {
     this.PubSub.publish('command:group:update', {
+      pageX: pageX,
+      columnsOrder: this.#columnsOrder,
+      mainOrderedColumns: this.#mainOrderedColumns,
       groupedColumns: this.#groupedColumns,
       context: new Context('command:group:update'),
     });
@@ -429,9 +432,11 @@ export class DataDenRenderingService {
       });
 
       this.#mainOrderedColumns = [...new Set<DataDenColDef>(groupedColumns.concat(this.#mainOrderedColumns))];
+      this.#columnsOrder.unshift(colIndex);
+      this.#columnsOrder = [...new Set<number>(this.#columnsOrder)];
 
       this.#options.columns[colIndex].grouped = true;
-      this.#updateGroups();
+      this.#updateGroups(event.data.pageX);
       this.rerenderTable();
 
     });
@@ -439,8 +444,7 @@ export class DataDenRenderingService {
       this.#groupedColumns = this.#groupedColumns.filter((column: any) => column.group !== event.data.group);
       this.#options.columns[event.data.colIndex].grouped = false;
 
-      //@ @TODO
-      this.#updateGroups();
+      this.#updateGroups(event.data.pageX);
       this.rerenderTable();
     });
   }
