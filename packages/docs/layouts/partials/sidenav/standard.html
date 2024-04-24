@@ -3,10 +3,12 @@
     <span class="px-6 my-4 text-[0.8rem] font-bold uppercase text-gray-600 dark:text-gray-400"> Overview </span>
     <ul>
       {{ partial "sidenav/sidenav-link" (dict "context" . "href" "/general/pro/" "text" "Pricing") }}
+      {{ partial "sidenav/sidenav-link" (dict "context" . "href" "/general/enterprise/" "text" "Enterprise") }}
       {{ partial "sidenav/sidenav-link" (dict "context" . "href" "/general/git/" "text" "Git & repository") }}
       {{ partial "sidenav/sidenav-link" (dict "context" . "href" "/general/license/" "text" "License") }}
       {{ partial "sidenav/sidenav-link" (dict "context" . "href" "/docs/grid/getting-started/quick-start/" "text" "Installation") }}
       {{ partial "sidenav/sidenav-link" (dict "context" . "href" "https://mdbootstrap.com/support/cat/other/" "text" "Premium Support") }}
+      {{ partial "sidenav/sidenav-link" (dict "context" . "href" "/general/faq/" "text" "FAQ") }}
       {{ partial "sidenav/sidenav-link" (dict "context" . "href" "/docs/grid/getting-started/options/" "text" "Options") }}
     </ul>
   </li>
