@@ -7,13 +7,14 @@
     static parse() {
       const queryParams = new URLSearchParams(location.search);
       const rawParams = queryParams.get('product');
+      const trial = queryParams.get('trial') ?? null;
       if (!rawParams) {
         throw new Error('MISSING_VARIATION_PARAMS');
       }
 
       try {
         const { id, variation, title, qty } = JSON.parse(decodeURIComponent(rawParams));
-        return { id, variation, title, qty };
+        return { id, variation, title, qty, trial };
       } catch (e) {
         console.error(e);
         throw new Error('INVALID_VARIATION_PARAMS');
@@ -34,6 +35,7 @@
       };
 
       this.variationParams = TweVariationParamsParser.parse();
+      this.isTrial = this.variationParams.trial !== null && this.variationParams.trial > 0;
     }
 
     run() {
@@ -89,6 +91,12 @@
       // document.getElementById('apply-coupon-btn').addEventListener('click', (e) => {
       // this._applyCoupon();
       // });
+
+      if (this.variationParams.trial !== null && this.variationParams.trial > 0) {
+        document.querySelector('#trial-pay-info').style.display = 'block';
+        const placeOrderBtn = document.getElementById('submit');
+        placeOrderBtn.innerHTML = 'START TRIAL';
+      }
     }
 
     _loadGeodata() {
@@ -114,6 +122,10 @@
             .querySelectorAll('.product-price')
             .forEach((el) => (el.innerText = (this.userGeoData.price * this.variationParams.qty).toFixed(2)));
           document.getElementById('billing-country').value = response.countryCode.toUpperCase();
+
+          if (this.variationParams.trial !== null && this.variationParams.trial > 0) {
+            document.getElementById('summary-total').querySelector('.product-price').innerText = '0';
+          }
         });
     }
 
@@ -150,6 +162,7 @@
       const itemsList = document.getElementById('summary-items-list');
       const summarySubtotal = document.getElementById('summary-subtotal');
       const summaryTotal = document.getElementById('summary-total');
+      const summaryTrial = document.getElementById('summary-trial');
 
       const itemTemplate = document.createElement('template');
       itemTemplate.innerHTML = `<li class="align-center flex justify-between border-0 px-0 pb-0">
@@ -173,7 +186,14 @@
       summarySubtotal.querySelector('.product-price').innerHTML = Number(
         this.userGeoData.price * this.variationParams.qty
       ).toFixed(2);
-      summaryTotal.querySelector('.product-price').innerHTML = Number(this.userGeoData.price).toFixed(2);
+
+      if (this.variationParams.trial !== null && this.variationParams.trial > 0) {
+        summaryTrial.style.display = 'block';
+        summaryTrial.querySelector('.trial-days').innerHTML = this.variationParams.trial;
+        summaryTotal.querySelector('.product-price').innerHTML = '0';
+      } else {
+        summaryTotal.querySelector('.product-price').innerHTML = Number(this.userGeoData.price).toFixed(2);
+      }
     }
 
     submit() {
@@ -193,7 +213,10 @@
             return console.error('result.error', result.error);
           }
 
-          if (result.paymentIntent.status === 'succeeded') {
+          if (this.isTrial && result.status === 'succeeded') {
+            this._showToast('success', 'Your trial has started. You will be now redirected.');
+            location.href = '/billing/';
+          } else if (result.paymentIntent.status === 'succeeded') {
             this._showToast('success', 'Your payment has succeeded. You will be now redirected.');
             location.href = '/billing/';
           } else {
@@ -290,7 +313,9 @@
 
         // const coupon = document.getElementById('billing-coupon-code').value;
 
-        fetch(`${CONFIG.docsApiUrl}/payments/stripe/dd/subscription`, {
+        const endpoint = this.isTrial ? '/payments/stripe/dd/trial' : '/payments/stripe/dd/subscription';
+
+        fetch(`${CONFIG.docsApiUrl}${endpoint}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -301,6 +326,7 @@
             paymentMethodId: this.paymentMethodId,
             billing,
             account,
+            trialDays: this.isTrial ? this.variationParams.trial : null,
             // ...!!coupon && { coupon }
           }),
           credentials: 'include',
@@ -312,6 +338,9 @@
     }
 
     _confirmCardPayment(response) {
+      if (this.isTrial) {
+        return { status: 'succeeded' };
+      }
       const clientSecret = response.clientSecret;
       return this.stripe.confirmCardPayment(clientSecret, {
         payment_method: this.paymentMethodId,
