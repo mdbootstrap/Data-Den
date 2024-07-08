@@ -6,3 +6,4 @@ enableInlineShortcodes = "true"
 
 [params]
 apiUrl = "https://getdataden.com/api/docs"
+stripePublicKey = "pk_live_GWR9mWvess9zYZONfgf33YQC00lCa4JiRF"

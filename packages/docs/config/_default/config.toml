@@ -6,3 +6,4 @@ enableInlineShortcodes = "true"
 
 [params]
 apiUrl = "http://localhost:3030"
+stripePublicKey = "pk_test_BbH2R0Osif0rDXChYTgUfWhy00enpAgTGb"

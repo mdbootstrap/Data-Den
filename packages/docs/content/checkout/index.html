@@ -433,6 +433,10 @@ layout: checkout
               </div>
               <!--  -->
               <div class="my-5 h-[1px] w-full bg-gray-200"></div>
+              <p id="trial-pay-info" style="display: none;">
+                We will not charge you until the end of your trial. You will
+                always see the end date of your trial on the dashboard.
+              </p>
               <p class="mb-0 mb-5 cursor-pointer text-left text-base">
                 Your personal data will be used to process your order, support your experience throughout this website,
                 and for other purposes described in our
@@ -473,43 +477,59 @@ layout: checkout
             <li
               id="summary-coupon-code"
               class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-              <p class="form-row form-row-wide account-field" id="coupon_code_field" data-priority="">
-                <span id="coupon_code_wrapper" class="woocommerce-input-wrapper d-flex w-100"> </span>
+              <p
+                class="form-row form-row-wide account-field"
+                id="coupon_code_field"
+                data-priority="">
+                <span
+                  id="coupon_code_wrapper"
+                  class="woocommerce-input-wrapper d-flex w-100">
+                </span>
               </p>
-              <!--              <div class="mb-5 flex gap-2">-->
-              <!--                <div class="relative flex-1" data-te-input-wrapper-init>-->
-              <!--                  <input-->
-              <!--                    type="text"-->
-              <!--                    class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"-->
-              <!--                    id="billing-coupon-code"-->
-              <!--                    placeholder="Username" />-->
-              <!--                  <label-->
-              <!--                    for="billing-coupon-code"-->
-              <!--                    class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none">-->
-              <!--                    Coupon code-->
-              <!--                  </label>-->
-              <!--                </div>-->
-              <!--                <button-->
-              <!--                  type="button"-->
-              <!--                  id="apply-coupon-btn"-->
-              <!--                  class="rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]">-->
-              <!--                  apply-->
-              <!--                </button>-->
-              <!--              </div>-->
-
+              <div class="mb-5 flex gap-2">
+                <div class="relative flex-1" data-te-input-wrapper-init>
+                  <input
+                    type="text"
+                    class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:autofill:shadow-autofill [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                    id="billing-coupon-code"/>
+                  <label
+                    for="billing-coupon-code"
+                    class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none">
+                    Coupon code
+                  </label>
+                </div>
+                <button
+                  type="button"
+                  id="apply-coupon-btn"
+                  class="rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]">
+                  apply
+                </button>
+              </div>
               <p></p>
             </li>
-            <!--            <div class="mb-5 h-[2px] w-full bg-gray-200"></div>-->
+            <li
+              id="summary-trial"
+              class="border-0 px-0 pb-0 pb-3"
+              style="display: none;">
+              <div class="align-center flex justify-between">
+                Trial
+                <bdi>
+                  <span class="trial-days"></span>
+                  <small
+                    class="text-muted product-billing"
+                    style="font-size:16px"
+                    >days</small
+                  >
+                </bdi>
+              </div>
+              <div class="my-4 h-[2px] w-full bg-gray-200"></div>
+            </li>
             <li class="order-total mb-3 flex justify-between border-0 px-0 font-bold" id="summary-total">
               <span>Total</span>
               <strong>
                 <bdi>
-                  <span class="currency-symbol">€</span>
-                  <span class="product-price">19</span>&nbsp;<small
-                    class="text-muted product-billing"
-                    style="font-size:16px"
-                    >/ annual</small
-                  >
+                  <span class="currency-symbol"></span>
+                  <span class="product-price"></span>
                 </bdi>
               </strong>
             </li>
@@ -528,7 +548,9 @@ layout: checkout
   data-te-toast-init
   data-te-position="top-right"
   data-te-autohide="true"
-  data-te-delay="2000">
+  data-te-delay="2000"
+  style="position: fixed; top: 1rem; right: 1rem; z-index: 51;"
+  >
   <div
     class="flex items-center justify-between rounded-t-lg border-b-2 border-[#a1dbb8] bg-clip-padding px-4 py-[0.65rem]  dark:border-[#0c622e]">
     <div class="flex items-center">
@@ -554,7 +576,9 @@ layout: checkout
   data-te-toast-init
   data-te-position="top-right"
   data-te-autohide="true"
-  data-te-delay="2000">
+  data-te-delay="2000"
+  style="position: fixed; top: 1rem; right: 1rem; z-index: 51;"
+  >
   <div
     class="flex items-center justify-between rounded-t-lg border-b-2 border-[#f1b7c1] bg-clip-padding px-4 py-[0.65rem]  dark:border-[#842e3c]">
     <div class="flex items-center">
@@ -581,7 +605,9 @@ layout: checkout
   data-te-toast-init
   data-te-position="top-right"
   data-te-autohide="true"
-  data-te-delay="2000">
+  data-te-delay="2000"
+  style="position: fixed; top: 1rem; right: 1rem; z-index: 51;
+  >
   <div
     class="flex items-center justify-between rounded-t-lg border-b-2 border-[#f4d9a4] bg-clip-padding px-4 py-[0.65rem]  dark:border-[#896110]">
     <div class="flex items-center">

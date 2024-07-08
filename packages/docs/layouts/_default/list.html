@@ -1,7 +1,13 @@
 {{ $hidden_sidenav := .Params.hidden_sidenav }}
-{{ $api_file_exists := fileExists (printf "/content/%s/a.html" .File.Dir) }}
 
-{{ $scrollspy_file_exists := fileExists (printf "/content/%s/index-ss.html" .File.Dir) }}
+{{ $currentDir := "" }}
+{{ with .File }}
+  {{ $currentDir = .Dir }}
+{{ end }}
+
+{{ $api_file_exists := fileExists (printf "/content/%s/a.html" $currentDir) }}
+
+{{ $scrollspy_file_exists := fileExists (printf "/content/%s/index-ss.html" $currentDir) }}
 
 
 <html lang="{{ .Language.Lang }}">
