@@ -433,6 +433,10 @@ layout: checkout
               </div>
               <!--  -->
               <div class="my-5 h-[1px] w-full bg-gray-200"></div>
+              <p id="trial-pay-info" style="display: none;">
+                We will not charge you until the end of your trial. You will always see the end date of your trial on
+                the dashboard.
+              </p>
               <p class="mb-0 mb-5 cursor-pointer text-left text-base">
                 Your personal data will be used to process your order, support your experience throughout this website,
                 and for other purposes described in our
@@ -500,6 +504,16 @@ layout: checkout
               <p></p>
             </li>
             <!--            <div class="mb-5 h-[2px] w-full bg-gray-200"></div>-->
+            <li id="summary-trial" class="border-0 px-0 pb-0 pb-3" style="display: none;">
+              <div class="align-center flex justify-between">
+                Trial
+                <bdi>
+                  <span class="trial-days"></span>
+                  <small class="text-muted product-billing" style="font-size:16px">days</small>
+                </bdi>
+              </div>
+              <div class="my-4 h-[2px] w-full bg-gray-200"></div>
+            </li>
             <li class="order-total mb-3 flex justify-between border-0 px-0 font-bold" id="summary-total">
               <span>Total</span>
               <strong>
