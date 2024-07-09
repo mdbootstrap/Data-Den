@@ -16,11 +16,14 @@
       e.preventDefault();
 
       const subscriptionId = e.target.getAttribute('data-subscription-id');
-      fetch(`${CONFIG.docsApiUrl}/payments/stripe/dd/subscription/${subscriptionId}`, {
+      fetch(`${CONFIG.docsApiUrl}/payments/stripe/subscription/${subscriptionId}`, {
         method: 'DELETE',
         credentials: 'include',
       })
-        .then((response) => response.json())
+        .then((response) => {
+          const contentType = response.headers.get('Content-Type');
+          return contentType && contentType.includes('application/json') ? response.json() : response.text();
+        })
         .then((data) => {
           _showToast('success', 'Subscription canceled');
           window.location.reload();
@@ -60,12 +63,16 @@
           ],
           rows: data.map((row) => {
             const downloadableFile = row.downloadableFiles[0];
-            const downloadLink = `https://mdbootstrap.com/?download_file=${downloadableFile.productId}&order=${downloadableFile.orderKey}&email=${downloadableFile.userEmail}&key=${downloadableFile.latestDownloadableFiles[0].downloadId}`;
+            const downloadLink = downloadableFile
+              ? `https://mdbootstrap.com/?download_file=${downloadableFile.productId}&order=${downloadableFile.orderKey}&email=${downloadableFile.userEmail}&key=${downloadableFile.latestDownloadableFiles[0].downloadId}`
+              : '';
             return {
               name: row.title,
-              file: `<dvi>
+              file: downloadableFile
+                ? `<dvi>
         <a href="${downloadLink}" class="text-primary-500 underline" target="_blank">${downloadableFile.latestDownloadableFiles[0].name}</a>
-</dvi>`,
+</dvi>`
+                : '',
               activeDue: Intl.DateTimeFormat('en-US', {
                 year: 'numeric',
                 month: 'long',
