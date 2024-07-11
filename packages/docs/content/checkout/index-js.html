@@ -7,13 +7,14 @@
     static parse() {
       const queryParams = new URLSearchParams(location.search);
       const rawParams = queryParams.get('product');
+      const trial = queryParams.get('trial') ?? null;
       if (!rawParams) {
         throw new Error('MISSING_VARIATION_PARAMS');
       }
 
       try {
         const { id, variation, title, qty } = JSON.parse(decodeURIComponent(rawParams));
-        return { id, variation, title, qty };
+        return { id, variation, title, qty, trial };
       } catch (e) {
         console.error(e);
         throw new Error('INVALID_VARIATION_PARAMS');
@@ -24,7 +25,7 @@
   class TweCheckout {
     constructor() {
       this.stripeCard = null;
-      this.stripe = Stripe('pk_live_GWR9mWvess9zYZONfgf33YQC00lCa4JiRF');
+      this.stripe = Stripe(CONFIG.stripePublicKey);
       this.elements = this.stripe.elements();
 
       this.user = null;
@@ -34,10 +35,15 @@
       };
 
       this.variationParams = TweVariationParamsParser.parse();
+      this.isTrial = this.variationParams.trial !== null && this.variationParams.trial > 0;
     }
 
     run() {
-      this.stripeCard = this.elements.create('card', { hidePostalCode: true });
+      const inputColor = document.documentElement.classList.contains('dark') ? '#fff' : '#000';
+
+      this.stripeCard = this.elements.create('card', {
+        hidePostalCode: true,
+      });
       this.stripeCard.mount('#payment-element');
 
       this.initEvents();
@@ -59,12 +65,15 @@
 
       document.addEventListener('dpl_loaded', (e) => {
         this._loadGeodata();
+        this._loadCoupon();
 
         this.user = e.detail;
         if (this.user === null || !this.user.isLoggedIn) return;
 
         document.getElementById('account-fields').remove();
-        document.getElementById('billing-email').value = this.user.email;
+        const emailInput = document.getElementById('billing-email');
+        emailInput.value = this.user.email;
+        emailInput.dispatchEvent(new Event('input'));
       });
 
       document.getElementById('validate-billing-btn').addEventListener('click', (e) => {
@@ -86,9 +95,26 @@
         });
       });
 
-      // document.getElementById('apply-coupon-btn').addEventListener('click', (e) => {
-      // this._applyCoupon();
-      // });
+      document.getElementById('apply-coupon-btn').addEventListener('click', (e) => {
+        this._applyCoupon();
+      });
+
+      if (this.variationParams.trial !== null && this.variationParams.trial > 0) {
+        document.querySelector('#trial-pay-info').style.display = 'block';
+        const placeOrderBtn = document.getElementById('submit');
+        placeOrderBtn.innerHTML = 'START TRIAL';
+      }
+    }
+
+    _loadCoupon() {
+      const searchParams = new URLSearchParams(location.search);
+      const couponCode = searchParams.get('coupon');
+      if (couponCode) {
+        const couponCodeInput = document.getElementById('billing-coupon-code');
+        couponCodeInput.value = couponCode;
+        couponCodeInput.dispatchEvent(new Event('input'));
+        this._applyCoupon();
+      }
     }
 
     _loadGeodata() {
@@ -115,6 +141,10 @@
             .forEach((el) => (el.innerText = (this.userGeoData.price * this.variationParams.qty).toFixed(2)));
           document.getElementById('billing-country').value = response.countryCode.toUpperCase();
         });
+
+      if (this.variationParams.trial !== null && this.variationParams.trial > 0) {
+        document.getElementById('summary-total').querySelector('.product-price').innerText = '0';
+      }
     }
 
     _switchTabTo(switchTargetSelector) {
@@ -150,6 +180,7 @@
       const itemsList = document.getElementById('summary-items-list');
       const summarySubtotal = document.getElementById('summary-subtotal');
       const summaryTotal = document.getElementById('summary-total');
+      const summaryTrial = document.getElementById('summary-trial');
 
       const itemTemplate = document.createElement('template');
       itemTemplate.innerHTML = `<li class="align-center flex justify-between border-0 px-0 pb-0">
@@ -173,7 +204,14 @@
       summarySubtotal.querySelector('.product-price').innerHTML = Number(
         this.userGeoData.price * this.variationParams.qty
       ).toFixed(2);
-      summaryTotal.querySelector('.product-price').innerHTML = Number(this.userGeoData.price).toFixed(2);
+
+      if (this.variationParams.trial !== null && this.variationParams.trial > 0) {
+        summaryTrial.style.display = 'block';
+        summaryTrial.querySelector('.trial-days').innerHTML = this.variationParams.trial;
+        summaryTotal.querySelector('.product-price').innerHTML = '0';
+      } else {
+        summaryTotal.querySelector('.product-price').innerHTML = Number(this.userGeoData.price).toFixed(2);
+      }
     }
 
     submit() {
@@ -189,11 +227,14 @@
         .then((response) => this._confirmCardPayment(response))
         .then((result) => {
           if (result.error) {
-            this._showToast('error', 'Something went wrong. Please try again.');
+            this._showToast('error', result.error.message || 'Something went wrong. Please try again.');
             return console.error('result.error', result.error);
           }
 
-          if (result.paymentIntent.status === 'succeeded') {
+          if (this.isTrial && result.status === 'succeeded') {
+            this._showToast('success', 'Your trial has started. You will be now redirected.');
+            location.href = '/billing/';
+          } else if (result.paymentIntent.status === 'succeeded') {
             this._showToast('success', 'Your payment has succeeded. You will be now redirected.');
             location.href = '/billing/';
           } else {
@@ -258,6 +299,8 @@
       const toastEl = document.getElementById(toastId);
       toastEl.querySelector('.toast-body').innerText = body;
       const toast = te.Toast.getOrCreateInstance(toastEl);
+      toastEl.classList.add('show');
+      toastEl.classList.remove('hidden');
       toast.show();
     }
 
@@ -271,6 +314,10 @@
     _createSubscription(paymentMethodResponse) {
       const response = paymentMethodResponse;
       return new Promise((resolve, reject) => {
+        if (response.error) {
+          reject(response.error.message);
+        }
+
         this.paymentMethodId = response.paymentMethod.id;
 
         const billing = {
@@ -288,9 +335,11 @@
           };
         }
 
-        // const coupon = document.getElementById('billing-coupon-code').value;
+        const couponInput = document.getElementById('billing-coupon-code');
+        const coupon = couponInput.getAttribute('data-stripe-coupon-id');
 
-        fetch(`${CONFIG.docsApiUrl}/payments/stripe/dd/subscription`, {
+        const endpoint = this.isTrial ? '/payments/stripe/dd/trial' : '/payments/stripe/dd/subscription';
+        fetch(`${CONFIG.docsApiUrl}${endpoint}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -301,17 +350,24 @@
             paymentMethodId: this.paymentMethodId,
             billing,
             account,
-            // ...!!coupon && { coupon }
+            ...(!!coupon && { coupon }),
+            trialDays: this.isTrial ? this.variationParams.trial : null,
           }),
           credentials: 'include',
         })
-          .then((response) => response.json())
-          .then((response) => resolve(response))
+          .then((response) => {
+            const contentType = response.headers.get('Content-Type');
+            return contentType && contentType.includes('application/json') ? response.json() : response.text();
+          })
+          .then((response) => (typeof response === 'string' ? reject(response) : resolve(response)))
           .catch((error) => reject(error));
       });
     }
 
     _confirmCardPayment(response) {
+      if (this.isTrial) {
+        return { status: 'succeeded' };
+      }
       const clientSecret = response.clientSecret;
       return this.stripe.confirmCardPayment(clientSecret, {
         payment_method: this.paymentMethodId,
@@ -319,30 +375,39 @@
     }
 
     _applyCoupon() {
-      const couponCode = document.getElementById('coupon_code').value;
+      const couponCode = document.getElementById('billing-coupon-code').value;
       if (!couponCode) {
         return;
       }
 
       fetch(
-        `${CONFIG.appsApiUrl}/payments/stripe/coupon/${couponCode}/${this.variationParams.id}/${this.variationParams.variation}`,
+        `${CONFIG.docsApiUrl}/payments/stripe/dd/coupon/${couponCode}/${this.variationParams.id}/${this.variationParams.variation}`,
         {
           method: 'GET',
           credentials: 'include',
         }
       )
-        .then((response) => response.json())
+        .then((response) => {
+          const contentType = response.headers.get('Content-Type');
+          return contentType && contentType.includes('application/json') ? response.json() : response.text();
+        })
+        .then(
+          (response) =>
+            new Promise((resolve, reject) => (typeof response === 'string' ? reject(response) : resolve(response)))
+        )
         .then((response) => {
           const coupon = response.coupon;
           if (
-            coupon &&
+            coupon !== null &&
+            coupon !== undefined &&
+            coupon.valid &&
             coupon.metadata &&
-            coupon.metadata.product_id === this.variationParams.id &&
-            coupon.metadata.variation_id === this.variationParams.variation
+            coupon.metadata.product_ids &&
+            coupon.metadata.product_ids.split(',').includes('' + this.variationParams.id)
           ) {
             this._calculateDiscountAndShow(coupon);
           } else {
-            this._showToast('error', response.message);
+            this._showToast('error', response.message || 'The coupon is not valid.');
           }
         })
         .catch((error) => this._showToast('error', error));
@@ -350,25 +415,32 @@
 
     _calculateDiscountAndShow(coupon) {
       const percentOff = coupon.percent_off / 100;
-      const couponAmount = (Number(this.userGeoData.price) * percentOff).toFixed(2);
-      const newPrice = (Number(this.userGeoData.price) - Number(this.userGeoData.price) * percentOff).toFixed(2);
+      const amountOff = coupon.amount_off;
+      const couponAmount = (percentOff ? Number(this.userGeoData.price) * percentOff : amountOff).toFixed(2);
+      const newPrice = (Number(this.userGeoData.price) - couponAmount).toFixed(2);
       const couponCodeField = document.getElementById('summary-coupon-code');
       const summarySubtotal = document.getElementById('summary-subtotal');
       const summaryTotal = document.getElementById('summary-total');
-      const couponHTML = `<li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+      const couponHTML = `<li class="list-group-item flex justify-between border-0 px-0">
           <div class="coupon-applied">
-            Coupon: <strong class="coupon-id">${coupon.id}</strong>
+            Coupon: <strong class="coupon-id">${coupon.metadata.orginal_code}</strong>
           </div>
           <span class="product-coupon">
-            <bdi><span class="currency-symbol">- ${this.userGeoData.currency}</span><span class="product-price">${couponAmount}</span></bdi>
+            <bdi><span class="currency-symbol">- ${this.userGeoData.currency}</span> <span class="product-price">${couponAmount}</span></bdi>
           </span>
-        </li>`;
+        </li>
+        <li class="pb-3"><small>Discount applies to first payment only.</small>
+        </li>
+        <div class="mb-5 h-[2px] w-full bg-gray-200"></div>`;
 
       couponCodeField.insertAdjacentHTML('beforebegin', couponHTML);
       couponCodeField.classList.add('d-none');
 
       summarySubtotal.querySelector('.product-price').innerHTML = newPrice;
-      summaryTotal.querySelector('.product-price').innerHTML = newPrice;
+      summaryTotal.querySelector('.product-price').innerHTML = this.isTrial ? '0' : newPrice;
+      couponCodeField.style.display = 'none';
+      const couponInput = document.getElementById('billing-coupon-code');
+      couponInput.setAttribute('data-stripe-coupon-id', coupon.id);
     }
   }
 
