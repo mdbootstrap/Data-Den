@@ -32,16 +32,24 @@ export class DataDenPaginationService {
     this.PubSub.subscribe('command:pagination:load-last-page:start', () => {
       this.#loadLastPage();
     });
+    this.PubSub.subscribe('command:group:update', () => {
+      this.#currentPage = 0;
+      this.#allTotalRows = 0;
+    });
     this.PubSub.subscribe('info:pagination:page-size-change:done', (event: { data: { pageSize: number } }) => {
       this.#pageSize = event.data.pageSize;
       this.#currentPage = 0;
       this.#updateState();
     });
     this.PubSub.subscribe('info:fetch:done', (event: DataDenEvent) => {
-      if (this.#allTotalRows || this.#allTotalRows === event.data.rows.length) {
+      const rows = event.data.rows;
+      const length = Object.keys(rows).length;
+
+      if (this.#allTotalRows || this.#allTotalRows === length) {
         return;
       }
-      this.#allTotalRows = event.data.rows.length;
+
+      this.#allTotalRows = length;
       this.#updateState();
     });
   }

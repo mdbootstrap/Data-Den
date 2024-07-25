@@ -1,8 +1,8 @@
 .#{$prefix}grid-rows {
   display: flex;
-  flex-flow: row wrap;
   flex-direction: column;
   position: relative;
+  max-height: 421px;
 }
 
 .#{$prefix}row {
@@ -69,6 +69,22 @@
     padding-left: 5px;
     width: 100%;
     outline: none;
+    height: 100%;
+
+    .#{$prefix}cell-icon {
+      cursor: pointer;
+      transform: rotate(-90deg);
+      display: inline-block;
+
+      svg {
+        height: 12px;
+        width: 12px;
+      }
+    }
+
+    .#{$prefix}cell-icon-rotated {
+      transform: rotate(0deg);
+    }
   }
 
   &.#{$prefix}active {

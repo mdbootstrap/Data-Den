@@ -1,7 +1,7 @@
 import { DataDenColDef, DataDenInternalOptions } from '../../data-den-options.interface';
 import { DataDenCell, DataDenHeaderCell } from './cell';
 import { DataDenPaginationRenderer } from './pagination';
-import { DataDenHeaderRow, DataDenRow } from './row';
+import { DataDenGroupRow, DataDenHeaderRow, DataDenRow } from './row';
 import { DataDenPubSub } from '../../data-den-pub-sub';
 import { DataDenEvent } from '../../data-den-event';
 import { DataDenSortOrder } from '../sorting/data-den-sorting.interface';
@@ -16,20 +16,26 @@ import {
 } from '../../utils/columns-order';
 import { DataDenPinningPreviousState } from '../pinning/data-den-pinning-previous-state';
 import { DataDenEventEmitter } from '../../data-den-event-emitter';
+import { countNumOfLevels, createHtmlElement, transformGroupedData } from '../../utils';
+import { DataDenPinnedCellParams } from './row/data-den-pinned.interface';
 
 export class DataDenRenderingService {
   #container: HTMLElement;
   #options: DataDenInternalOptions;
   #orderedColumns: DataDenColDef[];
   #defaultOrderedColumns: DataDenColDef[];
+  #mainOrderedColumns: DataDenColDef[];
   #columnsOrder: number[];
   #headerRow: DataDenHeaderRow;
   #rows: DataDenRow[] = [];
   #paginationRenderer: DataDenPaginationRenderer | null = null;
+  #groupedColumns: any = [];
 
   constructor(container: HTMLElement, options: DataDenInternalOptions, private PubSub: DataDenPubSub) {
     this.#container = container;
     this.#options = options;
+    this.#mainOrderedColumns = options.columns;
+    this.#columnsOrder = getMainColumnIndexes(this.#mainOrderedColumns);
 
     if (options.pagination) {
       this.#paginationRenderer = new DataDenPaginationRenderer(
@@ -46,10 +52,9 @@ export class DataDenRenderingService {
   }
 
   #init() {
-    this.#orderedColumns = getMainOrderedColumns(this.#options.columns);
-    this.#defaultOrderedColumns = getMainOrderedColumns(this.#options.columns);
-    this.#columnsOrder = getMainColumnIndexes(this.#options.columns);
-    this.#headerRow = this.#createHeaderRow(this.#options.columns, null);
+    this.#orderedColumns = getMainOrderedColumns(this.#mainOrderedColumns);
+    this.#defaultOrderedColumns = getMainOrderedColumns(this.#mainOrderedColumns);
+    this.#headerRow = this.#createHeaderRow(this.#mainOrderedColumns, null);
 
     this.renderTable();
   }
@@ -120,37 +125,22 @@ export class DataDenRenderingService {
     return new DataDenHeaderRow(rowIndex, headerCells, this.#options);
   }
 
-  #createPinnedCellsLeft(key: string, value: any, colIndex: number, rowIndex: number): DataDenCell | undefined {
-    const colDef = this.#options.columns.find((col) => col.field === key)!;
-    if (colDef.pinned !== 'left') {
-      return undefined;
-    }
-
+  #createPinnedCellsLeft({ colIndex, value, rowIndex, colDef, icon, isGroupCell }: DataDenPinnedCellParams): DataDenCell | undefined {
     const left = 0;
     const width = this.#options.columns[colIndex].width || 120;
 
-    return new DataDenCell(value, colIndex, rowIndex, left, width, colDef.pinned, this.#options);
+    return new DataDenCell(value, colIndex, rowIndex, left, width, colDef.pinned, this.#options, icon, isGroupCell);
   }
 
-  #createMainCells(key: string, value: any, colIndex: number, rowIndex: number): DataDenCell | undefined {
-    const colDef = this.#options.columns.find((col) => col.field === key)!;
-    if (colDef.pinned) {
-      return undefined;
-    }
-
+  #createMainCells({ key, colIndex, value, rowIndex, colDef, icon, isGroupCell }: DataDenPinnedCellParams): DataDenCell | undefined {
     const orderedColIndex = this.#orderedColumns.findIndex((col) => col.field === key);
     const left = this.#orderedColumns.slice(0, orderedColIndex).reduce((acc, curr) => acc + (curr.width || 120), 0);
     const width = this.#orderedColumns[orderedColIndex].width || 120;
 
-    return new DataDenCell(value, colIndex, rowIndex, left, width, colDef.pinned, this.#options);
+    return new DataDenCell(value, colIndex, rowIndex, left, width, colDef.pinned, this.#options, icon, isGroupCell);
   }
 
-  #createPinnedCellsRight(key: string, value: any, colIndex: number, rowIndex: number): DataDenCell | undefined {
-    const colDef = this.#options.columns.find((col) => col.field === key)!;
-    if (colDef.pinned !== 'right') {
-      return undefined;
-    }
-
+  #createPinnedCellsRight({ key, colIndex, value, rowIndex, colDef, icon, isGroupCell }: DataDenPinnedCellParams): DataDenCell | undefined {
     const pinnedColIndex = this.#options.columns
       .filter((col) => col.pinned === 'right')
       .map((defaultColumn) => defaultColumn.field)
@@ -159,32 +149,88 @@ export class DataDenRenderingService {
     const left = 0;
     const width = getPinnedRightColumns(this.#options.columns)[pinnedColIndex].width || 120;
 
-    return new DataDenCell(value, colIndex, rowIndex, left, width, colDef.pinned, this.#options);
+    return new DataDenCell(value, colIndex, rowIndex, left, width, colDef.pinned, this.#options, icon, isGroupCell);
   }
 
   #createDataRows(rowsData: any): DataDenRow[] {
+    const numOfCells = (rowsData.length) ? Object.keys(rowsData[rowsData.length - 1]).length : 0;
+    let group = rowsData.length ? rowsData[0]._group : '';
+    const numOfLevels = countNumOfLevels(rowsData);
+
+    let isGroupCell = false, res, activeGroups: string[] = [];
+
     return rowsData.map((rowData: any, rowIndex: number) => {
-      const pinnedCellsLeft = Object.entries(rowData).map(([key, value], colIndex) =>
-        this.#createPinnedCellsLeft(key, value, colIndex, rowIndex)
-      );
-      const mainCells = Object.entries(rowData);
-      mainCells.sort(([aField], [bField]) => {
-        // sort based on this.#orderedColumns order
-        const aIndex = this.#orderedColumns.findIndex((col) => col.field === aField);
-        const bIndex = this.#orderedColumns.findIndex((col) => col.field === bField);
-        return aIndex - bIndex;
-      });
-      const mainCellsSorted = mainCells.map<DataDenCell>(([key, value], colIndex) =>
-        this.#createMainCells(key, value, colIndex, rowIndex)
-      );
+      const pinnedCellsLeft = [], mainCells = [], pinnedCellsRight = [];
 
-      const pinnedCellsRight = Object.entries(rowData)
-        .reverse()
-        .map(([key, value], colIndex) => this.#createPinnedCellsRight(key, value, colIndex, rowIndex));
+      if (group && rowData._group) {
+        group = rowData._group;
+      }
 
-      const cells = [...pinnedCellsLeft, ...mainCellsSorted, ...pinnedCellsRight].filter((cell) => cell !== undefined);
+      for (let i = 0; i < numOfCells; i++) {
+        let key: string;
+        let value: string;
+        let icon: HTMLElement | undefined = undefined;
 
-      return new DataDenRow(rowIndex, cells, this.#options);
+        if (rowData._colIndex === i) {
+          key = rowData._column;
+          icon = createHtmlElement(`
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>`);
+          value = `${rowData._group}`;
+          isGroupCell = true;
+        } else if (rowData._group) {
+          key = this.#options.columns[i].field;
+          value = '';
+          isGroupCell = true;
+        } else {
+          key = Object.keys(rowData)[i];
+          value = rowData[key];
+          isGroupCell = false;
+        }
+
+        const colDef = this.#options.columns.find((col) => col.field === key)!;
+
+        const params = {
+          key: key,
+          value: value,
+          colIndex: i,
+          rowIndex,
+          colDef,
+          icon,
+          isGroupCell
+        };
+
+        switch (colDef.pinned) {
+          case 'left':
+            pinnedCellsLeft.push(this.#createPinnedCellsLeft(params));
+            break;
+          case 'right':
+            pinnedCellsRight.push(this.#createPinnedCellsRight(params));
+            break;
+          default:
+            mainCells.push(this.#createMainCells(params));
+        }
+      }
+
+      const cells = [...pinnedCellsLeft, ...mainCells, ...pinnedCellsRight].filter((cell) => cell !== undefined);
+
+      if (rowData._group) {
+        const level = rowData._level;
+
+        if (level === 0) activeGroups = [];
+
+        activeGroups[level] = group;
+
+        const parents = activeGroups.slice(0, level + 1);
+
+        res = new DataDenGroupRow(rowIndex, cells, this.#options, group, parents, numOfLevels);
+
+      } else {
+        res = new DataDenRow(rowIndex, cells, this.#options, activeGroups);
+      }
+
+      return res;
     });
   }
 
@@ -279,7 +325,8 @@ export class DataDenRenderingService {
 
   #renderEditor(e: MouseEvent): HTMLElement {
     const target = e.target as HTMLElement;
-    if (target.tagName !== 'SPAN') return;
+
+    if (target.tagName !== 'SPAN' || target.classList.contains(`${this.#options.cssPrefix}group`)) return;
 
     const cellElement = target.parentElement;
     const rowIndex = Number(cellElement.getAttribute('rowIndex'));
@@ -327,6 +374,16 @@ export class DataDenRenderingService {
     return rowContainer;
   }
 
+  #updateGroups(pageX: number) {
+    this.PubSub.publish('command:group:update', {
+      pageX: pageX,
+      columnsOrder: this.#columnsOrder,
+      mainOrderedColumns: this.#mainOrderedColumns,
+      groupedColumns: this.#groupedColumns,
+      context: new Context('command:group:update'),
+    });
+  }
+
   #subscribeToEvents(): void {
     this.PubSub.subscribe('info:dragging:columns-reorder:done', (event: DataDenEvent) => {
       this.#columnsOrder = event.data.columnsOrder;
@@ -362,6 +419,34 @@ export class DataDenRenderingService {
         columns: this.#options.columns,
       });
     });
+    this.PubSub.subscribe('command:group-column:start', (event: DataDenEvent) => {
+      const data = event.data;
+      const group = data.group;
+      const colIndex = data.colIndex;
+      const level = this.#groupedColumns.length;
+
+      this.#groupedColumns.push({ colIndex: colIndex, group: group, level: level });
+
+      const groupedColumns = this.#groupedColumns.map((column: any) => {
+        return this.#options.columns[column.colIndex];
+      });
+
+      this.#mainOrderedColumns = [...new Set<DataDenColDef>(groupedColumns.concat(this.#mainOrderedColumns))];
+      this.#columnsOrder.unshift(colIndex);
+      this.#columnsOrder = [...new Set<number>(this.#columnsOrder)];
+
+      this.#options.columns[colIndex].grouped = true;
+      this.#updateGroups(event.data.pageX);
+      this.rerenderTable();
+
+    });
+    this.PubSub.subscribe('command:ungroup-column:start', (event: DataDenEvent) => {
+      this.#groupedColumns = this.#groupedColumns.filter((column: any) => column.group !== event.data.group);
+      this.#options.columns[event.data.colIndex].grouped = false;
+
+      this.#updateGroups(event.data.pageX);
+      this.rerenderTable();
+    });
   }
 
   #subscribeFetchDone(): void {
@@ -371,7 +456,7 @@ export class DataDenRenderingService {
   }
 
   #updateRows(event: DataDenEvent): void {
-    const { rows } = event.data;
+    const rows = transformGroupedData(event.data.rows, this.#groupedColumns);
 
     const rowsEl = document.createDocumentFragment();
     this.#rows = this.#createDataRows(rows);
@@ -383,3 +468,4 @@ export class DataDenRenderingService {
     this.#calculateGridSize();
   }
 }
+

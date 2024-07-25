@@ -40,7 +40,6 @@ export class DataDen {
     if (this.#dataLoaderStrategy) {
       this.#fetch = new DataDenFetchService(this.#dataLoaderStrategy, this.PubSub);
     }
-
     this.#rendering = new DataDenRenderingService(container, gridOptions, this.PubSub);
     this.#sorting = new DataDenSortingService(gridOptions, this.PubSub);
     this.#filtering = new DataDenFilteringService(gridOptions, this.PubSub);
