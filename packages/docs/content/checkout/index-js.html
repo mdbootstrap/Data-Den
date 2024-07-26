@@ -365,10 +365,11 @@
     }
 
     _confirmCardPayment(response) {
-      if (this.isTrial) {
+      const clientSecret = response.clientSecret;
+      const isFree = !clientSecret || response.active;
+      if (this.isTrial || isFree) {
         return { status: 'succeeded' };
       }
-      const clientSecret = response.clientSecret;
       return this.stripe.confirmCardPayment(clientSecret, {
         payment_method: this.paymentMethodId,
       });
