@@ -234,6 +234,9 @@
           if (this.isTrial && result.status === 'succeeded') {
             this._showToast('success', 'Your trial has started. You will be now redirected.');
             location.href = '/billing/';
+          } else if (result.status === 'succeeded') {
+            this._showToast('success', 'Your subscription has started. You will be now redirected.');
+            location.href = '/billing/';
           } else if (result.paymentIntent.status === 'succeeded') {
             this._showToast('success', 'Your payment has succeeded. You will be now redirected.');
             location.href = '/billing/';
