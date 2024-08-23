@@ -329,7 +329,7 @@
         };
 
         let account;
-        if (!this.user) {
+        if (!this.user || !this.user.isLoggedIn) {
           account = {
             firstName: document.getElementById('account-first-name').value,
             username: document.getElementById('account-username').value,
