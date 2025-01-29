@@ -18,19 +18,9 @@ url: 'docs/grid/getting-started/quick-start/'
     <p>In order to quickly install Data Den simply download our .ZIP starter.</p>
 
     <p class="font-bold mt-4">Step 1</p>
-    <p>Purchase Data Den plan best suited to your needs.</p>
-    <a href="/general/pro/" target="_blank" id="download-zip-step-1">
-      <button
-        class="mb-3 mr-1 mt-3 rounded border border-solid border-purple-500 bg-transparent px-6 py-3 text-sm font-bold uppercase text-purple-500 outline-none transition-all duration-150 ease-linear hover:bg-purple-500 hover:text-white focus:outline-none active:bg-purple-600"
-        type="button">
-        BUY DATA DEN ACCESS
-      </button>
-    </a>
-
-    <p class="font-bold mt-4">Step 2</p>
-    <p>Download the package from <a class="underline" href="/billing/">Your Orders</a>.</p>
+    <p>Download the package.</p>
     <div>
-      <a href="/billing/" target="_blank" id="download-zip-step-1">
+      <a href="https://mdbootstrap.com/download/data-den/C7Meu2L9UsPvmESdFt/Data-Den-Free-1.0.0.zip" target="_blank" id="download-zip-step-1">
         <button
           class="mb-3 mr-1 mt-3 rounded border border-solid border-purple-500 bg-transparent px-6 py-3 text-sm font-bold uppercase text-purple-500 outline-none transition-all duration-150 ease-linear hover:bg-purple-500 hover:text-white focus:outline-none active:bg-purple-600"
           type="button">
@@ -39,13 +29,83 @@ url: 'docs/grid/getting-started/quick-start/'
       </a>
     </div>
 
-    <p class="font-bold mt-4">Step 3</p>
+    <p class="font-bold mt-4">Step 2</p>
     <p>Unzip downloaded package and open it in the code editor.</p>
 
-    <p class="font-bold mt-4">Step 4</p>
+    <p class="font-bold mt-4">Step 3</p>
     <p>Explore our documentation (menu on the left).</p>
   </div>
 </div>
+
+
+<hr class="my-10" />
+
+<div id="npm" data-te-spy-item>
+  <div class="flex flex-row">
+    <div class="w-full">
+      <h2 class="mb-5 mt-0 text-3xl font-semibold leading-normal">Scripts</h2>
+      <div
+        class="mb-4 mr-4 overflow-hidden rounded-md border-l-[6px] border-solid border-blue-600 bg-blue-100 p-2.5 dark:text-gray-600">
+        <strong>Note:</strong> Make sure that you have <code>Node.js version 16.17.0 + / 18.1.0 +</code> installed.
+    </div>
+  </div>
+
+  <p class="font-bold mt-4">NPM</p>
+  <p class="mb-2">
+    Use the following commands to start, build, and test packages:
+  </p>
+
+  <div class="pt-2" id="download-npm">
+    <!-- prettier-ignore -->
+    {{< twsnippet/wrapper "terminal" "" "mobile" >}}
+    {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}}
+      npm run start:[package] // start package
+      npm run start:all // start all packages
+      npm run build:[package] // build package
+      npm run build:all // build all packages
+      npm run test:[package] // test package
+      npm run test:all // test all packages
+    {{< /twsnippet/code >}}
+    {{< /twsnippet/wrapper >}}
+  </div>
+
+  <p class="font-bold mt-4">NX Commands</p>
+  <p class="mb-2">
+    Run, build, and test packages using NX commands:
+  </p>
+
+  <div class="pt-2" id="download-vite-step-1">
+    <!-- prettier-ignore -->
+    {{< twsnippet/wrapper "terminal" "" "mobile" >}}
+    {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}}
+      npx nx run [package] // start package
+      npx nx build [package] // build package
+      npx nx run-many -t [script] // start/build/test multiple packages
+
+      npx nx graph // show project dependencies
+    {{< /twsnippet/code >}}
+    {{< /twsnippet/wrapper >}}
+  </div>
+
+  <p class="font-bold mt-4">Publishing</p>
+  <p class="mb-2">
+    Manage version updates and publishing:
+  </p>
+
+  <div class="pt-2" id="download-vite-step-1">
+    <!-- prettier-ignore -->
+    {{< twsnippet/wrapper "terminal" "" "mobile" >}}
+    {{< twsnippet/code active=true lang="Plaintext" type="terminal" >}}
+      npx nx release version --projects=[name1,name2] --dry-run // version update dry run for testing
+      npx nx release version --projects=[name1,name2] // version update
+      npx nx release publish --projects=[name1,name2] --dry-run // publish dry run for testing
+      npx nx release publish --projects=[name1,name2]  // publish
+    {{< /twsnippet/code >}}
+    {{< /twsnippet/wrapper >}}
+  </div>
+
+</div>
+
 
 <hr class="my-10" />
 
