@@ -1,12 +1,17 @@
 {{ partial "head/meta.html" . }}
 
-{{ $styles := resources.Get "css/style.min.css" | postCSS }}
+{{ $styles := resources.Get "css/style.min.css" }}
+{{ if $styles }}
+  {{ $styles = $styles | postCSS }}
+{{ end }}
 
 {{ if .Site.IsServer }}
   <link rel="stylesheet" href="{{ $styles.RelPermalink }}" />
 {{ else }}
-  {{ $styles := $styles | minify | fingerprint | resources.PostProcess }}
-  <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" />
+  {{ if $styles }}
+    {{ $styles = $styles | minify | fingerprint | resources.PostProcess }}
+    <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" />
+  {{ end }}
 {{ end }}
 <link rel="stylesheet" href="{{ .Site.Params.assetsDir }}/css/style.min.css" />
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap" rel="stylesheet" />
