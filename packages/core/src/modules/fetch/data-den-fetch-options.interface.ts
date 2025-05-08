@@ -25,9 +25,14 @@ export interface DataDenPaginationOptions {
   lastRowIndex: number;
 }
 
+export interface DataDenGroupedOptions {
+  groupedColumns?: any[];
+}
+
 export interface DataDenFetchOptions {
   sortingOptions?: DataDenSortOptions;
   quickFilterOptions?: DataDenQuickFilterOptions;
   filtersOptions?: DataDenFiltersOptions;
   paginationOptions?: DataDenPaginationOptions;
+  groupedOptions?: DataDenGroupedOptions;
 }

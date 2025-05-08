@@ -18,6 +18,9 @@ export class DataDenCell {
   cellElements: DataDenCell[] = [];
   isBlurByKey: boolean = false;
   prevValue: any;
+  icon?: HTMLElement;
+  isGroupCell?: boolean;
+
 
   constructor(
     value: any,
@@ -26,7 +29,9 @@ export class DataDenCell {
     left: number,
     width: number,
     pinned: string,
-    options: DataDenInternalOptions
+    options: DataDenInternalOptions,
+    icon?: HTMLElement,
+    isGroupCell?: boolean
   ) {
     this.colIndex = colIndex;
     this.rowIndex = rowIndex;
@@ -35,6 +40,8 @@ export class DataDenCell {
     this.#options = options;
     this.#left = pinned ? 'auto' : `${left}px`;
     this.pinned = pinned;
+    this.icon = icon;
+    this.isGroupCell = isGroupCell;
     this.#initRenderers();
   }
 
@@ -52,6 +59,8 @@ export class DataDenCell {
 
   #getCellRendererParams(): DataDenCellRendererParams {
     return {
+      isGroupCell: this.isGroupCell,
+      icon: this.icon,
       value: this.#value,
       cssPrefix: this.#options.cssPrefix,
     };
@@ -145,11 +154,11 @@ export class DataDenCell {
       `
         <div
           class="${this.#options.cssPrefix}cell ${this.#options.draggable && !this.pinned
-            ? `${this.#options.cssPrefix}cell-draggable`
-            : ''} ${this.pinned === 'left' ? `${this.#options.cssPrefix}cell-pinned-left` : ''} ${this.pinned ===
+        ? `${this.#options.cssPrefix}cell-draggable`
+        : ''} ${this.pinned === 'left' ? `${this.#options.cssPrefix}cell-pinned-left` : ''} ${this.pinned ===
           'right'
-            ? `${this.#options.cssPrefix}cell-pinned-right`
-            : ''}"
+          ? `${this.#options.cssPrefix}cell-pinned-right`
+          : ''}"
           rowIndex="${this.rowIndex}"
           colIndex="${this.colIndex}"
           role="gridcell"

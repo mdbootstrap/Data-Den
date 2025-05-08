@@ -18,6 +18,7 @@ export class DataDenFetchService {
     this.#subscribeQuickFilterChanged();
     this.#subscribeFilterChange();
     this.#subscribePaginationChange();
+    this.#subscribeGroupChange();
   }
 
   #getData(fetchOptions: DataDenFetchOptions): Promise<any[]> {
@@ -88,6 +89,18 @@ export class DataDenFetchService {
         lastRowIndex: event.data.lastRowIndex,
       };
       this.#getData(this.#fetchOptions).then((data: any[]) => {
+        this.#publishFetchDone(event.context, data);
+      });
+    });
+  }
+
+  #subscribeGroupChange(): void {
+    this.PubSub.subscribe('command:group:update', (event: DataDenEvent) => {
+      this.#fetchOptions.groupedOptions = event.data.groupedColumns.length === 0 ? undefined : {
+        groupedColumns: event.data.groupedColumns,
+      };
+
+      this.#getData({ groupedOptions: this.#fetchOptions.groupedOptions }).then((data: any[]) => {
         this.#publishFetchDone(event.context, data);
       });
     });

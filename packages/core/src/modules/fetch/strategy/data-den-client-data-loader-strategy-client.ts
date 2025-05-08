@@ -2,11 +2,12 @@ import { DataDenDataLoaderStrategy } from './data-den-data-loader-strategy';
 import {
   DataDenFetchOptions,
   DataDenFiltersOptions,
+  DataDenGroupedOptions,
   DataDenPaginationOptions,
   DataDenQuickFilterOptions,
   DataDenSortOptions,
 } from '../data-den-fetch-options.interface';
-import { deepCopy } from '../../../utils';
+import { deepCopy, groupRows } from '../../../utils';
 
 export class DataDenClientDataLoaderStrategy extends DataDenDataLoaderStrategy {
   #data: any[];
@@ -18,10 +19,24 @@ export class DataDenClientDataLoaderStrategy extends DataDenDataLoaderStrategy {
   }
 
   getData(options: DataDenFetchOptions): Promise<any[]> {
+
     return this.filterData(deepCopy(this.#data), options.filtersOptions)
       .then((filtered) => this.quickFilterData(filtered, options.quickFilterOptions))
       .then((quickFiltered) => this.sortData(quickFiltered, options.sortingOptions))
-      .then((sorted) => this.paginateData(sorted, options.paginationOptions));
+      .then((sorted) => this.groupData(sorted, options.groupedOptions))
+      .then((grouped) => this.paginateData(grouped, options.paginationOptions, options.groupedOptions))
+  }
+
+  groupData(rows: any[], groupedOptions: DataDenGroupedOptions | undefined): Promise<any[]> {
+    if (!groupedOptions) {
+      return Promise.resolve(rows);
+    }
+
+    const groups = groupedOptions.groupedColumns.map((column) => column.group);
+
+    const grouped = groupRows(rows, groups);
+
+    return Promise.resolve(grouped);
   }
 
   filterData(rows: any[], filtersOptions: DataDenFiltersOptions | undefined): Promise<any[]> {
@@ -43,14 +58,16 @@ export class DataDenClientDataLoaderStrategy extends DataDenDataLoaderStrategy {
     return Promise.resolve(filtered);
   }
 
-  paginateData(rows: any[], paginationOptions: DataDenPaginationOptions | undefined): Promise<any[]> {
+  paginateData(rows: any[], paginationOptions: DataDenPaginationOptions | undefined, groupedOptions: DataDenGroupedOptions | undefined): Promise<any> {
     if (!paginationOptions) {
       return Promise.resolve(rows);
     }
 
     const { firstRowIndex, lastRowIndex } = paginationOptions;
 
-    const paginated = rows.slice(firstRowIndex, lastRowIndex);
+    const paginated = (groupedOptions ? Object.fromEntries(
+      Object.entries(rows).slice(firstRowIndex, lastRowIndex)
+    ) : rows.slice(firstRowIndex, lastRowIndex));
 
     return Promise.resolve(paginated);
   }
