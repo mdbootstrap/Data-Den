@@ -97,3 +97,18 @@
 </script>
 <script type="module" src="{{ .Site.Params.assetsDir }}/js/load-user-data.js"></script>
 <script type="module" src="{{ .Site.Params.assetsDir }}/js/auth.js"></script>
+<script>
+  function setCookie(name, value, days) {
+    const date = new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    const expires = 'expires=' + date.toUTCString();
+    document.cookie = name + '=' + value + ';' + expires + ';path=/';
+  }
+
+  fetch('http://ip-api.com/json/')
+    .then((response) => response.json())
+    .then((data) => {
+      const countryCode = data.countryCode;
+      setCookie('gdpr_country', countryCode, 30);
+    });
+</script>
